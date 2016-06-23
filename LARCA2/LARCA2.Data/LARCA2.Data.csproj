@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3D8F7C26-BE07-4CA0-8CAB-0AD3B484D9CD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LARCA2.Data</RootNamespace>
+    <AssemblyName>LARCA2.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DatabaseModels\LARCA20_AuxData.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Emails.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_ImputOriginal.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Level4.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Mailing.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_MasterData.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_MasterDataSMOLess.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_RcClasification.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Recursos.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Responsable.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Roles.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_RolesRecursos.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_SmoScope.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_SmoScopeDetail.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_SmoScopeGroup.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_User_Owner.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Usuarios.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_UsuariosRoles.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\ModeloPruebas.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloPruebas.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\ModeloPruebas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\ModeloPruebas.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModeloPruebas.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\BaseDAL.cs" />
+    <Compile Include="Services\MasterDataDAL.cs" />
+    <Compile Include="Services\Level4DAL.cs" />
+    <Compile Include="Services\RCClassificationDAL.cs" />
+    <Compile Include="Services\AuxDataDAL.cs" />
+    <Compile Include="Services\EmailsDAL.cs" />
+    <Compile Include="Services\SmoDetailDAL.cs" />
+    <Compile Include="Services\SmoScopeDAL.cs" />
+    <Compile Include="Services\RolesDAL.cs" />
+    <Compile Include="Services\ResponsablesDAL.cs" />
+    <Compile Include="Services\SmoScopeDetailDAL.cs" />
+    <Compile Include="Services\UserOwnerDAL.cs" />
+    <Compile Include="Services\UsuariosDAL.cs" />
+    <Compile Include="Validation\LARCA20_AuxData.cs" />
+    <Compile Include="Validation\LARCA20_Level4.cs" />
+    <Compile Include="Validation\LARCA20_MasterData.cs" />
+    <Compile Include="Validation\LARCA20_Usuario.cs" />
+    <Compile Include="Validation\LARCA20_RCClasification.cs" />
+    <Compile Include="Services\UsuariosRolesDAL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DatabaseModels\ModeloPruebas.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModeloPruebas.edmx</DependentUpon>
+      <LastGenOutput>ModeloPruebas.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DatabaseModels\ModeloPruebas.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModeloPruebas.edmx</DependentUpon>
+      <LastGenOutput>ModeloPruebas.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="DatabaseModels\ModeloPruebas.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModeloPruebas.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DatabaseModels\ModeloPruebas.edmx.diagram">
+      <DependentUpon>ModeloPruebas.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
