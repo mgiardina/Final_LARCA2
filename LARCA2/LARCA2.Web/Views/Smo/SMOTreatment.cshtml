@@ -1,0 +1,401 @@
+﻿@model Larca2.Views.ViewModels.SMOScopeViewModel
+@{
+    ViewBag.Title = "SMOScope Registers Cloning and Visualization";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of SMOScope Registers in the database.
+            </p>
+        </div>
+    </section>
+}
+<script src="../Scripts/jquery-1.8.2.js"></script>
+<script src="../Scripts/jquery-1.8.2.min.js"></script>
+<script type="text/javascript">
+
+    function LoadEm() {
+        //durante el posteo del form relevo todos los clones a un request que le llegue al controlador.
+        if ($("#HI_Counter").val() == "")
+        {}
+        else
+        {
+            var numi = parseInt($("#HI_Counter").val());
+            for (i = 1; i <= numi; i++) { 
+                var act = document.getElementById("cl" + i);
+              
+                if(act==null)
+                {} //cuidado con esto, si se borra un registro clonado van a haber nulls. este if los elimina de la carga final
+                else
+                {
+                    var act0 = act.getElementsByTagName("td")[0];
+                    var act1 = act.getElementsByTagName("td")[1];
+                    var act2 = act.getElementsByTagName("td")[2];
+                    var act3 = act.getElementsByTagName("td")[3];
+                    var act4 = act.getElementsByTagName("td")[4];
+                    var act5 = act.getElementsByTagName("td")[5];
+                    var act6 = act.getElementsByTagName("td")[6];
+                    var act7 = act.getElementsByTagName("td")[7];
+                    var act8 = act.getElementsByTagName("td")[8];
+                    var act9 = act.getElementsByTagName("td")[9];
+                    var act10 = act.getElementsByTagName("td")[10];
+                    var act11 = act.getElementsByTagName("td")[11];
+                    var act12 = act.getElementsByTagName("td")[12];
+                    //en variable de carga dejo solo los datos relevantes de cada atributo, sin la cascara de HTML de cada uno
+                    var cargaFOR = act0.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%" + 
+                        act1.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%"
+                        + act2.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%"
+                        + act3.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%" + 
+                        act4.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value + "%%" +
+                        act5.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value + "%%" + 
+                        act6.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value + "%%"
+                        + act7.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%" + 
+                        act8.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%"
+                        + act9.getElementsByTagName("select")[0].selectedIndex + "%%" + 
+                        act10.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%" + 
+                        act11.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%" + 
+                        act12.getElementsByTagName("select")[0].selectedIndex;
+                    //separador de atributo %% separador de fila ##
+                    if ($("#HI_SmoEsp").val() == "")
+                        $("#HI_SmoEsp").val(cargaFOR.replace("\n", "").replace("\r\n", ""));
+                    else
+                        $("#HI_SmoEsp").val($("#HI_SmoEsp").val() + "##" + cargaFOR.replace("\n", "").replace("\r\n", ""));
+               
+                }
+            }//fin del FOR
+        
+        }
+        //alert($("#HI_SmoEsp").val());
+        //alert($("#HI_NumEsp").val());
+        //alert($("#HI_Counter").val());
+    }
+    function AgregaRegistroFinalESP(num) {
+        
+        //guardo el id del registro clonado, puede que me sirva dpeendiendo de la solucion que implemente
+        if ($("#HI_NumEsp").val() == "")
+            $("#HI_NumEsp").val(num);
+        else
+            $("#HI_NumEsp").val($("#HI_NumEsp").val() + "##" + num);
+
+        //marco con un contador cuantos clones hay, de paso lo uso para definir id particulares para las filas que son clones
+        if ($("#HI_Counter").val() == "")
+            $("#HI_Counter").val("1");
+        else
+            $("#HI_Counter").val(parseInt($("#HI_Counter").val()) + 1);
+
+        //obtengo la fila a clonar
+        var z = document.getElementById(num);
+        //obtengo todas las columnas
+        var t0 = z.getElementsByTagName("td")[0];
+        var t1 = z.getElementsByTagName("td")[1];
+        var t2 = z.getElementsByTagName("td")[2];
+        var t3 = z.getElementsByTagName("td")[3];
+        var t4 = z.getElementsByTagName("td")[4];
+        var t5 = z.getElementsByTagName("td")[5];
+        var t6 = z.getElementsByTagName("td")[6];
+        var t7 = z.getElementsByTagName("td")[7];
+        var t8 = z.getElementsByTagName("td")[8];
+        var t9 = z.getElementsByTagName("td")[9];
+        var t10 = z.getElementsByTagName("td")[10];
+        var t11 = z.getElementsByTagName("td")[11];
+        var t12 = z.getElementsByTagName("td")[12];
+        //en variable de carga dejo solo los datos relevantes de cada atributo, sin la cascara de HTML de cada uno
+       
+        /*var carga = t0.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "##" + t1.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "##"
+            + t2.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "##"
+            + t3.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "##" + t4.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "##" +
+            t5.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value + "##" + t6.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value + "##"
+            + t7.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "##" + t8.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "##"
+            + t9.getElementsByTagName("select")[0].selectedIndex + "##" + t10.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "##" + t11.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "##" + t12.getElementsByTagName("select")[0].selectedIndex;
+      */
+      
+      //separador de atributo ## separador de fila #/#
+       /* if ($("#HI_SmoEsp").val() == "")
+            $("#HI_SmoEsp").val(carga);
+        else
+            $("#HI_SmoEsp").val($("#HI_SmoEsp").val() + "#/#" + carga);
+            */
+
+        var contadorval = $("#HI_Counter").val();
+        //cargo en la tabla la nueva fila
+        self.
+        $('#tablaSmor tr:last').after('<tr id="cl'+ contadorval +'"><td>' + t0.innerHTML + '</td><td>' + t1.innerHTML + '</td><td>' + t2.innerHTML + '</td><td>' + t3.innerHTML + '</td><td>' +
+        t4.innerHTML + '</td><td>' + t5.innerHTML + '</td><td>' + t6.innerHTML + '</td><td>' + t7.innerHTML + '</td><td>' + t8.innerHTML +
+            '</td><td>' + t9.innerHTML + '</td><td>' + t10.innerHTML + '</td><td>' + t11.innerHTML + '</td><td>' +
+           t12.innerHTML + '</td><td><button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning"> Quitar</button></td></tr>');
+    }
+
+
+
+    function FuncLESSRegistro(donde) {
+        //copiado de nuevoUsuario, no me fije con detalle como funciona, pero ya implemente el borrado a partir de esto y funciona bien con mecanismos implementados en otras partes del codigo.
+        $(donde).closest('tr').remove();
+        $("#HI_SmoEsp").val("");
+        $("#tablaRegistros tr").each(function (index) {
+            var p1 = $(this).find("td").eq(0).html();
+            var p2 = $(this).find("td").eq(1).html();
+            var p3 = $(this).find("td").eq(2).html();
+            var p4 = $(this).find("td").eq(3).html();
+            var p5 = $(this).find("td").eq(4).html();
+            var p6 = $(this).find("td").eq(5).html();
+            var p7 = $(this).find("td").eq(6).html();
+            var p8 = $(this).find("td").eq(7).html();
+            var p9 = $(this).find("td").eq(8).html();
+            var p10 = $(this).find("td").eq(9).html();
+            var p11 = $(this).find("td").eq(10).html();
+            var p12 = $(this).find("td").eq(11).html();
+            var p13 = $(this).find("td").eq(12).html();
+         /*   if (p1 != "") {
+                var carga = p1 + "##" + p2 + "##" + p3 + "##" + p4 + "##" + p5 + "##" + p6 + "##" + p7 + "##" + p8 + "##" + p9 + "##" + p10 + "##" + p11 + "##" + p12 + "##" + p13;
+                if ($("#HI_SmoEsp").val() == "")
+                    $("#HI_SmoEsp").val(carga);
+                else
+                    $("#HI_SmoEsp").val($("#HI_SmoEsp").val() + "#-#" + carga);
+            }*/
+        });
+    }
+</script>
+
+
+<div class="content" style="margin-bottom:20px;">
+    @using (Html.BeginForm("SmoFiltrado", "Smo", FormMethod.Post, new { name = "myform" }))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">BU</label>
+                    @Html.DropDownListFor(model => model.bu, Model.BUList)
+
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">SMO</label>
+                    @Html.DropDownListFor(model => model.smo, Model.SMOList)
+                </fieldset>
+            </div>
+            <br />
+        </div>
+        <div class="pull-right">
+            <input type="submit" value="Filtrar" name="Filter" class="btn btn-default" />
+
+        </div>
+    }
+</div>
+
+<br />
+<br />
+<div class="content" style="margin-bottom:20px;">
+    @using (Html.BeginForm("SmoModificados", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" } ))
+    {
+        <input name="HI_SmoEsp" id="HI_SmoEsp" type="hidden" value="" />
+    <input name="HI_NumEsp" id="HI_NumEsp" type="hidden" value="" />
+    <input name="HI_Counter" id="HI_Counter" type="hidden" value="" />
+
+        <table id="tablaSmor" class="table">
+            <thread>
+                <tr>
+                    <th width="5%" align="center">
+                        <label>RC</label>
+                    </th>
+                    <th width="5%" align="center">
+                        <label>SMO</label>
+                    </th>
+                    <th width="5%" align="center">
+                        <label>BU</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Volume</label>
+
+                    </th>
+                    <th width="15%" align="center">
+                        <label>Problem</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Why 1</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Why 2</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Why 3</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>ActionPlan</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Responsible</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Due Date</label>
+                    </th>
+                    <th width="15%" align="center">
+                        <label>O_C</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Level4</label>
+                    </th>
+                    <th width="5%" align="center">
+                        <label> Clone </label>
+
+                    </th>
+                </tr>
+
+                @{int j = 0;
+            if (Model.L4BLL == null)
+            {
+                Model.L4BLL = new LARCA2.Business.Services.Level4BLL();
+            }
+            if (Model.MBLL == null)
+            {
+                Model.MBLL = new LARCA2.Business.Services.MasterDataBLL();
+            }
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
+            {
+                <tr id=@(j.ToString())>
+                    @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
+                    <td width="5%" align="center">
+                        @if (Model.EditablesSMO[j].RefIdRC != null)
+                        {
+                            <label>
+                                @Model.RCBLL.Traer(SmoScope.RefIdRC.Value).Descripcion
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                -
+                            </label>
+                            @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
+                        }
+                    </td>
+                    <td width="5%" align="center">
+                        @if (Model.EditablesSMO[j].RefIdSMO != null)
+                        {
+                            <label>
+                                @Model.MBLL.Traer("SMO", Int32.Parse(SmoScope.RefIdSMO.Value.ToString())).DataIni
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                -
+                            </label>
+                            @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
+                        }
+                    </td>
+                    <td width="5%" align="center">
+                        @if (Model.EditablesSMO[j].RefIdBU != null)
+                        {
+                            <label>
+                                @Model.MBLL.Traer("BU", Int32.Parse(SmoScope.RefIdBU.Value.ToString())).DataIni
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                -
+                            </label>
+                            @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
+                        }
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @SmoScope.Volumen
+                        </label>
+                    </td>
+                    <td width="15%" align="center">
+                        <label>
+                            @Html.TextBoxFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @placeholder = SmoScope.Problem })
+                        </label>
+                    </td>
+
+                    <td width="10%" align="center">
+                        <label>
+                            @Html.TextBoxFor(m => m.EditablesSMO[j].Why1, new { @class = "form-control", @placeholder = SmoScope.Why1 })
+                        </label>
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @Html.TextBoxFor(m => m.EditablesSMO[j].Why2, new { @class = "form-control", @placeholder = SmoScope.Why2 })
+                        </label>
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @Html.TextBoxFor(m => m.EditablesSMO[j].Why3, new { @class = "form-control", @placeholder = SmoScope.Why3 })
+                        </label>
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @Html.TextBoxFor(m => m.EditablesSMO[j].ActionPlan, new { @class = "form-control", @placeholder = SmoScope.ActionPlan })
+                        </label>
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value)))
+                        </label>
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @Html.TextBoxFor(m => m.EditablesSMO[j].DueDate, new { @class = "form-control", @placeholder = SmoScope.DueDate })
+                        </label>
+                    </td>
+                    <td width="15%" align="center">
+
+                        @if (Model.EditablesSMO[j].O_C != null)
+                        {
+                            <label>
+                                @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })
+                            </label>
+                        }
+                        else
+                        {
+                            <label>
+                                @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = "-" })
+                            </label>
+                        }
+
+                    </td>
+                    <td width="10%" align="center">
+
+                        @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
+                        {
+                            <label>
+                                @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                            </label>}
+                        else
+                        {
+                            <label>
+                                @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, 0))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                            </label>
+
+                        }
+                    </td>
+                    <td width="10%" align="center">
+
+                        <input type="button" value="+" id="Clone" class="btn btn-info" onclick="AgregaRegistroFinalESP(@(j.ToString()))" />                  
+
+                    </td>
+                </tr>
+                        j++;
+            }
+                }
+                <tr><td width=5% style="display: none"><td width=5% style="display: none"><td width=5% style="display: none"><td width=10% style="display: none"> </td> <td width=15% style="display: none"></td> <td width=10% style="display: none"></td> <td width=10% style="display: none"></td><td width=10% style="display: none"></td><td width=10% style="display: none"></td><td width=10% style="display: none"></td><td width=10% style="display: none"></td><td width=15% style="display: none"></td><td width=10% style="display: none"></td><td width=5% style="display: none"></td></tr>
+            </thread>
+            <tbody></tbody>
+        </table>
+
+                <div class="pull-right">
+                   @* <input type="submit" value="Guardar Cambios" name="Guardar Cambios" class="btn btn-default" /> *@
+                    <input type="submit" value="Save Changes" id="guardar" onclick="LoadEm()" class=" btn btn-info" />
+
+                </div>
+    }
+</div>

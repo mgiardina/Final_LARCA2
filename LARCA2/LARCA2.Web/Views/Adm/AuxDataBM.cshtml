@@ -1,0 +1,99 @@
+﻿@model Larca2.Models.AuxDataSearchForm
+@{
+    ViewBag.Title = "Modificación de Valores Globales";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of global values in the system.
+
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("ModifAuxData", "Adm", FormMethod.Post, new { name = "myform" }))
+    {
+        <div class="row">
+            <div class="pull-right col">
+                <input type="submit" value="Modificar" name="Modificar" id="Modificar" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th width="17%" align="center">
+                                <label>Top Level 2</label>
+                            </th>
+                            <th width="16%" align="center">
+                                <label>Top Level 3</label>
+                            </th>
+                            <th width="17%" align="center">
+                                <label>Top Level 4</label>
+                            </th>
+                            <th width="16%" align="center">
+                                <label>Excel Rows From</label>
+                            </th>
+                            <th width="17%" align="center">
+                                <label>Excel Columns From</label>
+                            </th>
+                            <th width="17%" align="center">
+                                <label>Cantidad Adjuntos</label>
+                            </th>
+                            <th width="17%" align="center">
+                                <label>Dias Reporte</label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td width="17%" align="center">
+                                <label>
+                                    @Model.AuxData.TopLvl2
+                                </label>
+                            </td>
+                            <td width="16%" align="center">
+                                <label>
+                                    @Model.AuxData.TopLvl3
+                                </label>
+                            </td>
+                            <td width="17%" align="center">
+                                <label>
+                                    @Model.AuxData.Toplvl4
+                                </label>
+                            </td>
+                            <td width="16%" align="center">
+                                <label>
+                                    @Model.AuxData.XlsRowFrom
+                                </label>
+                            </td>
+                            <td width="17%" align="center">
+                                <label>
+                                    @Model.AuxData.XlsColumnFrom
+                                </label>
+                            </td>
+                            <td width="17%" align="center">
+                                <label>
+                                    @Model.AuxData.CntAdjuntos
+                                </label>
+                            </td>
+                            <td width="17%" align="center">
+                                <label>
+                                    @Model.AuxData.DiasReporte
+                                </label>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

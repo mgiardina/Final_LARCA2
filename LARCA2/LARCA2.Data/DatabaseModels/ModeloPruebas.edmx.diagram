@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a9b0f7b5cc7c4db4ad11851a1dd514af" Name="Diagram1">
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_AuxData" Width="1.5" PointX="5.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Emails" Width="1.5" PointX="8.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_ImputOriginal" Width="1.5" PointX="10.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Level4" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Mailing" Width="1.5" PointX="7.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_MasterData" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_MasterDataSMOLess" Width="1.5" PointX="10.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_RcClasification" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Recursos" Width="1.5" PointX="3.75" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Responsable" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Roles" Width="1.5" PointX="3.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_RolesRecursos" Width="1.5" PointX="6" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScope" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScopeDetail" Width="1.5" PointX="8.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScopeGroup" Width="1.5" PointX="10.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_User_Owner" Width="1.5" PointX="6" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Usuarios" Width="1.5" PointX="3.75" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_UsuariosRoles" Width="1.5" PointX="6" PointY="12.75" IsExpanded="true" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_Level4_LARCA20_RcClasification" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_MasterData" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_MasterData1" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterBU" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterBUDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterOwner" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterOwnerDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterReasonDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterSMO" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterSMODetail" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterLvl" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterLvl2Detail" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.MasterLvl3Detail" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_RolesRecursos_LARCA20_Recursos" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.ResponsableSmo" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_RolesRecursos_LARCA20_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_UsuariosRoles_LARCA20_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.SmoScopeDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_Usuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_UsuariosRoles_LARCA20_Usuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

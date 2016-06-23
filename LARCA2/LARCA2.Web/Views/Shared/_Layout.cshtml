@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - LARCA 2</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+    @Styles.Render("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css")
+    @Scripts.Render("http://code.jquery.com/jquery-latest.js")
+    @Scripts.Render("https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("LARCA 2", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+
+                @{
+                    var user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)HttpContext.Current.Session["Usuario"];
+                }
+                @if (user != null)
+                {
+                    <nav class="navbar navbar-default">
+                        <div class="container-fluid">
+                            <ul class="nav navbar-nav navbar-right">
+                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 2)
+                                {
+                                    <li>@Html.ActionLink("SMO Scope", "SmoTreatment", "Smo")</li>
+                                    <li>@Html.ActionLink("SMO Group", "SmoSimple", "Smo")</li>
+                                }
+                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1)
+                                {
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink("Users", "UserBM", "Adm")</li>
+                                            <li>@Html.ActionLink("RC clasification", "RcClasificationBM", "Adm")</li>
+                                            <li>@Html.ActionLink("Master Data", "MasterDataBM", "Adm")</li>
+                                            <li>@Html.ActionLink("Level 4", "Level4", "Adm")</li>
+                                            <li>@Html.ActionLink("Global Params", "AuxDataBM", "Adm")</li>
+                                            <li>@Html.ActionLink("Manual Upload", "Index", "ManualLoad")</li>
+                                        </ul>
+                                    </li>
+                                }
+                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 2 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 3)
+                                {
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink("LARCA News RBU", "NewsRBU", "LAScope")</li>
+                                            <li>@Html.ActionLink("LARCA News SMO", "NewsSMO", "LAScope")</li>
+                                            <li>@Html.ActionLink("LARCA News LA", "NewsREGION", "LAScope")</li>
+                                        </ul>
+                                    </li>
+                                }
+                                <li>@Html.ActionLink("Logout", "Salir", "Home")</li>
+                            </ul>
+                        </div>
+                    </nav>
+                }
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left" style="padding:20px;">
+                <p>&copy; @DateTime.Now.Year - LARCA 2</p>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+
+    <div id="modalTest" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                PRUEBA
+            </div>
+        </div>
+    </div>
+</body>
+</html>

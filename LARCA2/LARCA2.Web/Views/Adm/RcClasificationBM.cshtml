@@ -1,0 +1,182 @@
+﻿@model Larca2.Models.RcClasificationSearchForm
+@{
+    ViewBag.Title = "Modificación de RC Clasifications";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of RC Clasifications in the system.
+
+            </p>
+        </div>
+    </section>
+}
+
+<script>
+
+    $(document).ready(function () {
+
+        //$('#btnBusca').on('click', function () {
+        //    if (document.getElementById('txtCod').value == "" && document.getElementById('txtDes').value == "") {
+
+        //        document.getElementById("Seleccionar").style.display = "";
+        //        return false;
+        //    }
+        //});
+
+        $('#Modificar').on('click', function () {
+
+            var IdRenglon;
+            var rowCount = $('.table tr').length;
+            var value = $('input:checked').val();
+            var CheckedCount = $('input:checked').length;
+
+
+            $('.txtIdRenglon').val(value);
+            if (value > 0) {
+                if (rowCount == 1) {
+
+                    document.getElementById("Seleccionar").style.display = "";
+                    return false;
+                }
+                else {
+
+                    if (CheckedCount > 1) {
+                        document.getElementById("Check2").style.display = 'none';
+                        document.getElementById("Check1").style.display = "";
+
+                        return false;
+                    }
+
+                    if (CheckedCount < 1) {
+                        document.getElementById("Check1").style.display = 'none';
+                        document.getElementById("Check2").style.display = "";
+                        return false;
+                    }
+                }
+            }
+            else {
+                document.getElementById("Check2").style.display = "";
+                return false;
+            }
+        });
+    });
+
+
+
+</script>
+
+<div class="container-fluid">
+
+    @using (Html.BeginForm("ModifRcClasification", "Adm", FormMethod.Post, new { name = "myform" }))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <h5 style="border-bottom:1px solid #c7d1d6;">FILTRO</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Código RC</label><br />
+                <input type="text" id="txtCod" name="txtCod" value="" />
+            </div>
+            <div class="col-sm-4">
+                <label>Descripción</label><br />
+                <input type="text" id="txtDes" name="txtDes" value="" />
+            </div>
+            <div class="col-sm-2">
+                <br style="margin-bottom:3px;" />
+                <button type="submit" id="btnBusca" class="btn btn-info" formaction="RcClasificationBM">Buscar</button>
+
+            </div>
+        </div>
+        <div class="row">
+            <br style="margin-bottom:3px;" />
+            <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Ingrese un Filtro para la búsqueda</div>
+            <div class="col-sm-4" id="Check1" style="color:red;display:none">Seleccione solamente un RC Clasification para Modificar</div>
+            <div class="col-sm-4" id="Check2" style="color:red;display:none">Seleccione un RC Clasification para Modificar</div>
+        </div>
+        <div class="row">
+            <div class="pull-right col">
+                <input type="button" value="Nuevo" name="Nuevo" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevaRcClasification", "Adm") + "'");" />
+                <input type="submit" id="Modificar" value="Modificar" name="Modificar" class="btn btn-primary" />
+                <input type="hidden" class="txtIdRenglon" id="txtIdRenglon" name="txtIdRenglon" value="" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th width="10%" align="center"></th>
+                            <th width="20%" align="center">
+                                <label>Nivel</label>
+                            </th>
+                            <th width="20%" align="center">
+                                <label>Codigo</label>
+                            </th>
+                            <th width="20%" align="center">
+                                <label>Descripción</label>
+                            </th>
+                            <th width="20%" align="center">
+                                <label>Ownership</label>
+                            </th>
+                            <th width="10%" align="center">
+                                <label>Borrado</label>
+                            </th>
+                        </tr>
+
+                        @{int j = 0;
+                        if (Model.RcClasificationList != null)
+                        {
+
+                            foreach (LARCA2.Data.DatabaseModels.LARCA20_RcClasification RcClasification in Model.RcClasificationList)
+                            {
+                                <tr>
+                                    <td class="Check" width="10%" align="center">
+                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = RcClasification.IdRenglon })
+                                    </td>
+
+                                    <td width="20%" align="center">
+                                        <label>
+                                            @RcClasification.Nivel
+                                        </label>
+                                    </td>
+                                    <td width="20%" align="center">
+                                        <label>
+                                            @RcClasification.Codigo
+                                        </label>
+                                    </td>
+                                    <td width="20%" align="center">
+                                        <label>
+                                            @RcClasification.Descripcion
+                                        </label>
+                                    </td>
+                                    <td width="20%" align="center">
+                                        <label>
+                                            @RcClasification.Ownership
+                                        </label>
+                                    </td>
+
+                                    <td width="10%" align="center">
+                                        <label>
+                                            @RcClasification.Borrado
+                                        </label>
+                                    </td>
+                                </tr>
+                                j++;
+                            }
+                        }
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

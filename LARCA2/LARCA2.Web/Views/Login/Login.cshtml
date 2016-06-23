@@ -1,0 +1,46 @@
+﻿@model Larca2.Views.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                Here you can Login with your account.
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("Autenticar", "Login", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-xs-12">
+                <fieldset class="form-group">
+                    <label for="Nombre">Username</label>
+                    @Html.TextBoxFor(m => m.Usuario.NombreUsuario, new { @class = "form-control", @placeholder = "Nombre ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.NombreUsuario)</small>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label for="Nombre">Password</label>
+                    @Html.PasswordFor(m => m.Usuario.Clave, new { @class = "form-control", @placeholder = "Clave ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Clave)</small>
+                </fieldset>
+             
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <input type="submit" value="Login" name="Ingresar" class="btn btn-success" />
+            </div>
+        </div>
+
+    }
+</div>
+

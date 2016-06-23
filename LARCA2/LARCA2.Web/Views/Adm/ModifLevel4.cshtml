@@ -1,0 +1,41 @@
+﻿@model Larca2.Models.Level4SearchForm
+
+@{
+    ViewBag.Title = "Modify Existing Level 4";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                Here you can modify a level 4 from the system.
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("Modificar_abm_level4", "Adm", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Level4.Id)
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Descripcion</label>
+                    @Html.TextBoxFor(m => m.Level4.Nombre, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.Nombre)</small>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="pull-right col">
+                <input type="submit" value="Guardar Cambios" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("Level4", "Adm") + "'");" />
+            </div>
+        </div>
+    }
+</div>

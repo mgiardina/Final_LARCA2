@@ -1,0 +1,73 @@
+﻿@model Larca2.Models.MasterDataSearchForm
+
+@{
+    ViewBag.Title = "New Master Data";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                Here you can create new Master Data from the system.
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("AgregarMasterData", "Adm", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Grupo</label>
+                    @{
+        List<SelectListItem> ListGrupos = new List<SelectListItem>();
+        ListGrupos.Add(new SelectListItem() { Value = "", Text = "Seleccione el Grupo", Selected = true });
+        ListGrupos.Add(new SelectListItem() { Value = "BU", Text = "BU", Selected = false });
+        ListGrupos.Add(new SelectListItem() { Value = "SMO", Text = "SMO", Selected = false });
+        ListGrupos.Add(new SelectListItem() { Value = "OWNER", Text = "OWNER", Selected = false });
+        ListGrupos.Add(new SelectListItem() { Value = "REFER", Text = "REFER", Selected = false });
+                    }
+                    @Html.DropDownListFor(m => m.MasterData.Data, ListGrupos, new { @class = "form-control", @placeholder = "Roles ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.Data)</small>
+                </fieldset>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-sm-13">
+            <fieldset class="form-group">
+                <label for="Nombre">Data Inicial</label>
+                @Html.TextBoxFor(m => m.MasterData.DataIni, new { @class = "form-control", @placeholder = "Texto Origen", @MaxLength = "100" })
+                <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.DataIni)</small>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-13">
+            <fieldset class="form-group">
+                <label for="Nombre">Data Final</label>
+                @Html.TextBoxFor(m => m.MasterData.DataFin, new { @class = "form-control", @placeholder = "Texto final", @MaxLength = "50" })
+                <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.DataFin)</small>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-13">
+            <fieldset class="form-group">
+                <label for="Nombre">Borrado</label>
+                @Html.CheckBoxFor(m => m.MasterData.Borrado, new { @class = "form-control" })
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="pull-right col">
+            <input type="submit" value="Guardar" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+            <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("MasterDataBM", "Adm") + "'");" />
+        </div>
+    </div>
+    }
+</div>

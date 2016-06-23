@@ -1,0 +1,100 @@
+﻿@model Larca2.Models.AuxDataSearchForm
+@{
+    ViewBag.Title = "Modificación de Valores Globales";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of global values in the system.
+
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("ModificarAuxData", "Adm", FormMethod.Post))
+    {
+        @Html.HiddenFor(Model => Model.AuxData.RowId)
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Top Level 2</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.TopLvl2, new { @class = "form-control", @placeholder = "Top Level 2 ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.TopLvl2)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Top Level 3</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.TopLvl3, new { @class = "form-control", @placeholder = "Top Level 3 ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.TopLvl3)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Top Level 4</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.Toplvl4, new { @class = "form-control", @placeholder = "Top Level 4 ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.Toplvl4)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Excel Rows Count</label>
+                    @Html.TextBoxFor(m => m.AuxData.XlsRowFrom, new { @class = "form-control", @placeholder = "Excel Rows Count ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.XlsRowFrom)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Excel Columns Count</label>
+                    @Html.TextBoxFor(m => m.AuxData.XlsColumnFrom, new { @class = "form-control", @placeholder = "Excel Columns Count ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.XlsColumnFrom)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Cantidad Adjuntos</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.CntAdjuntos, new { @class = "form-control", @placeholder = "Cantidad Adjuntos ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.CntAdjuntos)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Dias Reporte</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.DiasReporte, new { @class = "form-control", @placeholder = "Dias Reporte ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.DiasReporte)</small>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pull-right col">
+                    <br />
+                    <input type="submit" value="Guardar Cambios" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                    <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("AuxDataBM", "Adm") + "'");" />
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

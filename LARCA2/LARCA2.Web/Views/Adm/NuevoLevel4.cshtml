@@ -1,0 +1,40 @@
+@model Larca2.Models.Level4SearchForm
+
+@{
+    ViewBag.Title = "New Level 4";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                Here you can create a new Level 4 from the system.
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("Agregar_abm_level4", "Adm", new { }, FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Descripcion</label>
+                    <input type="hidden" id="txtNivel" name="txtNivel" value=@ViewBag.Id />
+                    @Html.TextBoxFor(m => m.Level4.Nombre, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.Nombre)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="pull-right col">
+                <input type="submit" value="Guardar" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("Level4", "Adm") + "'");" />
+            </div>
+        </div>
+    }
+</div>

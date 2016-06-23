@@ -1,0 +1,1422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Larca2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LARCA20_AuxData">
+          <Key>
+            <PropertyRef Name="RowId" />
+          </Key>
+          <Property Name="RowId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TopLvl2" Type="int" Nullable="false" />
+          <Property Name="TopLvl3" Type="int" Nullable="false" />
+          <Property Name="XlsRowFrom" Type="int" Nullable="false" />
+          <Property Name="XlsColumnFrom" Type="int" Nullable="false" />
+          <Property Name="Toplvl4" Type="int" Nullable="false" />
+          <Property Name="CntAdjuntos" Type="int" Nullable="false" />
+          <Property Name="LimiteFiltro" Type="int" Nullable="false" />
+          <Property Name="DiasReporte" Type="int" Nullable="false" />
+          <Property Name="SmoDays" Type="int" />
+        </EntityType>
+        <EntityType Name="LARCA20_Emails">
+          <Key>
+            <PropertyRef Name="EmailID" />
+          </Key>
+          <Property Name="EmailID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TipoProceso" Type="int" Nullable="false" />
+          <Property Name="MessageID" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Archivo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Procesado" Type="bit" Nullable="false" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_ImputOriginal">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Day" Type="nvarchar" MaxLength="5" />
+          <Property Name="FPC" Type="nvarchar" MaxLength="100" />
+          <Property Name="RepCountry" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProfitCenter" Type="nvarchar" MaxLength="100" />
+          <Property Name="ReasonCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="CFR" Type="nvarchar" MaxLength="100" />
+          <Property Name="SapSite" Type="nvarchar" MaxLength="100" />
+          <Property Name="Customer" Type="nvarchar" MaxLength="100" />
+          <Property Name="SU_Cases" Type="decimal" Precision="12" Scale="2" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_Level4">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="RefIdLevel3" Type="bigint" />
+          <Property Name="Borrado" Type="bit" />
+        </EntityType>
+        <EntityType Name="LARCA20_Mailing">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Data" Type="nvarchar" MaxLength="5" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_MasterData">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Data" Type="nvarchar" MaxLength="10" />
+          <Property Name="DataIni" Type="nvarchar" MaxLength="100" />
+          <Property Name="DataFin" Type="nvarchar" MaxLength="50" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_MasterDataSMOLess">
+          <Key>
+            <PropertyRef Name="dRenglon" />
+          </Key>
+          <Property Name="dRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefIdMasterDataSMO" Type="int" />
+          <Property Name="borrado" Type="bit" />
+        </EntityType>
+        <EntityType Name="LARCA20_RcClasification">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nivel" Type="nvarchar" MaxLength="10" />
+          <Property Name="Codigo" Type="nvarchar" MaxLength="10" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="100" />
+          <Property Name="Ownership" Type="nvarchar" MaxLength="5" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_Recursos">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_Responsable">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Apellido" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="RefIdUsuario" Type="int" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_Roles">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_RolesRecursos">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefIdRoles" Type="int" Nullable="false" />
+          <Property Name="RefIdRecursos" Type="int" Nullable="false" />
+          <Property Name="Select" Type="char" MaxLength="1" />
+          <Property Name="Insert" Type="char" MaxLength="1" />
+          <Property Name="Update" Type="char" MaxLength="1" />
+          <Property Name="Delete" Type="char" MaxLength="1" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_SmoScope">
+          <Key>
+            <PropertyRef Name="SmoScopeID" />
+          </Key>
+          <Property Name="SmoScopeID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" />
+          <Property Name="RefIdSMO" Type="bigint" />
+          <Property Name="RefIdBU" Type="bigint" />
+          <Property Name="RefIdOwner" Type="bigint" />
+          <Property Name="RefIdRC" Type="bigint" />
+          <Property Name="Volumen" Type="decimal" Precision="20" Scale="15" />
+          <Property Name="Problem" Type="nvarchar" MaxLength="100" />
+          <Property Name="Why1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Why2" Type="nvarchar" MaxLength="100" />
+          <Property Name="Why3" Type="nvarchar" MaxLength="100" />
+          <Property Name="ActionPlan" Type="nvarchar" MaxLength="100" />
+          <Property Name="RefIdResponsable" Type="int" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="O_C" Type="char" MaxLength="1" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+          <Property Name="Level4" Type="bigint" />
+        </EntityType>
+        <EntityType Name="LARCA20_SmoScopeDetail">
+          <Key>
+            <PropertyRef Name="DetailID" />
+          </Key>
+          <Property Name="DetailID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SmoScopeID" Type="bigint" />
+          <Property Name="Fecha" Type="datetime" />
+          <Property Name="SmoID" Type="bigint" />
+          <Property Name="BuID" Type="bigint" />
+          <Property Name="OwnerID" Type="bigint" />
+          <Property Name="Lvl2ID" Type="bigint" />
+          <Property Name="Lvl3ID" Type="bigint" />
+          <Property Name="Volumen" Type="decimal" Precision="20" Scale="15" Nullable="false" />
+          <Property Name="ReasonID" Type="bigint" />
+          <Property Name="Customer" Type="nvarchar(max)" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_SmoScopeGroup">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefIdFrom" Type="int" />
+          <Property Name="RefIdTo" Type="int" />
+          <Property Name="Fecha" Type="smalldatetime" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_User_Owner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+          <Property Name="IdOwner" Type="bigint" />
+          <Property Name="IdSmo" Type="bigint" />
+          <Property Name="IdBU" Type="bigint" />
+          <Property Name="Borrado" Type="bit" />
+        </EntityType>
+        <EntityType Name="LARCA20_Usuarios">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="Apellido" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Telefono" Type="nvarchar" MaxLength="50" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Clave" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fecha" Type="smalldatetime" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_UsuariosRoles">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefIdUsuario" Type="int" Nullable="false" />
+          <Property Name="RefIdRoles" Type="int" Nullable="false" />
+          <Property Name="Borrado" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LARCA20_Level4_LARCA20_RcClasification">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_Level4" Type="Self.LARCA20_Level4" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_Level4">
+              <PropertyRef Name="RefIdLevel3" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_RolesRecursos_LARCA20_Recursos">
+          <End Role="LARCA20_Recursos" Type="Self.LARCA20_Recursos" Multiplicity="1" />
+          <End Role="LARCA20_RolesRecursos" Type="Self.LARCA20_RolesRecursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Recursos">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_RolesRecursos">
+              <PropertyRef Name="RefIdRecursos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_RolesRecursos_LARCA20_Roles">
+          <End Role="LARCA20_Roles" Type="Self.LARCA20_Roles" Multiplicity="1" />
+          <End Role="LARCA20_RolesRecursos" Type="Self.LARCA20_RolesRecursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Roles">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_RolesRecursos">
+              <PropertyRef Name="RefIdRoles" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_User_Owner_LARCA20_User_Owner">
+          <End Role="LARCA20_User_Owner" Type="Self.LARCA20_User_Owner" Multiplicity="1" />
+          <End Role="LARCA20_User_Owner1" Type="Self.LARCA20_User_Owner" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_User_Owner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LARCA20_User_Owner1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_UsuariosRoles_LARCA20_Roles">
+          <End Role="LARCA20_Roles" Type="Self.LARCA20_Roles" Multiplicity="1" />
+          <End Role="LARCA20_UsuariosRoles" Type="Self.LARCA20_UsuariosRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Roles">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_UsuariosRoles">
+              <PropertyRef Name="RefIdRoles" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_UsuariosRoles_LARCA20_Usuarios">
+          <End Role="LARCA20_Usuarios" Type="Self.LARCA20_Usuarios" Multiplicity="1" />
+          <End Role="LARCA20_UsuariosRoles" Type="Self.LARCA20_UsuariosRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Usuarios">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_UsuariosRoles">
+              <PropertyRef Name="RefIdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterBU">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdBU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterBUDetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="BuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterLvl">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdRC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterLvl2Detail">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="Lvl2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterLvl3Detail">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="Lvl3ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterOwner">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterOwnerDetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterReasonDetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="ReasonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterSMO">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdSMO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterSMODetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="SmoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ResponsableSmo">
+          <End Role="LARCA20_Responsable" Type="Self.LARCA20_Responsable" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Responsable">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdResponsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SmoScopeDetail">
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_SmoScope">
+              <PropertyRef Name="SmoScopeID" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="SmoScopeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Larca2ModelStoreContainer">
+          <EntitySet Name="LARCA20_AuxData" EntityType="Self.LARCA20_AuxData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_Emails" EntityType="Self.LARCA20_Emails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_ImputOriginal" EntityType="Self.LARCA20_ImputOriginal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_Level4" EntityType="Self.LARCA20_Level4" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_Mailing" EntityType="Self.LARCA20_Mailing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_MasterData" EntityType="Self.LARCA20_MasterData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_MasterDataSMOLess" EntityType="Self.LARCA20_MasterDataSMOLess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_RcClasification" EntityType="Self.LARCA20_RcClasification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_Recursos" EntityType="Self.LARCA20_Recursos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_Responsable" EntityType="Self.LARCA20_Responsable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_Roles" EntityType="Self.LARCA20_Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_RolesRecursos" EntityType="Self.LARCA20_RolesRecursos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_SmoScope" EntityType="Self.LARCA20_SmoScope" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_SmoScopeDetail" EntityType="Self.LARCA20_SmoScopeDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_SmoScopeGroup" EntityType="Self.LARCA20_SmoScopeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_User_Owner" EntityType="Self.LARCA20_User_Owner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_Usuarios" EntityType="Self.LARCA20_Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_UsuariosRoles" EntityType="Self.LARCA20_UsuariosRoles" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LARCA20_Level4_LARCA20_RcClasification" Association="Self.FK_LARCA20_Level4_LARCA20_RcClasification">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_Level4" EntitySet="LARCA20_Level4" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_RolesRecursos_LARCA20_Recursos" Association="Self.FK_LARCA20_RolesRecursos_LARCA20_Recursos">
+            <End Role="LARCA20_Recursos" EntitySet="LARCA20_Recursos" />
+            <End Role="LARCA20_RolesRecursos" EntitySet="LARCA20_RolesRecursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_RolesRecursos_LARCA20_Roles" Association="Self.FK_LARCA20_RolesRecursos_LARCA20_Roles">
+            <End Role="LARCA20_Roles" EntitySet="LARCA20_Roles" />
+            <End Role="LARCA20_RolesRecursos" EntitySet="LARCA20_RolesRecursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_User_Owner" Association="Self.FK_LARCA20_User_Owner_LARCA20_User_Owner">
+            <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
+            <End Role="LARCA20_User_Owner1" EntitySet="LARCA20_User_Owner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_UsuariosRoles_LARCA20_Roles" Association="Self.FK_LARCA20_UsuariosRoles_LARCA20_Roles">
+            <End Role="LARCA20_Roles" EntitySet="LARCA20_Roles" />
+            <End Role="LARCA20_UsuariosRoles" EntitySet="LARCA20_UsuariosRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_UsuariosRoles_LARCA20_Usuarios" Association="Self.FK_LARCA20_UsuariosRoles_LARCA20_Usuarios">
+            <End Role="LARCA20_Usuarios" EntitySet="LARCA20_Usuarios" />
+            <End Role="LARCA20_UsuariosRoles" EntitySet="LARCA20_UsuariosRoles" />
+          </AssociationSet>
+          <AssociationSet Name="MasterBU" Association="Self.MasterBU">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterBUDetail" Association="Self.MasterBUDetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterLvl" Association="Self.MasterLvl">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterLvl2Detail" Association="Self.MasterLvl2Detail">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterLvl3Detail" Association="Self.MasterLvl3Detail">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterOwner" Association="Self.MasterOwner">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterOwnerDetail" Association="Self.MasterOwnerDetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterReasonDetail" Association="Self.MasterReasonDetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterSMO" Association="Self.MasterSMO">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterSMODetail" Association="Self.MasterSMODetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="ResponsableSmo" Association="Self.ResponsableSmo">
+            <End Role="LARCA20_Responsable" EntitySet="LARCA20_Responsable" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="SmoScopeDetail" Association="Self.SmoScopeDetail">
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Larca2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LARCA20_AuxData">
+          <Key>
+            <PropertyRef Name="RowId" />
+          </Key>
+          <Property Name="RowId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TopLvl2" Type="Int32" Nullable="false" />
+          <Property Name="TopLvl3" Type="Int32" Nullable="false" />
+          <Property Name="XlsRowFrom" Type="Int32" Nullable="false" />
+          <Property Name="XlsColumnFrom" Type="Int32" Nullable="false" />
+          <Property Name="Toplvl4" Type="Int32" Nullable="false" />
+          <Property Name="CntAdjuntos" Type="Int32" Nullable="false" />
+          <Property Name="LimiteFiltro" Type="Int32" Nullable="false" />
+          <Property Name="DiasReporte" Type="Int32" Nullable="false" />
+          <Property Name="SmoDays" Type="Int32" />
+        </EntityType>
+        <EntityType Name="LARCA20_Emails">
+          <Key>
+            <PropertyRef Name="EmailID" />
+          </Key>
+          <Property Name="EmailID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TipoProceso" Type="Int32" Nullable="false" />
+          <Property Name="MessageID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Procesado" Type="Boolean" Nullable="false" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_ImputOriginal">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Day" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="FPC" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RepCountry" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProfitCenter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ReasonCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CFR" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SapSite" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SU_Cases" Type="Decimal" Precision="12" Scale="2" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_Level4">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RefIdLevel3" Type="Int64" />
+          <Property Name="Borrado" Type="Boolean" />
+          <NavigationProperty Name="LARCA20_RcClasification" Relationship="Self.FK_LARCA20_Level4_LARCA20_RcClasification" FromRole="LARCA20_Level4" ToRole="LARCA20_RcClasification" />
+        </EntityType>
+        <EntityType Name="LARCA20_Mailing">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Data" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_MasterData">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Data" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DataIni" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DataFin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_User_Owner" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_MasterData" FromRole="LARCA20_MasterData" ToRole="LARCA20_User_Owner" />
+          <NavigationProperty Name="LARCA20_User_Owner1" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_MasterData1" FromRole="LARCA20_MasterData" ToRole="LARCA20_User_Owner" />
+          <NavigationProperty Name="LARCA20_User_Owner2" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_User_Owner" FromRole="LARCA20_MasterData" ToRole="LARCA20_User_Owner" />
+          <NavigationProperty Name="LARCA20_SmoScope" Relationship="Self.MasterBU" FromRole="LARCA20_MasterData" ToRole="LARCA20_SmoScope" />
+          <NavigationProperty Name="LARCA20_SmoScopeDetail" Relationship="Self.MasterBUDetail" FromRole="LARCA20_MasterData" ToRole="LARCA20_SmoScopeDetail" />
+          <NavigationProperty Name="LARCA20_SmoScope1" Relationship="Self.MasterOwner" FromRole="LARCA20_MasterData" ToRole="LARCA20_SmoScope" />
+          <NavigationProperty Name="LARCA20_SmoScopeDetail1" Relationship="Self.MasterOwnerDetail" FromRole="LARCA20_MasterData" ToRole="LARCA20_SmoScopeDetail" />
+          <NavigationProperty Name="LARCA20_SmoScopeDetail2" Relationship="Self.MasterReasonDetail" FromRole="LARCA20_MasterData" ToRole="LARCA20_SmoScopeDetail" />
+          <NavigationProperty Name="LARCA20_SmoScope2" Relationship="Self.MasterSMO" FromRole="LARCA20_MasterData" ToRole="LARCA20_SmoScope" />
+          <NavigationProperty Name="LARCA20_SmoScopeDetail3" Relationship="Self.MasterSMODetail" FromRole="LARCA20_MasterData" ToRole="LARCA20_SmoScopeDetail" />
+        </EntityType>
+        <EntityType Name="LARCA20_MasterDataSMOLess">
+          <Key>
+            <PropertyRef Name="dRenglon" />
+          </Key>
+          <Property Name="dRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefIdMasterDataSMO" Type="Int32" />
+          <Property Name="borrado" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="LARCA20_RcClasification">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nivel" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Ownership" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_Level4" Relationship="Self.FK_LARCA20_Level4_LARCA20_RcClasification" FromRole="LARCA20_RcClasification" ToRole="LARCA20_Level4" />
+          <NavigationProperty Name="LARCA20_SmoScope" Relationship="Self.MasterLvl" FromRole="LARCA20_RcClasification" ToRole="LARCA20_SmoScope" />
+          <NavigationProperty Name="LARCA20_SmoScopeDetail" Relationship="Self.MasterLvl2Detail" FromRole="LARCA20_RcClasification" ToRole="LARCA20_SmoScopeDetail" />
+          <NavigationProperty Name="LARCA20_SmoScopeDetail1" Relationship="Self.MasterLvl3Detail" FromRole="LARCA20_RcClasification" ToRole="LARCA20_SmoScopeDetail" />
+        </EntityType>
+        <EntityType Name="LARCA20_Recursos">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_RolesRecursos" Relationship="Self.FK_LARCA20_RolesRecursos_LARCA20_Recursos" FromRole="LARCA20_Recursos" ToRole="LARCA20_RolesRecursos" />
+        </EntityType>
+        <EntityType Name="LARCA20_Responsable">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RefIdUsuario" Type="Int32" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_SmoScope" Relationship="Self.ResponsableSmo" FromRole="LARCA20_Responsable" ToRole="LARCA20_SmoScope" />
+        </EntityType>
+        <EntityType Name="LARCA20_Roles">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_RolesRecursos" Relationship="Self.FK_LARCA20_RolesRecursos_LARCA20_Roles" FromRole="LARCA20_Roles" ToRole="LARCA20_RolesRecursos" />
+          <NavigationProperty Name="LARCA20_UsuariosRoles" Relationship="Self.FK_LARCA20_UsuariosRoles_LARCA20_Roles" FromRole="LARCA20_Roles" ToRole="LARCA20_UsuariosRoles" />
+        </EntityType>
+        <EntityType Name="LARCA20_RolesRecursos">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefIdRoles" Type="Int32" Nullable="false" />
+          <Property Name="RefIdRecursos" Type="Int32" Nullable="false" />
+          <Property Name="Select" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Insert" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Update" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Delete" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_Recursos" Relationship="Self.FK_LARCA20_RolesRecursos_LARCA20_Recursos" FromRole="LARCA20_RolesRecursos" ToRole="LARCA20_Recursos" />
+          <NavigationProperty Name="LARCA20_Roles" Relationship="Self.FK_LARCA20_RolesRecursos_LARCA20_Roles" FromRole="LARCA20_RolesRecursos" ToRole="LARCA20_Roles" />
+        </EntityType>
+        <EntityType Name="LARCA20_SmoScope">
+          <Key>
+            <PropertyRef Name="SmoScopeID" />
+          </Key>
+          <Property Name="SmoScopeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <Property Name="RefIdSMO" Type="Int64" />
+          <Property Name="RefIdBU" Type="Int64" />
+          <Property Name="RefIdOwner" Type="Int64" />
+          <Property Name="RefIdRC" Type="Int64" />
+          <Property Name="Volumen" Type="Decimal" Precision="20" Scale="15" />
+          <Property Name="Problem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Why1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Why2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Why3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ActionPlan" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RefIdResponsable" Type="Int32" />
+          <Property Name="DueDate" Type="DateTime" Precision="3" />
+          <Property Name="O_C" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <Property Name="Level4" Type="Int64" />
+          <NavigationProperty Name="MasterBU" Relationship="Self.MasterBU" FromRole="LARCA20_SmoScope" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="MasterOwner" Relationship="Self.MasterOwner" FromRole="LARCA20_SmoScope" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="MasterSMO" Relationship="Self.MasterSMO" FromRole="LARCA20_SmoScope" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="MasterLvl" Relationship="Self.MasterLvl" FromRole="LARCA20_SmoScope" ToRole="LARCA20_RcClasification" />
+          <NavigationProperty Name="ResponsableSmo" Relationship="Self.ResponsableSmo" FromRole="LARCA20_SmoScope" ToRole="LARCA20_Responsable" />
+          <NavigationProperty Name="SmoScopeDetail" Relationship="Self.SmoScopeDetail" FromRole="LARCA20_SmoScope" ToRole="LARCA20_SmoScopeDetail" />
+        </EntityType>
+        <EntityType Name="LARCA20_SmoScopeDetail">
+          <Key>
+            <PropertyRef Name="DetailID" />
+          </Key>
+          <Property Name="DetailID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SmoScopeID" Type="Int64" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <Property Name="SmoID" Type="Int64" />
+          <Property Name="BuID" Type="Int64" />
+          <Property Name="OwnerID" Type="Int64" />
+          <Property Name="Lvl2ID" Type="Int64" />
+          <Property Name="Lvl3ID" Type="Int64" />
+          <Property Name="Volumen" Type="Decimal" Precision="20" Scale="15" Nullable="false" />
+          <Property Name="ReasonID" Type="Int64" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MasterBUDetail" Relationship="Self.MasterBUDetail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="MasterOwnerDetail" Relationship="Self.MasterOwnerDetail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="MasterReasonDetail" Relationship="Self.MasterReasonDetail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="MasterSMODetail" Relationship="Self.MasterSMODetail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="MasterLvl2Detail" Relationship="Self.MasterLvl2Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
+          <NavigationProperty Name="MasterLvl3Detail" Relationship="Self.MasterLvl3Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
+          <NavigationProperty Name="SmoScopeDetail" Relationship="Self.SmoScopeDetail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_SmoScope" />
+          <Property Name="Customer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LARCA20_SmoScopeGroup">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefIdFrom" Type="Int32" />
+          <Property Name="RefIdTo" Type="Int32" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LARCA20_User_Owner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <Property Name="IdOwner" Type="Int64" />
+          <Property Name="IdSmo" Type="Int64" />
+          <Property Name="IdBU" Type="Int64" />
+          <Property Name="Borrado" Type="Boolean" />
+          <NavigationProperty Name="LARCA20_MasterData" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_MasterData" FromRole="LARCA20_User_Owner" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="LARCA20_MasterData1" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_MasterData1" FromRole="LARCA20_User_Owner" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="LARCA20_MasterData2" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_User_Owner" FromRole="LARCA20_User_Owner" ToRole="LARCA20_MasterData" />
+          <NavigationProperty Name="LARCA20_Usuarios" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_Usuarios" FromRole="LARCA20_User_Owner" ToRole="LARCA20_Usuarios" />
+          <NavigationProperty Name="LARCA20_User_Owner1" Relationship="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner1" FromRole="LARCA20_User_Owner" ToRole="LARCA20_User_Owner1" />
+          <NavigationProperty Name="LARCA20_User_Owner2" Relationship="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner1" FromRole="LARCA20_User_Owner1" ToRole="LARCA20_User_Owner" />
+        </EntityType>
+        <EntityType Name="LARCA20_Usuarios">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Clave" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_User_Owner" Relationship="Self.FK_LARCA20_User_Owner_LARCA20_Usuarios" FromRole="LARCA20_Usuarios" ToRole="LARCA20_User_Owner" />
+          <NavigationProperty Name="LARCA20_UsuariosRoles" Relationship="Self.FK_LARCA20_UsuariosRoles_LARCA20_Usuarios" FromRole="LARCA20_Usuarios" ToRole="LARCA20_UsuariosRoles" />
+        </EntityType>
+        <EntityType Name="LARCA20_UsuariosRoles">
+          <Key>
+            <PropertyRef Name="IdRenglon" />
+          </Key>
+          <Property Name="IdRenglon" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefIdUsuario" Type="Int32" Nullable="false" />
+          <Property Name="RefIdRoles" Type="Int32" Nullable="false" />
+          <Property Name="Borrado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="LARCA20_Roles" Relationship="Self.FK_LARCA20_UsuariosRoles_LARCA20_Roles" FromRole="LARCA20_UsuariosRoles" ToRole="LARCA20_Roles" />
+          <NavigationProperty Name="LARCA20_Usuarios" Relationship="Self.FK_LARCA20_UsuariosRoles_LARCA20_Usuarios" FromRole="LARCA20_UsuariosRoles" ToRole="LARCA20_Usuarios" />
+        </EntityType>
+        <Association Name="FK_LARCA20_Level4_LARCA20_RcClasification">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_Level4" Type="Self.LARCA20_Level4" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_Level4">
+              <PropertyRef Name="RefIdLevel3" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_User_Owner_LARCA20_MasterData">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_User_Owner" Type="Self.LARCA20_User_Owner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_User_Owner">
+              <PropertyRef Name="IdBU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_User_Owner_LARCA20_MasterData1">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_User_Owner" Type="Self.LARCA20_User_Owner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_User_Owner">
+              <PropertyRef Name="IdSmo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_User_Owner_LARCA20_User_Owner">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_User_Owner" Type="Self.LARCA20_User_Owner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_User_Owner">
+              <PropertyRef Name="IdOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterBU">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdBU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterBUDetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="BuID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterOwner">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdOwner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterOwnerDetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterReasonDetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="ReasonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterSMO">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdSMO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterSMODetail">
+          <End Role="LARCA20_MasterData" Type="Self.LARCA20_MasterData" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_MasterData">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="SmoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterLvl">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdRC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterLvl2Detail">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="Lvl2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MasterLvl3Detail">
+          <End Role="LARCA20_RcClasification" Type="Self.LARCA20_RcClasification" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_RcClasification">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="Lvl3ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_RolesRecursos_LARCA20_Recursos">
+          <End Role="LARCA20_Recursos" Type="Self.LARCA20_Recursos" Multiplicity="1" />
+          <End Role="LARCA20_RolesRecursos" Type="Self.LARCA20_RolesRecursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Recursos">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_RolesRecursos">
+              <PropertyRef Name="RefIdRecursos" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ResponsableSmo">
+          <End Role="LARCA20_Responsable" Type="Self.LARCA20_Responsable" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Responsable">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScope">
+              <PropertyRef Name="RefIdResponsable" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_RolesRecursos_LARCA20_Roles">
+          <End Role="LARCA20_Roles" Type="Self.LARCA20_Roles" Multiplicity="1" />
+          <End Role="LARCA20_RolesRecursos" Type="Self.LARCA20_RolesRecursos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Roles">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_RolesRecursos">
+              <PropertyRef Name="RefIdRoles" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_UsuariosRoles_LARCA20_Roles">
+          <End Role="LARCA20_Roles" Type="Self.LARCA20_Roles" Multiplicity="1" />
+          <End Role="LARCA20_UsuariosRoles" Type="Self.LARCA20_UsuariosRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Roles">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_UsuariosRoles">
+              <PropertyRef Name="RefIdRoles" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SmoScopeDetail">
+          <End Role="LARCA20_SmoScope" Type="Self.LARCA20_SmoScope" Multiplicity="0..1" />
+          <End Role="LARCA20_SmoScopeDetail" Type="Self.LARCA20_SmoScopeDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_SmoScope">
+              <PropertyRef Name="SmoScopeID" />
+            </Principal>
+            <Dependent Role="LARCA20_SmoScopeDetail">
+              <PropertyRef Name="SmoScopeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_User_Owner_LARCA20_Usuarios">
+          <End Role="LARCA20_Usuarios" Type="Self.LARCA20_Usuarios" Multiplicity="0..1" />
+          <End Role="LARCA20_User_Owner" Type="Self.LARCA20_User_Owner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Usuarios">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_User_Owner">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LARCA20_UsuariosRoles_LARCA20_Usuarios">
+          <End Role="LARCA20_Usuarios" Type="Self.LARCA20_Usuarios" Multiplicity="1" />
+          <End Role="LARCA20_UsuariosRoles" Type="Self.LARCA20_UsuariosRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_Usuarios">
+              <PropertyRef Name="IdRenglon" />
+            </Principal>
+            <Dependent Role="LARCA20_UsuariosRoles">
+              <PropertyRef Name="RefIdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Larca2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LARCA20_AuxData" EntityType="Self.LARCA20_AuxData" />
+          <EntitySet Name="LARCA20_Emails" EntityType="Self.LARCA20_Emails" />
+          <EntitySet Name="LARCA20_ImputOriginal" EntityType="Self.LARCA20_ImputOriginal" />
+          <EntitySet Name="LARCA20_Level4" EntityType="Self.LARCA20_Level4" />
+          <EntitySet Name="LARCA20_Mailing" EntityType="Self.LARCA20_Mailing" />
+          <EntitySet Name="LARCA20_MasterData" EntityType="Self.LARCA20_MasterData" />
+          <EntitySet Name="LARCA20_MasterDataSMOLess" EntityType="Self.LARCA20_MasterDataSMOLess" />
+          <EntitySet Name="LARCA20_RcClasification" EntityType="Self.LARCA20_RcClasification" />
+          <EntitySet Name="LARCA20_Recursos" EntityType="Self.LARCA20_Recursos" />
+          <EntitySet Name="LARCA20_Responsable" EntityType="Self.LARCA20_Responsable" />
+          <EntitySet Name="LARCA20_Roles" EntityType="Self.LARCA20_Roles" />
+          <EntitySet Name="LARCA20_RolesRecursos" EntityType="Self.LARCA20_RolesRecursos" />
+          <EntitySet Name="LARCA20_SmoScope" EntityType="Self.LARCA20_SmoScope" />
+          <EntitySet Name="LARCA20_SmoScopeDetail" EntityType="Self.LARCA20_SmoScopeDetail" />
+          <EntitySet Name="LARCA20_SmoScopeGroup" EntityType="Self.LARCA20_SmoScopeGroup" />
+          <EntitySet Name="LARCA20_User_Owner" EntityType="Self.LARCA20_User_Owner" />
+          <EntitySet Name="LARCA20_Usuarios" EntityType="Self.LARCA20_Usuarios" />
+          <EntitySet Name="LARCA20_UsuariosRoles" EntityType="Self.LARCA20_UsuariosRoles" />
+          <AssociationSet Name="FK_LARCA20_Level4_LARCA20_RcClasification" Association="Self.FK_LARCA20_Level4_LARCA20_RcClasification">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_Level4" EntitySet="LARCA20_Level4" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_MasterData" Association="Self.FK_LARCA20_User_Owner_LARCA20_MasterData">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_MasterData1" Association="Self.FK_LARCA20_User_Owner_LARCA20_MasterData1">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_User_Owner" Association="Self.FK_LARCA20_User_Owner_LARCA20_User_Owner">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
+          </AssociationSet>
+          <AssociationSet Name="MasterBU" Association="Self.MasterBU">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterBUDetail" Association="Self.MasterBUDetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterOwner" Association="Self.MasterOwner">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterOwnerDetail" Association="Self.MasterOwnerDetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterReasonDetail" Association="Self.MasterReasonDetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterSMO" Association="Self.MasterSMO">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterSMODetail" Association="Self.MasterSMODetail">
+            <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterLvl" Association="Self.MasterLvl">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="MasterLvl2Detail" Association="Self.MasterLvl2Detail">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="MasterLvl3Detail" Association="Self.MasterLvl3Detail">
+            <End Role="LARCA20_RcClasification" EntitySet="LARCA20_RcClasification" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_RolesRecursos_LARCA20_Recursos" Association="Self.FK_LARCA20_RolesRecursos_LARCA20_Recursos">
+            <End Role="LARCA20_Recursos" EntitySet="LARCA20_Recursos" />
+            <End Role="LARCA20_RolesRecursos" EntitySet="LARCA20_RolesRecursos" />
+          </AssociationSet>
+          <AssociationSet Name="ResponsableSmo" Association="Self.ResponsableSmo">
+            <End Role="LARCA20_Responsable" EntitySet="LARCA20_Responsable" />
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_RolesRecursos_LARCA20_Roles" Association="Self.FK_LARCA20_RolesRecursos_LARCA20_Roles">
+            <End Role="LARCA20_Roles" EntitySet="LARCA20_Roles" />
+            <End Role="LARCA20_RolesRecursos" EntitySet="LARCA20_RolesRecursos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_UsuariosRoles_LARCA20_Roles" Association="Self.FK_LARCA20_UsuariosRoles_LARCA20_Roles">
+            <End Role="LARCA20_Roles" EntitySet="LARCA20_Roles" />
+            <End Role="LARCA20_UsuariosRoles" EntitySet="LARCA20_UsuariosRoles" />
+          </AssociationSet>
+          <AssociationSet Name="SmoScopeDetail" Association="Self.SmoScopeDetail">
+            <End Role="LARCA20_SmoScope" EntitySet="LARCA20_SmoScope" />
+            <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_Usuarios" Association="Self.FK_LARCA20_User_Owner_LARCA20_Usuarios">
+            <End Role="LARCA20_Usuarios" EntitySet="LARCA20_Usuarios" />
+            <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_UsuariosRoles_LARCA20_Usuarios" Association="Self.FK_LARCA20_UsuariosRoles_LARCA20_Usuarios">
+            <End Role="LARCA20_Usuarios" EntitySet="LARCA20_Usuarios" />
+            <End Role="LARCA20_UsuariosRoles" EntitySet="LARCA20_UsuariosRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_User_Owner1" Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner1">
+            <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
+            <End Role="LARCA20_User_Owner1" EntitySet="LARCA20_User_Owner" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_LARCA20_User_Owner_LARCA20_User_Owner1">
+          <End Type="Larca2Model.LARCA20_User_Owner" Role="LARCA20_User_Owner" Multiplicity="1" />
+          <End Type="Larca2Model.LARCA20_User_Owner" Role="LARCA20_User_Owner1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="LARCA20_User_Owner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LARCA20_User_Owner1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Larca2ModelStoreContainer" CdmEntityContainer="Larca2Entities">
+          <EntitySetMapping Name="LARCA20_AuxData">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_AuxData">
+              <MappingFragment StoreEntitySet="LARCA20_AuxData">
+                <ScalarProperty Name="SmoDays" ColumnName="SmoDays" />
+                <ScalarProperty Name="DiasReporte" ColumnName="DiasReporte" />
+                <ScalarProperty Name="LimiteFiltro" ColumnName="LimiteFiltro" />
+                <ScalarProperty Name="CntAdjuntos" ColumnName="CntAdjuntos" />
+                <ScalarProperty Name="Toplvl4" ColumnName="Toplvl4" />
+                <ScalarProperty Name="RowId" ColumnName="RowId" />
+                <ScalarProperty Name="TopLvl2" ColumnName="TopLvl2" />
+                <ScalarProperty Name="TopLvl3" ColumnName="TopLvl3" />
+                <ScalarProperty Name="XlsRowFrom" ColumnName="XlsRowFrom" />
+                <ScalarProperty Name="XlsColumnFrom" ColumnName="XlsColumnFrom" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_Emails">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_Emails">
+              <MappingFragment StoreEntitySet="LARCA20_Emails">
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="TipoProceso" ColumnName="TipoProceso" />
+                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Archivo" ColumnName="Archivo" />
+                <ScalarProperty Name="Procesado" ColumnName="Procesado" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_ImputOriginal">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_ImputOriginal">
+              <MappingFragment StoreEntitySet="LARCA20_ImputOriginal">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="FPC" ColumnName="FPC" />
+                <ScalarProperty Name="RepCountry" ColumnName="RepCountry" />
+                <ScalarProperty Name="ProfitCenter" ColumnName="ProfitCenter" />
+                <ScalarProperty Name="ReasonCode" ColumnName="ReasonCode" />
+                <ScalarProperty Name="CFR" ColumnName="CFR" />
+                <ScalarProperty Name="SapSite" ColumnName="SapSite" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="SU_Cases" ColumnName="SU_Cases" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_Level4">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_Level4">
+              <MappingFragment StoreEntitySet="LARCA20_Level4">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="RefIdLevel3" ColumnName="RefIdLevel3" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_Mailing">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_Mailing">
+              <MappingFragment StoreEntitySet="LARCA20_Mailing">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_MasterData">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_MasterData">
+              <MappingFragment StoreEntitySet="LARCA20_MasterData">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="DataIni" ColumnName="DataIni" />
+                <ScalarProperty Name="DataFin" ColumnName="DataFin" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_MasterDataSMOLess">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_MasterDataSMOLess">
+              <MappingFragment StoreEntitySet="LARCA20_MasterDataSMOLess">
+                <ScalarProperty Name="dRenglon" ColumnName="dRenglon" />
+                <ScalarProperty Name="RefIdMasterDataSMO" ColumnName="RefIdMasterDataSMO" />
+                <ScalarProperty Name="borrado" ColumnName="borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_RcClasification">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_RcClasification">
+              <MappingFragment StoreEntitySet="LARCA20_RcClasification">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Ownership" ColumnName="Ownership" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_Recursos">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_Recursos">
+              <MappingFragment StoreEntitySet="LARCA20_Recursos">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_Responsable">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_Responsable">
+              <MappingFragment StoreEntitySet="LARCA20_Responsable">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RefIdUsuario" ColumnName="RefIdUsuario" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_Roles">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_Roles">
+              <MappingFragment StoreEntitySet="LARCA20_Roles">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_RolesRecursos">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_RolesRecursos">
+              <MappingFragment StoreEntitySet="LARCA20_RolesRecursos">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="RefIdRoles" ColumnName="RefIdRoles" />
+                <ScalarProperty Name="RefIdRecursos" ColumnName="RefIdRecursos" />
+                <ScalarProperty Name="Select" ColumnName="Select" />
+                <ScalarProperty Name="Insert" ColumnName="Insert" />
+                <ScalarProperty Name="Update" ColumnName="Update" />
+                <ScalarProperty Name="Delete" ColumnName="Delete" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_SmoScope">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScope">
+              <MappingFragment StoreEntitySet="LARCA20_SmoScope">
+                <ScalarProperty Name="SmoScopeID" ColumnName="SmoScopeID" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="RefIdSMO" ColumnName="RefIdSMO" />
+                <ScalarProperty Name="RefIdBU" ColumnName="RefIdBU" />
+                <ScalarProperty Name="RefIdOwner" ColumnName="RefIdOwner" />
+                <ScalarProperty Name="RefIdRC" ColumnName="RefIdRC" />
+                <ScalarProperty Name="Volumen" ColumnName="Volumen" />
+                <ScalarProperty Name="Problem" ColumnName="Problem" />
+                <ScalarProperty Name="Why1" ColumnName="Why1" />
+                <ScalarProperty Name="Why2" ColumnName="Why2" />
+                <ScalarProperty Name="Why3" ColumnName="Why3" />
+                <ScalarProperty Name="ActionPlan" ColumnName="ActionPlan" />
+                <ScalarProperty Name="RefIdResponsable" ColumnName="RefIdResponsable" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="O_C" ColumnName="O_C" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+                <ScalarProperty Name="Level4" ColumnName="Level4" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_SmoScopeDetail">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScopeDetail">
+              <MappingFragment StoreEntitySet="LARCA20_SmoScopeDetail">
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="DetailID" ColumnName="DetailID" />
+                <ScalarProperty Name="SmoScopeID" ColumnName="SmoScopeID" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="SmoID" ColumnName="SmoID" />
+                <ScalarProperty Name="BuID" ColumnName="BuID" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+                <ScalarProperty Name="Lvl2ID" ColumnName="Lvl2ID" />
+                <ScalarProperty Name="Lvl3ID" ColumnName="Lvl3ID" />
+                <ScalarProperty Name="Volumen" ColumnName="Volumen" />
+                <ScalarProperty Name="ReasonID" ColumnName="ReasonID" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_SmoScopeGroup">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScopeGroup">
+              <MappingFragment StoreEntitySet="LARCA20_SmoScopeGroup">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="RefIdFrom" ColumnName="RefIdFrom" />
+                <ScalarProperty Name="RefIdTo" ColumnName="RefIdTo" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_User_Owner">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_User_Owner">
+              <MappingFragment StoreEntitySet="LARCA20_User_Owner">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="IdOwner" ColumnName="IdOwner" />
+                <ScalarProperty Name="IdSmo" ColumnName="IdSmo" />
+                <ScalarProperty Name="IdBU" ColumnName="IdBU" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_Usuarios">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_Usuarios">
+              <MappingFragment StoreEntitySet="LARCA20_Usuarios">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_UsuariosRoles">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_UsuariosRoles">
+              <MappingFragment StoreEntitySet="LARCA20_UsuariosRoles">
+                <ScalarProperty Name="IdRenglon" ColumnName="IdRenglon" />
+                <ScalarProperty Name="RefIdUsuario" ColumnName="RefIdUsuario" />
+                <ScalarProperty Name="RefIdRoles" ColumnName="RefIdRoles" />
+                <ScalarProperty Name="Borrado" ColumnName="Borrado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

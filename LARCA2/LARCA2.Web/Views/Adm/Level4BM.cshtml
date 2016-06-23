@@ -1,0 +1,107 @@
+﻿ @model Larca2.Models.Level4SearchForm
+@{
+    ViewBag.Title = "Modificación de Level 4";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of Level 4 in the system.
+
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("ModifLevel4", "Adm", FormMethod.Post, new { name = "myform" }))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <h5 style="border-bottom:1px solid #c7d1d6;">FILTRO</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Nivel 3 </label><br />
+                <input type="text" name="txtLvl3" value="@ViewBag.txtLvl3" />
+            </div>
+            <div class="col-sm-4">
+                <label>Descripción </label><br />
+                <input type="text" name="txtDesc" value="@ViewBag.txtDesc" />
+            </div>
+            <div class="col-sm-2">
+                <br style="margin-bottom:3px;" />
+                <button type="submit" id="btnBusca" class="btn btn-info" formaction="Level4BM">Buscar</button>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13 pull-right">
+                <h5 style="border-bottom:1px solid #c7d1d6;">OPERACIONES</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="pull-right col">
+                <input type="button" value="Nuevo" name="Nuevo" id="Nuevo" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("NuevoLevel4", "Adm") + "'");" />
+                <input type="submit" value="Modificar" name="Modificar" id="Modificar" class="btn btn-default" />
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th width="5%" align="center"></th>
+                            <th width="15%" align="center">
+                                <label>Level 3</label>
+                            </th>
+                            <th width="15%" align="center">
+                                <label>Descripción Level 4</label>
+                            </th>
+                            <th width="5%" align="center">
+                                <label>Borrado</label>
+                            </th>
+                        </tr>
+
+                        @{int j = 0;
+
+                        foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 usuario in Model.Level4List)
+                        {
+                            <tr>
+                                <td width="5%" align="center">
+                                    @Html.CheckBoxFor(m => m.Selected[j], Model.Selected)
+                                </td>
+
+                                <td width="15%" align="center">
+                                    <label>
+                                        @usuario.LARCA20_RcClasification.Descripcion
+                                    </label>
+                                </td>
+                                <td width="15%" align="center">
+                                    <label>
+                                        @usuario.Nombre
+                                    </label>
+                                </td>
+                                <td width="5%" align="center">
+                                    <label>
+                                        @usuario.Borrado
+                                    </label>
+                                </td>
+                            </tr>
+                            j++;
+                        }
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

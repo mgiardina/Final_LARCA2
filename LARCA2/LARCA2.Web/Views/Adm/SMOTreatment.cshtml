@@ -1,0 +1,107 @@
+﻿@model Larca2.Models.UserSearchForm
+@{
+    ViewBag.Title = "Tratamiento de registros SMOScope";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of SMOScope Registers in the database.
+
+            </p>
+        </div>
+    </section>
+}
+<div class="content-wrapper" style="margin-bottom:20px;">
+    @using (Html.BeginForm("ModifUser", "SMO", FormMethod.Post, new { name = "myform" }))
+    {
+        <table class="table">
+            <tr>
+                <th width="5%" align="center"></th>
+                <th width="15%" align="center">
+                    <label>Nombre</label>
+                </th>
+                <th width="15%" align="center">
+                    <label>Apellido</label>
+                </th>
+                <th width="20%" align="center">
+                    <label>Usuario</label>
+                </th>
+                <th width="5%" align="center">
+                    <label>Borrado</label>
+                </th>
+                <th width="20%" align="center">
+                    <label>Email</label>
+                </th>
+                <th width="10%" align="center">
+                    <label>Fecha</label>
+                </th>
+                <th width="10%" align="center">
+                    <label>Telefono</label>
+                </th>
+
+            </tr>
+
+            @{int j = 0;
+
+            foreach (LARCA2.Data.LARCA20_Usuario usuario in Model.Usuarios)
+            {
+                <tr>
+                    <td width="5%" align="center">
+                        @Html.CheckBoxFor(m => m.Selected[j], Model.Selected)
+                    </td>
+
+                    <td width="15%" align="center">
+                        <label>
+                            @usuario.Nombre
+                        </label>
+                    </td>
+                    <td width="15%" align="center">
+                        <label>
+                            @usuario.Apellido
+                        </label>
+                    </td>
+                    <td width="20%" align="center">
+                        <label>
+                            @usuario.Usuario
+                        </label>
+                    </td>
+                    <td width="5%" align="center">
+                        <label>
+                            @usuario.Borrado
+                        </label>
+                    </td>
+
+                    <td width="20%" align="center">
+                        <label>
+                            @usuario.Email
+                        </label>
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @usuario.Fecha
+                        </label>
+                    </td>
+                    <td width="10%" align="center">
+                        <label>
+                            @usuario.Telefono
+                        </label>
+                    </td>
+
+                </tr>
+                j++;
+            }
+            }
+
+
+        </table>
+
+        <div class="pull-right">
+            <input type="submit" value="Modificar Usuario" name="Modificar" class="btn btn-default" />
+        </div>
+    }
+</div>

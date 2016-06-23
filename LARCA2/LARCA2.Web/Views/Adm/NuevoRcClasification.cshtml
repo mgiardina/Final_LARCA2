@@ -1,0 +1,73 @@
+﻿@model Larca2.Models.RcClasificationSearchForm
+
+@{
+    ViewBag.Title = "New RC Clasification";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                Here you can create new RC Clasification from the system.
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("AgregarRcClasification", "Adm", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Nivel</label>
+                    @Html.TextBoxFor(m => m.RcClasification.Nivel, new { @class = "form-control", @placeholder = "Nivel ...", @MaxLength = "1" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Nivel)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Código</label>
+                    @Html.TextBoxFor(m => m.RcClasification.Codigo, new { @class = "form-control", @placeholder = "Código ...", @MaxLength = "7" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Codigo)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Descripción</label>
+                    @Html.TextBoxFor(m => m.RcClasification.Descripcion, new { @class = "form-control", @placeholder = "Descripción...", @MaxLength = "50" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Descripcion)</small>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Ownership</label>
+                    @Html.TextBoxFor(m => m.RcClasification.Ownership, new { @class = "form-control", @placeholder = "Ownership ...", @MaxLength = "5" })
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Borrado</label>
+                    @Html.CheckBoxFor(m => m.RcClasification.Borrado, new { @class = "form-control" })
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="pull-right col">
+                <input type="submit" value="Guardar" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("RcClasificationBM", "Adm") + "'");" />
+            </div>
+        </div>
+    }
+</div>

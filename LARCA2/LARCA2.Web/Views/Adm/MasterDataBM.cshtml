@@ -1,0 +1,211 @@
+﻿@model Larca2.Models.MasterDataSearchForm
+
+@{
+    ViewBag.Title = "Modificación de Master Data";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of Master Data in the system.
+
+            </p>
+        </div>
+    </section>
+}
+
+<script>
+
+    $(document).ready(function () {
+
+        $('#btnBusca').on('click', function () {
+            if (document.getElementById('txtCod').value == "" && document.getElementById('txtDes').value == "" && document.getElementById('txtId').value == "") {
+
+                ////////////////////////AGREGAR ESTO/////////////////
+                document.getElementById('txtTodos').value = 1;
+                ////////////////////////////////////////////////////
+            }
+        });
+
+        $('#txtId').on('change', function () {
+            document.getElementById('ddlGrupos').value = "0";
+        });
+
+        $('#txtDes').on('change', function () {
+            document.getElementById('ddlGrupos').value = "0";
+        });
+
+        $('#Modificar').on('click', function () {
+
+            var IdRenglon;
+            var rowCount = $('.table tr').length;
+            var value = $('input:checked').val();
+            var CheckedCount = $('input:checked').length;
+
+
+            $('.txtIdRenglon').val(value);
+
+
+            if (rowCount == 1) {
+
+                document.getElementById("Seleccionar").style.display = "";
+                return false;
+            }
+            else {
+
+                if (CheckedCount > 1) {
+                    document.getElementById("Check2").style.display = 'none';
+                    document.getElementById("Check1").style.display = "";
+
+                    return false;
+                }
+
+                if (CheckedCount < 1) {
+                    document.getElementById("Check1").style.display = 'none';
+                    document.getElementById("Check2").style.display = "";
+                    return false;
+                }
+            }
+
+        });
+    });
+
+
+
+</script>
+
+
+
+<div class="content-wrapper" style="margin-bottom:20px;">
+
+    @using (Html.BeginForm("ModifMasterData", "Adm", FormMethod.Post, new { name = "myform" }))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <h5 style="border-bottom:1px solid #c7d1d6;">FILTRO</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="Nombre">Grupo</label>
+                @{
+        List<SelectListItem> ListGrupos = new List<SelectListItem>();
+        ListGrupos.Add(new SelectListItem() { Value = "0", Text = "Seleccione el Grupo", Selected = true });
+        ListGrupos.Add(new SelectListItem() { Value = "BU", Text = "BU" });
+        ListGrupos.Add(new SelectListItem() { Value = "SMO", Text = "SMO" });
+        ListGrupos.Add(new SelectListItem() { Value = "OWNER", Text = "OWNER" });
+        ListGrupos.Add(new SelectListItem() { Value = "REASON", Text = "REASON" });
+                }
+                @Html.DropDownList("ddlGrupos", ListGrupos, new { @class = "form-control", @placeholder = "Grupos ..." })
+            </div>
+            <div class="col-sm-4">
+                <label>Id</label><br />
+                @*<input type="text" name="txtDes" value="@ViewBag.txtDes" />*@
+                <input type="text" name="txtId" id="txtId" value="" />
+            </div>
+            <div class="col-sm-4">
+                <label>Data Inicio</label><br />
+                @*<input type="text" name="txtDes" value="@ViewBag.txtDes" />*@
+                <input type="text" name="txtDes" id="txtDes" value="" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col pull-right">
+                <br style="margin-bottom:3px;" />
+                <button type="submit" id="btnBusca" class="btn btn-info" formaction="MasterDataBM">Buscar</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <br style="margin-bottom:3px;" />
+            <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Ingrese un Filtro para la búsqueda</div>
+            <div class="col-sm-4" id="Check1" style="color:red;display:none">Seleccione solamente un Master Data para Modificar</div>
+            <div class="col-sm-4" id="Check2" style="color:red;display:none">Seleccione un Master Data para Modificar</div>
+        </div>
+        <div class="row">
+            <div class="pull-right col">
+                <input type="button" value="Nuevo" name="Nuevo" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevaMasterData", "Adm") + "'");" />
+                <input type="submit" id="Modificar" value="Modificar" name="Modificar" class="btn btn-primary" />
+                <input type="hidden" class="txtIdRenglon" id="txtIdRenglon" name="txtIdRenglon" value="" />
+                <input type="hidden" class="txtTodos" id="txtTodos" name="txtTodos" value="" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-13">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th width="10%" align="center"></th>
+                            <th width="10%" align="center">
+                                <label>Id</label>
+                            </th>
+                            <th width="20%" align="center">
+                                <label>Grupo</label>
+                            </th>
+                            <th width="30%" align="center">
+                                <label>Data Inicial</label>
+                            </th>
+                            <th width="30%" align="center">
+                                <label>Data Final</label>
+                            </th>
+                            <th width="10%" align="center">
+                                <label>Borrado</label>
+                            </th>
+                        </tr>
+
+                        @{int j = 0;
+
+                        if (Model.MasterDataList != null)
+                        {
+
+                            foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData MasterData in Model.MasterDataList)
+                            {
+                                <tr>
+                                    <td class="Check" width="10%" align="center">
+                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = MasterData.IdRenglon })
+                                    </td>
+
+                                    <td width="20%" align="center">
+                                        <label>
+                                            @MasterData.IdRenglon
+                                        </label>
+                                    </td>
+
+                                    <td width="20%" align="center">
+                                        <label>
+                                            @MasterData.Data
+                                        </label>
+                                    </td>
+                                    <td width="30%" align="center">
+                                        <label>
+                                            @MasterData.DataIni
+                                        </label>
+                                    </td>
+                                    <td width="30%" align="center">
+                                        <label>
+                                            @MasterData.DataFin
+                                        </label>
+                                    </td>
+                                    <td width="10%" align="center">
+                                        <label>
+                                            @MasterData.Borrado
+                                        </label>
+                                    </td>
+                                </tr>
+                                j++;
+                            }
+                        }
+                        }
+
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>

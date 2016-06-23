@@ -1,0 +1,1 @@
+﻿En este directorio, ubicaremos siempre el script SQL actualizado con la estructura de nuestra base de datos.

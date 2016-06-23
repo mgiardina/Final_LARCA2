@@ -1,0 +1,87 @@
+﻿@model Larca2.Views.ViewModels.ManualUploadViewModel
+@{
+    ViewBag.Title = "Manual Load";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                Administrator MasterData Manual LOAD
+
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+
+    @using (Html.BeginForm("Upload", "ManualLoad", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <p class="bg-primary" style="padding:10px;">
+                   MASTERDATA MANUAL LOAD
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label class="btn btn-primary" for="file">
+                    <input id="file" name="file" type="file" style="display:none;" onchange="$('#upload-file-info').html($(this).val());">
+                    Select File
+                </label>
+                <span class='label label-info' id="upload-file-info"></span>
+            </div>
+            <div class="col-sm-3">
+                <button type="submit" name="btnBusca" class="btn btn-info">Upload File</button>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-sm-3">
+                @Html.CheckBoxFor(model => model.Parcial, new { @class = "form-control" })
+                <label for="checkbox">Is Partial?</label>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <p style="color:red; font-size:16px;margin-top:5px;">
+                @ViewBag.Result
+            </p>
+        </div>
+        <div class="row">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th> Day</th>
+                        <th> FPC</th>
+                        <th> Country</th>
+                        <th> Profit Center</th>
+                        <th> Reason Code</th>
+                        <th> RCC</th>
+                        <th> SAP Site</th>
+                        <th> Customer</th>
+                        <th> SU Cases</th>
+                    </tr>
+                    @foreach (var item in (List<LARCA2.Business.Entities.MasterRow>)ViewData["MasterRows"])
+                    {
+                        <tr>
+                            <td> @item.Day</td>
+                            <td> @item.FPC</td>
+                            <td> @item.ReportingCountry</td>
+                            <td> @item.ProfitCenter</td>
+                            <td> @item.ReasonCode</td>
+                            <td> @item.RootCauseCode</td>
+                            <td> @item.SAPSite</td>
+                            <td> @item.Customer</td>
+                            <td> @item.SUCases</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+
+</div>

@@ -1,0 +1,106 @@
+﻿@model Larca2.Views.ViewModels.LAScopeViewModel
+@{
+    ViewBag.Title = "LARCA NEWS - REGION";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
+            </hgroup>
+            <p>
+                LA NEWS by REGION Report
+            </p>
+        </div>
+    </section>
+}
+<div class="container-fluid">
+    @using (Html.BeginForm("NewsREGIONFilter", "LAScope", FormMethod.Post, new { name = "myform" }))
+    {
+        <div class="row">
+            <div class="col-sm-13">
+                <h5 style="border-bottom:1px solid #c7d1d6;">FILTER</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(model => model.regionId, Model.RegionList, new { @class = "form-control" })
+                </fieldset>
+            </div>
+            <div class="col-sm-1">
+                <input type="submit" value="Filter" name="command" class="btn btn-info" />
+            </div>
+            <div class="pull-right col">
+                <input type="submit" value="Export Excel" name="command" class="btn btn-info" />
+                <input type="submit" value="Send Email" name="command" class="btn btn-info" />
+            </div>
+        </div>
+
+    }
+    <div class="row">
+        <div class="col-sm-13 pull-right">
+            <p style="color:red; font-size:16px;margin-top:5px;">
+                @ViewBag.Result
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-13">
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th> RBU</th>
+                            <th> SMO</th>
+                            <th> Cut Classification</th>
+                            <th> Volume</th>
+                            <th> % in GAP</th>
+                            <th> Problem Statement</th>
+                            <th> Why</th>
+                            <th> Why</th>
+                            <th> Why</th>
+                            <th> Action Plan</th>
+                            <th> Responsible</th>
+                            <th> GAP Analysis</th>
+                        </tr>
+                        @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
+                        {
+                            <tr style="background-color:gray;">
+                                <td style="background-color:gray;color:#fff;">@item.RBU</td>
+                                <td style="background-color:gray;color:#fff;">@item.SMO</td>
+                                <td style="background-color:gray;color:#fff;">@item.CUT</td>
+                                <td style="background-color:gray;color:#fff;">@item.VOLUME</td>
+                                <td style="background-color:gray;color:#fff;">@item.GAP</td>
+                                <td style="background-color:gray;color:#fff;">@item.PROBLEM</td>
+                                <td style="background-color:gray;color:#fff;">@item.WHY1</td>
+                                <td style="background-color:gray;color:#fff;">@item.WHY2</td>
+                                <td style="background-color:gray;color:#fff;">@item.WHY3</td>
+                                <td style="background-color:gray;color:#fff;">@item.ACTIONPLAN</td>
+                                <td style="background-color:gray;color:#fff;">@item.RESPONSIBLE</td>
+                                <td style="background-color:gray;color:#fff;">@item.GAPANALYSIS</td>
+                            </tr>
+                            foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.OrderByDescending(r => Convert.ToDecimal(r.VOLUME)).ToList())
+                            {
+                                <tr>
+                                    <td> @detail.RBU</td>
+                                    <td> @detail.SMO</td>
+                                    <td> @detail.CUT</td>
+                                    <td> @detail.VOLUME</td>
+                                    <td> @detail.GAP</td>
+                                    <td> @detail.PROBLEM</td>
+                                    <td> @detail.WHY1</td>
+                                    <td> @detail.WHY2</td>
+                                    <td> @detail.WHY3</td>
+                                    <td> @detail.ACTIONPLAN</td>
+                                    <td> @detail.RESPONSIBLE</td>
+                                    <td> @detail.GAPANALYSIS</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
