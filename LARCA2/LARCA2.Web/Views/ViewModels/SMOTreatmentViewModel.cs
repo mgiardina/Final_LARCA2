@@ -14,9 +14,10 @@ namespace Larca2.Views.ViewModels
         public LARCA2.Business.Services.RCClassificationBLL RCBLL { get; set; }
         public string bu { get; set; }
         public string smo { get; set; }
-
+        public string mesSeleccionado { get; set; }
         public string enviado { get; set; }
         public int tempInt { get; set; }
+        public List<SelectListItem> dropdownMeses { get; set; }
         public List<SelectListItem> BUList { get; set; }
         public List<SelectListItem> SMOList { get; set; }
         public List<SelectListItem> L4List { get; set; }
@@ -28,12 +29,16 @@ namespace Larca2.Views.ViewModels
         {
             bu = "0";
             smo = "0";
+            mesSeleccionado = "0";
             RCBLL = new LARCA2.Business.Services.RCClassificationBLL();
             MBLL = new LARCA2.Business.Services.MasterDataBLL();
             LARCA2.Business.Services.Level4BLL L4BLL = new LARCA2.Business.Services.Level4BLL();
             BUList = new List<SelectListItem>();
             SMOList = new List<SelectListItem>();
             L4List = new List<SelectListItem>();
+            dropdownMeses = new List<SelectListItem>();
+            dropdownMeses.Add(new SelectListItem { Text = "Current Month", Value = "0", Selected = true });
+            dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
 
               BUList.Add(new SelectListItem{Text = "Choose a valid BU", Value = "0", Selected = true});
               SMOList.Add(new SelectListItem{Text = "Choose a valid SMO", Value = "0", Selected = true});

@@ -54,6 +54,7 @@ namespace LARCA2.Business.Services
 
         public LARCA20_RcClasification TraerPorDesc(string desc)
         {
+
             return RCClassificationDAL.TraerPorDesc(desc);
         }
 

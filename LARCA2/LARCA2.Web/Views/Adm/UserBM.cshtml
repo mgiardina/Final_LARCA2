@@ -1,6 +1,6 @@
 ﻿@model Larca2.Models.UserSearchForm
 @{
-    ViewBag.Title = "Modificación de Usuarios";
+    ViewBag.Title = "User Modification";
 }
 
 @section featured {
@@ -80,38 +80,38 @@
     {
         <div class="row">
             <div class="col-sm-13">
-                <h5 style="border-bottom:1px solid #c7d1d6;">FILTRO</h5>
+                <h5 style="border-bottom:1px solid #c7d1d6;">Filters</h5>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <label>Nombre </label><br />
+                <label>First Name </label><br />
                 <input type="text" id="txtNombre" name="txtNombre" value="" />
             </div>
             <div class="col-sm-4">
-                <label>Apellido</label><br />
+                <label>Last Name</label><br />
                 <input type="text" id="txtApellido" name="txtApellido" value="" />
             </div>
             <div class="col-sm-2">
                 <br style="margin-bottom:3px;" />
-                <button type="submit" id="btnBusca" class="btn btn-info" formaction="UserBM">Buscar</button>
+                <button type="submit" id="btnBusca" class="btn btn-info" formaction="UserBM">Search</button>
             </div>
             <div class="col-sm-3">
             </div>
         </div>
     <div class="row">
         <br style="margin-bottom:3px;" />
-        <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Ingrese un Filtro para la búsqueda</div>
-        <div class="col-sm-4" id="Check1" style="color:red;display:none">Seleccione solamente un Usuario para Modificar</div>
-        <div class="col-sm-4" id="Check2" style="color:red;display:none">Seleccione un Usuario para Modificar</div>
+        <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Choose a filter for the search</div>
+        <div class="col-sm-4" id="Check1" style="color:red;display:none">Select a single user for modification</div>
+        <div class="col-sm-4" id="Check2" style="color:red;display:none">Select a user for modification</div>
         <div class="col-sm-13 pull-right">
-            <h5 style="border-bottom:1px solid #c7d1d6;">OPERACIONES</h5>
+            <h5 style="border-bottom:1px solid #c7d1d6;">OPERATIONS</h5>
         </div>
     </div>
         <div class="row">
             <div class="pull-right col">
-                <input type="button" value="Nuevo" name="Nuevo" id="Nuevo" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("NuevoUsuario", "Adm") + "'");" />
-                <input type="submit" id="Modificar" value="Modificar" name="Modificar" class="btn btn-default" />
+                <input type="button" value="New" name="New" id="Nuevo" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("NuevoUsuario", "Adm") + "'");" />
+                <input type="submit" id="Modificar" value="Modify" name="Modify" class="btn btn-default" />
                 <input type="hidden" class="txtIdRenglon" id="txtIdRenglon" name="txtIdRenglon" value="" />
                 <input type="hidden" class="txtTodos" id="txtTodos" name="txtTodos" value="" />
 
@@ -124,25 +124,25 @@
                         <tr>
                             <th width="5%" align="center"></th>
                             <th width="15%" align="center">
-                                <label>Nombre</label>
+                                <label>First Name</label>
                             </th>
                             <th width="15%" align="center">
-                                <label>Apellido</label>
+                                <label>Last Name</label>
                             </th>
                             <th width="20%" align="center">
-                                <label>Usuario</label>
+                                <label>Username</label>
                             </th>
                             <th width="5%" align="center">
-                                <label>Borrado</label>
+                                <label>Deleted</label>
                             </th>
                             <th width="20%" align="center">
                                 <label>Email</label>
                             </th>
                             <th width="10%" align="center">
-                                <label>Fecha</label>
+                                <label>Date</label>
                             </th>
                             <th width="10%" align="center">
-                                <label>Telefono</label>
+                                <label>Phone No.</label>
                             </th>
 
                         </tr>

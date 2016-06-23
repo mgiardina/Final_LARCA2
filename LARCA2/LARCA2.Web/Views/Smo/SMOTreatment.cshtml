@@ -162,7 +162,7 @@
 </script>
 
 
-<div class="content" style="margin-bottom:20px;">
+<div class="content-wrapper" style="margin-bottom:20px;">
     @using (Html.BeginForm("SmoFiltrado", "Smo", FormMethod.Post, new { name = "myform" }))
     {
         <div class="row">
@@ -181,10 +181,17 @@
                     @Html.DropDownListFor(model => model.smo, Model.SMOList)
                 </fieldset>
             </div>
-            <br />
         </div>
+    <div class="row">
+        <div class="col-sm-13">
+            <fieldset class="form-group">
+                <label for="Nombre">Mes</label>
+                @Html.DropDownListFor(model => model.mesSeleccionado, Model.dropdownMeses)
+            </fieldset>
+        </div>
+    </div>
         <div class="pull-right">
-            <input type="submit" value="Filtrar" name="Filter" class="btn btn-default" />
+            <input type="submit" value="Search" name="Search" class="btn btn-default" />
 
         </div>
     }

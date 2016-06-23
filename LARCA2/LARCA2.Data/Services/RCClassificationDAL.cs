@@ -88,6 +88,8 @@ namespace LARCA2.Data.Services
 
         public LARCA2.Data.DatabaseModels.LARCA20_RcClasification TraerPorDesc(string desc)
         {
+            if (Context.LARCA20_RcClasification.SingleOrDefault(u => u.Descripcion == desc) == null)
+                return Context.LARCA20_RcClasification.SingleOrDefault(u => u.Descripcion.Contains(desc.Substring(0,5)));
             return Context.LARCA20_RcClasification.SingleOrDefault(u => u.Descripcion == desc);
         }
 

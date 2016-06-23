@@ -20,7 +20,7 @@
 
     @using (Html.BeginForm("Autenticar", "Login", FormMethod.Post))
     {
-        <div class="row">
+        <div class="content-wrapper">
             <div class="col-xs-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Username</label>
@@ -32,12 +32,13 @@
                     @Html.PasswordFor(m => m.Usuario.Clave, new { @class = "form-control", @placeholder = "Clave ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Clave)</small>
                 </fieldset>
-             
+
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <input type="submit" value="Login" name="Ingresar" class="btn btn-success" />
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <input type="submit" value="Login" name="Ingresar" class="btn btn-success" />
+                </div>
             </div>
         </div>
 

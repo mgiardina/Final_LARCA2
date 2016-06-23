@@ -31,15 +31,15 @@
         var OWN_valId = $("#CboOWNER option:selected").val();
 
         if (CBU_valId == 0) {
-            alert("Debe seleccionar un BU");
+            alert("You must select a valid BU");
             return;
         }
         if (SMO_valId == 0) {
-            alert("Debe seleccionar un SMO");
+            alert("You must select a valid SMO");
             return;
         }
         if (OWN_valId == 0) {
-            alert("Debe seleccionar un OWNER");
+            alert("You must select a valid OWNER");
             return;
         }
         var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
@@ -78,8 +78,8 @@
     <div class="row">
         <div class="col-sm-13">
             <fieldset class="form-group">
-                <label for="Nombre">Nombre</label>
-                @Html.TextBoxFor(m => m.Usuario.Nombre, new { @class = "form-control", @placeholder = "Nombre ..." })
+                <label for="Nombre">First Name</label>
+                @Html.TextBoxFor(m => m.Usuario.Nombre, new { @class = "form-control", @placeholder = "First Name ..." })
                 <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Nombre)</small>
             </fieldset>
         </div>
@@ -87,8 +87,8 @@
     <div class="row">
         <div class="col-sm-13">
             <fieldset class="form-group">
-                <label for="Nombre">Apellido</label>
-                @Html.TextBoxFor(m => m.Usuario.Apellido, new { @class = "form-control", @placeholder = "Apellido ..." })
+                <label for="Nombre">Last Name</label>
+                @Html.TextBoxFor(m => m.Usuario.Apellido, new { @class = "form-control", @placeholder = "Last Name ..." })
                 <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Apellido)</small>
             </fieldset>
         </div>
@@ -96,12 +96,12 @@
     <div class="row">
         <div class="col-sm-13">
             <fieldset class="form-group">
-                <label for="Nombre">Nombre Usuario</label>
-                @Html.TextBoxFor(m => m.Usuario.Usuario, new { @class = "form-control", @placeholder = "Nombre Usuario ..." })
+                <label for="Nombre">Username</label>
+                @Html.TextBoxFor(m => m.Usuario.Usuario, new { @class = "form-control", @placeholder = "Username ..." })
                 <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Usuario)</small>
                 @if (ViewBag.ErrorUsuario)
                 {
-                    <br /><small style="color:red;">Usuario ya existente</small>
+                    <br /><small style="color:red;">Username already exists</small>
                 }
 
             </fieldset>
@@ -110,8 +110,8 @@
     <div class="row">
         <div class="col-sm-13">
             <fieldset class="form-group">
-                <label for="Nombre">Clave</label>
-                @Html.TextBoxFor(m => m.Usuario.Clave, new { @class = "form-control", @placeholder = "Clave ..." })
+                <label for="Nombre">Password</label>
+                @Html.TextBoxFor(m => m.Usuario.Clave, new { @class = "form-control", @placeholder = "Password ..." })
                 <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Clave)</small>
             </fieldset>
         </div>
@@ -129,8 +129,8 @@
     <div class="row">
         <div class="col-sm-13">
             <fieldset class="form-group">
-                <label for="Nombre">Telefono</label>
-                @Html.TextBoxFor(m => m.Usuario.Telefono, new { @class = "form-control", @placeholder = "Telefono ..." })
+                <label for="Nombre">Phone No.</label>
+                @Html.TextBoxFor(m => m.Usuario.Telefono, new { @class = "form-control", @placeholder = "Phone No ..." })
 
             </fieldset>
         </div>
@@ -141,7 +141,7 @@
                 <label for="Nombre">Roles</label>
                 @{
                     List<SelectListItem> ListRoles = new List<SelectListItem>();
-                    ListRoles.Add(new SelectListItem() { Value = "0", Text = "Seleccione el Rol", Selected = false });
+                    ListRoles.Add(new SelectListItem() { Value = "0", Text = "Choose Role", Selected = false });
 
                     var listItems = new SelectList(@ViewBag.ComboRol);
                     foreach (var fila in ViewBag.ComboRol)
@@ -155,7 +155,7 @@
                 @Html.DropDownList("CboRoles", ListRoles, new { @class = "form-control", @placeholder = "Roles ..." })
                 @if (ViewBag.ErrorRol)
                 {
-                    <small class="text-muted" style="color:red;">Requerido</small>
+                    <small class="text-muted" style="color:red;">Required</small>
                 }
             </fieldset>
         </div>
@@ -163,7 +163,7 @@
     <div class="row">
         <div class="col-sm-13">
             <fieldset class="form-group">
-                <label for="Nombre">Borrado</label>
+                <label for="Nombre">Deleted</label>
                 @Html.CheckBoxFor(m => m.Usuario.Borrado, new { @class = "form-control" })
 
             </fieldset>
@@ -172,10 +172,10 @@
     <div class="row">
         <div class="col-sm-13">
             <fieldset class="form-group">
-                <label for="Nombre">Permisos especiales</label>
+                <label for="Nombre">Special Permits</label>
                 @if (ViewBag.ErrorPermiso)
                 {
-                    <br /><small style="color:red;">Requerido</small>
+                    <br /><small style="color:red;">Required</small>
                 }
 
             </fieldset>
@@ -184,10 +184,10 @@
     <div class="=row">
         <div class="col-sm-3">
             <fieldset class="form-group">
-                <label for="Nombre">Permiso por BU</label>
+                <label for="Nombre">BU Permit</label>
                 @{
                 List<SelectListItem> ListBU = new List<SelectListItem>();
-                ListBU.Add(new SelectListItem() { Value = "0", Text = "Seleccione BU", Selected = false });
+                ListBU.Add(new SelectListItem() { Value = "0", Text = "Choose a BU", Selected = false });
 
                 var listItems1 = new SelectList(@ViewBag.MasterBU);
                 foreach (var fila in ViewBag.MasterBU)
@@ -200,10 +200,10 @@
         </div>
         <div class="col-sm-3">
             <fieldset class="form-group">
-                <label for="Nombre">Permiso por SMO</label>
+                <label for="Nombre">SMO Permit</label>
                 @{
                 List<SelectListItem> ListSMO = new List<SelectListItem>();
-                ListSMO.Add(new SelectListItem() { Value = "0", Text = "Seleccione SMO", Selected = false });
+                ListSMO.Add(new SelectListItem() { Value = "0", Text = "Choose an SMO", Selected = false });
 
                 var listItems2 = new SelectList(@ViewBag.MasterSMO);
                 foreach (var fila in ViewBag.MasterSMO)
@@ -216,10 +216,10 @@
         </div>
         <div class="col-sm-3">
             <fieldset class="form-group">
-                <label for="Nombre">Permiso por OWNER</label>
+                <label for="Nombre">OWNER Permit</label>
                 @{
                 List<SelectListItem> ListOWNER = new List<SelectListItem>();
-                ListOWNER.Add(new SelectListItem() { Value = "0", Text = "Seleccione OWNER", Selected = false });
+                ListOWNER.Add(new SelectListItem() { Value = "0", Text = "Choose OWNER", Selected = false });
 
                 var listItems3 = new SelectList(@ViewBag.MasterOW);
                 foreach (var fila in ViewBag.MasterOW)
@@ -231,21 +231,21 @@
             </fieldset>
         </div>
         <div class="col-sm-3">
-            <label for="Nombre">Acción</label><br />
-            <input type="button" value="Agregar Permisos" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
+            <label for="Nombre">Actionn</label><br />
+            <input type="button" value="Add Permits" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
         </div>
     </div>
     <div class="row">
         <table id="tablaPermisos" width=100% class="table">
             <thead>
-                <tr><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> Permiso BU</td> <td width=30%>Permiso SMO</td> <td width=30%>Permiso OWNER</td> <td width=30%>Eliminar</td></tr>
+                <tr><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> Permirs BU</td> <td width=30%>Permirs SMO</td> <td width=30%>Permirs OWNER</td> <td width=30%>Delete</td></tr>
                 @{
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner fila in Model.Usuario.LARCA20_User_Owner)
                 {
                     if (@fila.Borrado == false)
                     { 
                     <tr>
-                        <td style="display: none">@fila.IdBU</td><td style="display: none">@fila.IdOwner</td><td style="display: none">@fila.IdSmo</td><td>@fila.LARCA20_MasterData.DataFin</td><td>@fila.LARCA20_MasterData1.DataFin</td><td>@fila.LARCA20_MasterData2.DataFin</td><td><button id="btn_LESSPermiso" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Quitar</button></td>
+                        <td style="display: none">@fila.IdBU</td><td style="display: none">@fila.IdOwner</td><td style="display: none">@fila.IdSmo</td><td>@fila.LARCA20_MasterData.DataFin</td><td>@fila.LARCA20_MasterData1.DataFin</td><td>@fila.LARCA20_MasterData2.DataFin</td><td><button id="btn_LESSPermiso" onclick="FuncLESSPermiso(this)" value="Remove" class="btn btn-warning"> Remove</button></td>
                     </tr>
                     }
                 }
@@ -256,8 +256,8 @@
     </div>
     <div class="row">
         <div class="pull-right col">
-            <input type="submit" value="Guardar Cambios" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
-            <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("UserBM", "Adm") + "'");" />
+            <input type="submit" value="Save Changes" name="Save" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+            <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("UserBM", "Adm") + "'");" />
         </div>
     </div>
     }

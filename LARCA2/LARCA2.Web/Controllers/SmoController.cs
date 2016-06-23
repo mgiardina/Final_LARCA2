@@ -248,32 +248,39 @@ namespace Larca2.Controllers
             int newId = Int32.Parse(id);
             LARCA2.Business.Services.SMOScopeDetailBLL dbl = new LARCA2.Business.Services.SMOScopeDetailBLL();
             LARCA2.Business.Services.MasterDataBLL mbl = new LARCA2.Business.Services.MasterDataBLL();
-            List<LARCA2.Data.DatabaseModels.LARCA20_SmoScopeDetail> details =  dbl.TraerDetalle(newId);
+            List<LARCA2.Data.DatabaseModels.LARCA20_SmoScopeDetail> details = dbl.TraerDetalle(newId);
             string result;
             result = "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8' /><title> SMO Scope Detail- LARCA 2</title><link href='~/favicon.ico' rel='shortcut icon' type='image/x-icon' /><meta name='viewport' content='width=device-width' /><style>html {background-color: #e2e2e2;margin: 0;padding: 0;}body {background-color: #fff;border-top: solid 10px #000;color: #333;font-size: .85em;font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif;margin: 0;padding: 0;}table {border-collapse: collapse;border-spacing: 0;margin-top: 0.75em;border: 0 none;}th {font-size: 11px;text-align: left;border: 1px solid #e2e2e2;text-transform:uppercase;background-color:#199ED8;color:#FFFFFF;padding:5px;}th a {display: block;position: relative;}td {text-align: left;border: 1px solid #e2e2e2;font-size:11px;background-color:#FFFFFF;padding:5px;}tr.pager td {padding: 0 0.25em 0 0;}</style></head><body>";
 
-            result = result + "<table class='table'><tr><th width='5%' align='center'>Date</th><th width='5%' align='center'>SMO</th><th width='5%' align='center'>BU</th><th width='5%' align='center'>Volume</th><th width='5%' align='center'>OWNER</th><th width='5%' align='center'>Level2</th><th width='5%' align='center'>Level3</th><th width='5%' align='center'>Reason</th></tr>";
-            foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScopeDetail det in details)
-            { 
-                result = result + "<tr><td>" + det.Fecha.ToString() + "</td>";
-                result = result + "<td>" + mbl.Traer("SMO", Int32.Parse(det.SmoID.ToString())).DataIni + "</td>";
+            //result = result + "<table class='table'><tr><th width='5%' align='center'>Date</th><th width='5%' align='center'>SMO</th><th width='5%' align='center'>BU</th><th width='5%' align='center'>Volume</th><th width='5%' align='center'>OWNER</th><th width='5%' align='center'>Level2</th><th width='5%' align='center'>Level3</th><th width='5%' align='center'>Reason</th></tr>";
+            result = result + "<table class='table'><tr><th width='20%' align='center'>Volume</th><th width='25%' align='center'>FPC</th><th width='25%' align='center'>Reason Code</th><th width='15%' align='center'>Customer</th><th width='15%' align='center'>Date</th></tr>";
+
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScopeDetail det in details)
+            {
+                result = result + "<tr><td>" + det.Volumen.ToString() + "</td>";
                 result = result + "<td>" + mbl.Traer("BU", Int32.Parse(det.BuID.ToString())).DataIni + "</td>";
-                result = result + "<td>" + det.Volumen.ToString() + "</td>";
-                result = result + "<td>" + mbl.Traer(det.OwnerID.Value).DataIni + "</td>";
-                result = result + "<td>" + mbl.Traer(det.Lvl2ID.Value).DataIni + "</td>";
-                result = result + "<td>" + mbl.Traer(det.Lvl3ID.Value).DataIni + "</td>";
-                
-                result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td></tr>";
+                result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td>";
+                result = result + "<td>" + (det.Customer == null ? "-" : det.Customer.ToString()) + "</td>";
+                result = result + "<td>" + det.Fecha.ToString() + "</td></tr>";
+
+                //  result = result + "<tr><td>" + det.Fecha.ToString() + "</td>";
+                // result = result + "<td>" + mbl.Traer("SMO", Int32.Parse(det.SmoID.ToString())).DataIni + "</td>";
+                // result = result + "<td>" + mbl.Traer("BU", Int32.Parse(det.BuID.ToString())).DataIni + "</td>";
+                // result = result + "<td>" + det.Volumen.ToString() + "</td>";
+                // result = result + "<td>" + mbl.Traer(det.OwnerID.Value).DataIni + "</td>";
+                // result = result + "<td>" + mbl.Traer(det.Lvl2ID.Value).DataIni + "</td>";
+                // result = result + "<td>" + mbl.Traer(det.Lvl3ID.Value).DataIni + "</td>";
+
+                // result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td></tr>";
             }
 
-            result = result +"</table>";
+            result = result + "</table>";
             result = result + "</body></html>";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         
       
-
 
 
         public ActionResult SmoTreatment()
@@ -321,7 +328,7 @@ namespace Larca2.Controllers
             //viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             //viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
-
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
 
             //Copio la lista a los editables para poder modificar los datos necesarios.
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
@@ -377,6 +384,11 @@ namespace Larca2.Controllers
             if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
+            if(viewModel.mesSeleccionado == "0")
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+            else
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
+            
        //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
 
@@ -430,7 +442,7 @@ namespace Larca2.Controllers
                     {
                         if (i % 2 == 0)
                         {
-                            actFilt.Add(act[i].Trim().Replace("\r\n", "").Replace("&amp;", "&"));
+                            actFilt.Add(act[i].Trim().Replace("\r\n", "").Replace("&nbsp;", "").Replace("&amp;", "&"));
                         }
                     }
                     LARCA2.Data.DatabaseModels.LARCA20_SmoScope clon = new LARCA2.Data.DatabaseModels.LARCA20_SmoScope();
@@ -473,7 +485,7 @@ namespace Larca2.Controllers
                     else
                         clon.RefIdResponsable = null;
 
-                    clon.Level4 = lvlClones.Todos().Where(l => l.Borrado == false).ToList()[Int32.Parse(actFilt[12])].Id;
+                    clon.Level4 = lvlClones.Todos().Where(l => l.Borrado == false && l.Id == Int32.Parse(actFilt[12])).First().Id;
 
                     repoGuardado.Guardar(clon);
                     //buscar IDs y guardar en tabla LARCA20_SmoScope -en user owner no deberia hacer falta, cuando haya que hacer pruebas revisar si con un solo user owner se obtienen todos los registros de la tabla de smo scope correspondientes-
@@ -544,6 +556,13 @@ namespace Larca2.Controllers
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdBU == bu).ToList();
             if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
+
+
+            if (viewModel.mesSeleccionado == "0")
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+            else
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
+            
 
             //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;

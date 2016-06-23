@@ -176,7 +176,7 @@ namespace Larca2.Controllers
                 myCookie.Value = (Int32.Parse(myCookie.Value) + 1).ToString();
                 Response.Cookies.Add(myCookie);
 
-                   return Content("<script language='javascript' type='text/javascript'>alert('Ha ingresado al sistema exitosamente.');document.location = '../Home/Index';</script>");
+                   return Content("<script language='javascript' type='text/javascript'>document.location = '../Home/Index';</script>");
      
             }
 
@@ -284,7 +284,7 @@ namespace Larca2.Controllers
             usuarioActualizar.Clave = Crypto.Encrypt(modificarPasswordViewModel.PasswordNuevo);
             repositorioUsuarios.Guardar(usuarioActualizar);
 
-            return Content("<script language='javascript' type='text/javascript'>alert('Se ha Modificado la Clave');document.location = '../Home/Index';</script>");
+            return Content("<script language='javascript' type='text/javascript'>alert('The password has been modified.');document.location = '../Home/Index';</script>");
         }
 
         public string Desencriptar(string input)
