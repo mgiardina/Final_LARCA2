@@ -18,8 +18,14 @@
     </section>
 }
 <script type="text/javascript">
+
+    var permisosArray = [];
+    var Repetido = false;
+    var x = 0;
+
     function AgregaPermisoESP()
     {
+        
         var CBU_valo = $("#CboBU").val();
         var CBU_desc = $("#CboBU option:selected").text();
         var CBU_valId = $("#CboBU option:selected").val();
@@ -44,31 +50,75 @@
             alert("Debe seleccionar un OWNER");
             return;
         }
-        var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
-        if ($("#HI_PermisosEsp").val() == "")
-            $("#HI_PermisosEsp").val(carga);
-        else
-            $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+        
+        if (permisosArray.length != 0)
+         {
 
-        $('#tablaPermisos tr:last').after('<tr><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="btn_LESSPermiso" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Quitar</button></td></tr>');
+           for (var i = 0; i < permisosArray.length; i++)
+             {
+
+               if (CBU_valo == permisosArray[i].CBU && SMO_valo == permisosArray[i].SMO && OWN_valo == permisosArray[i].OWN)
+               {
+                  Repetido = true;
+               }
+             }
+         }
+ 
+        if (!Repetido)
+          {
+            var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+            if ($("#HI_PermisosEsp").val() == "") {
+                $("#HI_PermisosEsp").val(carga);
+
+            }
+            else
+
+                $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+
+            $('#tablaPermisos tr:last').after('<tr><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Quitar</button></td></tr>');
+
+            permisosArray.push({ CBU: CBU_valId, SMO: SMO_valId, OWN: OWN_valId, Id: x });
+            x++;
+          }
+
+        Repetido = false;    
     }
 
     function FuncLESSPermiso(donde)
     {
-        $(donde).closest('tr').remove();
+       var x = $(donde).attr("id");
+      
+       for (var i = 0; i < permisosArray.length; i++)
+         {
+
+           if (x == permisosArray[i].Id)
+             {
+               permisosArray.splice(i, 1);
+             }
+         }
+
+       $(donde).closest('tr').remove();
+        
         $("#HI_PermisosEsp").val("");
         $("#tablaPermisos tr").each(function (index) {
             var p1 = $(this).find("td").eq(0).html();
             var p2 = $(this).find("td").eq(1).html();
-            var p3 = $(this).find("td").eq(2).html();
+            var p3 = $(this).find("td").eq(2).html()       
+
             if (p1 != "") {
                 var carga = p1 + "." + p2 + "." + p3;
                 if ($("#HI_PermisosEsp").val() == "")
-                    $("#HI_PermisosEsp").val(carga);
-                else
-                    $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+                {
+                $("#HI_PermisosEsp").val(carga);
+       
+                }
+            else
+                $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
             }
         });
+
+    
+
     }
 </script>
 

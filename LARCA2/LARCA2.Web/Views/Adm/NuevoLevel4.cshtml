@@ -16,6 +16,26 @@
         </div>
     </section>
 }
+
+<script>
+
+    $(document).ready(function () {
+
+
+        $('#btnGuardar').on('click', function () {
+
+            if (document.getElementById('Descripcion').value == "") {
+
+                document.getElementById("Requerido").style.display = "";
+                return false;
+            }
+        });
+
+    });
+
+</script>
+
+
 <div class="container-fluid">
 
     @using (Html.BeginForm("Agregar_abm_level4", "Adm", new { }, FormMethod.Post))
@@ -25,14 +45,15 @@
                 <fieldset class="form-group">
                     <label for="Nombre">Descripcion</label>
                     <input type="hidden" id="txtNivel" name="txtNivel" value=@ViewBag.Id />
-                    @Html.TextBoxFor(m => m.Level4.Nombre, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50" })
+                    @Html.TextBoxFor(m => m.Level4.Nombre, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50", id="Descripcion" })
+                    <div id="Requerido" style="color:red;display:none">Descripción Requerida</div>
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.Nombre)</small>
                 </fieldset>
             </div>
         </div>
         <div class="row">
             <div class="pull-right col">
-                <input type="submit" value="Guardar" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                <input type="submit" value="Guardar" name="Guardar" id="btnGuardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
                 <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("Level4", "Adm") + "'");" />
             </div>
         </div>

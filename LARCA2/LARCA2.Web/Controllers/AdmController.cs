@@ -94,7 +94,8 @@ namespace LARCA2.Controllers
                             RepUserOW.Guardar(userOW);
                         }
 
-                        return RedirectToAction("UserBM");
+                     
+                        return Content("<script language='javascript' type='text/javascript'>alert('Se guardo con éxito');document.location = '../Adm/UserBM';</script>");
                     }
                     else
                     {
@@ -220,6 +221,7 @@ namespace LARCA2.Controllers
                 return RedirectToAction("UserBM");
             else
             {
+                mensError = "Complete los campos vacios";
                 return Content("<script language='javascript' type='text/javascript'>alert('" + mensError + "');document.location = 'javascript:window.history.back();';</script>");
             }
         }
@@ -617,14 +619,16 @@ namespace LARCA2.Controllers
 
         public ActionResult Modificar_abm_level4(Larca2.Models.Level4SearchForm model)
         {
-            if (ModelState.IsValid)
+            if( model.Level4.Nombre != null)
             {
                 Business.Services.Level4BLL repo = new Business.Services.Level4BLL();
                 Data.DatabaseModels.LARCA20_Level4 RcC = repo.Traer(model.Level4.Id);
                 RcC.Nombre = model.Level4.Nombre;
                 repo.Guardar(RcC);
                 return Content("<script language='javascript' type='text/javascript'>alert('Se ha modificado el registro correctamente');document.location = '../Adm/Level4';</script>");
+        
             }
+
             else
             {
                 return View("ModifLevel4", model);
@@ -642,7 +646,8 @@ namespace LARCA2.Controllers
 
         public ActionResult Agregar_abm_level4(Larca2.Models.Level4SearchForm model, string txtNivel)
         {
-            if (ModelState.IsValid)
+
+            if (model.Level4.Nombre != null) 
             {
                 long RefIdRenglon = Int32.Parse(txtNivel);
 
@@ -654,7 +659,9 @@ namespace LARCA2.Controllers
                 user.Nombre = model.Level4.Nombre;
                 repo.Guardar(user);
                 return Content("<script language='javascript' type='text/javascript'>alert('Se guardo con éxito');document.location = '../Adm/Level4';</script>");
+               
             }
+
             else
             {
                 return View("NuevoLevel4", model);
