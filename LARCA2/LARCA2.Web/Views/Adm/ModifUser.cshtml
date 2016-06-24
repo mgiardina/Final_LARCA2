@@ -17,7 +17,32 @@
     </section>
 }
 <script type="text/javascript">
+    var PermBU;
+    var PermSMO;
+    var PermOWNER;
+    var permisosArray = [];
+    var permisosAnteriores = [];
+    var Repetido = false;
+    var x = 0;
+
+
+  $(document).ready(function () {
+
+      $("#tablaPermisos > tbody > tr").each(function () {
+
+          PermBU = $(this).find("#PermBU").text();
+          PermSMO = $(this).find("#PermSMO").text();
+          PermOWNER = $(this).find("#PermOWNER").text();
+
+          permisosAnteriores.push({ CBU: PermBU, SMO: PermSMO, OWN: PermOWNER });
+
+      });     
+  });
+
+
+
     function AgregaPermisoESP() {
+     
         var CBU_valo = $("#CboBU").val();
         var CBU_desc = $("#CboBU option:selected").text();
         var CBU_valId = $("#CboBU option:selected").val();
@@ -42,16 +67,77 @@
             alert("You must select a valid OWNER");
             return;
         }
-        var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
-        if ($("#HI_PermisosEsp").val() == "")
-            $("#HI_PermisosEsp").val(carga);
-        else
-            $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
 
-        $('#tablaPermisos tr:last').after('<tr><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="btn_LESSPermiso" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Quitar</button></td></tr>');
+
+        if (permisosAnteriores.length != 0) {
+
+            for (var i = 0; i < permisosAnteriores.length; i++) {
+
+                if (CBU_desc == permisosAnteriores[i].CBU && SMO_desc == permisosAnteriores[i].SMO && OWN_desc == permisosAnteriores[i].OWN) {
+                    Repetido = true;
+                  
+                }
+            }
+        }
+
+        if (permisosArray.length != 0) {
+
+            for (var i = 0; i < permisosArray.length; i++) {
+
+                if (CBU_valo == permisosArray[i].CBU && SMO_valo == permisosArray[i].SMO && OWN_valo == permisosArray[i].OWN) {
+                    Repetido = true;
+                }
+            }
+        }
+
+        if (!Repetido)
+        {
+            var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+            if ($("#HI_PermisosEsp").val() == "") {
+                $("#HI_PermisosEsp").val(carga);
+
+            }
+            else
+
+                $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+
+            $('#tablaPermisos tr:last').after('<tr><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Remove</button></td></tr>');
+
+            permisosArray.push({ CBU: CBU_valId, SMO: SMO_valId, OWN: OWN_valId, Id: x });
+            x++;
+        }
+
+        Repetido = false;
+
     }
 
     function FuncLESSPermiso(donde) {
+
+        var x = $(donde).attr("id");
+        var row = $(donde).closest('tr');
+        var P_BU = row.find('td').eq(3).text();
+        var P_SMO = row.find('td').eq(4).text();
+        var P_OWNER = row.find('td').eq(5).text();   
+
+        for (var i = 0; i < permisosAnteriores.length; i++)
+          {
+
+            if ( P_BU == permisosAnteriores[i].CBU && P_SMO == permisosAnteriores[i].SMO && P_OWNER == permisosAnteriores[i].OWN)
+              {
+                permisosAnteriores.splice(i, 1);
+               
+              }
+          }
+
+        for (var i = 0; i < permisosArray.length; i++)
+         {
+
+            if (x == permisosArray[i].Id)
+              {
+                permisosArray.splice(i, 1);
+              }
+         }
+
         $(donde).closest('tr').remove();
         $("#HI_PermisosEsp").val("");
         $("#tablaPermisos tr").each(function (index) {
@@ -238,20 +324,34 @@
     <div class="row">
         <table id="tablaPermisos" width=100% class="table">
             <thead>
+
                 <tr><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> Permirs BU</td> <td width=30%>Permirs SMO</td> <td width=30%>Permirs OWNER</td> <td width=30%>Delete</td></tr>
-                @{
-                foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner fila in Model.Usuario.LARCA20_User_Owner)
+                
+               
+            </thead>
+            <tbody>
+
+                @foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner fila in Model.Usuario.LARCA20_User_Owner)
                 {
+                    
                     if (@fila.Borrado == false)
-                    { 
-                    <tr>
-                        <td style="display: none">@fila.IdBU</td><td style="display: none">@fila.IdOwner</td><td style="display: none">@fila.IdSmo</td><td>@fila.LARCA20_MasterData.DataFin</td><td>@fila.LARCA20_MasterData1.DataFin</td><td>@fila.LARCA20_MasterData2.DataFin</td><td><button id="btn_LESSPermiso" onclick="FuncLESSPermiso(this)" value="Remove" class="btn btn-warning"> Remove</button></td>
-                    </tr>
+                    {
+                        
+                        <tr id="PermisosTr">
+                            <td style="display: none">@fila.IdBU</td>
+                            <td style="display: none">@fila.IdOwner</td>
+                            <td style="display: none">@fila.IdSmo</td>
+
+                            <td id="PermBU">@fila.LARCA20_MasterData.DataFin</td>
+                            <td id="PermSMO">@fila.LARCA20_MasterData1.DataFin</td>
+                            <td id="PermOWNER">@fila.LARCA20_MasterData2.DataFin</td>
+                            <td><button id="btn_LESSPermiso" onclick="FuncLESSPermiso(this)" value="Remove" class="btn btn-warning"> Remove</button></td>
+                        </tr>
                     }
                 }
-                }
-            </thead>
-            <tbody></tbody>
+
+
+            </tbody>
         </table>
     </div>
     <div class="row">
