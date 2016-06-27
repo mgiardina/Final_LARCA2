@@ -50,7 +50,7 @@ namespace Larca2.Controllers
         {
             var smo = model.smo;
             var masterRows = new ReportsBLL().LARCANews(smo, string.Empty, model.Permisos);
-            if (command.Equals("Exportar Excel"))
+            if (command.Equals("Export Excel"))
             {
                 var file = new ExcelCore().GenerarExcel("LARCA News - SMO", masterRows);
                 // Download
@@ -58,7 +58,7 @@ namespace Larca2.Controllers
             }
             else
             {
-                if (command.Equals("Enviar Email"))
+                if (command.Equals("Send Email"))
                 {
                     var file = new ExcelCore().GenerarExcel("LARCA News - SMO", masterRows);
                     new MailingCore().EnviarReporte(file);
@@ -74,7 +74,7 @@ namespace Larca2.Controllers
         {
             var bu = model.rbu;
             var masterRows = new ReportsBLL().LARCANews(string.Empty, bu, model.Permisos);
-            if (command.Equals("Exportar Excel"))
+            if (command.Equals("Export Excel"))
             {
                 var file = new ExcelCore().GenerarExcel("LARCA News - RBU", masterRows);
                 // Download
@@ -82,7 +82,7 @@ namespace Larca2.Controllers
             }
             else
             {
-                if (command.Equals("Enviar Email"))
+                if (command.Equals("Send Email"))
                 {
                     var file = new ExcelCore().GenerarExcel("LARCA News - RBU", masterRows);
                     new MailingCore().EnviarReporte(file);
@@ -97,7 +97,7 @@ namespace Larca2.Controllers
         {
             var regionId = model.regionId;
             var masterRows = new ReportsBLL().LARCANews(regionId, model.Permisos);
-            if (command.Equals("Exportar Excel"))
+            if (command.Equals("Export Excel"))
             {
                 var file = new ExcelCore().GenerarExcel("LARCA News - Region", masterRows);
                 // Download
@@ -105,7 +105,7 @@ namespace Larca2.Controllers
             }
             else
             {
-                if (command.Equals("Enviar Email"))
+                if (command.Equals("Send Email"))
                 {
                     var file = new ExcelCore().GenerarExcel("LARCA News - Region", masterRows);
                     new MailingCore().EnviarReporte(file);

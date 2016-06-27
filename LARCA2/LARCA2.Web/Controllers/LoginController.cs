@@ -17,6 +17,7 @@ using System.Security.Cryptography;
 using LARCA2.Data;
 using LARCA2.Business;
 using LARCA2.Data.DatabaseModels;
+using System.Security.Principal;
 
 namespace Larca2.Controllers
 {
@@ -96,13 +97,13 @@ namespace Larca2.Controllers
 
         public ActionResult Login()
         {
+            //return Content("<script language='javascript' type='text/javascript'>alert('" + user.Identity.Name + "');</script>");
             LoginViewModel loginViewModel = new LoginViewModel();
             return View("Login", loginViewModel);
         }
 
         public ActionResult Autenticar(LoginViewModel loginViewModel)
         {
-
             HttpCookie myCookie;
             if (!ModelState.IsValid) return View("Login", loginViewModel);
 

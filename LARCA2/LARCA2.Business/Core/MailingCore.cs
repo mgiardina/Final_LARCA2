@@ -240,13 +240,17 @@ namespace LARCA2.Business.Core
         /// Metodo que se encarga de enviar alerta de nuevo ACTION PLAN
         /// </summary>
         /// <param name="filename"></param>
-        public void EnviarAlertaNuevoActionPlan(string tipo, string data, string id)
+        public void EnviarAlertaNuevoActionPlan(string owner, string drpmal, string duedate, string actionplan)
         {
-            var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/NewMasterData.htm"), FileMode.Open);
+            var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/NewActionPlan.htm"), FileMode.Open);
             var sr = new StreamReader(fs);
             string subject = "LARCA ALERT System";
             var to = "larca_mailing@yahoo.com";
             var body = sr.ReadToEnd();
+            body = body.Replace("[owner]", owner);
+            body = body.Replace("[drpmal]", drpmal);
+            body = body.Replace("[duedate]", duedate);
+            body = body.Replace("[actionplan]", actionplan);
             sr.Close();
             fs.Close();
             Send(subject, body, to, null);
@@ -337,6 +341,11 @@ namespace LARCA2.Business.Core
             return list;
         }
 
+        public void test()
+        {
+            Send("test", "test", "mgiardina@gmail.com", new List<Attachment>());
+        }
+
         /// <summary>
         /// Metodo que realiza el envio de un email
         /// </summary>
@@ -350,7 +359,7 @@ namespace LARCA2.Business.Core
             var msg = new MailMessage();
             msg.To.Add(to);
             //msg.Bcc.Add("larca_mailing@yahoo.com");
-            msg.From = new MailAddress("larca_mailing@yahoo.com", "LARCA 2 BOT", Encoding.UTF8);
+            msg.From = new MailAddress("snpla.im@pg.com", "LARCA 2 BOT", Encoding.UTF8);
             msg.Subject = subject;
             msg.SubjectEncoding = Encoding.UTF8;
             msg.Body = body;
@@ -365,9 +374,10 @@ namespace LARCA2.Business.Core
 
                 }
 
-            using (SmtpClient smtp = new SmtpClient("smtp.mail.yahoo.com", 587))
+            using (SmtpClient smtp = new SmtpClient("GADC-ExchCAS.na.pg.com", 25))
             {
-                smtp.Credentials = new NetworkCredential("larca_mailing@yahoo.com", "##larca##");
+                //smtp.Credentials = new NetworkCredential("larca_mailing@yahoo.com", "##larca##");
+                smtp.UseDefaultCredentials = true;
                 smtp.EnableSsl = true;
                 smtp.Send(msg);
             }

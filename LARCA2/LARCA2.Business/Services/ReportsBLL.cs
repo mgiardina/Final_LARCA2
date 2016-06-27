@@ -27,37 +27,44 @@ namespace LARCA2.Business.Services
             if (smoFin.Length > 0)
             {
                 var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
-                var items = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin).GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
+                var items = SmoScopeDAL.Filtrar(permisos).Where(s => s.MasterSMO.DataFin == smoFin).GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
                 foreach (var item in items.Take(toplvl2))
                 {
-                    var volumen = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin && s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
-                    var row = new ReportRow();
-                    row.SMO = item.ToList()[0].MasterSMO.DataFin;
-                    row.RBU = "TOTAL";
-                    row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
-                    row.Details = new List<ReportRow>();
-                    row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 3)).ToString();
-                    row.PROBLEM = "View Details Below";
+                    //if (permisos.Exists(p => p.IdSmo == item.ToList()[0].RefIdSMO))
+                    //{
+                        var volumen = SmoScopeDAL.Filtrar(permisos).Where(s => s.MasterSMO.DataFin == smoFin && s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                        var row = new ReportRow();
+                        row.SMO = item.ToList()[0].MasterSMO.DataFin;
+                        row.RBU = "TOTAL";
+                        row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
+                        row.Details = new List<ReportRow>();
+                        row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 3)).ToString();
+                        row.PROBLEM = "View Details Below";
 
-                    var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
-                    foreach (var subitem in item.ToList().Take(toplvl3))
-                    {
-                        var detailRow = new ReportRow
+                        var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
+                        foreach (var subitem in item.ToList().Take(toplvl3))
                         {
-                            SMO = subitem.MasterSMO.DataFin,
-                            RBU = subitem.MasterBU.DataFin,
-                            CUT = subitem.MasterLvl.Descripcion,
-                            VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 3)).ToString(),
-                            PROBLEM = subitem.Problem,
-                            WHY1 = subitem.Why1,
-                            WHY2 = subitem.Why2,
-                            WHY3 = subitem.Why3,
-                            ACTIONPLAN = subitem.ActionPlan,
-                            RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString()
-                        };
-                        row.Details.Add(detailRow);
-                    }
-                    lista.Add(row);
+                            //if (permisos.Exists(p => p.IdBU == subitem.RefIdBU))
+                            //{
+                                var detailRow = new ReportRow
+                                {
+                                    SMO = subitem.MasterSMO.DataFin,
+                                    RBU = subitem.MasterBU.DataFin,
+                                    CUT = subitem.MasterLvl.Descripcion,
+                                    VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 3)).ToString(),
+                                    PROBLEM = subitem.Problem,
+                                    WHY1 = subitem.Why1,
+                                    WHY2 = subitem.Why2,
+                                    WHY3 = subitem.Why3,
+                                    ACTIONPLAN = subitem.ActionPlan,
+                                    RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString(),
+                                    LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
+                                };
+                                row.Details.Add(detailRow);
+                            //}
+                        }
+                        lista.Add(row);
+                    //}
                 }
             }
             else
@@ -65,10 +72,12 @@ namespace LARCA2.Business.Services
                 {
 
                     var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
-                    var items = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin).GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
+                    var items = SmoScopeDAL.Filtrar(permisos).Where(s => s.MasterBU.DataFin == buFin).GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
                     foreach (var item in items.Take(toplvl2))
                     {
-                        var volumen = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin && s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                        //if (permisos.Exists(p => p.IdBU == item.ToList()[0].RefIdBU))
+                        //{
+                        var volumen = SmoScopeDAL.Filtrar(permisos).Where(s => s.MasterBU.DataFin == buFin && s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                         var row = new ReportRow();
                         row.SMO = "TOTAL";
                         row.RBU = item.ToList()[0].MasterBU.DataFin;
@@ -80,6 +89,8 @@ namespace LARCA2.Business.Services
                         var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                         foreach (var subitem in item.ToList().Take(toplvl3))
                         {
+                            //if (permisos.Exists(p => p.IdSmo == subitem.RefIdSMO))
+                            //{
                             var detailRow = new ReportRow
                             {
                                 SMO = subitem.MasterSMO.DataFin,
@@ -91,11 +102,14 @@ namespace LARCA2.Business.Services
                                 WHY2 = subitem.Why2,
                                 WHY3 = subitem.Why3,
                                 ACTIONPLAN = subitem.ActionPlan,
-                                RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString()
+                                RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString(),
+                                LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
                             };
                             row.Details.Add(detailRow);
+                            //}
                         }
                         lista.Add(row);
+                        //}
                     }
                 }
             return lista.OrderByDescending(i => Convert.ToDecimal(i.VOLUME)).ToList();
@@ -133,7 +147,8 @@ namespace LARCA2.Business.Services
                             WHY2 = subitem.Why2,
                             WHY3 = subitem.Why3,
                             ACTIONPLAN = subitem.ActionPlan,
-                            RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString()
+                            RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString(),
+                            LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
                         };
                         row.Details.Add(detailRow);
                     }
@@ -170,7 +185,8 @@ namespace LARCA2.Business.Services
                                 WHY2 = subitem.Why2,
                                 WHY3 = subitem.Why3,
                                 ACTIONPLAN = subitem.ActionPlan,
-                                RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString()
+                                RESPONSIBLE = subitem.ResponsableSmo.Nombre.ToString(),
+                                LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
                             };
                             row.Details.Add(detailRow);
                         }

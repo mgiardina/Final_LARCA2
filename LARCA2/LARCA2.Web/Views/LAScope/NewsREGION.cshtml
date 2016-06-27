@@ -64,6 +64,7 @@
                             <th> Action Plan</th>
                             <th> Responsible</th>
                             <th> GAP Analysis</th>
+                            <th> Other Classification</th>
                         </tr>
                         @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
                         {
@@ -80,6 +81,7 @@
                                 <td style="background-color:gray;color:#fff;">@item.ACTIONPLAN</td>
                                 <td style="background-color:gray;color:#fff;">@item.RESPONSIBLE</td>
                                 <td style="background-color:gray;color:#fff;">@item.GAPANALYSIS</td>
+                                <td style="background-color:gray;color:#fff;">@item.LEVEL4</td>
                             </tr>
                             foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.OrderByDescending(r => Convert.ToDecimal(r.VOLUME)).ToList())
                             {
@@ -96,6 +98,7 @@
                                     <td> @detail.ACTIONPLAN</td>
                                     <td> @detail.RESPONSIBLE</td>
                                     <td> @detail.GAPANALYSIS</td>
+                                    <td> @detail.LEVEL4</td>
                                 </tr>
                             }
                         }

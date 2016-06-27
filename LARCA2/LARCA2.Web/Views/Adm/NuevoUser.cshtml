@@ -75,7 +75,7 @@
 
                 $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
 
-            $('#tablaPermisos tr:last').after('<tr><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Quitar</button></td></tr>');
+            $('#tablaPermisos tr:last').after('<tr><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Remove</button></td></tr>');
 
             permisosArray.push({ CBU: CBU_valId, SMO: SMO_valId, OWN: OWN_valId, Id: x });
             x++;

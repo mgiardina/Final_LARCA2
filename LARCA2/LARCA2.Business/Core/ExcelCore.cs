@@ -173,6 +173,7 @@ namespace LARCA2.Business.Core
             ws.Cell(3, 10).Value = "Action Plan";
             ws.Cell(3, 11).Value = "Responsible";
             ws.Cell(3, 12).Value = "GAP Analysis";
+            ws.Cell(3, 13).Value = "Other Classification";
 
             var rngHeaders = ws.Range("A3:L3");
             rngHeaders.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
@@ -195,6 +196,7 @@ namespace LARCA2.Business.Core
                 ws.Cell(row, 10).Value = item.ACTIONPLAN;
                 ws.Cell(row, 11).Value = item.RESPONSIBLE;
                 ws.Cell(row, 12).Value = item.GAPANALYSIS;
+                ws.Cell(row, 13).Value = item.LEVEL4;
                 row++;
 
                 //Ahora agregamos las Filas hijas de las Grises
@@ -213,6 +215,7 @@ namespace LARCA2.Business.Core
                     ws.Cell(row, 10).Value = subitem.ACTIONPLAN;
                     ws.Cell(row, 11).Value = subitem.RESPONSIBLE;
                     ws.Cell(row, 12).Value = subitem.GAPANALYSIS;
+                    ws.Cell(row, 13).Value = item.LEVEL4;
                     row++;
                 }
             }

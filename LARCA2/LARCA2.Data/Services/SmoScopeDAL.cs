@@ -38,6 +38,18 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_SmoScope.ToList();
         }
 
+        public List<LARCA20_SmoScope> Filtrar(List<LARCA20_User_Owner> permisos)
+        {
+            var listaResult = new List<LARCA20_SmoScope>();
+            foreach (var permiso in permisos)
+            {
+                var listTemp = Context.LARCA20_SmoScope.ToList().Where(s => s.RefIdBU == permiso.IdBU && s.RefIdSMO == permiso.IdSmo).ToList();
+                listaResult.AddRange(listTemp);
+            }
+            // DateTime siev = DateTime.Now.AddDays(-7);
+            return listaResult;
+        }
+
         public override LARCA20_SmoScope Traer(long id)
         {
             return Context.LARCA20_SmoScope.SingleOrDefault(r => r.SmoScopeID == id);

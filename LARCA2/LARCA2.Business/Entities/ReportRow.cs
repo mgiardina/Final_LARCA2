@@ -19,6 +19,7 @@ namespace LARCA2.Business.Entities
         public string ACTIONPLAN { get; set; }
         public string RESPONSIBLE { get; set; }
         public string GAPANALYSIS { get; set; }
+        public string LEVEL4 { get; set; }
         public List<ReportRow> Details { get; set; }
     }
 }
