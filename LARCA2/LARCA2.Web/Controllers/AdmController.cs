@@ -12,7 +12,6 @@ namespace LARCA2.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Message = "Alta.";
             return View("NuevoUser");
         }
 
@@ -60,10 +59,10 @@ namespace LARCA2.Controllers
                         user.Nombre = model.Usuario.Nombre;
                         user.Apellido = model.Usuario.Apellido;
                         user.Borrado = false;
-                       // user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
+                        user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
                         user.Fecha = DateTime.Now;
-                        user.Email = model.Usuario.Usuario + "@pg.com";
-                       // user.Telefono = model.Usuario.Telefono;
+                        user.Email = model.Usuario.Email;
+                        user.Telefono = model.Usuario.Telefono;
                         user.Usuario = model.Usuario.Usuario;
                         repo.Guardar(user);
 
@@ -86,37 +85,15 @@ namespace LARCA2.Controllers
                             Business.Services.UserOwnerBLL RepUserOW = new Business.Services.UserOwnerBLL();
                             Data.DatabaseModels.LARCA20_User_Owner userOW = new Data.DatabaseModels.LARCA20_User_Owner();
                             string[] PerEsp = iUs.Split('.');
-
-                            if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
-                            {
-                                userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
-                                userOW.IdUsuario = lastProductId;
-                                userOW.Borrado = false;
-                                RepUserOW.Guardar(userOW);
-                            }
-
-                            if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                            {
-
-                                userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                userOW.IdUsuario = lastProductId;
-                                userOW.Borrado = false;
-                                RepUserOW.Guardar(userOW);
-                            }
-
-                            if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                            {
-
-                                userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                userOW.IdUsuario = lastProductId;
-                                userOW.Borrado = false;
-                                RepUserOW.Guardar(userOW);
-                            }
+                            userOW.IdBU = Convert.ToInt32(PerEsp[0]);
+                            userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
+                            userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
+                            userOW.IdUsuario = lastProductId;
+                            userOW.Borrado = false;
+                            RepUserOW.Guardar(userOW);
                         }
 
-                     
+
                         return Content("<script language='javascript' type='text/javascript'>alert('Se guardo con éxito');document.location = '../Adm/UserBM';</script>");
                     }
                     else
@@ -186,10 +163,10 @@ namespace LARCA2.Controllers
                             user.Nombre = model.Usuario.Nombre;
                             user.Apellido = model.Usuario.Apellido;
                             user.Borrado = model.Usuario.Borrado;
-                            //user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
+                            user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
                             user.Fecha = DateTime.Now;
-                            user.Email = model.Usuario.Usuario + "@pg.com";
-                            //user.Telefono = model.Usuario.Telefono;
+                            user.Email = model.Usuario.Email;
+                            user.Telefono = model.Usuario.Telefono;
                             user.Usuario = model.Usuario.Usuario;
                             repo.Guardar(user);
 
@@ -210,45 +187,17 @@ namespace LARCA2.Controllers
                             {
                                 Data.DatabaseModels.LARCA20_User_Owner userOW = new Data.DatabaseModels.LARCA20_User_Owner();
                                 string[] PerEsp = iUs.Split('.');
-
-
-                                if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
-                                {
-                                    userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                    userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                    userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
-                                    userOW.IdUsuario = model.Usuario.IdRenglon;
-                                    userOW.Borrado = false;
-                                    RepUserOW.Guardar(userOW);
-                                }
-
-                                if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                                {
-
-                                    userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                    userOW.IdSmo = null;
-                                    userOW.IdOwner = null;
-                                    userOW.IdUsuario = model.Usuario.IdRenglon;
-                                    userOW.Borrado = false;
-                                    RepUserOW.Guardar(userOW);
-                                }
-
-                                if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                                {
-
-                                    userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                    userOW.IdOwner = null;
-                                    userOW.IdBU = null;
-                                    userOW.IdUsuario = model.Usuario.IdRenglon;
-                                    userOW.Borrado = false;
-                                    RepUserOW.Guardar(userOW);
-                                }
-
+                                userOW.IdBU = Convert.ToInt32(PerEsp[0]);
+                                userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
+                                userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
+                                userOW.IdUsuario = model.Usuario.IdRenglon;
+                                userOW.Borrado = false;
+                                RepUserOW.Guardar(userOW);
                             }
 
                             return Content("<script language='javascript' type='text/javascript'>alert('Se ha modificado el registro correctamente');document.location = '../Adm/UserBM';</script>");
                         }
-                    }           
+                    }
                     else
                     {
                         mensError = "Debe seleccionar al menos un permiso Especial";
@@ -288,7 +237,7 @@ namespace LARCA2.Controllers
             else
                 username = repoResponsables.TraerSuNombreDeUsuario(idref);
             List<LARCA2.Data.DatabaseModels.LARCA20_Usuarios> list = repoUsuarios.Todos();
-         
+            //      string username =  list.Where(u => u.IdRenglon == idref).FirstOrDefault().Usuario;
             foreach (SelectListItem item in lsli)
             {
                 if (item.Text == username)
@@ -307,12 +256,12 @@ namespace LARCA2.Controllers
 
         public static List<SelectListItem> LeveSelectItem(List<SelectListItem> lsli, int idref)
         {
-       
+
             LARCA2.Business.Services.Level4BLL repoNivel = new LARCA2.Business.Services.Level4BLL();
             List<LARCA2.Data.DatabaseModels.LARCA20_Level4> list = repoNivel.Todos();
             if (idref == null || idref == 0)
             {
-                
+
                 lsli[0].Selected = true;
                 foreach (SelectListItem sli in lsli.Where(x => x.Value != "0").ToList())
                     sli.Selected = false;
@@ -338,7 +287,7 @@ namespace LARCA2.Controllers
             Data.DatabaseModels.LARCA20_Usuarios userdefault = repo.Traer(id);
             Larca2.Models.UserForm userForm = new Larca2.Models.UserForm();
             userForm.Usuario = userdefault;
-            //userForm.Usuario.Clave = Larca2.Utilities.Crypto.Decrypt(userForm.Usuario.Clave);
+            userForm.Usuario.Clave = Larca2.Utilities.Crypto.Decrypt(userForm.Usuario.Clave);
             Business.Services.RolesBLL RepoRol = new Business.Services.RolesBLL();
             ViewBag.ComboRol = new SelectList(RepoRol.Todos(), "IdRenglon", "Descripcion");
 
@@ -363,38 +312,10 @@ namespace LARCA2.Controllers
             {
                 if (fila.Borrado == false)
                 {
-                    if( fila.IdBU != null && fila.IdSmo != null && fila.IdOwner != null)
-                     { 
-
-                       if (ren == "")
-                          ren = fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
-                       else
-                          ren = ren + "/" + fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
-                      }
-
-                     if( fila.IdBU != null && fila.IdSmo == null && fila.IdOwner == null)
-                      {
-                          fila.IdSmo = 0;
-                          fila.IdOwner = 0;
-
-                          if (ren == "")
-                              ren = fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
-                          else
-                              ren = ren + "/" + fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
-
-                      }
-
-                     if (fila.IdBU == null && fila.IdSmo != null && fila.IdOwner == null)
-                      {
-                          fila.IdBU = 0;
-                          fila.IdOwner = 0;
-
-                          if (ren == "")
-                              ren = fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
-                          else
-                              ren = ren + "/" + fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
-                      }
-
+                    if (ren == "")
+                        ren = fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
+                    else
+                        ren = ren + "/" + fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
                 }
             }
             ViewBag.PermisosUser = ren;
@@ -404,7 +325,7 @@ namespace LARCA2.Controllers
 
         public ActionResult UserBM(string txtNombre, string txtApellido)
         {
-            
+            ViewBag.Message = "Pantalla de modificación de Usuarios";
             Larca2.Models.UserSearchForm userSearchForm = new Larca2.Models.UserSearchForm();
             Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
 
@@ -420,7 +341,6 @@ namespace LARCA2.Controllers
 
         public ActionResult RcClasificationBM(string txtCod, string txtDes)
         {
-            ViewBag.Message = "Pantalla de modificación de RC Clasifications";
             Larca2.Models.RcClasificationSearchForm RcClasificationSearchForm = new Larca2.Models.RcClasificationSearchForm();
             Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
 
@@ -431,14 +351,19 @@ namespace LARCA2.Controllers
 
         }
 
-        public ActionResult ModifRcClasification(Larca2.Models.RcClasificationSearchForm RcClasification, string txtIdRenglon)
+        public ActionResult ModifRcClasification(Larca2.Models.RcClasificationSearchForm model, string txtIdRenglon)
         {
             long id = Int32.Parse(txtIdRenglon);
-            Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
-            Data.DatabaseModels.LARCA20_RcClasification RcCdefault = repo.Traer(id);
-            Larca2.Models.RcClasificationSearchForm RcCForm = new Larca2.Models.RcClasificationSearchForm();
-            RcCForm.RcClasification = RcCdefault;
-            return View("ModifRcClasification", RcCForm);
+            var repo = new Business.Services.RCClassificationBLL();
+            var updated = repo.Traer(id);
+            var edited = model.RcClasificationList.SingleOrDefault(m => m.IdRenglon == id);
+            updated.Nivel = edited.Nivel;
+            updated.Codigo = edited.Codigo;
+            updated.Descripcion = edited.Descripcion;
+            updated.Ownership = edited.Ownership;
+            updated.Borrado = edited.Borrado;
+            repo.Guardar(updated);
+            return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/RcClasificationBM';</script>");
 
         }
 
@@ -496,7 +421,6 @@ namespace LARCA2.Controllers
 
         public ActionResult AuxDataBM()
         {
-            ViewBag.Message = "Pantalla de modificación de Valores Globales";
             Larca2.Models.AuxDataSearchForm AuxDataSearchForm = new Larca2.Models.AuxDataSearchForm();
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
 
@@ -540,7 +464,7 @@ namespace LARCA2.Controllers
                 user.DiasReporte = model.AuxData.DiasReporte;
                 repo.Guardar(user);
 
-                return Content("<script language='javascript' type='text/javascript'>alert('Se ha modificado el registro correctamente');document.location = '../Adm/AuxDataBM';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/AuxDataBM';</script>");
             }
             else
             {
@@ -554,7 +478,6 @@ namespace LARCA2.Controllers
 
         public ActionResult MasterDataBM(string txtCod, string txtDes, string txtId, string txtTodos, string ddlGrupos)
         {
-            ViewBag.Message = "Pantalla de modificación de Master Data";
             Larca2.Models.MasterDataSearchForm MasterDataSearchForm = new Larca2.Models.MasterDataSearchForm();
             Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
 
@@ -586,7 +509,6 @@ namespace LARCA2.Controllers
 
         public ActionResult NuevaMasterData()
         {
-            ViewBag.Message = "Alta.";
             return View("NuevoMasterData");
         }
 
@@ -600,7 +522,7 @@ namespace LARCA2.Controllers
                 user.DataIni = model.MasterData.DataIni;
                 user.DataFin = model.MasterData.DataFin;
                 repo.Guardar(user);
-                return Content("<script language='javascript' type='text/javascript'>alert('Se guardo con éxito');document.location = '../Adm/MasterDataBM';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/MasterDataBM';</script>");
             }
             else
             {
@@ -608,16 +530,36 @@ namespace LARCA2.Controllers
             }
         }
 
-        public ActionResult ModifMasterData(Larca2.Models.MasterDataSearchForm model, string txtIdRenglon, string ddlGrupos)
+        public ActionResult ModifMasterData(Larca2.Models.MasterDataSearchForm model, string txtIdRenglon, string ddlGrupos, string txtType, string txtDataFin)
         {
-            long id = Int32.Parse(txtIdRenglon);
-            Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
-            Data.DatabaseModels.LARCA20_MasterData RcMasterData = repo.Traer(id);
-            Larca2.Models.MasterDataSearchForm RcCForm = new Larca2.Models.MasterDataSearchForm();
-            RcCForm.MasterData = RcMasterData;
-            ViewBag.Grupo = RcMasterData.Data;
-            return View("ModifMasterData", RcCForm);
-
+            if (txtType == "Edit")
+            {
+                long id = Int32.Parse(txtIdRenglon);
+                Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
+                Data.DatabaseModels.LARCA20_MasterData RcMasterData = repo.Traer(id);
+                Larca2.Models.MasterDataSearchForm RcCForm = new Larca2.Models.MasterDataSearchForm();
+                RcCForm.MasterData = RcMasterData;
+                ViewBag.Grupo = RcMasterData.Data;
+                return View("ModifMasterData", RcCForm);
+            }
+            else
+            {
+                if (txtType == "Save")
+                {
+                    long id = Int32.Parse(txtIdRenglon);
+                    Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
+                    Data.DatabaseModels.LARCA20_MasterData masterData = repo.Traer(id);
+                    masterData.Data = masterData.Data;
+                    masterData.DataIni = masterData.DataIni;
+                    masterData.DataFin = model.MasterDataList.SingleOrDefault(m => m.IdRenglon == id).DataFin;
+                    repo.Guardar(masterData);
+                    return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/MasterDataBM';</script>");
+                }
+                else
+                {
+                    return View("MasterDataBM", model);
+                }
+            }
         }
 
         public ActionResult ModificarMasterData(Larca2.Models.MasterDataSearchForm model)
@@ -632,7 +574,7 @@ namespace LARCA2.Controllers
                 MsD.DataFin = model.MasterData.DataFin;
                 MsD.Borrado = model.MasterData.Borrado;
                 repo.Guardar(MsD);
-                return Content("<script language='javascript' type='text/javascript'>alert('Se ha modificado el registro correctamente');document.location = '../Adm/MasterDataBM';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/MasterDataBM';</script>");
             }
             else
             {
@@ -697,14 +639,14 @@ namespace LARCA2.Controllers
 
         public ActionResult Modificar_abm_level4(Larca2.Models.Level4SearchForm model)
         {
-            if( model.Level4.Nombre != null)
+            if (model.Level4.Nombre != null)
             {
                 Business.Services.Level4BLL repo = new Business.Services.Level4BLL();
                 Data.DatabaseModels.LARCA20_Level4 RcC = repo.Traer(model.Level4.Id);
                 RcC.Nombre = model.Level4.Nombre;
                 repo.Guardar(RcC);
                 return Content("<script language='javascript' type='text/javascript'>alert('Se ha modificado el registro correctamente');document.location = '../Adm/Level4';</script>");
-        
+
             }
 
             else
@@ -725,7 +667,7 @@ namespace LARCA2.Controllers
         public ActionResult Agregar_abm_level4(Larca2.Models.Level4SearchForm model, string txtNivel)
         {
 
-            if (model.Level4.Nombre != null) 
+            if (model.Level4.Nombre != null)
             {
                 long RefIdRenglon = Int32.Parse(txtNivel);
 
@@ -737,7 +679,7 @@ namespace LARCA2.Controllers
                 user.Nombre = model.Level4.Nombre;
                 repo.Guardar(user);
                 return Content("<script language='javascript' type='text/javascript'>alert('Se guardo con éxito');document.location = '../Adm/Level4';</script>");
-               
+
             }
 
             else
