@@ -95,7 +95,7 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
-    max-width: 960px;
+    max-width: 6000px;
 }
 
 #body {
@@ -401,8 +401,32 @@ aside {
 fieldset {
     border: none;
     margin: 0;
-    padding: 0;
+    padding: 1em; /*previosly was 0*/
+    align-content: flex-start;
 }
+
+fieldset label {
+  float:left;
+  width:25%;
+    margin-left:2em;
+  margin-right:0.5em;
+  padding-top:0.2em;
+  text-align:left;
+  font-weight:bold;
+  }
+
+fieldset select {
+  float:left;
+  margin-right:0.5em;
+  }
+
+fieldset input {
+  float:left;
+  width:25%;
+  margin-right:0.5em;
+  padding-top:0.2em;
+  text-align:left;
+  }
 
     fieldset legend {
         display: none;
@@ -808,4 +832,13 @@ margin-left: 10px;
 -webkit-border-radius: 6px 0 6px 6px;
 -moz-border-radius: 6px 0 6px 6px;
 border-radius: 6px 0 6px 6px;
+}
+
+.dropdown-submenu.pull-left2 {
+float: none;
+}
+
+.dropdown-submenu.pull-left2>.dropdown-menu {
+left: -100%;
+margin-left: 10px;
 }

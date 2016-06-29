@@ -329,6 +329,10 @@ namespace Larca2.Controllers
             //viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+           
+            
+            if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1) ).Count() > 0) 
+            viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
 
             //Copio la lista a los editables para poder modificar los datos necesarios.
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
@@ -448,7 +452,8 @@ namespace Larca2.Controllers
                     LARCA2.Data.DatabaseModels.LARCA20_SmoScope clon = new LARCA2.Data.DatabaseModels.LARCA20_SmoScope();
 
 
-                    /*RC
+                    /*OLD
+    RC
     SMO
     BU
     VOLUMEN
@@ -462,30 +467,44 @@ namespace Larca2.Controllers
     O_C
     LEVEL4*/
 
+                    /*NEW
+    VOLUMEN
+    SMO
+    BU
+    RC
+    LEVEL4
+    PROBLEM
+    WHY1
+    WHY2
+    WHY3
+    ACTIONPLAN
+    RESPONSABLE
+    DUEDATE
+    O_C*/
 
                     DateTime due;
                     clon.SmoScopeID = 0;
-                    clon.ActionPlan = actFilt[8];
+                    clon.ActionPlan = actFilt[9];
                     clon.Borrado = false;
-                    clon.DueDate = (DateTime.TryParse(actFilt[10], out due)? due : DateTime.Now.AddDays(7));
+                    clon.DueDate = (DateTime.TryParse(actFilt[11], out due)? due : DateTime.Now.AddDays(7));
                     clon.Fecha = DateTime.Now;
-                    clon.Volumen = Decimal.Parse(actFilt[3]);
-                    clon.Problem = actFilt[4];
-                    clon.Why1 = actFilt[5];
-                    clon.Why2 = actFilt[6];
-                    clon.Why3 = actFilt[7];
-                    clon.O_C = (actFilt[11] == "O" || actFilt[11] == "C"? actFilt[11] : "O" );
-                    clon.RefIdBU = mdClones.TraerPorData("BU", actFilt[2]).IdRenglon;
+                    clon.Volumen = Decimal.Parse(actFilt[0]); //antes 3
+                    clon.Problem = actFilt[5];
+                    clon.Why1 = actFilt[6];
+                    clon.Why2 = actFilt[7];
+                    clon.Why3 = actFilt[8];
+                    clon.O_C = (actFilt[12] == "O" || actFilt[12] == "C"? actFilt[12] : "O" );
+                    clon.RefIdBU = mdClones.TraerPorDataFin("BU", actFilt[2]).IdRenglon;
                     clon.RefIdSMO = mdClones.TraerPorData("SMO", actFilt[1]).IdRenglon;
                     clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.IdRenglon).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
-                    clon.RefIdRC = rcClones.TraerPorDesc(actFilt[0]).IdRenglon;
+                    clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).IdRenglon;
                     int io;
                     if (Int32.TryParse(actFilt[9].ToString(), out io) == true)
-                        clon.RefIdResponsable = respoClones.Traer(Int32.Parse(actFilt[9])).IdRenglon;
+                        clon.RefIdResponsable = respoClones.Traer(Int32.Parse(actFilt[10])).IdRenglon;
                     else
                         clon.RefIdResponsable = null;
 
-                    clon.Level4 = lvlClones.Todos().Where(l => l.Borrado == false && l.Id == Int32.Parse(actFilt[12])).First().Id;
+                    clon.Level4 = lvlClones.Todos().Where(l => l.Borrado == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
 
                     repoGuardado.Guardar(clon);
                     //buscar IDs y guardar en tabla LARCA20_SmoScope -en user owner no deberia hacer falta, cuando haya que hacer pruebas revisar si con un solo user owner se obtienen todos los registros de la tabla de smo scope correspondientes-
