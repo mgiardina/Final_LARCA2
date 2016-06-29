@@ -20,106 +20,355 @@
 <script type="text/javascript">
 
     var permisosArray = [];
+    var permisosArray_SMO = [];
+    var permisosArray_BU = [];
     var Repetido = false;
     var x = 0;
+    var rol_selected;
+    var rol = 0;
 
-    function AgregaPermisoESP()
-    {
-        
-        var CBU_valo = $("#CboBU").val();
-        var CBU_desc = $("#CboBU option:selected").text();
-        var CBU_valId = $("#CboBU option:selected").val();
+    function AgregaPermisoESP() {
 
-        var SMO_valo = $("#CboSMO").val();
-        var SMO_desc = $("#CboSMO option:selected").text();
-        var SMO_valId = $("#CboSMO option:selected").val();
+        if (rol == 1) {
 
-        var OWN_valo = $("#CboOWNER").val();
-        var OWN_desc = $("#CboOWNER option:selected").text();
-        var OWN_valId = $("#CboOWNER option:selected").val();
+            var CBU_valo = $("#CboBU").val();
+            var CBU_desc = $("#CboBU option:selected").text();
+            var CBU_valId = $("#CboBU option:selected").val();
 
-        if (CBU_valId == 0) {
-            alert("Choose a valid BU");
-            return;
-        }
-        if (SMO_valId == 0) {
-            alert("Choose a valid SMO");
-            return;
-        }
-        if (OWN_valId == 0) {
-            alert("Choose a valid OWNER");
-            return;
-        }
-        
-        if (permisosArray.length != 0)
-         {
+            var SMO_valo = $("#CboSMO").val();
+            var SMO_desc = $("#CboSMO option:selected").text();
+            var SMO_valId = $("#CboSMO option:selected").val();
 
-           for (var i = 0; i < permisosArray.length; i++)
-             {
+            var OWN_valo = $("#CboOWNER").val();
+            var OWN_desc = $("#CboOWNER option:selected").text();
+            var OWN_valId = $("#CboOWNER option:selected").val();
 
-               if (CBU_valo == permisosArray[i].CBU && SMO_valo == permisosArray[i].SMO && OWN_valo == permisosArray[i].OWN)
-               {
-                  Repetido = true;
-               }
-             }
-         }
- 
-        if (!Repetido)
-          {
-            var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
-            if ($("#HI_PermisosEsp").val() == "") {
-                $("#HI_PermisosEsp").val(carga);
-
+            if (CBU_valId == 0) {
+                alert("Choose a valid BU");
+                return;
             }
-            else
+            if (SMO_valId == 0) {
+                alert("Choose a valid SMO");
+                return;
+            }
+            if (OWN_valId == 0) {
+                alert("Choose a valid OWNER");
+                return;
+            }
 
-                $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+            if (permisosArray.length != 0) {
 
-            $('#tablaPermisos tr:last').after('<tr><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Remove</button></td></tr>');
+                for (var i = 0; i < permisosArray.length; i++) {
 
-            permisosArray.push({ CBU: CBU_valId, SMO: SMO_valId, OWN: OWN_valId, Id: x });
-            x++;
+                    if (CBU_valo == permisosArray[i].CBU && SMO_valo == permisosArray[i].SMO && OWN_valo == permisosArray[i].OWN) {
+                        Repetido = true;
+                    }
+                }
+            }
+
+            if (!Repetido) {
+                var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+                if ($("#HI_PermisosEsp").val() == "") {
+                    $("#HI_PermisosEsp").val(carga);
+
+                }
+                else
+
+                    $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+
+                $('#tablaPermisos tr:last').after('<tr  id= "tr_Editor"><td style="display: none">' + CBU_valId + '</td><td style="display: none">' + SMO_valId + '</td><td style="display: none">' + OWN_valId + '</td><td>' + CBU_desc + '</td><td>' + SMO_desc + '</td><td>' + OWN_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Remove</button></td></tr>');
+
+                permisosArray.push({ CBU: CBU_valId, SMO: SMO_valId, OWN: OWN_valId, Id: x });
+                x++;
+            }
+
+            Repetido = false;
+        }
+
+
+        if (rol == 2) {
+
+            var SMO_valo = $("#CboSMO").val();
+            var SMO_desc = $("#CboSMO option:selected").text();
+            var SMO_valId = $("#CboSMO option:selected").val();
+       
+            if (SMO_valId == 0) {
+                alert("Choose a valid SMO");
+                return;
+            }
+
+            if (permisosArray_SMO.length != 0) {
+
+                for (var i = 0; i < permisosArray_SMO.length; i++) {
+
+                    if (SMO_valo == permisosArray_SMO[i].SMO) {
+                        Repetido = true;
+                    }
+                }
+            }
+
+            if (!Repetido) {
+
+                CBU_valId = "0";
+                OWN_valId = "0";
+
+                var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+
+                if ($("#HI_PermisosEsp").val() == "") {
+                    $("#HI_PermisosEsp").val(carga);
+
+                }
+                else
+
+                    $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+
+
+                $('#tablaPermisos tr:last').after('<tr id= "tr_SMO"><td style="display: none">' + SMO_valId + '</td><td>' + SMO_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Remove</button></td></tr>');
+
+                permisosArray_SMO.push({ SMO: SMO_valId, Id: x });
+                x++;
+            }
+
+            Repetido = false;
+        }
+
+        if (rol == 3) {
+
+            var CBU_valo = $("#CboBU").val();
+            var CBU_desc = $("#CboBU option:selected").text();
+            var CBU_valId = $("#CboBU option:selected").val();
+
+            if (CBU_valId == 0) {
+                alert("Choose a valid BU");
+                return;
+            }
+
+            if (permisosArray_BU.length != 0) {
+
+                for (var i = 0; i < permisosArray_BU.length; i++) {
+
+                    if (SMO_valo == permisosArray_BU[i].BU) {
+                        Repetido = true;
+                    }
+                }
+            }
+
+            if (!Repetido) {
+                SMO_valId = "0";
+                OWN_valId = "0";
+
+                var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+                if ($("#HI_PermisosEsp").val() == "") {
+                    $("#HI_PermisosEsp").val(carga);
+
+                }
+                else
+
+                    $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+
+                $('#tablaPermisos tr:last').after('<tr><td  id= "tr_BU" style="display: none">' + CBU_valId + '</td><td>' + CBU_desc + '</td><td><button id="' + x + '"" onclick="FuncLESSPermiso(this)" value="Quitar" class="btn btn-warning"> Remove</button></td></tr>');
+
+                permisosArray_BU.push({ BU: CBU_valId, Id: x });
+                x++;
+            }
+
+            Repetido = false;
+        }
+
+
+
+    }
+
+    function FuncLESSPermiso(donde) {
+
+        if (rol == 1) {
+
+            var x = $(donde).attr("id");
+
+            for (var i = 0; i < permisosArray.length; i++) {
+
+                if (x == permisosArray[i].Id) {
+                    permisosArray.splice(i, 1);
+                }
+            }
+
+            $(donde).closest('tr').remove();
+
+            $("#HI_PermisosEsp").val("");
+            $("#tablaPermisos tr").each(function (index) {
+                var p1 = $(this).find("td").eq(0).html();
+                var p2 = $(this).find("td").eq(1).html();
+                var p3 = $(this).find("td").eq(2).html();
+
+                if (p1 != "") {
+                    var carga = p1 + "." + p2 + "." + p3;
+                    if ($("#HI_PermisosEsp").val() == "") {
+                        $("#HI_PermisosEsp").val(carga);
+
+                    }
+                    else
+                        $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+                }
+            });
+        }
+     
+        if (rol == 2) {
+
+            var x = $(donde).attr("id");
+
+            for (var i = 0; i < permisosArray_SMO.length; i++) {
+
+                if (x == permisosArray_SMO[i].Id) {
+                    permisosArray_SMO.splice(i, 1);
+                }
+            }
+
+            $(donde).closest('tr').remove();
+
+            $("#HI_PermisosEsp").val("");
+            $("#tablaPermisos tr").each(function (index) {
+
+                var p2 = $(this).find("td").eq(0).html();
+
+
+                if (p2 != "") {
+                    var carga = p2;
+                    if ($("#HI_PermisosEsp").val() == "") {
+                        $("#HI_PermisosEsp").val(carga);
+
+                    }
+                    else
+                        $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+                }
+            });
+        }
+
+        if (rol == 3) {
+
+            var x = $(donde).attr("id");
+
+            for (var i = 0; i < permisosArray_BU.length; i++) {
+
+                if (x == permisosArray_BU[i].Id) {
+                    permisosArray_BU.splice(i, 1);
+                }
+            }
+
+            $(donde).closest('tr').remove();
+
+            $("#HI_PermisosEsp").val("");
+            $("#tablaPermisos tr").each(function (index) {
+
+                var p2 = $(this).find("td").eq(0).html();
+
+
+                if (p2 != "") {
+                    var carga = p2;
+                    if ($("#HI_PermisosEsp").val() == "") {
+                        $("#HI_PermisosEsp").val(carga);
+
+                    }
+                    else
+                        $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
+                }
+            });
+        }
+
+
+    }
+
+    function RolesFunction(sel) {
+        rol_selected = sel.options[sel.selectedIndex].text;
+
+
+        if (rol_selected == "Editor")
+        {
+            rol = 1;
+
+            permisosArray_SMO = [];
+            permisosArray_BU = [];
+
+            $('#tablaPermisos #tr_SMO').remove();
+            $('#tablaPermisos #tr_BU').remove();
+
+
+            document.getElementById("tr_label_smo").style.display = 'none';
+            document.getElementById("tr_label_todos").style.display = "";
+            document.getElementById("tr_label_bu").style.display = 'none';
+
+
+            document.getElementById("PermisosEspeciales").style.display = "";
+            document.getElementById("BU_Permits_div").style.display = "";
+            document.getElementById("Owner_Permits_div").style.display = "";
+            document.getElementById("SMO_Permits_div").style.display = "";
           }
 
-        Repetido = false;    
-    }
+        else 
+          {
 
-    function FuncLESSPermiso(donde)
-    {
-       var x = $(donde).attr("id");
-      
-       for (var i = 0; i < permisosArray.length; i++)
-         {
+            if (rol_selected == "SMO Clustering Editor")
+            {
+                rol = 2;
+                
+                permisosArray_BU = [];
+                permisosArray = [];
 
-           if (x == permisosArray[i].Id)
-             {
-               permisosArray.splice(i, 1);
-             }
-         }
+                $('#tablaPermisos #tr_BU').remove();
+                $('#tablaPermisos #tr_Editor').remove();
 
-       $(donde).closest('tr').remove();
-        
-        $("#HI_PermisosEsp").val("");
-        $("#tablaPermisos tr").each(function (index) {
-            var p1 = $(this).find("td").eq(0).html();
-            var p2 = $(this).find("td").eq(1).html();
-            var p3 = $(this).find("td").eq(2).html()       
 
-            if (p1 != "") {
-                var carga = p1 + "." + p2 + "." + p3;
-                if ($("#HI_PermisosEsp").val() == "")
+                document.getElementById("tr_label_smo").style.display = "";
+                document.getElementById("tr_label_todos").style.display = 'none';
+                document.getElementById("tr_label_bu").style.display = 'none';
+                
+
+                document.getElementById("PermisosEspeciales").style.display = "";
+                document.getElementById("SMO_Permits_div").style.display = "";
+                document.getElementById("Owner_Permits_div").style.display = 'none';
+                document.getElementById("BU_Permits_div").style.display = 'none';
+             
+              }
+            else 
+              {
+                if (rol_selected == "BU Clustering Editor")
                 {
-                $("#HI_PermisosEsp").val(carga);
-       
-                }
-            else
-                $("#HI_PermisosEsp").val($("#HI_PermisosEsp").val() + "/" + carga);
-            }
-        });
+                    rol = 3;
 
-    
+                    permisosArray_SMO = [];
+                    permisosArray = [];
 
+                    $('#tablaPermisos #tr_Editor').remove();
+                    $('#tablaPermisos #tr_SMO').remove();
+
+                    document.getElementById("tr_label_smo").style.display = 'none';
+                    document.getElementById("tr_label_todos").style.display = 'none';
+                    document.getElementById("tr_label_bu").style.display = "";
+
+
+                    document.getElementById("PermisosEspeciales").style.display = "";
+                    document.getElementById("BU_Permits_div").style.display = "";
+                    document.getElementById("Owner_Permits_div").style.display = 'none';
+                    document.getElementById("SMO_Permits_div").style.display = 'none';
+
+                  }
+                else
+                  {
+                    rol = 0;
+
+                    permisosArray_BU = [];
+                    permisosArray_SMO = [];
+                    permisosArray = [];
+
+                    $('#tablaPermisos #tr_Editor').remove();
+                    $('#tablaPermisos #tr_SMO').remove();
+                    $('#tablaPermisos #tr_BU').remove();
+                 
+                    document.getElementById("PermisosEspeciales").style.display = 'none';
+                  }  
+               }
+          }
     }
+
 </script>
 
 <div class="container-fluid">
@@ -127,82 +376,59 @@
     {
         <input name="HI_PermisosEsp" id="HI_PermisosEsp" type="hidden" value="" />
         <div class="row">
-                <div class="col-sm-13">
-                    <fieldset class="form-group">
-                        <label for="Nombre">First Name</label>
-                            @Html.TextBoxFor(m => m.Usuario.Nombre, new { @class = "form-control", @placeholder = "First Name ..." })
-                        <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Nombre)</small>
-                    </fieldset>
-                </div>
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">First Name</label>
+                    @Html.TextBoxFor(m => m.Usuario.Nombre, new { @class = "form-control", @placeholder = "First Name ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Nombre)</small>
+                </fieldset>
             </div>
+        </div>
         <div class="row">
-                <div class="col-sm-13">
-                    <fieldset class="form-group">
-                        <label for="Nombre">Last Name</label>
-                            @Html.TextBoxFor(m => m.Usuario.Apellido, new { @class = "form-control", @placeholder = "Last Name ..." })
-                        <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Apellido)</small>
-                    </fieldset>
-                </div>
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Last Name</label>
+                    @Html.TextBoxFor(m => m.Usuario.Apellido, new { @class = "form-control", @placeholder = "Last Name ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Apellido)</small>
+                </fieldset>
             </div>
+        </div>
         <div class="row">
-                <div class="col-sm-13">
-                    <fieldset class="form-group">
-                        <label for="Nombre">Username</label>
-                            @Html.TextBoxFor(m => m.Usuario.Usuario, new { @class = "form-control", @placeholder = "Username ..." })
-                        <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Usuario)</small>
-                    </fieldset>
-                </div>
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Username</label>
+                    @Html.TextBoxFor(m => m.Usuario.Usuario, new { @class = "form-control", @placeholder = "Username ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Usuario)</small>
+                </fieldset>
             </div>
+        </div>
         <div class="row">
-                <div class="col-sm-13">
-                    <fieldset class="form-group">
-                        <label for="Nombre">Password</label>
-                            @Html.TextBoxFor(m => m.Usuario.Clave, new { @class = "form-control", @placeholder = "Password ..." })
-                        <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Clave)</small>
-                    </fieldset>
-                </div>
-            </div>
-        <div class="row">
-                <div class="col-sm-13">
-                    <fieldset class="form-group">
-                        <label for="Nombre">Email</label>
-                            @Html.TextBoxFor(m => m.Usuario.Email, new { @class = "form-control", @placeholder = "Email ..." })
-                        <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Email)</small>
-                    </fieldset>
-                </div>
-            </div>
-        <div class="row">
-                <div class="col-sm-13">
-                    <fieldset class="form-group">
-                        <label for="Nombre">Phone No</label>
-                            @Html.TextBoxFor(m => m.Usuario.Telefono, new { @class = "form-control", @placeholder = "Phone No ..." })
-                    </fieldset>
-                </div>
-            </div>
-        <div class="row">
-                <div class="col-sm-13">
-                    <fieldset class="form-group">
-                        <label for="Nombre">Roles</label>
-                            @{
-                                List<SelectListItem> ListRoles = new List<SelectListItem>();
-                                ListRoles.Add(new SelectListItem() { Value = "0", Text = "Choose a Role", Selected = false });
+            <div class="col-sm-13">
+                <fieldset class="form-group">
+                    <label for="Nombre">Roles</label>
+                    @{
+        List<SelectListItem> ListRoles = new List<SelectListItem>();
+        ListRoles.Add(new SelectListItem() { Value = "0", Text = "Choose a Role", Selected = false });
 
-                                //var listItems = new SelectList(@ViewBag.ComboRol);
-                                foreach (var fila in ViewBag.ComboRol)
-                                {
-                                    ListRoles.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
-                                }
-                            }
-                            @Html.DropDownList("CboRoles", ListRoles, new { @class = "form-control", @placeholder = "Roles ..." })
-                            @if (ViewBag.ErrorRol)
-                            { 
-                                <small class="text-muted" style="color:red;">Required</small>
-                            }
+  
+        foreach (var fila in ViewBag.ComboRol)
+        {
+            ListRoles.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+        }
+                    }
+                    @Html.DropDownList("CboRoles", ListRoles, new { @class = "form-control", @placeholder = "Roles ...", onChange = "RolesFunction(this);" })
+                    @if (ViewBag.ErrorRol)
+                    {
+                        <small class="text-muted" style="color:red;">Required</small>
+                    }
 
-                    </fieldset>
-                </div>
+                </fieldset>
             </div>
-        <div class="row">
+        </div>
+
+        <div id="PermisosEspeciales" style="display:none">
+
+            <div class="row">
                 <div class="col-sm-13">
                     <fieldset class="form-group">
                         <label for="Nombre">Special Permits</label>
@@ -214,11 +440,11 @@
                     </fieldset>
                 </div>
             </div>
-        <div class="=row">
-                <div class="col-sm-3">
+            <div class="=row">
+                <div id="BU_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
                         <label for="Nombre">BU Permits</label>
-                            @{
+                        @{
                         List<SelectListItem> ListBU = new List<SelectListItem>();
                         ListBU.Add(new SelectListItem() { Value = "0", Text = "Choose BU", Selected = false });
 
@@ -227,14 +453,14 @@
                         {
                             ListBU.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
                         }
-                    }
-                            @Html.DropDownList("CboBU", ListBU, new { @class = "form-control", @placeholder = "Roles ..." })
+                        }
+                        @Html.DropDownList("CboBU", ListBU, new { @class = "form-control", @placeholder = "Roles ..." })
                     </fieldset>
                 </div>
-                <div class="col-sm-3">
+                <div id="SMO_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
                         <label for="Nombre">SMO Permits</label>
-                            @{
+                        @{
                         List<SelectListItem> ListSMO = new List<SelectListItem>();
                         ListSMO.Add(new SelectListItem() { Value = "0", Text = "Choose SMO", Selected = false });
 
@@ -243,14 +469,14 @@
                         {
                             ListSMO.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
                         }
-                    }
-                            @Html.DropDownList("CboSMO", ListSMO, new { @class = "form-control", @placeholder = "Roles ..." })
+                        }
+                        @Html.DropDownList("CboSMO", ListSMO, new { @class = "form-control", @placeholder = "Roles ..." })
                     </fieldset>
                 </div>
-                <div class="col-sm-3">
+                <div id="Owner_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
                         <label for="Nombre">OWNER Permits</label>
-                            @{
+                        @{
                         List<SelectListItem> ListOWNER = new List<SelectListItem>();
                         ListOWNER.Add(new SelectListItem() { Value = "0", Text = "Choose OWNER", Selected = false });
 
@@ -259,32 +485,36 @@
                         {
                             ListOWNER.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
                         }
-                    }
-                            @Html.DropDownList("CboOWNER", ListOWNER, new { @class = "form-control", @placeholder = "Roles ..." })
+                        }
+                        @Html.DropDownList("CboOWNER", ListOWNER, new { @class = "form-control", @placeholder = "Roles ..." })
                     </fieldset>
                 </div>
                 <div class="col-sm-3">
                     <label for="Nombre">Action</label><br />
-                    <input type="button" value="Add Permits" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();"  />
+                    <input type="button" value="Add Permits" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
                 </div>
             </div>
-        <div class="row">
+            <div class="row">
                 <table id="tablaPermisos" width=100% class="table">
-                    <thead>
-                        <tr><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> Permits BU</td> <td width=30%>Permits SMO</td> <td width=30%>Permits OWNER</td> <td width=30%>Delete</td></tr>
+                    <thead>    
+                        <tr id="tr_label_todos" style="display:none"><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> Permits BU</td> <td width=30%>Permits SMO</td> <td width=30%>Permits OWNER</td> <td width=30%>Delete</td></tr>
+                        <tr id="tr_label_smo" style="display:none"><td style="display: none"><td width=30%>Permits SMO</td><td width=30%>Delete</td></tr>
+                        <tr id="tr_label_bu" style="display:none"><td style="display: none"><td width=30%>Permits BU</td><td width=30%>Delete</td></tr>
                     </thead>
                     <tbody></tbody>
                 </table>
             </div>
+
+        </div>
         <div class="row">
-                <div class="col-sm-12">
-                    <div class="pull-right col">
-                        <br />
-                        <input type="submit" value="Save" name="Save" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
-                        <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("UserBM", "Adm") + "'");" />
-                    </div>
+            <div class="col-sm-12">
+                <div class="pull-right col">
+                    <br />
+                    <input type="submit" value="Save" name="Save" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                    <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("UserBM", "Adm") + "'");" />
                 </div>
             </div>
-        }
         </div>
+    }
+</div>
 
