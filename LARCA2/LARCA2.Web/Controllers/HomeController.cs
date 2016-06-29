@@ -22,7 +22,8 @@ namespace LARCA2.Controllers
 
             if (usuario == null)
             {
-                return Content("<script language='javascript' type='text/javascript'>alert('Invalid USER');</script>");
+                // return Content("<script language='javascript' type='text/javascript'>alert('Invalid USER');</script>");
+                return RedirectToAction("InvalidUser", "Home");
             }
             Session["Usuario"] = usuario;
             //if (user.IsInRole(WindowsBuiltInRole.Administrator))
@@ -44,5 +45,19 @@ namespace LARCA2.Controllers
             return RedirectToAction("Login", "Login");
             
         }
+
+        public ActionResult InvalidUser()
+        {
+            long id = 1;
+
+            Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
+            Data.DatabaseModels.LARCA20_Usuarios userRol = repo.Traer(id);
+
+            ViewBag.Email = userRol.Email;
+
+            return View();
+        }
+
+
     }
 }
