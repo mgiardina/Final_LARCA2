@@ -1,6 +1,6 @@
 ﻿@model Larca2.Models.UserSearchForm
 @{
-    ViewBag.Title = "User Modification";
+    ViewBag.Title = "User Management";
 }
 
 @section featured {
@@ -26,8 +26,7 @@
             if (document.getElementById('txtNombre').value == "" && document.getElementById('txtApellido').value == "") {
                
                 document.getElementById('txtTodos').value = 1;
-                //document.getElementById("Seleccionar").style.display = "";
-                //return false;
+
             }
         });
 
@@ -135,16 +134,9 @@
                             <th width="5%" align="center">
                                 <label>Deleted</label>
                             </th>
-                            <th width="20%" align="center">
-                                <label>Email</label>
-                            </th>
                             <th width="10%" align="center">
                                 <label>Date</label>
                             </th>
-                            <th width="10%" align="center">
-                                <label>Phone No.</label>
-                            </th>
-
                         </tr>
 
                         @{int j = 0;
@@ -179,23 +171,11 @@
                                         @usuario.Borrado
                                     </label>
                                 </td>
-
-                                <td width="20%" align="center">
-                                    <label>
-                                        @usuario.Email
-                                    </label>
-                                </td>
                                 <td width="10%" align="center">
                                     <label>
                                         @usuario.Fecha
                                     </label>
                                 </td>
-                                <td width="10%" align="center">
-                                    <label>
-                                        @usuario.Telefono
-                                    </label>
-                                </td>
-
                             </tr>
                             j++;
                           }
