@@ -7,7 +7,58 @@ using System.Web.Mvc;
 namespace Larca2.Controllers
 {
     public class SmoController : Controller
+    
     {
+
+        public ActionResult SmoGrouping()
+        {
+            ViewBag.Message = "";
+
+
+            //Declaro BLLs e inicializo viewModel
+            Larca2.Views.ViewModels.SMOScopeViewModel viewModel = new Larca2.Views.ViewModels.SMOScopeViewModel();
+            LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+            LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
+            LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
+
+
+            //Reviso el usuario logueado, sino como prueba traigo al de ID 2
+            LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+            if (user == null)
+                user = repoUsuarios.Traer(2);
+
+            //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.IdRenglon);
+
+
+            // Quito de la lista de SMO y BU de los filtros aquellos no contemplados por un registro existente de UserOwner para el usuario logueado
+            viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
+
+            //Filtro los registros de la tabla SmoScope en función de:
+            //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
+            //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
+
+            List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
+            viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
+            {
+                smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                if (smoscopeact != null)
+                {
+                    viewModel.RegistrosSMO.AddRange(smoscopeact);
+                }
+            }
+            viewModel.selectedItems = new List<bool>();
+            viewModel.EditablesSMO = viewModel.RegistrosSMO;
+            return View("SmoGrouping", viewModel);
+
+        }
+
+
+
+
+
         public ActionResult SmoSimple()
         {
             ViewBag.Message = "";
