@@ -38,8 +38,7 @@ namespace Larca2.Views.ViewModels
             L4List = new List<SelectListItem>();
             dropdownMeses = new List<SelectListItem>();
             dropdownMeses.Add(new SelectListItem { Text = "Current Month", Value = "0", Selected = true });
-            dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
-
+           
               BUList.Add(new SelectListItem{Text = "Choose a valid BU", Value = "0", Selected = true});
               SMOList.Add(new SelectListItem{Text = "Choose a valid SMO", Value = "0", Selected = true});
               
