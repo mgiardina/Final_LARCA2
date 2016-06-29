@@ -1,6 +1,6 @@
 ﻿@model Larca2.Models.RcClasificationSearchForm
 @{
-    ViewBag.Title = "Modificación de RC Clasifications";
+    ViewBag.Title = "Root Cause Clasification Edition";
 }
 @section featured {
     <section class="featured">
@@ -11,7 +11,6 @@
             </hgroup>
             <p>
                 This screen allows the visualization, modification and deletion of RC Clasifications in the system.
-
             </p>
         </div>
     </section>
@@ -29,7 +28,7 @@
         //    }
         //});
 
-        $('#Modificar').on('click', function () {
+        $('#Save').on('click', function () {
 
             var IdRenglon;
             var rowCount = $('.table tr').length;
@@ -76,58 +75,59 @@
     @using (Html.BeginForm("ModifRcClasification", "Adm", FormMethod.Post, new { name = "myform" }))
     {
         <div class="row">
-            <div class="col-sm-13">
-                <h5 style="border-bottom:1px solid #c7d1d6;">FILTRO</h5>
+            <div class="col-sm-12">
+                <h5 style="border-bottom:1px solid #c7d1d6;">FILTERS</h5>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-4">
-                <label>Código RC</label><br />
-                <input type="text" id="txtCod" name="txtCod" value="" />
+                <label>Code</label><br />
+                <input type="text" id="txtCod" name="txtCod" value="" class="col-sm-12" />
             </div>
             <div class="col-sm-4">
-                <label>Descripción</label><br />
-                <input type="text" id="txtDes" name="txtDes" value="" />
+                <label>Description</label><br />
+                <input type="text" id="txtDes" name="txtDes" value="" class="col-sm-12" />
             </div>
             <div class="col-sm-2">
                 <br style="margin-bottom:3px;" />
-                <button type="submit" id="btnBusca" class="btn btn-info" formaction="RcClasificationBM">Buscar</button>
+                <button type="submit" id="btnBusca" class="btn btn-info" formaction="RcClasificationBM">Search</button>
 
             </div>
         </div>
-        <div class="row">
-            <br style="margin-bottom:3px;" />
-            <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Ingrese un Filtro para la búsqueda</div>
-            <div class="col-sm-4" id="Check1" style="color:red;display:none">Seleccione solamente un RC Clasification para Modificar</div>
-            <div class="col-sm-4" id="Check2" style="color:red;display:none">Seleccione un RC Clasification para Modificar</div>
+        <div class="row" style="margin-bottom:10px;margin-top:10px; font-weight:bold;">
+            <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Select One Filter</div>
+            <div class="col-sm-4" id="Check1" style="color:red;display:none">Select Only one Row</div>
+            <div class="col-sm-4" id="Check2" style="color:red;display:none">Select a Row</div>
         </div>
         <div class="row">
-            <div class="pull-right col">
-                <input type="button" value="Nuevo" name="Nuevo" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevaRcClasification", "Adm") + "'");" />
-                <input type="submit" id="Modificar" value="Modificar" name="Modificar" class="btn btn-primary" />
+            <div class="col-sm-3">
+                <input type="button" value="New Row" name="Nuevo" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevaRcClasification", "Adm") + "'");" />
+                <input type="submit" id="Save" value="Save Row" name="Modificar" class="btn btn-success" />
                 <input type="hidden" class="txtIdRenglon" id="txtIdRenglon" name="txtIdRenglon" value="" />
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th width="10%" align="center"></th>
-                            <th width="20%" align="center">
-                                <label>Nivel</label>
+                            <th width="10%" align="center">
+                                <label>Selection</label>
                             </th>
                             <th width="20%" align="center">
-                                <label>Codigo</label>
+                                <label>Level</label>
                             </th>
                             <th width="20%" align="center">
-                                <label>Descripción</label>
+                                <label>Code</label>
+                            </th>
+                            <th width="20%" align="center">
+                                <label>Description</label>
                             </th>
                             <th width="20%" align="center">
                                 <label>Ownership</label>
                             </th>
                             <th width="10%" align="center">
-                                <label>Borrado</label>
+                                <label>Deleted</label>
                             </th>
                         </tr>
 
@@ -140,32 +140,45 @@
                                 <tr>
                                     <td class="Check" width="10%" align="center">
                                         @Html.CheckBoxFor(m => m.Selected[j], new { @value = RcClasification.IdRenglon })
+                                        @Html.HiddenFor(Modell => Modell.RcClasificationList[j].IdRenglon, new { @value = RcClasification.IdRenglon })
                                     </td>
 
                                     <td width="20%" align="center">
                                         <label>
-                                            @RcClasification.Nivel
+                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Nivel, new { @value = RcClasification.Nivel })
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
                                         <label>
-                                            @RcClasification.Codigo
+                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Codigo, new { @value = RcClasification.Codigo })
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
                                         <label>
-                                            @RcClasification.Descripcion
+                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Descripcion, new { @value = RcClasification.Descripcion })
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
                                         <label>
-                                            @RcClasification.Ownership
+                                            @{
+                                            List<SelectListItem> roleList = new List<SelectListItem>();
+                                            roleList.Add(new SelectListItem() { Value = "0", Text = "Choose Role", Selected = true });
+                                            roleList.Add(new SelectListItem() { Value = "DRP", Text = "DRP", Selected = false });
+                                            roleList.Add(new SelectListItem() { Value = "MAL", Text = "MAL", Selected = false });
+                                            }
+                                            @Html.DropDownListFor(Modell => Modell.RcClasificationList[j].Ownership, new SelectList(roleList, "Value", "Text", RcClasification.Ownership), new { @class = "form-control" })
                                         </label>
                                     </td>
 
                                     <td width="10%" align="center">
                                         <label>
-                                            @RcClasification.Borrado
+                                            @{
+                                                    List<SelectListItem> stateList = new List<SelectListItem>();
+
+                                                    stateList.Add(new SelectListItem() { Value = "True", Text = "True", Selected = false });
+                                                    stateList.Add(new SelectListItem() { Value = "False", Text = "False", Selected = false });
+                                            }
+                                            @Html.DropDownListFor(Modell => Modell.RcClasificationList[j].Borrado, new SelectList(stateList, "Value", "Text", RcClasification.Borrado), new { @class = "form-control" })
                                         </label>
                                     </td>
                                 </tr>

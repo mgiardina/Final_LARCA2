@@ -1,7 +1,7 @@
 ﻿@model Larca2.Models.MasterDataSearchForm
 
 @{
-    ViewBag.Title = "New Master Data";
+    ViewBag.Title = "New System Master Data";
 }
 @section featured {
     <section class="featured">
@@ -11,7 +11,7 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                Here you can create new Master Data from the system.
+                Here you can create new System Master Data.
             </p>
         </div>
     </section>
@@ -21,52 +21,52 @@
     @using (Html.BeginForm("AgregarMasterData", "Adm", FormMethod.Post))
     {
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
-                    <label for="Nombre">Grupo</label>
+                    <label for="Nombre">Group</label>
                     @{
         List<SelectListItem> ListGrupos = new List<SelectListItem>();
-        ListGrupos.Add(new SelectListItem() { Value = "", Text = "Seleccione el Grupo", Selected = true });
+        ListGrupos.Add(new SelectListItem() { Value = "", Text = "Select ...", Selected = true });
         ListGrupos.Add(new SelectListItem() { Value = "BU", Text = "BU", Selected = false });
         ListGrupos.Add(new SelectListItem() { Value = "SMO", Text = "SMO", Selected = false });
         ListGrupos.Add(new SelectListItem() { Value = "OWNER", Text = "OWNER", Selected = false });
         ListGrupos.Add(new SelectListItem() { Value = "REFER", Text = "REFER", Selected = false });
                     }
-                    @Html.DropDownListFor(m => m.MasterData.Data, ListGrupos, new { @class = "form-control", @placeholder = "Roles ..." })
+                    @Html.DropDownListFor(m => m.MasterData.Data, ListGrupos, new { @class = "form-control", @placeholder = "Role ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.Data)</small>
                 </fieldset>
             </div>
         </div>
     <div class="row">
-        <div class="col-sm-13">
+        <div class="col-sm-12">
             <fieldset class="form-group">
-                <label for="Nombre">Data Inicial</label>
-                @Html.TextBoxFor(m => m.MasterData.DataIni, new { @class = "form-control", @placeholder = "Texto Origen", @MaxLength = "100" })
+                <label for="Nombre">Original Data</label>
+                @Html.TextBoxFor(m => m.MasterData.DataIni, new { @class = "form-control", @placeholder = "Original Data", @MaxLength = "100" })
                 <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.DataIni)</small>
             </fieldset>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-13">
+        <div class="col-sm-12">
             <fieldset class="form-group">
-                <label for="Nombre">Data Final</label>
-                @Html.TextBoxFor(m => m.MasterData.DataFin, new { @class = "form-control", @placeholder = "Texto final", @MaxLength = "50" })
+                <label for="Nombre">Final Data</label>
+                @Html.TextBoxFor(m => m.MasterData.DataFin, new { @class = "form-control", @placeholder = "Final Data", @MaxLength = "50" })
                 <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.DataFin)</small>
             </fieldset>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-13">
+        <div class="col-sm-12">
             <fieldset class="form-group">
-                <label for="Nombre">Borrado</label>
+                <label for="Nombre">Deleted</label>
                 @Html.CheckBoxFor(m => m.MasterData.Borrado, new { @class = "form-control" })
             </fieldset>
         </div>
     </div>
     <div class="row">
-        <div class="pull-right col">
-            <input type="submit" value="Guardar" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
-            <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("MasterDataBM", "Adm") + "'");" />
+        <div class="col-sm-3">
+            <input type="submit" value="Save" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+            <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("MasterDataBM", "Adm") + "'");" />
         </div>
     </div>
     }

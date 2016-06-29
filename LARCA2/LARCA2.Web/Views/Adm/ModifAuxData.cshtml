@@ -1,6 +1,6 @@
 ﻿@model Larca2.Models.AuxDataSearchForm
 @{
-    ViewBag.Title = "Modificación de Valores Globales";
+    ViewBag.Title = "Global Parameters Management";
 }
 
 @section featured {
@@ -11,8 +11,7 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                This screen allows the visualization, modification and deletion of global values in the system.
-
+                This screen allows the visualization and modification of system's global parameters.
             </p>
         </div>
     </section>
@@ -43,8 +42,8 @@
         <div class="row">
             <div class="col-sm-13">
                 <fieldset class="form-group">
-                    <label for="Nombre">Top Level 4</label>
-                    @Html.TextBoxFor(Model => Model.AuxData.Toplvl4, new { @class = "form-control", @placeholder = "Top Level 4 ..." })
+                    <label for="Nombre">Max allowed cloning</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.Toplvl4, new { @class = "form-control", @placeholder = "Max allowed cloning ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.Toplvl4)</small>
                 </fieldset>
             </div>
@@ -70,8 +69,8 @@
         <div class="row">
             <div class="col-sm-13">
                 <fieldset class="form-group">
-                    <label for="Nombre">Cantidad Adjuntos</label>
-                    @Html.TextBoxFor(Model => Model.AuxData.CntAdjuntos, new { @class = "form-control", @placeholder = "Cantidad Adjuntos ..." })
+                    <label for="Nombre">Expected report subscriptions</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.CntAdjuntos, new { @class = "form-control", @placeholder = "Expected report subscriptions ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.CntAdjuntos)</small>
                 </fieldset>
             </div>
@@ -79,8 +78,8 @@
         <div class="row">
             <div class="col-sm-13">
                 <fieldset class="form-group">
-                    <label for="Nombre">Dias Reporte</label>
-                    @Html.TextBoxFor(Model => Model.AuxData.DiasReporte, new { @class = "form-control", @placeholder = "Dias Reporte ..." })
+                    <label for="Nombre">Available days for Analysis after complete upload</label>
+                    @Html.TextBoxFor(Model => Model.AuxData.DiasReporte, new { @class = "form-control", @placeholder = "Available days for Analysis after complete upload ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.DiasReporte)</small>
                 </fieldset>
             </div>
@@ -90,8 +89,8 @@
             <div class="col-sm-12">
                 <div class="pull-right col">
                     <br />
-                    <input type="submit" value="Guardar Cambios" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
-                    <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("AuxDataBM", "Adm") + "'");" />
+                    <input type="submit" value="Save" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                    <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("AuxDataBM", "Adm") + "'");" />
                 </div>
             </div>
         </div>

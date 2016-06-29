@@ -17,8 +17,8 @@ namespace LARCA2.Controllers
             LARCA2.Business.Services.UsuariosBLL repositorioUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.RolesBLL repositorioRoles = new LARCA2.Business.Services.RolesBLL();
 
-            //LARCA20_Usuarios usuario = repositorioUsuarios.TraerPorNombreDeUsuario(user.Identity.Name.Split(Convert.ToChar("\\"))[1]);
-            LARCA20_Usuarios usuario = repositorioUsuarios.TraerPorNombreDeUsuario("wiedemann.e");
+            LARCA20_Usuarios usuario = repositorioUsuarios.TraerPorNombreDeUsuario(user.Identity.Name.Split(Convert.ToChar("\\"))[1]);
+            //LARCA20_Usuarios usuario = repositorioUsuarios.TraerPorNombreDeUsuario("wiedemann.e");
 
             if (usuario == null)
             {

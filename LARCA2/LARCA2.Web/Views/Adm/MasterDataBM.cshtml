@@ -1,7 +1,7 @@
 ﻿@model Larca2.Models.MasterDataSearchForm
 
 @{
-    ViewBag.Title = "Modificación de Master Data";
+    ViewBag.Title = "Master Data Management";
 }
 @section featured {
     <section class="featured">
@@ -11,8 +11,7 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                This screen allows the visualization, modification and deletion of Master Data in the system.
-
+                This screen allows the visualization, modification and deletion of System's Master Data.
             </p>
         </div>
     </section>
@@ -48,6 +47,43 @@
 
 
             $('.txtIdRenglon').val(value);
+            $('.txtType').val("Edit");
+
+
+            if (rowCount == 1) {
+
+                document.getElementById("Seleccionar").style.display = "";
+                return false;
+            }
+            else {
+
+                if (CheckedCount > 1) {
+                    document.getElementById("Check2").style.display = 'none';
+                    document.getElementById("Check1").style.display = "";
+
+                    return false;
+                }
+
+                if (CheckedCount < 1) {
+                    document.getElementById("Check1").style.display = 'none';
+                    document.getElementById("Check2").style.display = "";
+                    return false;
+                }
+            }
+
+        });
+
+        $('#Save').on('click', function () {
+
+            var IdRenglon;
+            var rowCount = $('.table tr').length;
+            var value = $('input:checked').val();
+            var CheckedCount = $('input:checked').length;
+
+
+            $('.txtIdRenglon').val(value);
+            $('.txtDataFin').val(value);
+            $('.txtType').val("Save");
 
 
             if (rowCount == 1) {
@@ -80,80 +116,77 @@
 
 
 
-<div class="content-wrapper" style="margin-bottom:20px;">
+<div class="container-fluid">
 
     @using (Html.BeginForm("ModifMasterData", "Adm", FormMethod.Post, new { name = "myform" }))
     {
         <div class="row">
-            <div class="col-sm-13">
-                <h5 style="border-bottom:1px solid #c7d1d6;">FILTRO</h5>
+            <div class="col-sm-12">
+                <h5 style="border-bottom:1px solid #c7d1d6;">FILTERS</h5>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4">
-                <label for="Nombre">Grupo</label>
+            <div class="col-sm-3">
+                <label for="Nombre">Group</label>
                 @{
         List<SelectListItem> ListGrupos = new List<SelectListItem>();
-        ListGrupos.Add(new SelectListItem() { Value = "0", Text = "Seleccione el Grupo", Selected = true });
+        ListGrupos.Add(new SelectListItem() { Value = "0", Text = "Select ... ", Selected = true });
         ListGrupos.Add(new SelectListItem() { Value = "BU", Text = "BU" });
         ListGrupos.Add(new SelectListItem() { Value = "SMO", Text = "SMO" });
         ListGrupos.Add(new SelectListItem() { Value = "OWNER", Text = "OWNER" });
         ListGrupos.Add(new SelectListItem() { Value = "REASON", Text = "REASON" });
                 }
-                @Html.DropDownList("ddlGrupos", ListGrupos, new { @class = "form-control", @placeholder = "Grupos ..." })
+                @Html.DropDownList("ddlGrupos", ListGrupos, new { @class = "form-control col-sm-12", @placeholder = "Grupos ..." })
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <label>Id</label><br />
-                @*<input type="text" name="txtDes" value="@ViewBag.txtDes" />*@
-                <input type="text" name="txtId" id="txtId" value="" />
+                <input type="text" name="txtId" id="txtId" value="" class="col-sm-12" />
             </div>
-            <div class="col-sm-4">
-                <label>Data Inicio</label><br />
-                @*<input type="text" name="txtDes" value="@ViewBag.txtDes" />*@
-                <input type="text" name="txtDes" id="txtDes" value="" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col pull-right">
-                <br style="margin-bottom:3px;" />
-                <button type="submit" id="btnBusca" class="btn btn-info" formaction="MasterDataBM">Buscar</button>
-            </div>
-        </div>
+            <div class="col-sm-3">
+                <label>Original Data</label><br />
+                <input type="text" name="txtDes" id="txtDes" value="" class="col-sm-12" />
 
-        <div class="row">
-            <br style="margin-bottom:3px;" />
-            <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Ingrese un Filtro para la búsqueda</div>
-            <div class="col-sm-4" id="Check1" style="color:red;display:none">Seleccione solamente un Master Data para Modificar</div>
-            <div class="col-sm-4" id="Check2" style="color:red;display:none">Seleccione un Master Data para Modificar</div>
+            </div>
+            <div class="col-sm-1">
+                <br style="margin-bottom:3px;" />
+                <button type="submit" id="btnBusca" class="btn btn-info" formaction="MasterDataBM">Search</button>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;margin-top:10px; font-weight:bold;">
+            <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Select One Filter</div>
+            <div class="col-sm-4" id="Check1" style="color:red;display:none">Select Only one Row</div>
+            <div class="col-sm-4" id="Check2" style="color:red;display:none">Select a Row</div>
         </div>
         <div class="row">
-            <div class="pull-right col">
-                <input type="button" value="Nuevo" name="Nuevo" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevaMasterData", "Adm") + "'");" />
-                <input type="submit" id="Modificar" value="Modificar" name="Modificar" class="btn btn-primary" />
+            <div class="col-sm-12 pull-right">
+                <input type="button" value="New Row" name="Nuevo" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevaMasterData", "Adm") + "'");" />
+                <input type="submit" id="Save" value="Save Final Data" name="Save" class="btn btn-success" />
+                <input type="submit" id="Modificar" value="Edit Row" name="Modificar" class="btn btn-warning" />
                 <input type="hidden" class="txtIdRenglon" id="txtIdRenglon" name="txtIdRenglon" value="" />
                 <input type="hidden" class="txtTodos" id="txtTodos" name="txtTodos" value="" />
+                <input type="hidden" class="txtType" id="txtType" name="txtType" value="" />
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th width="10%" align="center"></th>
+                            <th width="10%" align="center">Selection</th>
                             <th width="10%" align="center">
                                 <label>Id</label>
                             </th>
                             <th width="20%" align="center">
-                                <label>Grupo</label>
+                                <label>Group</label>
                             </th>
                             <th width="30%" align="center">
-                                <label>Data Inicial</label>
+                                <label>Original Data</label>
                             </th>
                             <th width="30%" align="center">
-                                <label>Data Final</label>
+                                <label>Final Data</label>
                             </th>
                             <th width="10%" align="center">
-                                <label>Borrado</label>
+                                <label>Deleted</label>
                             </th>
                         </tr>
 
@@ -172,6 +205,7 @@
                                     <td width="20%" align="center">
                                         <label>
                                             @MasterData.IdRenglon
+                                            @Html.HiddenFor(Modell => Modell.MasterDataList[j].IdRenglon, new { @value = MasterData.IdRenglon })
                                         </label>
                                     </td>
 
@@ -187,7 +221,7 @@
                                     </td>
                                     <td width="30%" align="center">
                                         <label>
-                                            @MasterData.DataFin
+                                            @Html.TextBoxFor(Modell => Modell.MasterDataList[j].DataFin, new { @value = MasterData.DataFin })
                                         </label>
                                     </td>
                                     <td width="10%" align="center">
@@ -200,7 +234,6 @@
                             }
                         }
                         }
-
 
                     </table>
 

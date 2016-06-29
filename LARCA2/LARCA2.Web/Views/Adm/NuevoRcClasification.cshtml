@@ -11,7 +11,7 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                Here you can create new RC Clasification from the system.
+                Here you can create new System RC Clasification.
             </p>
         </div>
     </section>
@@ -21,34 +21,34 @@
     @using (Html.BeginForm("AgregarRcClasification", "Adm", FormMethod.Post))
     {
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
-                    <label for="Nombre">Nivel</label>
-                    @Html.TextBoxFor(m => m.RcClasification.Nivel, new { @class = "form-control", @placeholder = "Nivel ...", @MaxLength = "1" })
+                    <label for="Nombre">Level</label>
+                    @Html.TextBoxFor(m => m.RcClasification.Nivel, new { @class = "form-control", @placeholder = "Level ...", @MaxLength = "1" })
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Nivel)</small>
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
-                    <label for="Nombre">Código</label>
-                    @Html.TextBoxFor(m => m.RcClasification.Codigo, new { @class = "form-control", @placeholder = "Código ...", @MaxLength = "7" })
+                    <label for="Nombre">Code</label>
+                    @Html.TextBoxFor(m => m.RcClasification.Codigo, new { @class = "form-control", @placeholder = "Code ...", @MaxLength = "7" })
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Codigo)</small>
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
-                    <label for="Nombre">Descripción</label>
-                    @Html.TextBoxFor(m => m.RcClasification.Descripcion, new { @class = "form-control", @placeholder = "Descripción...", @MaxLength = "50" })
+                    <label for="Nombre">Description</label>
+                    @Html.TextBoxFor(m => m.RcClasification.Descripcion, new { @class = "form-control", @placeholder = "Description...", @MaxLength = "50" })
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Descripcion)</small>
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Ownership</label>
                     @Html.TextBoxFor(m => m.RcClasification.Ownership, new { @class = "form-control", @placeholder = "Ownership ...", @MaxLength = "5" })
@@ -56,17 +56,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
-                    <label for="Nombre">Borrado</label>
+                    <label for="Nombre">Delete</label>
                     @Html.CheckBoxFor(m => m.RcClasification.Borrado, new { @class = "form-control" })
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="pull-right col">
-                <input type="submit" value="Guardar" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
-                <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("RcClasificationBM", "Adm") + "'");" />
+            <div class="col-sm-12">
+                <input type="submit" value="Save" name="Guardar" class="btn btn-success" />
+                <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("RcClasificationBM", "Adm") + "'");" />
             </div>
         </div>
     }

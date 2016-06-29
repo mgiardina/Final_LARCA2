@@ -21,9 +21,9 @@
     @using (Html.BeginForm("Upload", "ManualLoad", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <p class="bg-primary" style="padding:10px;">
-                   MASTERDATA MANUAL LOAD
+                    MasterData Manual Load
                 </p>
             </div>
         </div>
@@ -35,9 +35,6 @@
                 </label>
                 <span class='label label-info' id="upload-file-info"></span>
             </div>
-            <div class="col-sm-3">
-                <button type="submit" name="btnBusca" class="btn btn-info">Upload File</button>
-            </div>
         </div>
         <div class="row" style="margin-bottom:10px;">
             <div class="col-sm-3">
@@ -46,40 +43,49 @@
             </div>
         </div>
         <div class="row" style="margin-bottom:10px;">
+            <div class="col-sm-3">
+                <button type="submit" name="btnBusca" class="btn btn-info">Upload File</button>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
             <p style="color:red; font-size:16px;margin-top:5px;">
                 @ViewBag.Result
             </p>
         </div>
         <div class="row">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <th> Day</th>
-                        <th> FPC</th>
-                        <th> Country</th>
-                        <th> Profit Center</th>
-                        <th> Reason Code</th>
-                        <th> RCC</th>
-                        <th> SAP Site</th>
-                        <th> Customer</th>
-                        <th> SU Cases</th>
-                    </tr>
-                    @foreach (var item in (List<LARCA2.Business.Entities.MasterRow>)ViewData["MasterRows"])
-                    {
-                        <tr>
-                            <td> @item.Day</td>
-                            <td> @item.FPC</td>
-                            <td> @item.ReportingCountry</td>
-                            <td> @item.ProfitCenter</td>
-                            <td> @item.ReasonCode</td>
-                            <td> @item.RootCauseCode</td>
-                            <td> @item.SAPSite</td>
-                            <td> @item.Customer</td>
-                            <td> @item.SUCases</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th> Day</th>
+                                <th> FPC</th>
+                                <th> Country</th>
+                                <th> Profit Center</th>
+                                <th> Reason Code</th>
+                                <th> RCC</th>
+                                <th> SAP Site</th>
+                                <th> Customer</th>
+                                <th> SU Cases</th>
+                            </tr>
+                            @foreach (var item in (List<LARCA2.Business.Entities.MasterRow>)ViewData["MasterRows"])
+                        {
+                            <tr>
+                                <td> @item.Day</td>
+                                <td> @item.FPC</td>
+                                <td> @item.ReportingCountry</td>
+                                <td> @item.ProfitCenter</td>
+                                <td> @item.ReasonCode</td>
+                                <td> @item.RootCauseCode</td>
+                                <td> @item.SAPSite</td>
+                                <td> @item.Customer</td>
+                                <td> @item.SUCases</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     }
 

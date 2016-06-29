@@ -18,8 +18,6 @@ namespace LARCA2.Data.DatabaseModels
             public string Data { get; set; }
             [Required(ErrorMessage = "Requerido")]
             public string DataIni { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            public string DataFin { get; set; }
         }
     }
 }

@@ -374,7 +374,7 @@ namespace LARCA2.Business.Core
 
                 }
 
-            using (SmtpClient smtp = new SmtpClient("GADC-ExchCAS.na.pg.com", 25))
+            using (SmtpClient smtp = new SmtpClient("GADC-ExchCAS.na.pg.com", 21))
             {
                 //smtp.Credentials = new NetworkCredential("larca_mailing@yahoo.com", "##larca##");
                 smtp.UseDefaultCredentials = true;

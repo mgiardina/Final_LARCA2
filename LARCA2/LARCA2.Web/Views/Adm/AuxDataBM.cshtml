@@ -1,6 +1,6 @@
 ﻿@model Larca2.Models.AuxDataSearchForm
 @{
-    ViewBag.Title = "Modificación de Valores Globales";
+    ViewBag.Title = "Global Parameters Managment";
 }
 
 @section featured {
@@ -11,8 +11,7 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                This screen allows the visualization, modification and deletion of global values in the system.
-
+                This screen allows the visualization and modification of system's global parameters.
             </p>
         </div>
     </section>
@@ -22,12 +21,12 @@
     @using (Html.BeginForm("ModifAuxData", "Adm", FormMethod.Post, new { name = "myform" }))
     {
         <div class="row">
-            <div class="pull-right col">
-                <input type="submit" value="Modificar" name="Modificar" id="Modificar" class="btn btn-primary" />
+            <div class="col-sm-12">
+                <input type="submit" value="Edit Row" name="Modificar" id="Modificar" class="btn btn-warning" />
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
@@ -38,7 +37,7 @@
                                 <label>Top Level 3</label>
                             </th>
                             <th width="17%" align="center">
-                                <label>Top Level 4</label>
+                                <label>Max allowed cloning</label>
                             </th>
                             <th width="16%" align="center">
                                 <label>Excel Rows From</label>
@@ -47,10 +46,10 @@
                                 <label>Excel Columns From</label>
                             </th>
                             <th width="17%" align="center">
-                                <label>Cantidad Adjuntos</label>
+                                <label>Expected report subscriptions</label>
                             </th>
                             <th width="17%" align="center">
-                                <label>Dias Reporte</label>
+                                <label>Available days</label>
                             </th>
                         </tr>
                         <tr>

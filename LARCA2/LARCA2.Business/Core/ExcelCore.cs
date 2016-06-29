@@ -86,7 +86,15 @@ namespace LARCA2.Business.Core
                             masterRow.Data = "BU";
                             masterRow.Borrado = false;
                             service.Guardar(masterRow);
-                            new MailingCore().EnviarAlertaNuevoMasterData(masterRow.Data, masterRow.DataIni, masterRow.IdRenglon.ToString());
+                            try
+                            {
+                                new MailingCore().EnviarAlertaNuevoMasterData(masterRow.Data, masterRow.DataIni, masterRow.IdRenglon.ToString());
+                            }
+                            catch
+                            {
+
+                            }
+
                         }
                         smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.FPC);
                         smoDetail.BuID = smoDetail.MasterBUDetail.IdRenglon;
@@ -114,9 +122,27 @@ namespace LARCA2.Business.Core
                 }
 
                 if (RealizarCalculos(details))
-                    new MailingCore().EnviarAlertaAnalysisDisponible_Admin();
+                {
+                    try
+                    {
+                        new MailingCore().EnviarAlertaAnalysisDisponible_Admin();
+                    }
+                    catch
+                    {
+
+                    }
+                }
                 else
-                    new MailingCore().EnviarAlertaErrorEnCarga();
+                {
+                    try
+                    {
+                        new MailingCore().EnviarAlertaErrorEnCarga();
+                    }
+                    catch
+                    {
+
+                    }
+                }
 
 
             }
