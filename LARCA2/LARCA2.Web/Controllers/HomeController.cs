@@ -13,6 +13,8 @@ namespace LARCA2.Controllers
     {
         public ActionResult Index()
         {
+            //new MailingCore().ProcesarEmails();
+            new MailingCore().test();
             var user = (WindowsPrincipal)User;
             LARCA2.Business.Services.UsuariosBLL repositorioUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.RolesBLL repositorioRoles = new LARCA2.Business.Services.RolesBLL();
@@ -22,11 +24,21 @@ namespace LARCA2.Controllers
 
             if (usuario == null)
             {
-                return Content("<script language='javascript' type='text/javascript'>alert('Invalid USER');</script>");
+                return RedirectToAction("InvalidUser", "Home");
             }
+
             Session["Usuario"] = usuario;
             ViewData["Modal"] = "<script language='javascript' type='text/javascript'>$('#modalTest').modal('show')</script>";
             ViewBag.Message = "QA Version.";
+            return View();
+        }
+
+        public ActionResult InvalidUser()
+        {
+            long id = 1;
+            Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
+            Data.DatabaseModels.LARCA20_Usuarios userRol = repo.Traer(id);
+            ViewBag.Email = userRol.Email;
             return View();
         }
     }

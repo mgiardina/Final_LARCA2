@@ -76,12 +76,12 @@ namespace LARCA2.Business.Core
                         smoDetail.Lvl2ID = new RCClassificationBLL().Traer(nivel2).IdRenglon;
                         smoDetail.Lvl3ID = new RCClassificationBLL().Traer(nivel3).IdRenglon;
 
-                        // Chequeo si existe el FPC en la base, si existe lo asigno directo, sino lo damos de alta y avisamos al admin que debe cargar la descripcion correcta
-                        if (!ExistsBU(item.FPC))
+                        // Chequeo si existe el Profit Center en la base, si existe lo asigno directo, sino lo damos de alta y avisamos al admin que debe cargar la descripcion correcta
+                        if (!ExistsBU(item.ProfitCenter))
                         {
                             var service = new MasterDataBLL();
                             var masterRow = new LARCA2.Data.DatabaseModels.LARCA20_MasterData();
-                            masterRow.DataIni = item.FPC;
+                            masterRow.DataIni = item.ProfitCenter;
                             masterRow.DataFin = string.Empty;
                             masterRow.Data = "BU";
                             masterRow.Borrado = false;
@@ -96,7 +96,7 @@ namespace LARCA2.Business.Core
                             }
 
                         }
-                        smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.FPC);
+                        smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.ProfitCenter);
                         smoDetail.BuID = smoDetail.MasterBUDetail.IdRenglon;
                         smoDetail.MasterSMODetail = new MasterDataBLL().Traer("SMO", item.ReportingCountry);
                         smoDetail.SmoID = smoDetail.MasterSMODetail.IdRenglon;

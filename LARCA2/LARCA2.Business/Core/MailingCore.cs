@@ -22,15 +22,19 @@ namespace LARCA2.Business.Core
     public class MailingCore
     {
 
-        private string Server { get; set; }
+        private string ServerPop { get; set; }
+        private string ServerSmtp { get; set; }
+        private int Port { get; set; }
         private string UserName { get; set; }
         private string Password { get; set; }
 
         public MailingCore()
         {
-            Server = "GADC-ExchCAS.na.pg.com";
-            UserName = "frugal.im@pg.com";
-            Password = "fWJl5i7C99NG";
+            ServerPop = System.Configuration.ConfigurationManager.AppSettings["EmailPopServer"];
+            ServerSmtp = System.Configuration.ConfigurationManager.AppSettings["EmailSmtpServer"];
+            Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["EmailSmtpPort"]);
+            UserName = System.Configuration.ConfigurationManager.AppSettings["EmailAddress"];
+            Password = System.Configuration.ConfigurationManager.AppSettings["EmailPassword"];
         }
 
         /// <summary>
@@ -50,7 +54,7 @@ namespace LARCA2.Business.Core
                 try
                 {
                     // Conexion al servidor de emails
-                    client.Connect(Server, port, false);
+                    client.Connect(ServerPop, port, false);
                     client.Authenticate(UserName, Password);
                     int messageCount = client.GetMessageCount();
                     int tope = messageCount - 1000;
@@ -343,7 +347,7 @@ namespace LARCA2.Business.Core
 
         public void test()
         {
-            Send("test", "test", "mgiardina@gmail.com", new List<Attachment>());
+            Send("test", "test", "larca.im@pg.com", new List<Attachment>());
         }
 
         /// <summary>
@@ -358,8 +362,7 @@ namespace LARCA2.Business.Core
             //Mail al Usuario
             var msg = new MailMessage();
             msg.To.Add(to);
-            //msg.Bcc.Add("larca_mailing@yahoo.com");
-            msg.From = new MailAddress("larca.im@pg.com", "LARCA", Encoding.UTF8);
+            msg.From = new MailAddress("frugal.im@pg.com", "LARCA", Encoding.UTF8);
             msg.Subject = subject;
             msg.SubjectEncoding = Encoding.UTF8;
             msg.Body = body;
@@ -373,10 +376,9 @@ namespace LARCA2.Business.Core
                     msg.Attachments.Add(attachment);
 
                 }
-            using (SmtpClient smtp = new SmtpClient("143.5.4.163", 21))
+            using (SmtpClient smtp = new SmtpClient(ServerSmtp,Port))
             {
-                //smtp.Credentials = new NetworkCredential("larca_mailing@yahoo.com", "##larca##");
-                smtp.UseDefaultCredentials = true;
+                smtp.Credentials = new NetworkCredential("frugal.im@pg.com", "gXH24u8x86mG");
                 smtp.EnableSsl = false;
                 smtp.Send(msg);
             }
