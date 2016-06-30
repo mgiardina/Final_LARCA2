@@ -31,7 +31,7 @@ namespace LARCA2.Controllers
             Business.Services.MasterDataBLL masterOW = new Business.Services.MasterDataBLL();
             ViewBag.MasterOW = new SelectList(masterOW.TraerSoloData("OWNER"), "IdRenglon", "DataFin");
 
-            ViewBag.Message = "Alta.";
+         
             ViewBag.ErrorPermiso = false;
             ViewBag.ErrorRol = false;
 
@@ -109,6 +109,14 @@ namespace LARCA2.Controllers
                             {
 
                                 userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
+                                userOW.IdUsuario = lastProductId;
+                                userOW.Borrado = false;
+                                RepUserOW.Guardar(userOW);
+                            }
+
+                            if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                            {
+                             
                                 userOW.IdUsuario = lastProductId;
                                 userOW.Borrado = false;
                                 RepUserOW.Guardar(userOW);
@@ -243,9 +251,21 @@ namespace LARCA2.Controllers
                                     RepUserOW.Guardar(userOW);
                                 }
 
+                                if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                                {
+
+                                    userOW.IdSmo = null;
+                                    userOW.IdOwner = null;
+                                    userOW.IdBU = null;
+                                    userOW.IdUsuario = model.Usuario.IdRenglon;
+                                    userOW.Borrado = false;
+                                    RepUserOW.Guardar(userOW);
+                                }
+
+
                             }
 
-                            return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/UserBM';</script>");
+                            return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/UserBM';</script>");
                         }
                     }
                     else
@@ -394,6 +414,18 @@ namespace LARCA2.Controllers
                             ren = ren + "/" + fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
                     }
 
+                    if (fila.IdBU == null && fila.IdSmo == null && fila.IdOwner == null)
+                    {
+                        fila.IdBU = 0;
+                        fila.IdSmo = 0;
+                        fila.IdOwner = 0;
+
+                        if (ren == "")
+                            ren = fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
+                        //else
+                        //    ren = ren + "/" + fila.IdBU + "." + fila.IdSmo + "." + fila.IdOwner;
+                    }
+
                 }
             }
             ViewBag.PermisosUser = ren;
@@ -441,7 +473,7 @@ namespace LARCA2.Controllers
             updated.Ownership = edited.Ownership;
             updated.Borrado = edited.Borrado;
             repo.Guardar(updated);
-            return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/RcClasificationBM';</script>");
+            return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/RcClasificationBM';</script>");
 
         }
 
@@ -458,7 +490,7 @@ namespace LARCA2.Controllers
                 RcC.Ownership = (model.RcClasification.Ownership == null ? "" : model.RcClasification.Ownership);
                 RcC.Borrado = model.RcClasification.Borrado;
                 repo.Guardar(RcC);
-                return Content("<script language='javascript' type='text/javascript'>alert('Se ha modificado el registro correctamente');document.location = '../Adm/RcClasificationBM';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/RcClasificationBM';</script>");
             }
             else
             {
@@ -523,13 +555,13 @@ namespace LARCA2.Controllers
                 Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
 
                 if (model.AuxData.TopLvl2 == 0)
-                    return Content("<script language='javascript' type='text/javascript'>alert('Se debe cargar un valor mayor a cero para el Campo Top Level 2');document.location = 'javascript:window.history.back();';</script>");
+                    return Content("<script language='javascript' type='text/javascript'>alert('You should enter a value higher to zero for the field: Top Level 2');document.location = 'javascript:window.history.back();';</script>");
                 if (model.AuxData.TopLvl3 == 0)
-                    return Content("<script language='javascript' type='text/javascript'>alert('Se debe cargar un valor mayor a cero para el Campo Top Level 3');document.location = 'javascript:window.history.back();';</script>");
+                    return Content("<script language='javascript' type='text/javascript'>alert('You should enter a value higher to zero for the field: Top Level 3');document.location = 'javascript:window.history.back();';</script>");
                 if (model.AuxData.Toplvl4 == 0)
-                    return Content("<script language='javascript' type='text/javascript'>alert('Se debe cargar un valor mayor a cero para el Campo Top Level 4');document.location = 'javascript:window.history.back();';</script>");
+                    return Content("<script language='javascript' type='text/javascript'>alert('You should enter a value higher to zero for the field: Max Allowed Cloning');document.location = 'javascript:window.history.back();';</script>");
                 if (model.AuxData.CntAdjuntos == 0)
-                    return Content("<script language='javascript' type='text/javascript'>alert('Se debe cargar un valor mayor a cero para el Campo Cantidad Adjuntos');document.location = 'javascript:window.history.back();';</script>");
+                    return Content("<script language='javascript' type='text/javascript'>alert('You should enter a value higher to zero for the field: Expected Report Subscriptions');document.location = 'javascript:window.history.back();';</script>");
 
                 Data.DatabaseModels.LARCA20_AuxData user = new Data.DatabaseModels.LARCA20_AuxData();
                 user.RowId = model.AuxData.RowId;
@@ -542,7 +574,7 @@ namespace LARCA2.Controllers
                 user.DiasReporte = model.AuxData.DiasReporte;
                 repo.Guardar(user);
 
-                return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/AuxDataBM';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/AuxDataBM';</script>");
             }
             else
             {
@@ -631,7 +663,7 @@ namespace LARCA2.Controllers
                     masterData.DataIni = masterData.DataIni;
                     masterData.DataFin = model.MasterDataList.SingleOrDefault(m => m.IdRenglon == id).DataFin;
                     repo.Guardar(masterData);
-                    return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/MasterDataBM';</script>");
+                    return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/MasterDataBM';</script>");
                 }
                 else
                 {
@@ -652,7 +684,7 @@ namespace LARCA2.Controllers
                 MsD.DataFin = model.MasterData.DataFin;
                 MsD.Borrado = model.MasterData.Borrado;
                 repo.Guardar(MsD);
-                return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/MasterDataBM';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/MasterDataBM';</script>");
             }
             else
             {
@@ -723,7 +755,7 @@ namespace LARCA2.Controllers
                 Data.DatabaseModels.LARCA20_Level4 RcC = repo.Traer(model.Level4.Id);
                 RcC.Nombre = model.Level4.Nombre;
                 repo.Guardar(RcC);
-                return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/Level4';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/Level4';</script>");
 
             }
 

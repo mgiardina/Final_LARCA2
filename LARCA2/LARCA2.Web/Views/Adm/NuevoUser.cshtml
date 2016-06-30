@@ -280,6 +280,8 @@
     function RolesFunction(sel) {
         rol_selected = sel.options[sel.selectedIndex].text;
 
+        $("#HI_PermisosEsp").val("");
+
 
         if (rol_selected == "Editor")
         {
@@ -352,8 +354,12 @@
 
                   }
                 else
-                  {
+                {
+
+                   
                     rol = 0;
+
+                  
 
                     permisosArray_BU = [];
                     permisosArray_SMO = [];
@@ -364,6 +370,20 @@
                     $('#tablaPermisos #tr_BU').remove();
                  
                     document.getElementById("PermisosEspeciales").style.display = 'none';
+
+                        SMO_valId = "0";
+                        OWN_valId = "0";
+                        CBU_valId = "0";
+
+
+                        var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+                        if ($("#HI_PermisosEsp").val() == "") {
+                            $("#HI_PermisosEsp").val(carga);
+
+                        }
+                    
+
+
                   }  
                }
           }
@@ -459,7 +479,7 @@
                 </div>
                 <div id="SMO_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre">SMO Permits</label>
+                        <label for="Nombre" style="width:200px;">SMO Permits</label>
                         @{
                         List<SelectListItem> ListSMO = new List<SelectListItem>();
                         ListSMO.Add(new SelectListItem() { Value = "0", Text = "Choose SMO", Selected = false });
@@ -475,7 +495,7 @@
                 </div>
                 <div id="Owner_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre">OWNER Permits</label>
+                        <label for="Nombre" style="width:200px;">OWNER Permits</label>
                         @{
                         List<SelectListItem> ListOWNER = new List<SelectListItem>();
                         ListOWNER.Add(new SelectListItem() { Value = "0", Text = "Choose OWNER", Selected = false });

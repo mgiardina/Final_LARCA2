@@ -577,6 +577,18 @@
                     $('#tablaPermisos #tr_BU').remove();
 
                     document.getElementById("PermisosEspeciales").style.display = 'none';
+
+                    SMO_valId = "0";
+                    OWN_valId = "0";
+                    CBU_valId = "0";
+
+
+                    var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+                    if ($("#HI_PermisosEsp").val() == "") {
+                        $("#HI_PermisosEsp").val(carga);
+
+                    }
+
                 }
             }
         }
@@ -682,7 +694,7 @@
             </div>
             <div id="SMO_Permits_div" class="col-sm-3">
                 <fieldset class="form-group">
-                    <label for="Nombre">SMO Permit</label>
+                    <label for="Nombre" style="width:200px;">SMO Permit</label>
                     @{
                     List<SelectListItem> ListSMO = new List<SelectListItem>();
                     ListSMO.Add(new SelectListItem() { Value = "0", Text = "Choose an SMO", Selected = false });
@@ -698,7 +710,7 @@
             </div>
             <div id="OWNER_Permits_div" class="col-sm-3">
                 <fieldset class="form-group">
-                    <label for="Nombre">OWNER Permit</label>
+                    <label for="Nombre" style="width:200px;">OWNER Permit</label>
                     @{
                     List<SelectListItem> ListOWNER = new List<SelectListItem>();
                     ListOWNER.Add(new SelectListItem() { Value = "0", Text = "Choose OWNER", Selected = false });
@@ -713,7 +725,7 @@
                 </fieldset>
             </div>
             <div class="col-sm-3">
-                <label for="Nombre">Actionn</label><br />
+                <label for="Nombre">Action</label><br />
                 <input type="button" value="Add Permits" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
             </div>
         </div>
@@ -728,10 +740,12 @@
 
                     @foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner fila in Model.Usuario.LARCA20_User_Owner)
                     {
-
+                       
+                        
                         if (@fila.Borrado == false)
                         {
 
+                            
                             if( @fila.IdBU != 0 && @fila.IdSmo != 0 && @fila.IdOwner != 0)
                                { 
                             
