@@ -1,0 +1,20 @@
+﻿@model Larca2.Models.UserForm
+
+@{
+    ViewBag.Title = "Message";
+}
+@section featured {
+    <section class="featured">
+        <div style="text-align:center" class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title:</h1>
+                <h2>@ViewBag.Message</h2>  
+            </hgroup>
+               
+            <label> "Invalid user. Please contact </label><label>&nbsp;@ViewBag.Email</label><label>in order to be granted access to the tool."</label>                   
+            <p>
+                ***Change email if admin is modified
+            </p>
+        </div>
+    </section>
+}
