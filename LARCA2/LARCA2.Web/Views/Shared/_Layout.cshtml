@@ -46,14 +46,12 @@
                                         </ul>
                                     </li>
                                 }
-                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 2 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 3)
+                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 3)
                                 {
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
-                                            <li>@Html.ActionLink("LARCA News RBU", "NewsRBU", "LAScope")</li>
-                                            <li>@Html.ActionLink("LARCA News SMO", "NewsSMO", "LAScope")</li>
-                                            <li>@Html.ActionLink("LARCA News LA", "NewsREGION", "LAScope")</li>
+                                            <li>@Html.ActionLink("LARCA News", "Index", "LAScope")</li>
                                         </ul>
                                     </li>
                                 }

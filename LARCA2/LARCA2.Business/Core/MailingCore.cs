@@ -99,7 +99,7 @@ namespace LARCA2.Business.Core
                                                 email.Fecha = message.Headers.DateSent;
                                                 email.Borrado = false;
                                                 email.Archivo = fileName;
-                                             
+
                                                 // Enviamos a procesar el Excel descargado del email
                                                 try
                                                 {
@@ -113,7 +113,7 @@ namespace LARCA2.Business.Core
                                                     email.Procesado = false;
                                                     emailsService.Guardar(email);
                                                 }
-                                                
+
                                                 break;
                                             }
                                         }
@@ -359,7 +359,7 @@ namespace LARCA2.Business.Core
             var msg = new MailMessage();
             msg.To.Add(to);
             //msg.Bcc.Add("larca_mailing@yahoo.com");
-            msg.From = new MailAddress("snpla.im@pg.com", "LARCA 2 BOT", Encoding.UTF8);
+            msg.From = new MailAddress("larca.im@pg.com", "LARCA", Encoding.UTF8);
             msg.Subject = subject;
             msg.SubjectEncoding = Encoding.UTF8;
             msg.Body = body;
@@ -373,12 +373,11 @@ namespace LARCA2.Business.Core
                     msg.Attachments.Add(attachment);
 
                 }
-
-            using (SmtpClient smtp = new SmtpClient("GADC-ExchCAS.na.pg.com", 21))
+            using (SmtpClient smtp = new SmtpClient("143.5.4.163", 21))
             {
                 //smtp.Credentials = new NetworkCredential("larca_mailing@yahoo.com", "##larca##");
                 smtp.UseDefaultCredentials = true;
-                smtp.EnableSsl = true;
+                smtp.EnableSsl = false;
                 smtp.Send(msg);
             }
         }

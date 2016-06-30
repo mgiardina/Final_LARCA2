@@ -1,6 +1,6 @@
 ﻿@model Larca2.Views.ViewModels.LAScopeViewModel
 @{
-    ViewBag.Title = "LARCA NEWS - REGION";
+    ViewBag.Title = "LARCA News";
 }
 @section featured {
     <section class="featured">
@@ -10,51 +10,85 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                LA NEWS by REGION Report
+                LARCA News
             </p>
         </div>
     </section>
 }
+
+<script>
+    $(document).ready(function () {
+        $('#FilterBU').on('click', function () {
+            $('#smo').val("0");
+            $('#txtType').val("BU");
+        });
+        $('#FilterSMO').on('click', function () {
+            $('#rbu').val("0");
+            $('#txtType').val("SMO");
+        });
+    });
+</script>
+
+
 <div class="container-fluid">
-    @using (Html.BeginForm("NewsREGIONFilter", "LAScope", FormMethod.Post, new { name = "myform" }))
+    @using (Html.BeginForm("LarcaNewsProcess", "LAScope", FormMethod.Post, new { name = "myform" }))
     {
+        <input type="hidden" class="txtType" id="txtType" name="txtType" value="" />
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <h5 style="border-bottom:1px solid #c7d1d6;">FILTER</h5>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <fieldset class="form-group">
-                    @Html.DropDownListFor(model => model.regionId, Model.RegionList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.rbu, Model.BUList, new { @class = "form-control" })
                 </fieldset>
             </div>
             <div class="col-sm-1">
-                <input type="submit" value="Filter" name="command" class="btn btn-info" />
+                <input type="submit" value="Filter by BU" name="command" class="btn btn-info" id="FilterBU" />
             </div>
-            <div class="pull-right col">
-                <input type="submit" value="Export Excel" name="command" class="btn btn-info" />
-                <input type="submit" value="Send Email" name="command" class="btn btn-info" />
+            <div class="col-sm-3">
+                <fieldset class="form-group">
+                    @Html.DropDownListFor(model => model.smo, Model.SMOList, new { @class = "form-control", })
+                </fieldset>
+            </div>
+            <div class="col-sm-1">
+                <input type="submit" value="Filter by SMO" name="command" class="btn btn-info" id="FilterSMO" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="submit" value="Export Excel" name="command" class="btn btn-success" />
+                @{
+        var user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)HttpContext.Current.Session["Usuario"];
+                }
+                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1)
+                {
+                    <input type="submit" value="Send Email" name="command" class="btn btn-warning" />
+                    <input type="submit" value="Send All Reports" name="command" class="btn btn-danger" />
+                }
             </div>
         </div>
 
     }
     <div class="row">
-        <div class="col-sm-13 pull-right">
+        <div class="col-sm-12 pull-right">
             <p style="color:red; font-size:16px;margin-top:5px;">
                 @ViewBag.Result
             </p>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-13">
+        <div class="col-sm-12">
             <div class="table-responsive">
                 <table class="table">
                     <tbody>
                         <tr>
-                            <th> RBU</th>
+                            <th> BU</th>
                             <th> SMO</th>
                             <th> Cut Classification</th>
+                            <th> Other Classification</th>
                             <th> Volume</th>
                             <th> % in GAP</th>
                             <th> Problem Statement</th>
@@ -64,7 +98,6 @@
                             <th> Action Plan</th>
                             <th> Responsible</th>
                             <th> GAP Analysis</th>
-                            <th> Other Classification</th>
                         </tr>
                         @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
                         {
@@ -72,6 +105,7 @@
                                 <td style="background-color:gray;color:#fff;">@item.RBU</td>
                                 <td style="background-color:gray;color:#fff;">@item.SMO</td>
                                 <td style="background-color:gray;color:#fff;">@item.CUT</td>
+                                <td style="background-color:gray;color:#fff;">@item.LEVEL4</td>
                                 <td style="background-color:gray;color:#fff;">@item.VOLUME</td>
                                 <td style="background-color:gray;color:#fff;">@item.GAP</td>
                                 <td style="background-color:gray;color:#fff;">@item.PROBLEM</td>
@@ -81,7 +115,7 @@
                                 <td style="background-color:gray;color:#fff;">@item.ACTIONPLAN</td>
                                 <td style="background-color:gray;color:#fff;">@item.RESPONSIBLE</td>
                                 <td style="background-color:gray;color:#fff;">@item.GAPANALYSIS</td>
-                                <td style="background-color:gray;color:#fff;">@item.LEVEL4</td>
+
                             </tr>
                             foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.OrderByDescending(r => Convert.ToDecimal(r.VOLUME)).ToList())
                             {
@@ -89,6 +123,7 @@
                                     <td> @detail.RBU</td>
                                     <td> @detail.SMO</td>
                                     <td> @detail.CUT</td>
+                                    <td> @detail.LEVEL4</td>
                                     <td> @detail.VOLUME</td>
                                     <td> @detail.GAP</td>
                                     <td> @detail.PROBLEM</td>
@@ -98,7 +133,6 @@
                                     <td> @detail.ACTIONPLAN</td>
                                     <td> @detail.RESPONSIBLE</td>
                                     <td> @detail.GAPANALYSIS</td>
-                                    <td> @detail.LEVEL4</td>
                                 </tr>
                             }
                         }
@@ -107,3 +141,4 @@
             </div>
         </div>
     </div>
+

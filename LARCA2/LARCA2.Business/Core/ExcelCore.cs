@@ -190,18 +190,18 @@ namespace LARCA2.Business.Core
             ws.Cell(3, 1).Value = "RBU";
             ws.Cell(3, 2).Value = "SMO";
             ws.Cell(3, 3).Value = "Cut Classification";
-            ws.Cell(3, 4).Value = "Volume";
-            ws.Cell(3, 5).Value = "% in GAP";
-            ws.Cell(3, 6).Value = "Problem Statement";
-            ws.Cell(3, 7).Value = "Why";
+            ws.Cell(3, 4).Value = "Other Classification";
+            ws.Cell(3, 5).Value = "Volume";
+            ws.Cell(3, 6).Value = "% in GAP";
+            ws.Cell(3, 7).Value = "Problem Statement";
             ws.Cell(3, 8).Value = "Why";
             ws.Cell(3, 9).Value = "Why";
-            ws.Cell(3, 10).Value = "Action Plan";
-            ws.Cell(3, 11).Value = "Responsible";
-            ws.Cell(3, 12).Value = "GAP Analysis";
-            ws.Cell(3, 13).Value = "Other Classification";
+            ws.Cell(3, 10).Value = "Why";
+            ws.Cell(3, 11).Value = "Action Plan";
+            ws.Cell(3, 12).Value = "Responsible";
+            ws.Cell(3, 13).Value = "GAP Analysis";
 
-            var rngHeaders = ws.Range("A3:L3");
+            var rngHeaders = ws.Range("A3:M3");
             rngHeaders.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
             rngHeaders.Style.Font.Bold = true;
             rngHeaders.Style.Font.FontColor = XLColor.White;
@@ -213,16 +213,17 @@ namespace LARCA2.Business.Core
                 ws.Cell(row, 1).Value = item.RBU;
                 ws.Cell(row, 2).Value = item.SMO;
                 ws.Cell(row, 3).Value = item.CUT;
-                ws.Cell(row, 4).Value = item.VOLUME;
-                ws.Cell(row, 5).Value = item.GAP;
-                ws.Cell(row, 6).Value = item.PROBLEM;
-                ws.Cell(row, 7).Value = item.WHY1;
-                ws.Cell(row, 8).Value = item.WHY2;
-                ws.Cell(row, 9).Value = item.WHY3;
-                ws.Cell(row, 10).Value = item.ACTIONPLAN;
-                ws.Cell(row, 11).Value = item.RESPONSIBLE;
-                ws.Cell(row, 12).Value = item.GAPANALYSIS;
-                ws.Cell(row, 13).Value = item.LEVEL4;
+                ws.Cell(row, 4).Value = item.LEVEL4;
+                ws.Cell(row, 5).Value = item.VOLUME;
+                ws.Cell(row, 6).Value = item.GAP;
+                ws.Cell(row, 7).Value = item.PROBLEM;
+                ws.Cell(row, 8).Value = item.WHY1;
+                ws.Cell(row, 9).Value = item.WHY2;
+                ws.Cell(row, 10).Value = item.WHY3;
+                ws.Cell(row, 11).Value = item.ACTIONPLAN;
+                ws.Cell(row, 12).Value = item.RESPONSIBLE;
+                ws.Cell(row, 13).Value = item.GAPANALYSIS;
+
                 row++;
 
                 //Ahora agregamos las Filas hijas de las Grises
@@ -232,21 +233,21 @@ namespace LARCA2.Business.Core
                     ws.Cell(row, 1).Value = subitem.RBU;
                     ws.Cell(row, 2).Value = subitem.SMO;
                     ws.Cell(row, 3).Value = subitem.CUT;
-                    ws.Cell(row, 4).Value = subitem.VOLUME;
-                    ws.Cell(row, 5).Value = subitem.GAP;
-                    ws.Cell(row, 6).Value = subitem.PROBLEM;
-                    ws.Cell(row, 7).Value = subitem.WHY1;
-                    ws.Cell(row, 8).Value = subitem.WHY2;
-                    ws.Cell(row, 9).Value = subitem.WHY3;
-                    ws.Cell(row, 10).Value = subitem.ACTIONPLAN;
-                    ws.Cell(row, 11).Value = subitem.RESPONSIBLE;
-                    ws.Cell(row, 12).Value = subitem.GAPANALYSIS;
-                    ws.Cell(row, 13).Value = item.LEVEL4;
+                    ws.Cell(row, 4).Value = subitem.LEVEL4;
+                    ws.Cell(row, 5).Value = subitem.VOLUME;
+                    ws.Cell(row, 6).Value = subitem.GAP;
+                    ws.Cell(row, 7).Value = subitem.PROBLEM;
+                    ws.Cell(row, 8).Value = subitem.WHY1;
+                    ws.Cell(row, 9).Value = subitem.WHY2;
+                    ws.Cell(row, 10).Value = subitem.WHY3;
+                    ws.Cell(row, 11).Value = subitem.ACTIONPLAN;
+                    ws.Cell(row, 12).Value = subitem.RESPONSIBLE;
+                    ws.Cell(row, 13).Value = subitem.GAPANALYSIS;
                     row++;
                 }
             }
 
-            ws.Columns(1, 12).AdjustToContents();
+            ws.Columns(1, 13).AdjustToContents();
 
             //Save
             var path = Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data/Reports/"), fileName);

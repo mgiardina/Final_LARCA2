@@ -15,68 +15,55 @@ namespace Larca2.Controllers
 {
     public class LAScopeController : Controller
     {
-
-        public ActionResult NewsSMO()
+        public ActionResult Index()
         {
             var model = new Larca2.Views.ViewModels.LAScopeViewModel();
-            model.SMOList = model.SMOList.Where(x => model.Permisos.Exists(y => y.LARCA20_MasterData1.DataFin.ToString() == x.Value) || x.Value == "0").ToList();
-            model.BUList = model.BUList.Where(x => model.Permisos.Exists(y => y.LARCA20_MasterData.DataFin.ToString() == x.Value) || x.Value == "0").ToList();
             var masterRows = new List<ReportRow>();
             ViewData["MasterRows"] = masterRows;
             return View(model);
         }
 
-        public ActionResult NewsRBU()
-        {
-           var model = new Larca2.Views.ViewModels.LAScopeViewModel();
-           model.SMOList = model.SMOList.Where(x => model.Permisos.Exists(y => y.LARCA20_MasterData1.DataFin.ToString() == x.Value) || x.Value == "0").ToList();
-           model.BUList = model.BUList.Where(x => model.Permisos.Exists(y => y.LARCA20_MasterData.DataFin.ToString() == x.Value) || x.Value == "0").ToList();
-            var masterRows = new List<ReportRow>();
-            ViewData["MasterRows"] = masterRows;
-            return View(model);
-        }
-
-        public ActionResult NewsREGION()
-        {
-            var model = new Larca2.Views.ViewModels.LAScopeViewModel();
-            model.SMOList = model.SMOList.Where(x => model.Permisos.Exists(y => y.LARCA20_MasterData1.DataFin.ToString() == x.Value) || x.Value == "0").ToList();
-            model.BUList = model.BUList.Where(x => model.Permisos.Exists(y => y.LARCA20_MasterData.DataFin.ToString() == x.Value) || x.Value == "0").ToList();
-            var masterRows = new List<ReportRow>();
-            ViewData["MasterRows"] = masterRows;
-            return View(model);
-        }
-
-        public ActionResult NewsSMOFilter(Larca2.Views.ViewModels.LAScopeViewModel model, string command)
+        public ActionResult LarcaNewsProcess(Larca2.Views.ViewModels.LAScopeViewModel model, string command, string txtType)
         {
             var smo = model.smo;
-            var masterRows = new ReportsBLL().LARCANews(smo, string.Empty, model.Permisos);
-            if (command.Equals("Export Excel"))
+            var rbu = model.rbu;
+            var type = txtType;
+            var masterRows = new List<ReportRow>();
+            switch (command)
             {
-                var file = new ExcelCore().GenerarExcel("LARCA News - SMO", masterRows);
-                // Download
-                DownloadFile(file);
+                case "Filter by BU":
+                    masterRows = new ReportsBLL().LARCANews(string.Empty, rbu, string.Empty);
+                    break;
+                case "Filter by SMO":
+                    if (smo != "1" && smo != "2")
+                    {
+                        masterRows = new ReportsBLL().LARCANews(smo, string.Empty, string.Empty);
+                    }
+                    else
+                    {
+                        masterRows = new ReportsBLL().LARCANews(string.Empty, string.Empty, smo);
+                    }
+                    break;
             }
-            else
-            {
-                if (command.Equals("Send Email"))
-                {
-                    var file = new ExcelCore().GenerarExcel("LARCA News - SMO", masterRows);
-                    new MailingCore().EnviarReporte(file);
-                    ViewBag.Result = "Archivo exportado y enviado correctamente.";
-                }
-            }
-        
-            ViewData["MasterRows"] = masterRows;
-            return View("NewsSMO", model);
-        }
 
-        public ActionResult NewsRBUFilter(Larca2.Views.ViewModels.LAScopeViewModel model, string command)
-        {
-            var bu = model.rbu;
-            var masterRows = new ReportsBLL().LARCANews(string.Empty, bu, model.Permisos);
             if (command.Equals("Export Excel"))
             {
-                var file = new ExcelCore().GenerarExcel("LARCA News - RBU", masterRows);
+                if (rbu != "0")
+                {
+                    masterRows = new ReportsBLL().LARCANews(string.Empty, rbu, string.Empty);
+                }
+                else
+                {
+                    if (smo != "1" && smo != "2")
+                    {
+                        masterRows = new ReportsBLL().LARCANews(smo, string.Empty, string.Empty);
+                    }
+                    else
+                    {
+                        masterRows = new ReportsBLL().LARCANews(string.Empty, string.Empty, smo);
+                    }
+                }
+                var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
                 // Download
                 DownloadFile(file);
             }
@@ -84,36 +71,41 @@ namespace Larca2.Controllers
             {
                 if (command.Equals("Send Email"))
                 {
-                    var file = new ExcelCore().GenerarExcel("LARCA News - RBU", masterRows);
-                    new MailingCore().EnviarReporte(file);
-                    ViewBag.Result = "Archivo exportado y enviado correctamente.";
-                }
-            }
-            ViewData["MasterRows"] = masterRows;
-            return View("NewsRBU", model);
-        }
+                    if (rbu != "0")
+                    {
+                        masterRows = new ReportsBLL().LARCANews(string.Empty, rbu, string.Empty);
+                    }
+                    else
+                    {
+                        if (smo != "1" && smo != "2")
+                        {
+                            masterRows = new ReportsBLL().LARCANews(smo, string.Empty, string.Empty);
+                        }
+                        else
+                        {
+                            masterRows = new ReportsBLL().LARCANews(string.Empty, string.Empty, smo);
+                        }
+                    }
 
-        public ActionResult NewsREGIONFilter(Larca2.Views.ViewModels.LAScopeViewModel model, string command)
-        {
-            var regionId = model.regionId;
-            var masterRows = new ReportsBLL().LARCANews(regionId, model.Permisos);
-            if (command.Equals("Export Excel"))
-            {
-                var file = new ExcelCore().GenerarExcel("LARCA News - Region", masterRows);
-                // Download
-                DownloadFile(file);
-            }
-            else
-            {
-                if (command.Equals("Send Email"))
-                {
-                    var file = new ExcelCore().GenerarExcel("LARCA News - Region", masterRows);
+                    var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
                     new MailingCore().EnviarReporte(file);
-                    ViewBag.Result = "Archivo exportado y enviado correctamente.";
+                    ViewBag.Result = "File Exported and sent!.";
+                }
+                else
+                {
+                    if (command.Equals("Send All Reports"))
+                    {
+                        masterRows = new ReportsBLL().LARCANews(string.Empty, string.Empty, "1");
+                        var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
+                        new MailingCore().EnviarReporte(file);
+                        ViewBag.Result = "File Exported and sent!.";
+                    }
                 }
             }
+
             ViewData["MasterRows"] = masterRows;
-            return View("NewsREGION", model);
+            model = new Larca2.Views.ViewModels.LAScopeViewModel();
+            return View("Index", model);
         }
 
         private void DownloadFile(string file)

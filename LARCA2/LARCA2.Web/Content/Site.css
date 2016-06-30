@@ -95,10 +95,7 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
-<<<<<<< HEAD
-=======
     max-width: 6000px;
->>>>>>> origin/master
 }
 
 #body {

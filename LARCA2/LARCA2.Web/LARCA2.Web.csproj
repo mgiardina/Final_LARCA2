@@ -315,9 +315,6 @@
     <Content Include="Views\Adm\NuevoRcClasification.cshtml" />
     <Content Include="Views\Adm\RcClasificationBM.cshtml" />
     <Content Include="Views\Adm\SMOTreatment.cshtml" />
-    <Content Include="Views\LAScope\NewsRBU.cshtml" />
-    <Content Include="Views\LAScope\NewsREGION.cshtml" />
-    <Content Include="Views\LAScope\NewsSMO.cshtml" />
     <Content Include="Views\ManualLoad\Index.cshtml" />
     <Content Include="Views\Adm\AuxDataBM.cshtml" />
     <Content Include="Views\Adm\Level4.cshtml" />
@@ -326,6 +323,7 @@
     <Content Include="Views\Adm\ModifLevel4.cshtml" />
     <Content Include="Views\Adm\NuevoLevel4.cshtml" />
     <Content Include="Views\Smo\SMOSimple.cshtml" />
+    <Content Include="Views\LAScope\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Reports\" />
