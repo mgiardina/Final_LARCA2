@@ -157,16 +157,16 @@
                 @{int j = 0;
                 if (Model.L4BLL == null)
                 {
-                    Model.L4BLL = new LARCA2.Business.Services.Level4BLL();
+                    Model.L4BLL = new LARCA2.Business.Ser
+                foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
+                {
+                    Model.selectedItems.Add(new bool { });
+                    <tr id=@(j.ToString())>vices.Level4BLL();
                 }
                 if (Model.MBLL == null)
                 {
                     Model.MBLL = new LARCA2.Business.Services.MasterDataBLL();
                 }
-                foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
-                {
-                    Model.selectedItems.Add(new bool { });
-                    <tr id=@(j.ToString())>
                         @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
                         <td width="5%" align="center">
                             <input type="button" value="Show" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />

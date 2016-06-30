@@ -16,6 +16,8 @@ namespace Larca2.Views.ViewModels
         public string smo { get; set; }
         public string mesSeleccionado { get; set; }
         public string enviado { get; set; }
+        public string userRole { get; set; }
+        public int idRole { get; set; }
         public int tempInt { get; set; }
         public List<SelectListItem> dropdownMeses { get; set; }
         public List<SelectListItem> BUList { get; set; }
@@ -44,12 +46,12 @@ namespace Larca2.Views.ViewModels
               
                         foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MBLL.Todos().Where(x=> x.Data == "BU"))
                         {
-                           BUList.Add(new SelectListItem{Text = md.DataIni, Value = md.IdRenglon.ToString()});
+                           BUList.Add(new SelectListItem{Text = md.DataFin, Value = md.IdRenglon.ToString()});
                         }
                         
                         foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MBLL.Todos().Where(x=> x.Data == "SMO"))
                         {
-                           SMOList.Add(new SelectListItem{Text = md.DataIni, Value = md.IdRenglon.ToString()});
+                            SMOList.Add(new SelectListItem { Text = md.DataFin, Value = md.IdRenglon.ToString() });
                         }
 
                         L4List.Add(new SelectListItem { Text = "Choose a valid Level 4", Value = "0" });

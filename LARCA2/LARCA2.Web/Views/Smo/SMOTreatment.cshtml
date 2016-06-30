@@ -164,99 +164,111 @@
 </script>
 
 
-    <div class="content-wrapper" style="margin-bottom:20px;">
-        @using (Html.BeginForm("SmoFiltrado", "Smo", FormMethod.Post, new { name = "myform" }))
+    <div class="container-fluid" style="margin-bottom:20px;">
+    @using (Html.BeginForm("SmoFiltrado", "Smo", FormMethod.Post, new { name = "myform" }))
         {
-            <br />
+        <br />
 
-    <div class="pull-left2">
-        <fieldset class="form-group">
-            <label for="Nombre">BU</label>
-
-            @Html.DropDownListFor(model => model.bu, Model.BUList)
-        </fieldset>
-
-
-        <fieldset class="form-group">
-            <label for="Nombre">SMO</label>
-
-            @Html.DropDownListFor(model => model.smo, Model.SMOList)
-        </fieldset>
-        <fieldset class="form-group">
-            <label for="Nombre">Month</label>
-
-            @Html.DropDownListFor(model => model.mesSeleccionado, Model.dropdownMeses)
-        </fieldset>
-    </div>
-
-
-
-
-
-
-
-        <div align="center">
-            <input type="submit" value="Search" name="Search" class="btn btn-default" />
+        <div class="row">
+            <div class="col-sm-13">
+                <h5 style="border-bottom:1px solid #c7d1d6;">  BU</h5>
+            </div>
         </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <fieldset class="form-group">
+                @Html.DropDownListFor(model => model.bu, Model.BUList)
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-13">
+            <h5 style="border-bottom:1px solid #c7d1d6;">  SMO</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <fieldset class="form-group">
+                @Html.DropDownListFor(model => model.smo, Model.SMOList)
+            </fieldset>
+        </div>
+    </div>
+            if (Model.dropdownMeses.Count != 1) { 
+    <div class="row">
+        <div class="col-sm-13">
+            <h5 style="border-bottom:1px solid #c7d1d6;"> Month</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <fieldset class="form-group">
+                @Html.DropDownListFor(model => model.mesSeleccionado, Model.dropdownMeses)
+            </fieldset>
+        </div>
+    </div>
+    }
+    <div align="center">
+        <input type="submit" value="Search" name="Search" class="btn btn-info" />
+    </div>
         }
-  
-</div>
-<br />
-<br />
-<div class="content-wrapper" style="margin-bottom:20px;width:2500px;">
-    @using (Html.BeginForm("SmoModificados", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" }))
+
+        </div>
+        <br />
+        <br />
+        <div class="content-wrapper" style="margin-bottom:20px;width:2500px;">
+            @using (Html.BeginForm("SmoModificados", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" }))
     {
-        <input name="HI_SmoEsp" id="HI_SmoEsp" type="hidden" value="" />
-        <input name="HI_NumEsp" id="HI_NumEsp" type="hidden" value="" />
-        <input name="HI_Counter" id="HI_Counter" type="hidden" value="" />
+                <input name="HI_SmoEsp" id="HI_SmoEsp" type="hidden" value="" />
+                <input name="HI_NumEsp" id="HI_NumEsp" type="hidden" value="" />
+                <input name="HI_Counter" id="HI_Counter" type="hidden" value="" />
 
-    <table id="tablaSmor" class="table" width="2000">
-        <thread>
-            <tr>
+                <table id="tablaSmor" class="table" width="2000">
+                    <thread>
+                        <tr>
 
-                <th width="5%" align="center">
-                    <label>Volume</label>
-                </th>
-                <th width="4%" align="center">
-                    <label>SMO</label>
-                </th>
-                <th width="3%" align="center">
-                    <label>BU</label>
-                </th>
-                <th width="5%" align="center">
-                    <label>Root Cause</label>
-                </th>
-                <th width="10%" align="center">
-                    <label>Other classification</label>
-                </th>
-                <th align="center">
-                    <label>Problem Statement</label>
-                </th>
-                <th align="center">
-                    <label>Why 1</label>
-                </th>
-                <th  align="center">
-                    <label>Why 2</label>
-                </th>
-                <th align="center">
-                    <label>Why 3</label>
-                </th>
-                <th align="center">
-                    <label>Action Plan</label>
-                </th>
-                <th width="5%" align="center">
-                    <label>Responsible</label>
-                </th>
-                <th width="5%" align="center">
-                    <label>Due Date</label>
-                </th>
-                <th width="3%" align="center">
-                    <label>Open or Closed</label>
-                </th>
+                            <th width="5%" align="center">
+                                <label>Volume</label>
+                            </th>
+                            <th width="4%" align="center">
+                                <label>SMO</label>
+                            </th>
+                            <th width="3%" align="center">
+                                <label>BU</label>
+                            </th>
+                            <th width="5%" align="center">
+                                <label>Root Cause</label>
+                            </th>
+                            <th width="10%" align="center">
+                                <label>Other classification</label>
+                            </th>
+                            <th align="center">
+                                <label>Problem Statement</label>
+                            </th>
+                            <th align="center">
+                                <label>Why 1</label>
+                            </th>
+                            <th align="center">
+                                <label>Why 2</label>
+                            </th>
+                            <th align="center">
+                                <label>Why 3</label>
+                            </th>
+                            <th align="center">
+                                <label>Action Plan</label>
+                            </th>
+                            <th width="5%" align="center">
+                                <label>Responsible</label>
+                            </th>
+                            <th width="5%" align="center">
+                                <label>Due Date</label>
+                            </th>
+                            <th width="3%" align="center">
+                                <label>Open or Closed</label>
+                            </th>
 
-            </tr>
+                        </tr>
 
-            @{int j = 0;
+                        @{int j = 0;
             if (Model.L4BLL == null)
             {
                 Model.L4BLL = new LARCA2.Business.Services.Level4BLL();
@@ -336,7 +348,7 @@
                         <input type="button" value="+" id="Clone" class="btn btn-info" onclick="AgregaRegistroFinalESP(@(j.ToString()))" />
 
                     </td>
-                    <td  align="center">
+                    <td align="center">
                         <label>
                             @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem })
                         </label>
@@ -347,7 +359,7 @@
                             @Html.TextAreaFor(m => m.EditablesSMO[j].Why1, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why1 })
                         </label>
                     </td>
-                    <td  align="center">
+                    <td align="center">
                         <label>
                             @Html.TextAreaFor(m => m.EditablesSMO[j].Why2, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why2 })
                         </label>
@@ -357,7 +369,7 @@
                             @Html.TextAreaFor(m => m.EditablesSMO[j].Why3, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why3 })
                         </label>
                     </td>
-                    <td  align="center">
+                    <td align="center">
                         <label>
                             @Html.TextAreaFor(m => m.EditablesSMO[j].ActionPlan, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.ActionPlan })
                         </label>
@@ -391,16 +403,16 @@
                 </tr>
                         j++;
             }
-            }
-            <tr><td width=5% style="display: none"><td width=4% style="display: none"><td width=3% style="display: none"><td width=5% style="display: none"> </td> <td width=10% style="display: none"></td> <td style="display: none"></td> <td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td width=5% style="display: none"></td><td width=5% style="display: none"></td><td width=3% style="display: none"></td></tr>
-        </thread>
-        <tbody></tbody>
-    </table>
+                        }
+                        <tr><td width=5% style="display: none"><td width=4% style="display: none"><td width=3% style="display: none"><td width=5% style="display: none"> </td> <td width=10% style="display: none"></td> <td style="display: none"></td> <td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td width=5% style="display: none"></td><td width=5% style="display: none"></td><td width=3% style="display: none"></td></tr>
+                    </thread>
+                    <tbody></tbody>
+                </table>
 
-    <div align="center">
-        @* <input type="submit" value="Guardar Cambios" name="Guardar Cambios" class="btn btn-default" /> *@
-        <input type="submit" value="Save Changes" id="guardar" onclick="LoadEm()" class=" btn btn-info" />
+                <div align="center">
+                    @* <input type="submit" value="Guardar Cambios" name="Guardar Cambios" class="btn btn-default" /> *@
+                    <input type="submit" value="Save Changes" id="guardar" onclick="LoadEm()" class=" btn btn-info" />
 
-    </div>
+                </div>
     }
-</div>
+        </div>
