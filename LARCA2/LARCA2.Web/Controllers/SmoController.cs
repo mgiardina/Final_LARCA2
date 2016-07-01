@@ -537,12 +537,12 @@ namespace Larca2.Controllers
             //viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             //viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
-            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
-           
-            
-            if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1) ).Count() > 0) 
-            viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
+             if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
+                 viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
 
+
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+        
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             //Copio la lista a los editables para poder modificar los datos necesarios.
@@ -624,11 +624,15 @@ namespace Larca2.Controllers
             if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
-            if(viewModel.mesSeleccionado == "0")
+            if (viewModel.mesSeleccionado == "0")
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
             else
+            {
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
+                viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = true });
+                viewModel.dropdownMeses[0].Selected = false;
 
+            }
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
        //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
@@ -836,9 +840,19 @@ namespace Larca2.Controllers
             if (viewModel.mesSeleccionado == "0")
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
             else
+            {
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
-
-
+                if (viewModel.dropdownMeses.Count == 1) 
+                { 
+                viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = true });
+                viewModel.dropdownMeses[0].Selected = false;
+                }
+            }
+            if (viewModel.dropdownMeses.Count == 1 && viewModel.RegistrosSMO.Exists(x => x.Fecha.Value.Month < DateTime.Now.Month))
+            {
+                viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
+                viewModel.dropdownMeses[0].Selected = true;
+            }
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
             //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;

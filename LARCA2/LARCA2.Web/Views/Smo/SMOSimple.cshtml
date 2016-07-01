@@ -150,13 +150,14 @@ if (Model.idRole != 6)
 
                             @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
                             <td width="5%" align="center">
-                                <input type="button" value="Show" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
                             @Html.CheckBoxFor(m => m.selectedItems[j])
                             </td>
                             <td width="5%" align="center">
                                 <label>
                                     @SmoScope.Volumen
                                 </label>
+                                <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
+
                             </td>
 
                             <td width="4%" align="center">
