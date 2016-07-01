@@ -378,7 +378,7 @@ namespace LARCA2.Business.Core
                 }
             using (SmtpClient smtp = new SmtpClient(ServerSmtp,Port))
             {
-                smtp.Credentials = new NetworkCredential("frugal.im@pg.com", "gXH24u8x86mG");
+                smtp.Credentials = new NetworkCredential(UserName,  Password);
                 smtp.EnableSsl = false;
                 smtp.Send(msg);
             }
