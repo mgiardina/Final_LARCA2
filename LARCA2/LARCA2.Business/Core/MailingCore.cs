@@ -360,7 +360,7 @@ namespace LARCA2.Business.Core
         public void Send(string subject, string body, string to, List<Attachment> attachments)
         {
             //Mail al Usuario
-            var msg = new MailMessage();
+            /*var msg = new MailMessage();
             msg.To.Add(to);
             msg.From = new MailAddress("frugal.im@pg.com", "LARCA", Encoding.UTF8);
             msg.Subject = subject;
@@ -381,7 +381,7 @@ namespace LARCA2.Business.Core
                 smtp.Credentials = new NetworkCredential(UserName,  Password);
                 smtp.EnableSsl = false;
                 smtp.Send(msg);
-            }
+            }*/
         }
     }
 }

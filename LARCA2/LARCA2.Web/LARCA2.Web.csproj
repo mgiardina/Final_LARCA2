@@ -39,6 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML">
+      <HintPath>..\..\ClosedXML.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\LARCA2.Data\bin\Debug\EntityFramework.dll</HintPath>
     </Reference>
@@ -46,6 +49,9 @@
       <HintPath>..\LARCA2.Data\bin\Debug\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="OpenPop">
+      <HintPath>..\..\OpenPop.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
@@ -274,7 +280,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="SqlData\DB_ScriptInicial.sql" />
     <Content Include="SqlData\README.txt" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
