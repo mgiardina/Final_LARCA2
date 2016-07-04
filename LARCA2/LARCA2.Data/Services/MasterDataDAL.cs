@@ -86,7 +86,7 @@ namespace LARCA2.Data.Services
 
         public LARCA2.Data.DatabaseModels.LARCA20_MasterData TraerPorDataFin(string data, string dataFin)
         {
-            return Context.LARCA20_MasterData.SingleOrDefault(c => c.Data == data && c.DataFin == dataFin);
+            return Context.LARCA20_MasterData.SingleOrDefault(c => c.Data == data && c.DataFin == dataFin );
         }
 
         public override bool Eliminar(long id)

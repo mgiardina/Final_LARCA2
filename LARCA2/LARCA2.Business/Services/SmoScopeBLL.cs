@@ -105,8 +105,16 @@ namespace LARCA2.Business.Services
         }
         public List<LARCA20_SmoScope> Filtrar(string refidbu, string refidsmo)
         {
-            int bu = Int32.Parse(refidbu);
-            int smo = Int32.Parse(refidsmo);
+            int bu = 0;
+            int smo = 0;
+
+            if ((refidbu != null) || (refidbu == "")) {
+             bu = Int32.Parse(refidbu);
+                }
+
+            if ((refidsmo != null) || (refidbu == "")) {
+              smo = Int32.Parse(refidsmo);
+            }
 
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
             DateTime siev = DateTime.Now.AddDays(-repo.Todos().First().SmoDays.Value);

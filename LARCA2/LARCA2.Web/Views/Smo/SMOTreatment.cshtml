@@ -46,6 +46,7 @@
             var numi = parseInt($("#HI_Counter").val());
             for (i = 1; i <= numi; i++) {
                 var act = document.getElementById("cl" + i);
+                
 
                 if (act == null)
                 { } //cuidado con esto, si se borra un registro clonado van a haber nulls. este if los elimina de la carga final
@@ -109,6 +110,7 @@
             $("#HI_Counter").val(parseInt($("#HI_Counter").val()) + 1);
 
         //obtengo la fila a clonar
+        alert(num);
         var z = document.getElementById(num);
         //obtengo todas las columnas
         var t0 = z.getElementsByTagName("td")[0];
@@ -141,13 +143,72 @@
              $("#HI_SmoEsp").val($("#HI_SmoEsp").val() + "#/#" + carga);
              */
 
+        
+        var table = document.getElementById("tablaSmor");
         var contadorval = $("#HI_Counter").val();
+        
+        //num = num + 2;
+        /*if (num >= parseInt(contadorval)){
+            num = num + parseInt(contadorval) + 1;
+        }
+        else{
+            num = num + 2;
+        }*/
+
+        var rowIndex = document.getElementById(num).rowIndex;
+        rowIndex = rowIndex + 1;
+        alert(rowIndex);
+        var row = table.insertRow(rowIndex);
+        row.id = "cl" + contadorval;
+        var cell0 = row.insertCell(0);
+        var cell1 = row.insertCell(1);
+        var cell2 = row.insertCell(2);
+        var cell3 = row.insertCell(3);
+        var cell4 = row.insertCell(4);
+        var cell5 = row.insertCell(5);
+        var cell6 = row.insertCell(6);
+        var cell7 = row.insertCell(7);
+        var cell8 = row.insertCell(8);
+        var cell9 = row.insertCell(9);
+        var cell10 = row.insertCell(10);
+        var cell11 = row.insertCell(11);
+        var cell12 = row.insertCell(12);
+
+        
+        cell0.innerHTML = t0.innerHTML;
+        cell1.innerHTML = t1.innerHTML;
+        cell2.innerHTML = t2.innerHTML;
+        cell3.innerHTML = t3.innerHTML;
+        //cell4.innerHTML = t4.innerHTML + '<button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button>';
+        //cell4.innerHTML = '<input type="button" value="+" id="Clone" class="btn btn-info" onclick="AgregaRegistroFinalESP(' + contadorval + ')">' + '<button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button>';
+
+        var elem = t4.innerHTML.split('</label>');
+        label = elem[0];
+        cell4.innerHTML = label + '</label>' + '<button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button>';
+
+        cell5.innerHTML = t5.innerHTML;
+        cell6.innerHTML = t6.innerHTML;
+        cell7.innerHTML = t7.innerHTML;
+        cell8.innerHTML = t8.innerHTML;
+        cell9.innerHTML = t9.innerHTML;
+        cell10.innerHTML = t10.innerHTML;
+        cell11.innerHTML = t11.innerHTML;
+        cell12.innerHTML = t12.innerHTML;
+    
+
+        
+        
+       // alert(num);
+
+      /*  
         //cargo en la tabla la nueva fila
         self.
+            //'#tablaSmor tr:last')
         $('#tablaSmor tr:last').after('<tr id="cl' + contadorval + '"><td>' + t0.innerHTML + '</td><td>' + t1.innerHTML + '</td><td>' + t2.innerHTML + '</td><td>' + t3.innerHTML + '</td><td>' +
         t4.getElementsByTagName("label")[0].innerHTML + '<button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button></td><td>' + t5.innerHTML + '</td><td>' + t6.innerHTML + '</td><td>' + t7.innerHTML + '</td><td>' + t8.innerHTML +
             '</td><td>' + t9.innerHTML + '</td><td>' + t10.innerHTML + '</td><td>' + t11.innerHTML + '</td><td>' +
-           t12.innerHTML + '</td></tr>');
+           t12.innerHTML + '</td></tr>');*/
+        
     }
 
 
@@ -185,11 +246,11 @@
     <div class="container-fluid" style="margin-bottom:20px;">
     @using (Html.BeginForm("SmoFiltrado", "Smo", FormMethod.Post, new { name = "myform" }))
         {
-        <br />
+   
 
         <div class="row">
             <div class="col-sm-13">
-                <h5 style="border-bottom:1px solid #c7d1d6;">  BU</h5>
+                <h5 style="border-bottom:1px solid #c7d1d6; margin-left:18px;">  FILTERS</h5>
             </div>
         </div>
     <div class="row">
@@ -198,23 +259,16 @@
                 @Html.DropDownListFor(model => model.bu, Model.BUList)
             </fieldset>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-13">
-            <h5 style="border-bottom:1px solid #c7d1d6;">  SMO</h5>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-sm-4">
             <fieldset class="form-group">
                 @Html.DropDownListFor(model => model.smo, Model.SMOList)
             </fieldset>
         </div>
-    </div>
+       </div>
             if (Model.dropdownMeses.Count != 1) { 
     <div class="row">
         <div class="col-sm-13">
-            <h5 style="border-bottom:1px solid #c7d1d6;"> Month</h5>
+            <h5 style="border-bottom:1px solid #c7d1d6;margin-left:18px;"> Month</h5>
         </div>
     </div>
     <div class="row">
@@ -225,16 +279,15 @@
         </div>
     </div>
     }
-    <div align="center">
+    <div align="left">
         <input type="submit" value="Search" name="Search" class="btn btn-info" />
     </div>
         }
 
         </div>
-        <br />
-        <br />
-         <div style="overflow:scroll">
-             <div class="content-wrapper" style="margin-bottom:20px;width:2500px;">
+
+         <div style="overflow:scroll;">
+             <div class="content-wrapper" style="margin-bottom:20px;width:2500px;height:350px">
                  @using (Html.BeginForm("SmoModificados", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" }))
                  {
                      <input name="HI_SmoEsp" id="HI_SmoEsp" type="hidden" value="" />
@@ -352,7 +405,7 @@
                                              @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
                                          }
                                      </td>
-                                     <td width="10%" align="center">
+                                     <td width="10%" align="left">
                                          @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
                                          {
                                              <label>
@@ -370,7 +423,7 @@
                                      </td>
                                      <td align="center">
                                          <label>
-                                             @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem })
+                                             @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-family: Verdana"})
                                          </label>
                                      </td>
 

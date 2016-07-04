@@ -507,7 +507,7 @@ namespace Larca2.Controllers
              //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
              //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
              //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
-             if (viewModel.userRole != "Administrator")
+             if (viewModel.userRole != "1")
              {
                  List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                  viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
@@ -584,7 +584,7 @@ namespace Larca2.Controllers
             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
             
-            if (viewModel.userRole != "Administrator")
+            if (viewModel.userRole != "1")
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
@@ -800,7 +800,7 @@ namespace Larca2.Controllers
             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
 
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
-            if (viewModel.userRole != "Administrator")
+            if (viewModel.userRole != "1")
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
