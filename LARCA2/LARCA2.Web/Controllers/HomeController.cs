@@ -14,7 +14,7 @@ namespace LARCA2.Controllers
         public ActionResult Index()
         {
             //new MailingCore().ProcesarEmails();
-            new MailingCore().test();
+            //new MailingCore().test();
             var user = (WindowsPrincipal)User;
             LARCA2.Business.Services.UsuariosBLL repositorioUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.RolesBLL repositorioRoles = new LARCA2.Business.Services.RolesBLL();

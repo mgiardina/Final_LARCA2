@@ -7,12 +7,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
-            <p>
-                Here you can create new System Master Data.
-            </p>
         </div>
     </section>
 }
@@ -20,7 +16,7 @@
 
     @using (Html.BeginForm("AgregarMasterData", "Adm", FormMethod.Post))
     {
-        <div class="row">
+        <div class="row" style="margin-top:10px;">
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Group</label>
@@ -58,7 +54,7 @@
     <div class="row">
         <div class="col-sm-12">
             <fieldset class="form-group">
-                <label for="Nombre">Deleted</label>
+                <label for="Nombre">Deleted</label><br />
                 @Html.CheckBoxFor(m => m.MasterData.Borrado, new { @class = "form-control" })
             </fieldset>
         </div>

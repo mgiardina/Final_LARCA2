@@ -362,7 +362,7 @@ namespace LARCA2.Business.Core
             //Mail al Usuario
             var msg = new MailMessage();
             msg.To.Add(to);
-            msg.From = new MailAddress("frugal.im@pg.com", "LARCA", Encoding.UTF8);
+            msg.From = new MailAddress("larca.im@pg.com", "LARCA", Encoding.UTF8);
             msg.Subject = subject;
             msg.SubjectEncoding = Encoding.UTF8;
             msg.Body = body;
@@ -376,11 +376,18 @@ namespace LARCA2.Business.Core
                     msg.Attachments.Add(attachment);
 
                 }
-            using (SmtpClient smtp = new SmtpClient(ServerSmtp,Port))
+            using (SmtpClient smtp = new SmtpClient(ServerSmtp, Port))
             {
-                smtp.Credentials = new NetworkCredential(UserName,  Password);
+                smtp.Credentials = new NetworkCredential(UserName, Password);
                 smtp.EnableSsl = false;
-                smtp.Send(msg);
+                try
+                {
+                    smtp.Send(msg);
+                }
+                catch
+                {
+
+                }
             }
         }
     }

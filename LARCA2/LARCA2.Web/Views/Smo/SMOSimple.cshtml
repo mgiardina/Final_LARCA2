@@ -58,223 +58,224 @@
                 </div>
             </div>
         }
-if (Model.idRole != 6)
-{
-    <div class="row">
-        <div class="col-sm-13">
-            <h5 style="border-bottom:1px solid #c7d1d6;">  SMO</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <fieldset class="form-group">
-                @Html.DropDownListFor(model => model.smo, Model.SMOList)
-            </fieldset>
-        </div>
-    </div>
-}
+        if (Model.idRole != 6)
+        {
+            <div class="row">
+                <div class="col-sm-13">
+                    <h5 style="border-bottom:1px solid #c7d1d6;">  SMO</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(model => model.smo, Model.SMOList)
+                    </fieldset>
+                </div>
+            </div>
+        }
 
-    <div align="center">
-        <input type="submit" value="Search" name="Search" class="btn btn-info" />
-    </div>
+        <div align="center">
+            <input type="submit" value="Search" name="Search" class="btn btn-info" />
+        </div>
 
     }
 
 </div>
-    <br />
-    <br />
+<br />
+<br />
+<div style="overflow:scroll;">
     <div class="content-wrapper" style="margin-bottom:20px;width:2500px;">
         @using (Html.BeginForm("SmoSimpleAgrupar", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" }))
         {
 
             <table id="tablaSmor" class="table" width="2000">
-               
-                    <tr>
-                        <th width="5%" align="center">
-                            <label>Details / Select </label>
-                        </th>
-                        <th width="5%" align="center">
-                            <label>Volume</label>
-                        </th>
-                        <th width="4%" align="center">
-                            <label>SMO</label>
-                        </th>
-                        <th width="3%" align="center">
-                            <label>BU</label>
-                        </th>
-                        <th width="5%" align="center">
-                            <label>Root Cause</label>
-                        </th>
-                        <th width="10%" align="center">
-                            <label>Other classification</label>
-                        </th>
-                        <th align="center">
-                            <label>Problem Statement</label>
-                        </th>
-                        <th align="center">
-                            <label>Why 1</label>
-                        </th>
-                        <th align="center">
-                            <label>Why 2</label>
-                        </th>
-                        <th align="center">
-                            <label>Why 3</label>
-                        </th>
-                        <th align="center">
-                            <label>Action Plan</label>
-                        </th>
-                        <th width="5%" align="center">
-                            <label>Responsible</label>
-                        </th>
-                        <th width="5%" align="center">
-                            <label>Due Date</label>
-                        </th>
-                        <th width="3%" align="center">
-                            <label>Open or Closed</label>
-                        </th>
-                       
-                    </tr>
 
-                    @{int j = 0;
-                    if (Model.L4BLL == null)
-                    {
-                        Model.L4BLL = new LARCA2.Business.Services.Level4BLL();
-                    }
-                    foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
-                    {
-                        Model.selectedItems.Add(new bool { });
-                        <tr id=@(j.ToString())>
+                <tr>
+                    <th width="5%" align="center">
+                        <label>Details / Select </label>
+                    </th>
+                    <th width="5%" align="center">
+                        <label>Volume</label>
+                    </th>
+                    <th width="4%" align="center">
+                        <label>SMO</label>
+                    </th>
+                    <th width="3%" align="center">
+                        <label>BU</label>
+                    </th>
+                    <th width="5%" align="center">
+                        <label>Root Cause</label>
+                    </th>
+                    <th width="10%" align="center">
+                        <label>Other classification</label>
+                    </th>
+                    <th align="center">
+                        <label>Problem Statement</label>
+                    </th>
+                    <th align="center">
+                        <label>Why 1</label>
+                    </th>
+                    <th align="center">
+                        <label>Why 2</label>
+                    </th>
+                    <th align="center">
+                        <label>Why 3</label>
+                    </th>
+                    <th align="center">
+                        <label>Action Plan</label>
+                    </th>
+                    <th width="5%" align="center">
+                        <label>Responsible</label>
+                    </th>
+                    <th width="5%" align="center">
+                        <label>Due Date</label>
+                    </th>
+                    <th width="3%" align="center">
+                        <label>Open or Closed</label>
+                    </th>
 
-                            @if (Model.MBLL == null)
-                            { Model.MBLL = new LARCA2.Business.Services.MasterDataBLL(); }
+                </tr>
 
-                            @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
-                            <td width="5%" align="center">
-                                <input type="button" value="Show" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
+                @{int j = 0;
+                if (Model.L4BLL == null)
+                {
+                    Model.L4BLL = new LARCA2.Business.Services.Level4BLL();
+                }
+                foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
+                {
+                    Model.selectedItems.Add(new bool { });
+                    <tr id=@(j.ToString())>
+
+                        @if (Model.MBLL == null)
+                        { Model.MBLL = new LARCA2.Business.Services.MasterDataBLL(); }
+
+                        @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
+                        <td width="5%" align="center">
+                            <input type="button" value="Show" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
                             @Html.CheckBoxFor(m => m.selectedItems[j])
-                            </td>
-                            <td width="5%" align="center">
-                                <label>
-                                    @SmoScope.Volumen
-                                </label>
-                            </td>
+                        </td>
+                        <td width="5%" align="center">
+                            <label>
+                                @SmoScope.Volumen
+                            </label>
+                        </td>
 
-                            <td width="4%" align="center">
-                                @if (Model.EditablesSMO[j].RefIdSMO != null)
-                                {
-                                    <label>
-                                        @Model.MBLL.Traer("SMO", Int32.Parse(SmoScope.RefIdSMO.Value.ToString())).DataIni
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        -
-                                    </label>
-                                    @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
-                                }
-                            </td>
-                            <td width="3%" align="center">
-                                @if (Model.EditablesSMO[j].RefIdBU != null)
-                                {
-                                    <label>
-                                        @Model.MBLL.Traer("BU", Int32.Parse(SmoScope.RefIdBU.Value.ToString())).DataFin
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        -
-                                    </label>
-                                    @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
-                                }
-                            </td>
-                            <td width="5%" align="center">
-                                @if (Model.EditablesSMO[j].RefIdRC != null)
-                                {
-                                    <label>
-                                        @Model.RCBLL.Traer(SmoScope.RefIdRC.Value).Descripcion
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        -
-                                    </label>
-                                    @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
-                                }
-                            </td>
-                            <td width="10%" align="center">
-                                @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
-                                {
-                                    <label>
-                                        @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, 0))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
-                                    </label>
+                        <td width="4%" align="center">
+                            @if (Model.EditablesSMO[j].RefIdSMO != null)
+                            {
+                                <label>
+                                    @Model.MBLL.Traer("SMO", Int32.Parse(SmoScope.RefIdSMO.Value.ToString())).DataIni
+                                </label>
+                            }
+                            else
+                            {
+                                <label>
+                                    -
+                                </label>
+                                @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
+                            }
+                        </td>
+                        <td width="3%" align="center">
+                            @if (Model.EditablesSMO[j].RefIdBU != null)
+                            {
+                                <label>
+                                    @Model.MBLL.Traer("BU", Int32.Parse(SmoScope.RefIdBU.Value.ToString())).DataFin
+                                </label>
+                            }
+                            else
+                            {
+                                <label>
+                                    -
+                                </label>
+                                @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
+                            }
+                        </td>
+                        <td width="5%" align="center">
+                            @if (Model.EditablesSMO[j].RefIdRC != null)
+                            {
+                                <label>
+                                    @Model.RCBLL.Traer(SmoScope.RefIdRC.Value).Descripcion
+                                </label>
+                            }
+                            else
+                            {
+                                <label>
+                                    -
+                                </label>
+                                @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
+                            }
+                        </td>
+                        <td width="10%" align="center">
+                            @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
+                            {
+                                <label>
+                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                                </label>
+                            }
+                            else
+                            {
+                                <label>
+                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, 0))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                                </label>
 
-                                }
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem })
-                                </label>
-                            </td>
+                            }
+                        </td>
+                        <td align="center">
+                            <label>
+                                @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem })
+                            </label>
+                        </td>
 
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Why1, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why1 })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Why2, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why2 })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Why3, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why3 })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].ActionPlan, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.ActionPlan })
-                                </label>
-                            </td>
-                            <td width="5%" align="center">
-                                <label>
-                                    @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value)))
-                                </label>
-                            </td>
-                            <td width="5%" align="center">
-                                <label>
-                                    @Html.TextBoxFor(m => m.EditablesSMO[j].DueDate, new { @class = "form-control", @placeholder = (SmoScope.DueDate == null ? "-" : SmoScope.DueDate.Value.Date.ToShortDateString()) })
-                                </label>
-                            </td>
-                            <td width="3%" align="center">
+                        <td align="center">
+                            <label>
+                                @Html.TextAreaFor(m => m.EditablesSMO[j].Why1, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why1 })
+                            </label>
+                        </td>
+                        <td align="center">
+                            <label>
+                                @Html.TextAreaFor(m => m.EditablesSMO[j].Why2, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why2 })
+                            </label>
+                        </td>
+                        <td align="center">
+                            <label>
+                                @Html.TextAreaFor(m => m.EditablesSMO[j].Why3, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why3 })
+                            </label>
+                        </td>
+                        <td align="center">
+                            <label>
+                                @Html.TextAreaFor(m => m.EditablesSMO[j].ActionPlan, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.ActionPlan })
+                            </label>
+                        </td>
+                        <td width="5%" align="center">
+                            <label>
+                                @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value)))
+                            </label>
+                        </td>
+                        <td width="5%" align="center">
+                            <label>
+                                @Html.TextBoxFor(m => m.EditablesSMO[j].DueDate, new { @class = "form-control", @placeholder = (SmoScope.DueDate == null ? "-" : SmoScope.DueDate.Value.Date.ToShortDateString()) })
+                            </label>
+                        </td>
+                        <td width="3%" align="center">
 
-                                @if (Model.EditablesSMO[j].O_C != null)
-                                {
-                                    <label>
-                                        @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = "-" })
-                                    </label>
-                                }
+                            @if (Model.EditablesSMO[j].O_C != null)
+                            {
+                                <label>
+                                    @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })
+                                </label>
+                            }
+                            else
+                            {
+                                <label>
+                                    @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = "-" })
+                                </label>
+                            }
 
-                            </td>  
-                        </tr>
-                                j++;
-                    }
-                    }
+                        </td>
+                    </tr>
+                            j++;
+                }
+                }
             </table>
 
             <div align="center">
@@ -283,3 +284,4 @@ if (Model.idRole != 6)
             </div>
         }
     </div>
+</div>

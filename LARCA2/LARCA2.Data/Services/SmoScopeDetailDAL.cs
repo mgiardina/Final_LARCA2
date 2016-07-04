@@ -16,7 +16,7 @@ namespace LARCA2.Data.Services
                 {
                     Context.LARCA20_SmoScopeDetail.Add(entity);
                     Context.SaveChanges();
-                  
+
                 }
                 else
                 {
@@ -41,7 +41,12 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_SmoScopeDetail.SingleOrDefault(r => r.DetailID == id);
         }
 
-        public  List<LARCA20_SmoScopeDetail> TraerDetalles(int id)
+        public bool Existe(long? buId, string customer, long? lvl2Id, long? lvl3Id, long? smoId, decimal volume, long? reasonId, DateTime dateDesde)
+        {
+            return Context.LARCA20_SmoScopeDetail.Where(dt => dt.BuID == buId && dt.Customer == customer && dt.Lvl2ID == lvl2Id && dt.Lvl3ID == lvl3Id && dt.SmoID == smoId && dt.Volumen == volume && dt.ReasonID == reasonId && dt.Fecha > dateDesde).ToList().Count > 0;
+        }
+
+        public List<LARCA20_SmoScopeDetail> TraerDetalles(int id)
         {
             return Context.LARCA20_SmoScopeDetail.Where(r => r.SmoScopeID == id).ToList();
         }

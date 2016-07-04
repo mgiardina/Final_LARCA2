@@ -7,12 +7,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
-            <p>
-                This screen allows the visualization and modification of system's global parameters.
-            </p>
         </div>
     </section>
 }
@@ -30,65 +26,72 @@
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th width="17%" align="center">
+                            <th align="center">
                                 <label>Top Level 2</label>
                             </th>
-                            <th width="16%" align="center">
+                            <th align="center">
                                 <label>Top Level 3</label>
                             </th>
-                            <th width="17%" align="center">
+                            <th align="center">
                                 <label>Max allowed cloning</label>
                             </th>
-                            <th width="16%" align="center">
-                                <label>Excel Rows From</label>
+                            <th align="center">
+                                <label>Excel Row From Import</label>
                             </th>
-                            <th width="17%" align="center">
-                                <label>Excel Columns From</label>
+                            <th align="center">
+                                <label>Excel Column From Import</label>
                             </th>
-                            <th width="17%" align="center">
+                            <th align="center">
                                 <label>Expected report subscriptions</label>
                             </th>
-                            <th width="17%" align="center">
+                            <th align="center">
                                 <label>Available days</label>
+                            </th>
+                            <th align="center">
+                                <label>SMO days</label>
                             </th>
                         </tr>
                         <tr>
-                            <td width="17%" align="center">
+                            <td align="center">
                                 <label>
                                     @Model.AuxData.TopLvl2
                                 </label>
                             </td>
-                            <td width="16%" align="center">
+                            <td align="center">
                                 <label>
                                     @Model.AuxData.TopLvl3
                                 </label>
                             </td>
-                            <td width="17%" align="center">
+                            <td align="center">
                                 <label>
                                     @Model.AuxData.Toplvl4
                                 </label>
                             </td>
-                            <td width="16%" align="center">
+                            <td align="center">
                                 <label>
                                     @Model.AuxData.XlsRowFrom
                                 </label>
                             </td>
-                            <td width="17%" align="center">
+                            <td align="center">
                                 <label>
                                     @Model.AuxData.XlsColumnFrom
                                 </label>
                             </td>
-                            <td width="17%" align="center">
+                            <td align="center">
                                 <label>
                                     @Model.AuxData.CntAdjuntos
                                 </label>
                             </td>
-                            <td width="17%" align="center">
+                            <td align="center">
                                 <label>
                                     @Model.AuxData.DiasReporte
                                 </label>
                             </td>
-
+                            <td align="center">
+                                <label>
+                                    @Model.AuxData.SmoDays
+                                </label>
+                            </td>
                         </tr>
                     </table>
                 </div>

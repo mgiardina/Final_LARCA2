@@ -7,12 +7,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
-            <p>
-                This screen allows the visualization and modification of system's global parameters.
-            </p>
         </div>
     </section>
 }
@@ -21,17 +17,17 @@
     @using (Html.BeginForm("ModificarAuxData", "Adm", FormMethod.Post))
     {
         @Html.HiddenFor(Model => Model.AuxData.RowId)
-        <div class="row">
-            <div class="col-sm-13">
-                <fieldset class="form-group">
-                    <label for="Nombre">Top Level 2</label>
-                    @Html.TextBoxFor(Model => Model.AuxData.TopLvl2, new { @class = "form-control", @placeholder = "Top Level 2 ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.TopLvl2)</small>
-                </fieldset>
-            </div>
+    <div class="row" style="margin-top:10px;">
+        <div class="col-sm-12">
+            <fieldset class="form-group">
+                <label for="Nombre">Top Level 2</label>
+                @Html.TextBoxFor(Model => Model.AuxData.TopLvl2, new { @class = "form-control", @placeholder = "Top Level 2 ..." })
+                <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.TopLvl2)</small>
+            </fieldset>
         </div>
+    </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Top Level 3</label>
                     @Html.TextBoxFor(Model => Model.AuxData.TopLvl3, new { @class = "form-control", @placeholder = "Top Level 3 ..." })
@@ -40,7 +36,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Max allowed cloning</label>
                     @Html.TextBoxFor(Model => Model.AuxData.Toplvl4, new { @class = "form-control", @placeholder = "Max allowed cloning ..." })
@@ -49,25 +45,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
-                    <label for="Nombre">Excel Rows Count</label>
-                    @Html.TextBoxFor(m => m.AuxData.XlsRowFrom, new { @class = "form-control", @placeholder = "Excel Rows Count ..." })
+                    <label for="Nombre">Excel Row From Import</label>
+                    @Html.TextBoxFor(m => m.AuxData.XlsRowFrom, new { @class = "form-control", @placeholder = "Excel Row From Import ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.XlsRowFrom)</small>
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
-                    <label for="Nombre">Excel Columns Count</label>
-                    @Html.TextBoxFor(m => m.AuxData.XlsColumnFrom, new { @class = "form-control", @placeholder = "Excel Columns Count ..." })
+                    <label for="Nombre">Excel Column From Import</label>
+                    @Html.TextBoxFor(m => m.AuxData.XlsColumnFrom, new { @class = "form-control", @placeholder = "Excel Column From Import ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.XlsColumnFrom)</small>
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Expected report subscriptions</label>
                     @Html.TextBoxFor(Model => Model.AuxData.CntAdjuntos, new { @class = "form-control", @placeholder = "Expected report subscriptions ..." })
@@ -76,7 +72,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Available days for Analysis after complete upload</label>
                     @Html.TextBoxFor(Model => Model.AuxData.DiasReporte, new { @class = "form-control", @placeholder = "Available days for Analysis after complete upload ..." })
@@ -84,6 +80,15 @@
                 </fieldset>
             </div>
         </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <fieldset class="form-group">
+                <label for="Nombre">SMO Days</label>
+                @Html.TextBoxFor(Model => Model.AuxData.SmoDays, new { @class = "form-control", @placeholder = "SMO days ..." })
+                <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.SmoDays)</small>
+            </fieldset>
+        </div>
+    </div>
 
         <div class="row">
             <div class="col-sm-12">

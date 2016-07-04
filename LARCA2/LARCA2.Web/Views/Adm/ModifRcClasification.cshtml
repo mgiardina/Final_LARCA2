@@ -7,12 +7,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
-            <p>
-                Here you can modify a System Root Cause Clasification.
-            </p>
         </div>
     </section>
 }
@@ -21,7 +17,7 @@
     @using (Html.BeginForm("ModificarRcClasification", "Adm", FormMethod.Post))
     {
         @Html.HiddenFor(m => m.RcClasification.IdRenglon)
-    <div class="row">
+    <div class="row" style="margin-top:10px;">
         <div class="col-sm-12">
             <fieldset class="form-group">
                 <label for="Nombre">Level</label>
@@ -59,7 +55,7 @@
     <div class="row">
         <div class="col-sm-12">
             <fieldset class="form-group">
-                <label for="Nombre">Delete</label>
+                <label for="Nombre">Delete</label><br />
                 @Html.CheckBoxFor(m => m.RcClasification.Borrado, new { @class = "form-control" })
             </fieldset>
         </div>

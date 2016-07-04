@@ -6,12 +6,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
-            <p>
-                This screen allows the visualization, modification and deletion of RC Clasifications in the system.
-            </p>
         </div>
     </section>
 }
@@ -74,7 +70,7 @@
 
     @using (Html.BeginForm("ModifRcClasification", "Adm", FormMethod.Post, new { name = "myform" }))
     {
-        <div class="row">
+        <div class="row" style="margin-top:10px;">
             <div class="col-sm-12">
                 <h5 style="border-bottom:1px solid #c7d1d6;">FILTERS</h5>
             </div>
