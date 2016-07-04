@@ -262,6 +262,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="WebService\LARCAJobs.asmx" />
+    <None Include="Properties\PublishProfiles\Jose.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
@@ -333,6 +334,7 @@
     <Content Include="Views\Smo\SMOSimple.cshtml" />
     <Content Include="Views\LAScope\Index.cshtml" />
     <Content Include="Views\Home\InvalidUser.cshtml" />
+    <Content Include="Views\Smo\SMOGrouping.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Reports\" />

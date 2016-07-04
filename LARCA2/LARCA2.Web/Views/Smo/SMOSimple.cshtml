@@ -41,13 +41,13 @@
 <div class="container-fluid" style="margin-bottom:20px;">
     @using (Html.BeginForm("SmoSimpleFiltrado", "Smo", FormMethod.Post, new { name = "myform" }))
     {
-        <br />
+
 
         if (Model.idRole != 4)
         {
             <div class="row">
                 <div class="col-sm-13">
-                    <h5 style="border-bottom:1px solid #c7d1d6;">  BU</h5>
+                    <h5 style="border-bottom:1px solid #c7d1d6; margin-left:18px;">  BU</h5>
                 </div>
             </div>
             <div class="row">
@@ -58,33 +58,32 @@
                 </div>
             </div>
         }
-if (Model.idRole != 6)
-{
-    <div class="row">
-        <div class="col-sm-13">
-            <h5 style="border-bottom:1px solid #c7d1d6;">  SMO</h5>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <fieldset class="form-group">
-                @Html.DropDownListFor(model => model.smo, Model.SMOList)
-            </fieldset>
-        </div>
-    </div>
-}
 
-    <div align="center">
+        if (Model.idRole != 6)
+        {
+            <div class="row">
+                <div class="col-sm-13">
+                    <h5 style="border-bottom:1px solid #c7d1d6;margin-left:18px;">  SMO</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <fieldset class="form-group">
+                        @Html.DropDownListFor(model => model.smo, Model.SMOList)
+                    </fieldset>
+                </div>
+            </div>
+        }
+    <div align="left">
         <input type="submit" value="Search" name="Search" class="btn btn-info" />
     </div>
 
     }
 
 </div>
-    <br />
-    <br />
+
 <div style="overflow:scroll">
-    <div class="content-wrapper" style="margin-bottom:20px;width:2500px;">
+    <div class="content-wrapper" style="margin-bottom:20px;width:2500px;;height:250px">
         @using (Html.BeginForm("SmoSimpleAgrupar", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" }))
         {
 
@@ -155,8 +154,8 @@ if (Model.idRole != 6)
                             @Html.CheckBoxFor(m => m.selectedItems[j])
                         </td>
                         <td width="5%" align="center">
-                            <label>
-                                @SmoScope.Volumen
+                            <label> 
+                                 @SmoScope.Volumen
                             </label>
                         </td>
 
@@ -220,11 +219,12 @@ if (Model.idRole != 6)
 
                             }
                         </td>
-                        <td align="center">
-                            <label>
-                                @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem })
+                        <td align="center" >
+                            <label >
+                                @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-size: 6px; font-family: Arial, Sans-serif;" })
                             </label>
                         </td>
+
 
                         <td align="center">
                             <label>
