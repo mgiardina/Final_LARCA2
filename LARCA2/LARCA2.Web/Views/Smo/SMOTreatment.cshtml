@@ -110,7 +110,7 @@
             $("#HI_Counter").val(parseInt($("#HI_Counter").val()) + 1);
 
         //obtengo la fila a clonar
-        alert(num);
+      //  alert(num);
         var z = document.getElementById(num);
         //obtengo todas las columnas
         var t0 = z.getElementsByTagName("td")[0];
@@ -157,7 +157,7 @@
 
         var rowIndex = document.getElementById(num).rowIndex;
         rowIndex = rowIndex + 1;
-        alert(rowIndex);
+      //  alert(rowIndex);
         var row = table.insertRow(rowIndex);
         row.id = "cl" + contadorval;
         var cell0 = row.insertCell(0);
@@ -264,21 +264,15 @@
                 @Html.DropDownListFor(model => model.smo, Model.SMOList)
             </fieldset>
         </div>
-       </div>
-            if (Model.dropdownMeses.Count != 1) { 
-    <div class="row">
-        <div class="col-sm-13">
-            <h5 style="border-bottom:1px solid #c7d1d6;margin-left:18px;"> Month</h5>
-        </div>
-    </div>
-    <div class="row">
+        @if(Model.dropdownMeses.Count != 1) { 
         <div class="col-sm-4">
             <fieldset class="form-group">
                 @Html.DropDownListFor(model => model.mesSeleccionado, Model.dropdownMeses)
             </fieldset>
         </div>
-    </div>
-    }
+        }
+       </div>
+          
     <div align="left">
         <input type="submit" value="Search" name="Search" class="btn btn-info" />
     </div>
@@ -355,7 +349,7 @@
                                      @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
                                      <td width="5%" align="center">
                                          <label>
-                                             @SmoScope.Volumen
+                                             @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()),2).ToString()
                                          </label>
                                          <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
 

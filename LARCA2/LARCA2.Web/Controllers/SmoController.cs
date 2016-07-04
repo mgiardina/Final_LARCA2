@@ -35,8 +35,9 @@ namespace Larca2.Controllers
             viewModel.idRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).IdRenglon;
 
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
-            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.IdRenglon);
-            
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = new List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner>(); 
+            if (viewModel.idRole != 1) //NOT ADMINISTRATOR
+                luo = uobll.TraerPorIdUsuario(user.IdRenglon);
 
             // Quito de la lista de SMO y BU de los filtros aquellos no contemplados por un registro existente de UserOwner para el usuario logueado
            // viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
@@ -507,7 +508,7 @@ namespace Larca2.Controllers
              //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
              //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
              //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
-             if (viewModel.userRole != "1")
+             if (viewModel.idRole != 1)
              {
                  List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                  viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
@@ -537,12 +538,11 @@ namespace Larca2.Controllers
             //viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             //viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
-            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
-           
-            
-            if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1) ).Count() > 0) 
-            viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
+             if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
+                 viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
 
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+         
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             //Copio la lista a los editables para poder modificar los datos necesarios.
@@ -584,7 +584,7 @@ namespace Larca2.Controllers
             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
             
-            if (viewModel.userRole != "1")
+            if (viewModel.idRole != 1)
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
@@ -625,9 +625,23 @@ namespace Larca2.Controllers
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
             if(viewModel.mesSeleccionado == "0")
+            {
+                if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
+                    viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+             }
             else
+            {
+                if (viewModel.dropdownMeses.Count < 2)
+                {
+                    viewModel.dropdownMeses[0].Selected = false;
+                    viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = true });
+                }
+
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
+            }
+
+            
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
@@ -648,6 +662,7 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.Level4BLL lvlClones = new LARCA2.Business.Services.Level4BLL();
             LARCA2.Business.Services.RCClassificationBLL rcClones = new LARCA2.Business.Services.RCClassificationBLL();
             LARCA2.Business.Services.ResponsablesBLL respoClones = new LARCA2.Business.Services.ResponsablesBLL();
+              LARCA2.Business.Services.UsuariosRolesBLL userRoles = new LARCA2.Business.Services.UsuariosRolesBLL();
 
                //Reviso el usuario logueado, sino como prueba traigo al de ID 2
             LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
@@ -734,7 +749,14 @@ namespace Larca2.Controllers
                     clon.O_C = (actFilt[12] == "O" || actFilt[12] == "C"? actFilt[12] : "O" );
                     clon.RefIdBU = mdClones.TraerPorDataFin("BU", actFilt[2]).IdRenglon;
                     clon.RefIdSMO = mdClones.TraerPorData("SMO", actFilt[1]).IdRenglon;
-                    clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.IdRenglon).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
+                    if (userRoles.Traer(user.IdRenglon).RefIdRoles != 1) //NOT ADMIN
+                        clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.IdRenglon).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
+                    else
+                        try
+                        {
+                            clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.IdRenglon).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
+                        }
+                        catch (Exception e) { clon.RefIdOwner = null; } 
                     clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).IdRenglon;
                     int io;
                     if (Int32.TryParse(actFilt[9].ToString(), out io) == true)
@@ -800,7 +822,7 @@ namespace Larca2.Controllers
             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
 
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
-            if (viewModel.userRole != "1")
+            if (viewModel.idRole != 1)
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
@@ -834,9 +856,21 @@ namespace Larca2.Controllers
 
 
             if (viewModel.mesSeleccionado == "0")
+            {
+                if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
+                    viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+            }
             else
+            {
+                if (viewModel.dropdownMeses.Count < 2)
+                {
+                    viewModel.dropdownMeses[0].Selected = false;
+                    viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = true });
+                }
+
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
+            }
 
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
