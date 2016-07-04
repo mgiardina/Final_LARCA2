@@ -27,7 +27,6 @@ namespace LARCA2.Business.Services
             return SMOScopeDetailDAL.Todos();
         }
 
-     
 
         public LARCA20_SmoScopeDetail Traer(long id)
         {
@@ -37,6 +36,11 @@ namespace LARCA2.Business.Services
         public List<LARCA20_SmoScopeDetail> TraerDetalle(int id)
         {
             return SMOScopeDetailDAL.TraerDetalles(id);
+        }
+
+        public bool Existe(long? buId, string customer, long? lvl2Id, long? lvl3Id, long? smoId, decimal volume, long? reasonId, DateTime dateDesde)
+        {
+            return SMOScopeDetailDAL.Existe(buId, customer, lvl2Id, lvl3Id, smoId, volume, reasonId, dateDesde);
         }
 
         public bool Eliminar(long id)

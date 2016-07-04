@@ -94,7 +94,6 @@ namespace LARCA2.Business.Core
                             {
 
                             }
-
                         }
                         smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.ProfitCenter);
                         smoDetail.BuID = smoDetail.MasterBUDetail.IdRenglon;
@@ -112,15 +111,12 @@ namespace LARCA2.Business.Core
                         {
                             details.Add(smoDetail);
                         }
-
                     }
                     catch
                     {
                         // Loggear Error
                     }
-
                 }
-
                 if (RealizarCalculos(details))
                 {
                     try
@@ -143,14 +139,11 @@ namespace LARCA2.Business.Core
 
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
                 // Loggear Error
                 new MailingCore().EnviarAlertaErrorEnCarga();
-
             }
             return list;
         }
@@ -160,8 +153,7 @@ namespace LARCA2.Business.Core
             var service = new SMOScopeDetailBLL();
             var dias = -new ApplicationDataBLL().TraerDias();
             var dateDesde = DateTime.Now.AddDays(dias);
-            var cantidad = service.Todos().Where(dt => dt.BuID == detail.BuID && dt.Customer == detail.Customer && dt.Lvl2ID == detail.Lvl2ID && dt.Lvl3ID == detail.Lvl3ID && dt.SmoID == detail.SmoID && dt.Volumen == detail.Volumen && dt.ReasonID == detail.ReasonID && dt.Fecha > dateDesde).Count();
-            return cantidad > 0;
+            return service.Existe(detail.BuID, detail.Customer, detail.Lvl2ID, detail.Lvl3ID, detail.SmoID, detail.Volumen, detail.ReasonID, dateDesde);
         }
 
         private bool ExistsBU(string product)

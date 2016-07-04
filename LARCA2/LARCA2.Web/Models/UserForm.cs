@@ -8,5 +8,6 @@ namespace Larca2.Models
     public class UserForm
     {
         public LARCA2.Data.DatabaseModels.LARCA20_Usuarios Usuario { get; set; }
+        public bool Responsible { get; set; }
     }
 }

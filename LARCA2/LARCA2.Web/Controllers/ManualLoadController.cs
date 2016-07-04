@@ -34,12 +34,20 @@ namespace Larca2.Controllers
                     string fileName = String.Format("Manual_{0}_MasterData_{1}.xlsx", date, random);
                     string filePath = Path.Combine(Server.MapPath("~/App_Data/"), fileName);
                     file.SaveAs(filePath);
-
                     ViewBag.Result = "File Uploaded and Processed!";
                     if (!model.Parcial)
-                        ViewData["MasterRows"] = new ExcelCore().ProcesarExcel(fileName, TipoProceso.Total);
+                    {
+                        var rows = new ExcelCore().ProcesarExcel(fileName, TipoProceso.Total);
+                        ViewData["MasterRows"] = rows;
+                        ViewBag.Result = rows.Count > 0 ? "Partial File Uploaded and Processed!" : "No Rows Processed. Check XLS Reading Parameters.";
+                    }
+                        
                     else
-                        ViewData["MasterRows"] = new ExcelCore().ProcesarExcel(fileName, TipoProceso.Parcial);
+                    {
+                        var rows = new ExcelCore().ProcesarExcel(fileName, TipoProceso.Parcial);
+                        ViewData["MasterRows"] = rows;
+                        ViewBag.Result = rows.Count > 0 ? "Complete File Uploaded and Processed!" : "No Rows Processed. Check XLS Reading Parameters.";
+                    }
                 }
                 else
                 {
@@ -50,8 +58,6 @@ namespace Larca2.Controllers
             if (ViewData["MasterRows"] == null)
                 ViewData["MasterRows"] = new List<MasterRow>();
             return View("Index");
-
-
         }
 
     }

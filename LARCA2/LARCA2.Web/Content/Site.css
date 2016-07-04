@@ -223,7 +223,7 @@ ul#menu {
         background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         color: #3e5667;
-        padding: 20px 40px 30px 40px;
+        padding: 20px;
     }
 
         .featured hgroup.title h1, .featured hgroup.title h2 {
@@ -237,7 +237,7 @@ ul#menu {
 
 /* page titles */
 hgroup.title {
-    margin-bottom: 10px;
+
 }
 
 hgroup.title h1, hgroup.title h2 {
@@ -408,9 +408,6 @@ fieldset {
 }
 
 fieldset label {
-  float:left;
-  width:25%;
-    margin-left:2em;
   margin-right:0.5em;
   padding-top:0.2em;
   text-align:left;

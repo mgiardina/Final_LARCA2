@@ -50,7 +50,7 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="OpenPop">
-      <HintPath>..\..\OpenPop.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Dropbox\Development\Manhattan.Web.PROD\Manhattan.Servicios\bin\OpenPop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

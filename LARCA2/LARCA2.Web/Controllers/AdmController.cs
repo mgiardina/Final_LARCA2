@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LARCA2.Data.DatabaseModels;
+using LARCA2.Business.Services;
 
 namespace LARCA2.Controllers
 {
@@ -31,7 +32,7 @@ namespace LARCA2.Controllers
             Business.Services.MasterDataBLL masterOW = new Business.Services.MasterDataBLL();
             ViewBag.MasterOW = new SelectList(masterOW.TraerSoloData("OWNER"), "IdRenglon", "DataFin");
 
-         
+
             ViewBag.ErrorPermiso = false;
             ViewBag.ErrorRol = false;
 
@@ -64,6 +65,7 @@ namespace LARCA2.Controllers
                         user.Email = model.Usuario.Usuario + "@pg.com";
                         // user.Telefono = model.Usuario.Telefono;
                         user.Usuario = model.Usuario.Usuario;
+                        
                         repo.Guardar(user);
 
                         // Ahora guardo los datos del Rol para este usuario
@@ -71,7 +73,20 @@ namespace LARCA2.Controllers
                         Data.DatabaseModels.LARCA20_UsuariosRoles userRol = new Data.DatabaseModels.LARCA20_UsuariosRoles();
                         Data.DatabaseModels.Larca2Entities ff = new Data.DatabaseModels.Larca2Entities();
                         int lastProductId = ff.LARCA20_Usuarios.Max(item => item.IdRenglon);
-                        //int lastProductId =  db.Products.Max(item => item.ProductId);
+
+                        // Ahora guardamos la row si el user es responsable
+                        if (model.Responsible)
+                        {
+                            ResponsablesBLL repoResponsible = new ResponsablesBLL();
+                            LARCA20_Responsable responsible = new LARCA20_Responsable();
+                            responsible.RefIdUsuario = lastProductId;
+                            responsible.Nombre = user.Nombre;
+                            responsible.Apellido = user.Apellido;
+                            responsible.Email = user.Email;
+                            responsible.Borrado = false;
+                            repoResponsible.Guardar(responsible);
+
+                        }
 
                         userRol.RefIdUsuario = lastProductId;
                         userRol.RefIdRoles = Convert.ToInt32(CboRoles);
@@ -116,7 +131,7 @@ namespace LARCA2.Controllers
 
                             if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
                             {
-                             
+
                                 userOW.IdUsuario = lastProductId;
                                 userOW.Borrado = false;
                                 RepUserOW.Guardar(userOW);
@@ -176,11 +191,12 @@ namespace LARCA2.Controllers
             {
                 if (CboRoles != "0")
                 {
-                    if (LosPermisos[0] != "")
-                    {
-                        Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
-                        Data.DatabaseModels.LARCA20_Usuarios user = repo.Traer(model.Usuario.IdRenglon);
 
+                    Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
+                    Data.DatabaseModels.LARCA20_Usuarios user = repo.Traer(model.Usuario.IdRenglon);
+                    if (LosPermisos[0] != "" || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 3)
+                    {
+                      
                         if (repo.TraerPorNombreDeUsuario(model.Usuario.Usuario) != null && repo.TraerPorNombreDeUsuario(model.Usuario.Usuario).Borrado == false && repo.TraerPorNombreDeUsuario(model.Usuario.Usuario).IdRenglon != user.IdRenglon)
                         {
                             Error = true;
@@ -205,6 +221,41 @@ namespace LARCA2.Controllers
                             Data.DatabaseModels.LARCA20_UsuariosRoles userRol = repoRol.Traer(model.Usuario.IdRenglon);
                             userRol.RefIdRoles = Convert.ToInt32(CboRoles);
                             repoRol.Guardar(userRol);
+
+                            // Ahora guardamos la row si el user es responsable
+                            if (model.Responsible)
+                            {
+                                ResponsablesBLL repoResponsible = new ResponsablesBLL();
+                                if (repoResponsible.TraerPorNombreDeUsuario(model.Usuario.Usuario) != null)
+                                {
+                                    var responsible = repoResponsible.TraerPorNombreDeUsuario(model.Usuario.Usuario);
+                                    responsible.RefIdUsuario = model.Usuario.IdRenglon;
+                                    responsible.Nombre = user.Nombre;
+                                    responsible.Apellido = user.Apellido;
+                                    responsible.Email = user.Email;
+                                    responsible.Borrado = false;
+                                    repoResponsible.Guardar(responsible);
+                                }
+                                else
+                                {
+                                    LARCA20_Responsable responsible = new LARCA20_Responsable();
+                                    responsible.RefIdUsuario = model.Usuario.IdRenglon;
+                                    responsible.Nombre = user.Nombre;
+                                    responsible.Apellido = user.Apellido;
+                                    responsible.Email = user.Email;
+                                    responsible.Borrado = false;
+                                    repoResponsible.Guardar(responsible);
+                                }
+                            }
+                            else
+                            {
+                                ResponsablesBLL repoResponsible = new ResponsablesBLL();
+                                if (repoResponsible.TraerPorNombreDeUsuario(model.Usuario.Usuario) != null)
+                                {
+                                    var responsible = repoResponsible.TraerPorNombreDeUsuario(model.Usuario.Usuario);
+                                    repoResponsible.Eliminar(responsible.IdRenglon);
+                                }
+                            }
 
                             // Ahora guardo los Permisos
                             // Primero elimino los que tenga y despues agrego los que quedaron seleccionados
@@ -295,7 +346,6 @@ namespace LARCA2.Controllers
             }
         }
 
-
         public static List<SelectListItem> RespSelectItem(List<SelectListItem> lsli, int idref)
         {
             int chosen = 0;
@@ -346,16 +396,29 @@ namespace LARCA2.Controllers
             return lsli;
         }
 
-
-
-
-
         public ActionResult ModifUser(Larca2.Models.UserSearchForm userSearchForm, string txtIdRenglon)
         {
             long id = Int32.Parse(txtIdRenglon);
             Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
+            Business.Services.ResponsablesBLL repoResponsible = new Business.Services.ResponsablesBLL();
             Data.DatabaseModels.LARCA20_Usuarios userdefault = repo.Traer(id);
             Larca2.Models.UserForm userForm = new Larca2.Models.UserForm();
+
+            // Evaluacion de Responsable
+            bool existe = true;
+            if (repoResponsible.TraerPorNombreDeUsuario(userdefault.Usuario) != null)
+            {
+                if (repoResponsible.TraerPorNombreDeUsuario(userdefault.Usuario).Borrado)
+                {
+                     existe = false;
+                }
+            }
+            else
+            {
+                existe = false;
+            }
+
+            userForm.Responsible = existe;
             userForm.Usuario = userdefault;
             //userForm.Usuario.Clave = Larca2.Utilities.Crypto.Decrypt(userForm.Usuario.Clave);
             Business.Services.RolesBLL RepoRol = new Business.Services.RolesBLL();
@@ -563,16 +626,17 @@ namespace LARCA2.Controllers
                 if (model.AuxData.CntAdjuntos == 0)
                     return Content("<script language='javascript' type='text/javascript'>alert('You should enter a value higher to zero for the field: Expected Report Subscriptions');document.location = 'javascript:window.history.back();';</script>");
 
-                Data.DatabaseModels.LARCA20_AuxData user = new Data.DatabaseModels.LARCA20_AuxData();
-                user.RowId = model.AuxData.RowId;
-                user.TopLvl2 = model.AuxData.TopLvl2;
-                user.TopLvl3 = model.AuxData.TopLvl3;
-                user.Toplvl4 = model.AuxData.Toplvl4;
-                user.XlsRowFrom = model.AuxData.XlsRowFrom;
-                user.XlsColumnFrom = model.AuxData.XlsColumnFrom;
-                user.CntAdjuntos = model.AuxData.CntAdjuntos;
-                user.DiasReporte = model.AuxData.DiasReporte;
-                repo.Guardar(user);
+                Data.DatabaseModels.LARCA20_AuxData auxData = new Data.DatabaseModels.LARCA20_AuxData();
+                auxData.RowId = model.AuxData.RowId;
+                auxData.TopLvl2 = model.AuxData.TopLvl2;
+                auxData.TopLvl3 = model.AuxData.TopLvl3;
+                auxData.Toplvl4 = model.AuxData.Toplvl4;
+                auxData.XlsRowFrom = model.AuxData.XlsRowFrom;
+                auxData.XlsColumnFrom = model.AuxData.XlsColumnFrom;
+                auxData.CntAdjuntos = model.AuxData.CntAdjuntos;
+                auxData.DiasReporte = model.AuxData.DiasReporte;
+                auxData.SmoDays = model.AuxData.SmoDays;
+                repo.Guardar(auxData);
 
                 return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/AuxDataBM';</script>");
             }
@@ -699,7 +763,7 @@ namespace LARCA2.Controllers
         public ActionResult Level4(string txtNivel, string txtLimite)
         {
 
-            
+
             Larca2.Models.Level4SearchForm Level4SearchForm = new Larca2.Models.Level4SearchForm();
             Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
             Business.Services.Level4BLL repo_level4 = new Business.Services.Level4BLL();

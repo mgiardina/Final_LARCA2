@@ -7,13 +7,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
-            <p>
-                Here you can create new Users for the system.
-
-            </p>
         </div>
     </section>
 }
@@ -395,8 +390,8 @@
     @using (Html.BeginForm("AgregarUsuario", "Adm", FormMethod.Post))
     {
         <input name="HI_PermisosEsp" id="HI_PermisosEsp" type="hidden" value="" />
-        <div class="row">
-            <div class="col-sm-13">
+        <div class="row" style="margin-top:10px;">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">First Name</label>
                     @Html.TextBoxFor(m => m.Usuario.Nombre, new { @class = "form-control", @placeholder = "First Name ..." })
@@ -405,7 +400,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Last Name</label>
                     @Html.TextBoxFor(m => m.Usuario.Apellido, new { @class = "form-control", @placeholder = "Last Name ..." })
@@ -414,7 +409,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Username</label>
                     @Html.TextBoxFor(m => m.Usuario.Usuario, new { @class = "form-control", @placeholder = "Username ..." })
@@ -422,8 +417,16 @@
                 </fieldset>
             </div>
         </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <fieldset class="form-group">
+                <label for="Nombre">Responsible</label><br />
+                @Html.CheckBoxFor(m => m.Responsible)
+            </fieldset>
+        </div>
+    </div>
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Roles</label>
                     @{
@@ -449,7 +452,7 @@
         <div id="PermisosEspeciales" style="display:none">
 
             <div class="row">
-                <div class="col-sm-13">
+                <div class="col-sm-12">
                     <fieldset class="form-group">
                         <label for="Nombre">Special Permits</label>
                         @if (ViewBag.ErrorPermiso)

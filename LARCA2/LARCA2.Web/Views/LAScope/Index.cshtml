@@ -6,12 +6,8 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
-            <p>
-                LARCA News
-            </p>
         </div>
     </section>
 }
@@ -81,27 +77,27 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div style="overflow:scroll">
+            <div style="overflow:scroll;">
                 <div class="table-responsive" style="width:2500px;">
-                    <table class=" table">
-                    <tbody>
-                        <tr>
-                            <th> BU</th>
-                            <th> SMO</th>
-                            <th> Cut Classification</th>
-                            <th> Other Classification</th>
-                            <th> Volume</th>
-                            <th> % in GAP</th>
-                            <th> Problem Statement</th>
-                            <th> Why</th>
-                            <th> Why</th>
-                            <th> Why</th>
-                            <th> Action Plan</th>
-                            <th> Responsible</th>
-                            <th> GAP Analysis</th>
-                        </tr>
-                        @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
-                        {
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th> BU</th>
+                                <th> SMO</th>
+                                <th> Cut Classification</th>
+                                <th> Other Classification</th>
+                                <th> Volume</th>
+                                <th> % in GAP</th>
+                                <th> Problem Statement</th>
+                                <th> Why</th>
+                                <th> Why</th>
+                                <th> Why</th>
+                                <th> Action Plan</th>
+                                <th> Responsible</th>
+                                <th> GAP Analysis</th>
+                            </tr>
+                            @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
+                            {
                             <tr style="background-color:gray;">
                                 <td style="background-color:gray;color:#fff;">@item.RBU</td>
                                 <td style="background-color:gray;color:#fff;">@item.SMO</td>
@@ -118,29 +114,28 @@
                                 <td style="background-color:gray;color:#fff;">@item.GAPANALYSIS</td>
 
                             </tr>
-                            foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.OrderByDescending(r => Convert.ToDecimal(r.VOLUME)).ToList())
-                            {
-                                <tr>
-                                    <td> @detail.RBU</td>
-                                    <td> @detail.SMO</td>
-                                    <td> @detail.CUT</td>
-                                    <td> @detail.LEVEL4</td>
-                                    <td> @detail.VOLUME</td>
-                                    <td> @detail.GAP</td>
-                                    <td> @detail.PROBLEM</td>
-                                    <td> @detail.WHY1</td>
-                                    <td> @detail.WHY2</td>
-                                    <td> @detail.WHY3</td>
-                                    <td> @detail.ACTIONPLAN</td>
-                                    <td> @detail.RESPONSIBLE</td>
-                                    <td> @detail.GAPANALYSIS</td>
-                                </tr>
+                                foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.OrderByDescending(r => Convert.ToDecimal(r.VOLUME)).ToList())
+                                {
+                            <tr>
+                                <td> @detail.RBU</td>
+                                <td> @detail.SMO</td>
+                                <td> @detail.CUT</td>
+                                <td> @detail.LEVEL4</td>
+                                <td> @detail.VOLUME</td>
+                                <td> @detail.GAP</td>
+                                <td> @detail.PROBLEM</td>
+                                <td> @detail.WHY1</td>
+                                <td> @detail.WHY2</td>
+                                <td> @detail.WHY3</td>
+                                <td> @detail.ACTIONPLAN</td>
+                                <td> @detail.RESPONSIBLE</td>
+                                <td> @detail.GAPANALYSIS</td>
+                            </tr>
+                                }
                             }
-                        }
-                    </tbody>
+                        </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
