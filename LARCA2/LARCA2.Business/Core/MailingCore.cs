@@ -378,7 +378,11 @@ namespace LARCA2.Business.Core
                 }
             using (SmtpClient smtp = new SmtpClient(ServerSmtp, Port))
             {
+<<<<<<< HEAD
                 smtp.Credentials = new NetworkCredential(UserName, Password);
+=======
+                smtp.Credentials = new NetworkCredential("frugal.im@pg.com", "gXH24u8x86mG");
+>>>>>>> origin/master
                 smtp.EnableSsl = false;
                 try
                 {
