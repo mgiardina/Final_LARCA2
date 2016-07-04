@@ -6,7 +6,7 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
         </div>
     </section>
@@ -77,7 +77,6 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-<<<<<<< HEAD
             <div style="overflow:scroll;">
                 <div class="table-responsive" style="width:2500px;">
                     <table class="table">
@@ -99,29 +98,6 @@
                             </tr>
                             @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
                             {
-=======
-            <div style="overflow:scroll">
-                <div class="table-responsive" style="width:2500px;">
-                    <table class=" table">
-                    <tbody>
-                        <tr>
-                            <th> BU</th>
-                            <th> SMO</th>
-                            <th> Cut Classification</th>
-                            <th> Other Classification</th>
-                            <th> Volume</th>
-                            <th> % in GAP</th>
-                            <th> Problem Statement</th>
-                            <th> Why</th>
-                            <th> Why</th>
-                            <th> Why</th>
-                            <th> Action Plan</th>
-                            <th> Responsible</th>
-                            <th> GAP Analysis</th>
-                        </tr>
-                        @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
-                        {
->>>>>>> origin/master
                             <tr style="background-color:gray;">
                                 <td style="background-color:gray;color:#fff;">@item.RBU</td>
                                 <td style="background-color:gray;color:#fff;">@item.SMO</td>
@@ -157,17 +133,9 @@
                             </tr>
                                 }
                             }
-<<<<<<< HEAD
                         </tbody>
                     </table>
                 </div>
-=======
-                        }
-                    </tbody>
-                    </table>
-                </div>
-
->>>>>>> origin/master
             </div>
         </div>
     </div>
