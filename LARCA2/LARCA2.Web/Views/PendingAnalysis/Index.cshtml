@@ -1,0 +1,87 @@
+﻿@model Larca2.Views.ViewModels.SMOScopeViewModel
+@{
+    ViewBag.Title = "LARCA Pending Analysis";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+                <h1>@ViewBag.Title</h1>
+            </hgroup>
+        </div>
+    </section>
+}
+
+<div class="container-fluid">
+    @using (Html.BeginForm("Export", "PendingAnalysis", FormMethod.Post, new { name = "myform" }))
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <h5 style="border-bottom:1px solid #c7d1d6;">OPERATION</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="submit" value="Export Excel" name="command" class="btn btn-success" />
+            </div>
+        </div>
+
+    }
+    <div class="row">
+        <div class="col-sm-12">
+            <div style="overflow:scroll;">
+                <div class="table-responsive" style="width:2500px;">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th> Volume</th>
+                                <th> SMO</th>
+                                <th> BU</th>
+                                <th> Root Cause</th>
+                                <th> Other classification</th>
+                                <th> Problem Statement</th>
+                                <th> Why 1</th>
+                                <th> Why 2</th>
+                                <th> Why 3</th>
+                                <th> Action Plan</th>
+                                <th> Responsible</th>
+                                <th> Due Date</th>
+                                <th> Open or Closed</th>
+                            </tr>
+                            @foreach (var item in (List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>)ViewData["MasterRows"])
+                            {
+                                <tr style="background-color:gray;">
+                                    <td>@Math.Round(decimal.Parse(item.Volumen.ToString()), 2).ToString()</td>
+                                    <td>@item.MasterSMO.DataFin</td>
+                                    <td>@item.MasterBU.DataFin</td>
+                                    <td>@Model.RCBLL.Traer(item.RefIdRC.Value).Descripcion</td>
+                                    <td>
+                                        @if (item.Level4 != null && item.Level4 != 0)
+                                        {
+                                            @Model.L4BLL.Traer(item.Level4.Value).Nombre;
+                                        }
+                                    </td>
+                                    <td>@item.Problem</td>
+                                    <td>@item.Why1</td>
+                                    <td>@item.Why2</td>
+                                    <td>@item.Why3</td>
+                                    <td>@item.ActionPlan</td>
+                                    <td>
+                                        @if (item.RefIdResponsable != null && item.RefIdResponsable != 0)
+                                        {
+                                            @Model.ResponsiblesBLL.Traer(item.RefIdResponsable.Value).Nombre;
+                                        }
+                                    </td>
+                                    <td>@item.DueDate</td>
+                                    <td>@item.O_C</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+

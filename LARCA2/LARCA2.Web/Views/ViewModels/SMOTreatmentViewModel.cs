@@ -12,6 +12,7 @@ namespace Larca2.Views.ViewModels
         public List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> EditablesSMO { get; set; }
         public List<SelectListItem> Responsables { get; set; }
         public LARCA2.Business.Services.RCClassificationBLL RCBLL { get; set; }
+        public LARCA2.Business.Services.ResponsablesBLL ResponsiblesBLL { get; set; }
         public string bu { get; set; }
         public string smo { get; set; }
         public string mesSeleccionado { get; set; }
@@ -35,6 +36,7 @@ namespace Larca2.Views.ViewModels
             RCBLL = new LARCA2.Business.Services.RCClassificationBLL();
             MBLL = new LARCA2.Business.Services.MasterDataBLL();
             LARCA2.Business.Services.Level4BLL L4BLL = new LARCA2.Business.Services.Level4BLL();
+            ResponsiblesBLL = new LARCA2.Business.Services.ResponsablesBLL();
             BUList = new List<SelectListItem>();
             SMOList = new List<SelectListItem>();
             L4List = new List<SelectListItem>();

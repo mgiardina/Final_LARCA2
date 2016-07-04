@@ -36,7 +36,7 @@ namespace LARCA2.Business.Services
                     row.RBU = "TOTAL";
                     row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
                     row.Details = new List<ReportRow>();
-                    row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 3)).ToString();
+                    row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                     row.PROBLEM = "View Details Below";
 
                     var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
@@ -48,7 +48,7 @@ namespace LARCA2.Business.Services
                             SMO = subitem.MasterSMO.DataFin,
                             RBU = subitem.MasterBU.DataFin,
                             CUT = subitem.MasterLvl.Descripcion,
-                            VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 3)).ToString(),
+                            VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                             PROBLEM = subitem.Problem,
                             WHY1 = subitem.Why1,
                             WHY2 = subitem.Why2,
@@ -75,7 +75,7 @@ namespace LARCA2.Business.Services
                         row.RBU = item.ToList()[0].MasterBU.DataFin;
                         row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
                         row.Details = new List<ReportRow>();
-                        row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 3)).ToString();
+                        row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                         row.PROBLEM = "View Details Below";
 
                         var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
@@ -86,7 +86,7 @@ namespace LARCA2.Business.Services
                                 SMO = subitem.MasterSMO.DataFin,
                                 RBU = subitem.MasterBU.DataFin,
                                 CUT = subitem.MasterLvl.Descripcion,
-                                VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 3)).ToString(),
+                                VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                                 PROBLEM = subitem.Problem,
                                 WHY1 = subitem.Why1,
                                 WHY2 = subitem.Why2,
@@ -114,7 +114,7 @@ namespace LARCA2.Business.Services
                             row.RBU = "TOTAL";
                             row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
                             row.Details = new List<ReportRow>();
-                            row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 3)).ToString();
+                            row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                             row.PROBLEM = "View Details Below";
 
                             var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
@@ -125,7 +125,7 @@ namespace LARCA2.Business.Services
                                     SMO = subitem.MasterSMO.DataFin,
                                     RBU = subitem.MasterBU.DataFin,
                                     CUT = subitem.MasterLvl.Descripcion,
-                                    VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 3)).ToString(),
+                                    VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                                     PROBLEM = subitem.Problem,
                                     WHY1 = subitem.Why1,
                                     WHY2 = subitem.Why2,
@@ -152,7 +152,7 @@ namespace LARCA2.Business.Services
                                 row.RBU = "TOTAL";
                                 row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
                                 row.Details = new List<ReportRow>();
-                                row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 3)).ToString();
+                                row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                                 row.PROBLEM = "View Details Below";
 
                                 var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
@@ -163,7 +163,7 @@ namespace LARCA2.Business.Services
                                         SMO = subitem.MasterSMO.DataFin,
                                         RBU = subitem.MasterBU.DataFin,
                                         CUT = subitem.MasterLvl.Descripcion,
-                                        VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 3)).ToString(),
+                                        VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                                         PROBLEM = subitem.Problem,
                                         WHY1 = subitem.Why1,
                                         WHY2 = subitem.Why2,

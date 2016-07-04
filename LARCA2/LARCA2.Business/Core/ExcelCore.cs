@@ -65,56 +65,59 @@ namespace LARCA2.Business.Core
                     var nivel1 = String.Format("{0}", rcc[0]);
                     var nivel2 = String.Format("{0}.{1}", rcc[0], rcc[1]);
                     var nivel3 = String.Format("{0}.{1}.{2}", rcc[0], rcc[1], rcc[2]);
-
-                    // Armo objeto de detalle con la info convertida
-                    try
+                    // Chequeo que el nivel 2 no sea 3.4
+                    if (nivel2 != "3.4")
                     {
-                        var smoDetail = new LARCA20_SmoScopeDetail();
-                        smoDetail.Fecha = DateTime.Now;
-                        smoDetail.OwnerID = new MasterDataBLL().Traer("OWNER", new RCClassificationBLL().Traer(nivel3).Ownership).IdRenglon;
-                        smoDetail.Volumen = item.SUCases / 1000;
-                        smoDetail.Lvl2ID = new RCClassificationBLL().Traer(nivel2).IdRenglon;
-                        smoDetail.Lvl3ID = new RCClassificationBLL().Traer(nivel3).IdRenglon;
-
-                        // Chequeo si existe el Profit Center en la base, si existe lo asigno directo, sino lo damos de alta y avisamos al admin que debe cargar la descripcion correcta
-                        if (!ExistsBU(item.ProfitCenter))
+                        // Armo objeto de detalle con la info convertida
+                        try
                         {
-                            var service = new MasterDataBLL();
-                            var masterRow = new LARCA2.Data.DatabaseModels.LARCA20_MasterData();
-                            masterRow.DataIni = item.ProfitCenter;
-                            masterRow.DataFin = string.Empty;
-                            masterRow.Data = "BU";
-                            masterRow.Borrado = false;
-                            service.Guardar(masterRow);
-                            try
-                            {
-                                new MailingCore().EnviarAlertaNuevoMasterData(masterRow.Data, masterRow.DataIni, masterRow.IdRenglon.ToString());
-                            }
-                            catch
-                            {
+                            var smoDetail = new LARCA20_SmoScopeDetail();
+                            smoDetail.Fecha = DateTime.Now;
+                            smoDetail.OwnerID = new MasterDataBLL().Traer("OWNER", new RCClassificationBLL().Traer(nivel3).Ownership).IdRenglon;
+                            smoDetail.Volumen = item.SUCases / 1000;
+                            smoDetail.Lvl2ID = new RCClassificationBLL().Traer(nivel2).IdRenglon;
+                            smoDetail.Lvl3ID = new RCClassificationBLL().Traer(nivel3).IdRenglon;
 
-                            }
-                        }
-                        smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.ProfitCenter);
-                        smoDetail.BuID = smoDetail.MasterBUDetail.IdRenglon;
-                        smoDetail.MasterSMODetail = new MasterDataBLL().Traer("SMO", item.ReportingCountry);
-                        smoDetail.SmoID = smoDetail.MasterSMODetail.IdRenglon;
-                        smoDetail.ReasonID = new MasterDataBLL().Traer("REASON", item.ReasonCode).IdRenglon;
-                        smoDetail.Customer = item.Customer;
+                            // Chequeo si existe el Profit Center en la base, si existe lo asigno directo, sino lo damos de alta y avisamos al admin que debe cargar la descripcion correcta
+                            if (!ExistsBU(item.ProfitCenter))
+                            {
+                                var service = new MasterDataBLL();
+                                var masterRow = new LARCA2.Data.DatabaseModels.LARCA20_MasterData();
+                                masterRow.DataIni = item.ProfitCenter;
+                                masterRow.DataFin = string.Empty;
+                                masterRow.Data = "BU";
+                                masterRow.Borrado = false;
+                                service.Guardar(masterRow);
+                                try
+                                {
+                                    new MailingCore().EnviarAlertaNuevoMasterData(masterRow.Data, masterRow.DataIni, masterRow.IdRenglon.ToString());
+                                }
+                                catch
+                                {
 
-                        if (tipoProceso == TipoProceso.Parcial)
-                        {
-                            if (!ExistsDetail(smoDetail))
+                                }
+                            }
+                            smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.ProfitCenter);
+                            smoDetail.BuID = smoDetail.MasterBUDetail.IdRenglon;
+                            smoDetail.MasterSMODetail = new MasterDataBLL().Traer("SMO", item.ReportingCountry);
+                            smoDetail.SmoID = smoDetail.MasterSMODetail.IdRenglon;
+                            smoDetail.ReasonID = new MasterDataBLL().Traer("REASON", item.ReasonCode).IdRenglon;
+                            smoDetail.Customer = item.Customer;
+
+                            if (tipoProceso == TipoProceso.Parcial)
+                            {
+                                if (!ExistsDetail(smoDetail))
+                                    details.Add(smoDetail);
+                            }
+                            else
+                            {
                                 details.Add(smoDetail);
+                            }
                         }
-                        else
+                        catch
                         {
-                            details.Add(smoDetail);
+                            // Loggear Error
                         }
-                    }
-                    catch
-                    {
-                        // Loggear Error
                     }
                 }
                 if (RealizarCalculos(details))
@@ -237,6 +240,67 @@ namespace LARCA2.Business.Core
                     ws.Cell(row, 13).Value = subitem.GAPANALYSIS;
                     row++;
                 }
+            }
+
+            ws.Columns(1, 13).AdjustToContents();
+
+            //Save
+            var path = Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data/Reports/"), fileName);
+            wb.SaveAs(path);
+
+            return path;
+        }
+
+        public string GenerarExcelPendingAnalysis(string reporte, List<LARCA20_SmoScope> lista)
+        {
+            var date = DateTime.Now.ToString("ddMMMyyy");
+            var random = new Random().Next(0, 1000);
+            string fileName = String.Format("{0}_Report_{1}.xlsx", date, random);
+
+            var wb = new XLWorkbook();
+            var ws = wb.Worksheets.Add(reporte);
+
+            int row = 4;
+            // Titulos
+            ws.Cell(1, 1).Value = reporte;
+            ws.Cell(3, 1).Value = "Volume";
+            ws.Cell(3, 2).Value = "SMO";
+            ws.Cell(3, 3).Value = "BU";
+            ws.Cell(3, 4).Value = "Root Cause";
+            ws.Cell(3, 5).Value = "Other classification";
+            ws.Cell(3, 6).Value = "Problem Statement";
+            ws.Cell(3, 7).Value = "Why 1";
+            ws.Cell(3, 8).Value = "Why 2";
+            ws.Cell(3, 9).Value = "Why 3";
+            ws.Cell(3, 10).Value = "Action Plan";
+            ws.Cell(3, 11).Value = "Responsible";
+            ws.Cell(3, 12).Value = "Due Date";
+            ws.Cell(3, 13).Value = "Open or Closed";
+
+            var rngHeaders = ws.Range("A3:M3");
+            rngHeaders.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            rngHeaders.Style.Font.Bold = true;
+            rngHeaders.Style.Font.FontColor = XLColor.White;
+            rngHeaders.Style.Fill.BackgroundColor = XLColor.DarkBlue;
+
+            // Contenido Filas Grises
+            foreach (var item in lista)
+            {
+                ws.Cell(row, 1).Value = (Math.Round(decimal.Parse(item.Volumen.ToString()), 2)).ToString();
+                ws.Cell(row, 2).Value = item.MasterSMO.DataFin;
+                ws.Cell(row, 3).Value = item.MasterBU.DataFin;
+                ws.Cell(row, 4).Value = new Business.Services.RCClassificationBLL().Traer(item.RefIdRC.Value).Descripcion;
+                ws.Cell(row, 5).Value = item.Level4 != null && item.Level4 != 0 ? new Business.Services.Level4BLL().Traer(item.Level4.Value).Nombre : string.Empty;
+                ws.Cell(row, 6).Value = item.Problem;
+                ws.Cell(row, 7).Value = item.Why1;
+                ws.Cell(row, 8).Value = item.Why2;
+                ws.Cell(row, 9).Value = item.Why3;
+                ws.Cell(row, 10).Value = item.ActionPlan;
+                ws.Cell(row, 11).Value = item.RefIdResponsable != null && item.RefIdResponsable != 0 ? new Business.Services.ResponsablesBLL().Traer(item.RefIdResponsable.Value).Nombre : string.Empty; ;
+                ws.Cell(row, 12).Value = item.DueDate;
+                ws.Cell(row, 13).Value = item.O_C;
+
+                row++;
             }
 
             ws.Columns(1, 13).AdjustToContents();

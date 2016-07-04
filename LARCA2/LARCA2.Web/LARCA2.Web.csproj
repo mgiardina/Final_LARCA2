@@ -161,6 +161,7 @@
     <Compile Include="Controllers\AdmController.cs" />
     <Compile Include="Controllers\ExcelDemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PendingAnalysisController.cs" />
     <Compile Include="Controllers\LAScopeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManualLoadController.cs" />
@@ -325,6 +326,7 @@
     <Content Include="Views\Smo\SMOSimple.cshtml" />
     <Content Include="Views\LAScope\Index.cshtml" />
     <Content Include="Views\Home\InvalidUser.cshtml" />
+    <Content Include="Views\PendingAnalysis\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Reports\" />
