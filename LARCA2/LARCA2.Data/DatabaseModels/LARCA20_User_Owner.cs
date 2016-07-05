@@ -15,17 +15,19 @@ namespace LARCA2.Data.DatabaseModels
     public partial class LARCA20_User_Owner
     {
         public long Id { get; set; }
-        public Nullable<int> IdUsuario { get; set; }
+        public Nullable<int> IdUser { get; set; }
         public Nullable<long> IdOwner { get; set; }
         public Nullable<long> IdSmo { get; set; }
         public Nullable<long> IdBU { get; set; }
-        public Nullable<bool> Borrado { get; set; }
+        public Nullable<bool> deleted { get; set; }
     
         public virtual LARCA20_MasterData LARCA20_MasterData { get; set; }
         public virtual LARCA20_MasterData LARCA20_MasterData1 { get; set; }
         public virtual LARCA20_MasterData LARCA20_MasterData2 { get; set; }
-        public virtual LARCA20_Usuarios LARCA20_Usuarios { get; set; }
         public virtual LARCA20_User_Owner LARCA20_User_Owner1 { get; set; }
         public virtual LARCA20_User_Owner LARCA20_User_Owner2 { get; set; }
+        public virtual LARCA20_User_Owner LARCA20_User_Owner11 { get; set; }
+        public virtual LARCA20_User_Owner LARCA20_User_Owner3 { get; set; }
+        public virtual LARCA20_Users LARCA20_Users { get; set; }
     }
 }

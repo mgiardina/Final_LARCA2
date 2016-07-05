@@ -12,7 +12,7 @@ namespace LARCA2.Data.Services
         {
             try
             {
-                if (entity.IdRenglon == 0)
+                if (entity.Id == 0)
                 {
                     Context.LARCA20_Roles.Add(entity);
                     Context.SaveChanges();
@@ -32,12 +32,12 @@ namespace LARCA2.Data.Services
 
         public override List<LARCA20_Roles> Todos()
         {
-            return Context.LARCA20_Roles.Where(r => r.Borrado == false).ToList();
+            return Context.LARCA20_Roles.Where(r => r.deleted == false).ToList();
         }
 
         public override LARCA20_Roles Traer(long id)
         {
-            return Context.LARCA20_Roles.SingleOrDefault(r => r.IdRenglon == id);
+            return Context.LARCA20_Roles.SingleOrDefault(r => r.Id == id);
         }
 
         public override bool Eliminar(long id)
@@ -45,7 +45,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = false;
+                entity.deleted = false;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;

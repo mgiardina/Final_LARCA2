@@ -53,12 +53,12 @@ namespace LARCA2.Business.Services
 
         public int TraerCantidadAdjuntos()
         {
-            return Traer(1).CntAdjuntos;
+            return Traer(1).qtyattach;
         }
 
         public int TraerDias()
         {
-            return Traer(1).DiasReporte;
+            return Traer(1).reportdays;
         }
     }   
 }

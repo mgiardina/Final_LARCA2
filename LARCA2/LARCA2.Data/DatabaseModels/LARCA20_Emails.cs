@@ -15,11 +15,11 @@ namespace LARCA2.Data.DatabaseModels
     public partial class LARCA20_Emails
     {
         public long EmailID { get; set; }
-        public int TipoProceso { get; set; }
         public string MessageID { get; set; }
-        public System.DateTime Fecha { get; set; }
-        public string Archivo { get; set; }
-        public bool Procesado { get; set; }
-        public bool Borrado { get; set; }
+        public int processtype { get; set; }
+        public System.DateTime date { get; set; }
+        public string filename { get; set; }
+        public bool processed { get; set; }
+        public bool deleted { get; set; }
     }
 }

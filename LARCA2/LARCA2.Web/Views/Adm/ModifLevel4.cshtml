@@ -25,8 +25,8 @@
             <div class="col-sm-13">
                 <fieldset class="form-group">
                     <label for="Nombre">Descripcion</label>
-                    @Html.TextBoxFor(m => m.Level4.Nombre, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50" })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.Nombre)</small>
+                    @Html.TextBoxFor(m => m.Level4.name, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.name)</small>
                 </fieldset>
             </div>
         </div>

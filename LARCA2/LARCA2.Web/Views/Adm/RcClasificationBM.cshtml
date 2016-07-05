@@ -135,23 +135,23 @@
                             {
                                 <tr>
                                     <td class="Check" width="10%" align="center">
-                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = RcClasification.IdRenglon })
-                                        @Html.HiddenFor(Modell => Modell.RcClasificationList[j].IdRenglon, new { @value = RcClasification.IdRenglon })
+                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = RcClasification.Id })
+                                        @Html.HiddenFor(Modell => Modell.RcClasificationList[j].Id, new { @value = RcClasification.Id })
                                     </td>
 
                                     <td width="20%" align="center">
                                         <label>
-                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Nivel, new { @value = RcClasification.Nivel })
+                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].level_name, new { @value = RcClasification.level_name })
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
                                         <label>
-                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Codigo, new { @value = RcClasification.Codigo })
+                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Code, new { @value = RcClasification.Code })
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
                                         <label>
-                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Descripcion, new { @value = RcClasification.Descripcion })
+                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Description, new { @value = RcClasification.Description })
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
@@ -174,7 +174,7 @@
                                                     stateList.Add(new SelectListItem() { Value = "True", Text = "True", Selected = false });
                                                     stateList.Add(new SelectListItem() { Value = "False", Text = "False", Selected = false });
                                             }
-                                            @Html.DropDownListFor(Modell => Modell.RcClasificationList[j].Borrado, new SelectList(stateList, "Value", "Text", RcClasification.Borrado), new { @class = "form-control" })
+                                            @Html.DropDownListFor(Modell => Modell.RcClasificationList[j].deleted, new SelectList(stateList, "Value", "Text", RcClasification.deleted), new { @class = "form-control" })
                                         </label>
                                     </td>
                                 </tr>

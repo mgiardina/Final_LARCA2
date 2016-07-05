@@ -54,11 +54,11 @@
                                     <td>@Math.Round(decimal.Parse(item.Volumen.ToString()), 2).ToString()</td>
                                     <td>@item.MasterSMO.DataFin</td>
                                     <td>@item.MasterBU.DataFin</td>
-                                    <td>@Model.RCBLL.Traer(item.RefIdRC.Value).Descripcion</td>
+                                    <td>@Model.RCBLL.Traer(item.RefIdRC.Value).Description</td>
                                     <td>
                                         @if (item.Level4 != null && item.Level4 != 0)
                                         {
-                                            @Model.L4BLL.Traer(item.Level4.Value).Nombre;
+                                            @Model.L4BLL.Traer(item.Level4.Value).name;
                                         }
                                     </td>
                                     <td>@item.Problem</td>
@@ -69,7 +69,7 @@
                                     <td>
                                         @if (item.RefIdResponsable != null && item.RefIdResponsable != 0)
                                         {
-                                            @Model.ResponsiblesBLL.Traer(item.RefIdResponsable.Value).Nombre;
+                                            @Model.ResponsiblesBLL.Traer(item.RefIdResponsable.Value).Name;
                                         }
                                     </td>
                                     <td>@item.DueDate</td>

@@ -48,7 +48,7 @@ namespace LARCA2.Business.Services
         {
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
             DateTime siev = DateTime.Now.AddDays(-repo.Todos().First().SmoDays.Value);
-            return SMOScopesDAL.Todos().Where(r => r.Borrado == false && r.Fecha >= siev).ToList();
+            return SMOScopesDAL.Todos().Where(r => r.deleted == false && r.date >= siev).ToList();
         }
 
         public static bool esAgrupable(LARCA20_SmoScope smoScope1, LARCA20_SmoScope smoScope)
@@ -119,7 +119,7 @@ namespace LARCA2.Business.Services
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
             DateTime siev = DateTime.Now.AddDays(-repo.Todos().First().SmoDays.Value);
 
-            List<LARCA20_SmoScope> result = SMOScopesDAL.Todos().Where(x => x.Borrado == false && x.Fecha >= siev).ToList();
+            List<LARCA20_SmoScope> result = SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev).ToList();
 
            
             if (refidbu != null && bu != 0)

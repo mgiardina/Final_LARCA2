@@ -12,25 +12,25 @@ namespace LARCA2.Data.DatabaseModels
     using System;
     using System.Collections.Generic;
     
-    public partial class LARCA20_Usuarios
+    public partial class LARCA20_Users
     {
-        public LARCA20_Usuarios()
+        public LARCA20_Users()
         {
+            this.LARCA20_UsersRoles = new HashSet<LARCA20_UsersRoles>();
             this.LARCA20_User_Owner = new HashSet<LARCA20_User_Owner>();
-            this.LARCA20_UsuariosRoles = new HashSet<LARCA20_UsuariosRoles>();
         }
     
-        public int IdRenglon { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
+        public int Id { get; set; }
+        public string name { get; set; }
+        public string last_name { get; set; }
         public string Email { get; set; }
-        public string Telefono { get; set; }
-        public string Usuario { get; set; }
-        public string Clave { get; set; }
-        public Nullable<System.DateTime> Fecha { get; set; }
-        public bool Borrado { get; set; }
+        public string telephone { get; set; }
+        public string user_name { get; set; }
+        public string pass { get; set; }
+        public Nullable<System.DateTime> date { get; set; }
+        public bool deleted { get; set; }
     
+        public virtual ICollection<LARCA20_UsersRoles> LARCA20_UsersRoles { get; set; }
         public virtual ICollection<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }
-        public virtual ICollection<LARCA20_UsuariosRoles> LARCA20_UsuariosRoles { get; set; }
     }
 }

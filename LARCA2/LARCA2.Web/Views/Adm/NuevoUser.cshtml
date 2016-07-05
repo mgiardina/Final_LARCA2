@@ -394,8 +394,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">First Name</label>
-                    @Html.TextBoxFor(m => m.Usuario.Nombre, new { @class = "form-control", @placeholder = "First Name ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Nombre)</small>
+                    @Html.TextBoxFor(m => m.Usuario.name, new { @class = "form-control", @placeholder = "First Name ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.name)</small>
                 </fieldset>
             </div>
         </div>
@@ -403,8 +403,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Last Name</label>
-                    @Html.TextBoxFor(m => m.Usuario.Apellido, new { @class = "form-control", @placeholder = "Last Name ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Apellido)</small>
+                    @Html.TextBoxFor(m => m.Usuario.last_name, new { @class = "form-control", @placeholder = "Last Name ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.last_name)</small>
                 </fieldset>
             </div>
         </div>
@@ -412,8 +412,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Username</label>
-                    @Html.TextBoxFor(m => m.Usuario.Usuario, new { @class = "form-control", @placeholder = "Username ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Usuario)</small>
+                    @Html.TextBoxFor(m => m.Usuario.user_name, new { @class = "form-control", @placeholder = "Username ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.user_name)</small>
                 </fieldset>
             </div>
         </div>
@@ -454,7 +454,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <fieldset class="form-group">
-                        <label for="Nombre">Special Permits</label>
+                        <label for="Nombre">Special Permissions</label>
                         @if (ViewBag.ErrorPermiso)
                         {
                             <br /><small style="color:red;">Required</small>
@@ -466,7 +466,7 @@
             <div class="=row">
                 <div id="BU_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre">BU Permits</label>
+                        <label for="Nombre">BU  </label>
                         @{
                         List<SelectListItem> ListBU = new List<SelectListItem>();
                         ListBU.Add(new SelectListItem() { Value = "0", Text = "Choose BU", Selected = false });
@@ -482,7 +482,7 @@
                 </div>
                 <div id="SMO_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre" style="width:200px;">SMO Permits</label>
+                        <label for="Nombre" style="width:200px;">SMO</label>
                         @{
                         List<SelectListItem> ListSMO = new List<SelectListItem>();
                         ListSMO.Add(new SelectListItem() { Value = "0", Text = "Choose SMO", Selected = false });
@@ -498,7 +498,7 @@
                 </div>
                 <div id="Owner_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre" style="width:200px;">OWNER Permits</label>
+                        <label for="Nombre" style="width:200px;">Role</label>
                         @{
                         List<SelectListItem> ListOWNER = new List<SelectListItem>();
                         ListOWNER.Add(new SelectListItem() { Value = "0", Text = "Choose OWNER", Selected = false });
@@ -514,7 +514,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="Nombre">Action</label><br />
-                    <input type="button" value="Add Permits" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
+                    <input type="button" value="Add Permissions" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
                 </div>
             </div>
             <div class="row">

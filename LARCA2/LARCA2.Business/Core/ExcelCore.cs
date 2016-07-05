@@ -72,11 +72,11 @@ namespace LARCA2.Business.Core
                         try
                         {
                             var smoDetail = new LARCA20_SmoScopeDetail();
-                            smoDetail.Fecha = DateTime.Now;
-                            smoDetail.OwnerID = new MasterDataBLL().Traer("OWNER", new RCClassificationBLL().Traer(nivel3).Ownership).IdRenglon;
+                            smoDetail.date = DateTime.Now;
+                            smoDetail.OwnerID = new MasterDataBLL().Traer("OWNER", new RCClassificationBLL().Traer(nivel3).Ownership).id;
                             smoDetail.Volumen = item.SUCases / 1000;
-                            smoDetail.Lvl2ID = new RCClassificationBLL().Traer(nivel2).IdRenglon;
-                            smoDetail.Lvl3ID = new RCClassificationBLL().Traer(nivel3).IdRenglon;
+                            smoDetail.Lvl2ID = new RCClassificationBLL().Traer(nivel2).Id;
+                            smoDetail.Lvl3ID = new RCClassificationBLL().Traer(nivel3).Id;
 
                             // Chequeo si existe el Profit Center en la base, si existe lo asigno directo, sino lo damos de alta y avisamos al admin que debe cargar la descripcion correcta
                             if (!ExistsBU(item.ProfitCenter))
@@ -86,11 +86,11 @@ namespace LARCA2.Business.Core
                                 masterRow.DataIni = item.ProfitCenter;
                                 masterRow.DataFin = string.Empty;
                                 masterRow.Data = "BU";
-                                masterRow.Borrado = false;
+                                masterRow.deleted = false;
                                 service.Guardar(masterRow);
                                 try
                                 {
-                                    new MailingCore().EnviarAlertaNuevoMasterData(masterRow.Data, masterRow.DataIni, masterRow.IdRenglon.ToString());
+                                    new MailingCore().EnviarAlertaNuevoMasterData(masterRow.Data, masterRow.DataIni, masterRow.id.ToString());
                                 }
                                 catch
                                 {
@@ -98,10 +98,10 @@ namespace LARCA2.Business.Core
                                 }
                             }
                             smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.ProfitCenter);
-                            smoDetail.BuID = smoDetail.MasterBUDetail.IdRenglon;
+                            smoDetail.BuID = smoDetail.MasterBUDetail.id;
                             smoDetail.MasterSMODetail = new MasterDataBLL().Traer("SMO", item.ReportingCountry);
-                            smoDetail.SmoID = smoDetail.MasterSMODetail.IdRenglon;
-                            smoDetail.ReasonID = new MasterDataBLL().Traer("REASON", item.ReasonCode).IdRenglon;
+                            smoDetail.SmoID = smoDetail.MasterSMODetail.id;
+                            smoDetail.ReasonID = new MasterDataBLL().Traer("REASON", item.ReasonCode).id;
                             smoDetail.Customer = item.Customer;
 
                             if (tipoProceso == TipoProceso.Parcial)
@@ -289,14 +289,14 @@ namespace LARCA2.Business.Core
                 ws.Cell(row, 1).Value = (Math.Round(decimal.Parse(item.Volumen.ToString()), 2)).ToString();
                 ws.Cell(row, 2).Value = item.MasterSMO.DataFin;
                 ws.Cell(row, 3).Value = item.MasterBU.DataFin;
-                ws.Cell(row, 4).Value = new Business.Services.RCClassificationBLL().Traer(item.RefIdRC.Value).Descripcion;
-                ws.Cell(row, 5).Value = item.Level4 != null && item.Level4 != 0 ? new Business.Services.Level4BLL().Traer(item.Level4.Value).Nombre : string.Empty;
+                ws.Cell(row, 4).Value = new Business.Services.RCClassificationBLL().Traer(item.RefIdRC.Value).Description;
+                ws.Cell(row, 5).Value = item.Level4 != null && item.Level4 != 0 ? new Business.Services.Level4BLL().Traer(item.Level4.Value).name : string.Empty;
                 ws.Cell(row, 6).Value = item.Problem;
                 ws.Cell(row, 7).Value = item.Why1;
                 ws.Cell(row, 8).Value = item.Why2;
                 ws.Cell(row, 9).Value = item.Why3;
                 ws.Cell(row, 10).Value = item.ActionPlan;
-                ws.Cell(row, 11).Value = item.RefIdResponsable != null && item.RefIdResponsable != 0 ? new Business.Services.ResponsablesBLL().Traer(item.RefIdResponsable.Value).Nombre : string.Empty; ;
+                ws.Cell(row, 11).Value = item.RefIdResponsable != null && item.RefIdResponsable != 0 ? new Business.Services.ResponsablesBLL().Traer(item.RefIdResponsable.Value).Name : string.Empty; ;
                 ws.Cell(row, 12).Value = item.DueDate;
                 ws.Cell(row, 13).Value = item.O_C;
 
@@ -329,14 +329,14 @@ namespace LARCA2.Business.Core
                         foreach (var subitem in tops)
                         {
                             var smoScope = new LARCA20_SmoScope();
-                            smoScope.Fecha = DateTime.Now;
+                            smoScope.date = DateTime.Now;
                             smoScope.Volumen = subitem.Volumen;
                             smoScope.RefIdSMO = smoitem.First().SmoID;
                             smoScope.RefIdOwner = subitem.Owner;
                             smoScope.RefIdRC = subitem.Lvl;
                             smoScope.RefIdBU = buitem.First().BuID;
                             //smoScope.RefIdResponsable = new ResponsablesBLL().TraerPorNombreDeUsuario(new UsuariosBLL().Traer(2).Usuario).IdRenglon;
-                            smoScope.Borrado = false;
+                            smoScope.deleted = false;
                             var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
                         }
                     }
@@ -363,12 +363,12 @@ namespace LARCA2.Business.Core
                 foreach (var subitem in tops)
                 {
                     var smoScope = new LARCA20_SmoScope();
-                    smoScope.Fecha = DateTime.Now;
+                    smoScope.date = DateTime.Now;
                     smoScope.Volumen = subitem.Volumen;
                     smoScope.RefIdSMO = item.Key;
                     smoScope.RefIdOwner = subitem.Owner;
                     smoScope.RefIdRC = subitem.Lvl;
-                    smoScope.Borrado = false;
+                    smoScope.deleted = false;
                     var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
                 }
             }
@@ -387,12 +387,12 @@ namespace LARCA2.Business.Core
                 foreach (var subitem in tops)
                 {
                     var smoScope = new LARCA20_SmoScope();
-                    smoScope.Fecha = DateTime.Now;
+                    smoScope.date = DateTime.Now;
                     smoScope.RefIdBU = item.Key;
                     smoScope.RefIdOwner = subitem.Owner;
                     smoScope.Volumen = subitem.Volumen;
                     smoScope.RefIdRC = subitem.Lvl;
-                    smoScope.Borrado = false;
+                    smoScope.deleted = false;
                     var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
                 }
             }

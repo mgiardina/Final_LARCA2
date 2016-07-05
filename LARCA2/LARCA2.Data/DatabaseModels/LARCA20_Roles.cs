@@ -16,15 +16,13 @@ namespace LARCA2.Data.DatabaseModels
     {
         public LARCA20_Roles()
         {
-            this.LARCA20_RolesRecursos = new HashSet<LARCA20_RolesRecursos>();
-            this.LARCA20_UsuariosRoles = new HashSet<LARCA20_UsuariosRoles>();
+            this.LARCA20_UsersRoles = new HashSet<LARCA20_UsersRoles>();
         }
     
-        public int IdRenglon { get; set; }
-        public string Descripcion { get; set; }
-        public bool Borrado { get; set; }
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public bool deleted { get; set; }
     
-        public virtual ICollection<LARCA20_RolesRecursos> LARCA20_RolesRecursos { get; set; }
-        public virtual ICollection<LARCA20_UsuariosRoles> LARCA20_UsuariosRoles { get; set; }
+        public virtual ICollection<LARCA20_UsersRoles> LARCA20_UsersRoles { get; set; }
     }
 }

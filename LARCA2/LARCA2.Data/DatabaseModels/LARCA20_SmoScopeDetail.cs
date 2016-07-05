@@ -16,7 +16,6 @@ namespace LARCA2.Data.DatabaseModels
     {
         public long DetailID { get; set; }
         public Nullable<long> SmoScopeID { get; set; }
-        public Nullable<System.DateTime> Fecha { get; set; }
         public Nullable<long> SmoID { get; set; }
         public Nullable<long> BuID { get; set; }
         public Nullable<long> OwnerID { get; set; }
@@ -24,15 +23,16 @@ namespace LARCA2.Data.DatabaseModels
         public Nullable<long> Lvl3ID { get; set; }
         public decimal Volumen { get; set; }
         public Nullable<long> ReasonID { get; set; }
-        public bool Borrado { get; set; }
         public string Customer { get; set; }
+        public Nullable<System.DateTime> date { get; set; }
+        public bool deleted { get; set; }
     
+        public virtual LARCA20_SmoScope SmoScopeDetail { get; set; }
         public virtual LARCA20_MasterData MasterBUDetail { get; set; }
         public virtual LARCA20_MasterData MasterOwnerDetail { get; set; }
         public virtual LARCA20_MasterData MasterReasonDetail { get; set; }
         public virtual LARCA20_MasterData MasterSMODetail { get; set; }
         public virtual LARCA20_RcClasification MasterLvl2Detail { get; set; }
         public virtual LARCA20_RcClasification MasterLvl3Detail { get; set; }
-        public virtual LARCA20_SmoScope SmoScopeDetail { get; set; }
     }
 }

@@ -98,8 +98,8 @@
         </div>
         <div class="row">
             <div class="col-sm-12 pull-right">
-                <input type="button" value="New Row" name="New" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevoUsuario", "Adm") + "'");" />
-                <input type="submit" id="Modificar" value="Edit Row" name="Modify" class="btn btn-warning" />
+                <input type="button" value="New User" name="New" id="Nuevo" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("NuevoUsuario", "Adm") + "'");" />
+                <input type="submit" id="Modificar" value="Edit User" name="Modify" class="btn btn-warning" />
                 <input type="hidden" class="txtIdRenglon" id="txtIdRenglon" name="txtIdRenglon" value="" />
                 <input type="hidden" class="txtTodos" id="txtTodos" name="txtTodos" value="" />
 
@@ -137,36 +137,36 @@
                         if (Model.Usuarios != null)
                         {
 
-                            foreach (LARCA2.Data.DatabaseModels.LARCA20_Usuarios usuario in Model.Usuarios)
+                            foreach (LARCA2.Data.DatabaseModels.LARCA20_Users usuario in Model.Usuarios)
                             {
                                 <tr>
                                     <td width="5%" align="center">
-                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = usuario.IdRenglon })
+                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = usuario.Id })
                                     </td>
 
                                     <td width="15%" align="center">
                                         <label>
-                                            @usuario.Nombre
+                                            @usuario.name
                                         </label>
                                     </td>
                                     <td width="15%" align="center">
                                         <label>
-                                            @usuario.Apellido
+                                            @usuario.last_name
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
                                         <label>
-                                            @usuario.Usuario
+                                            @usuario.user_name
                                         </label>
                                     </td>
                                     <td width="5%" align="center">
                                         <label>
-                                            @usuario.Borrado
+                                            @usuario.deleted
                                         </label>
                                     </td>
                                     <td width="10%" align="center">
                                         <label>
-                                            @usuario.Fecha
+                                            @usuario.date
                                         </label>
                                     </td>
                                 </tr>

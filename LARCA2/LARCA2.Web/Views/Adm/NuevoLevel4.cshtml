@@ -45,9 +45,9 @@
                 <fieldset class="form-group">
                     <label for="Nombre">Descripcion</label>
                     <input type="hidden" id="txtNivel" name="txtNivel" value=@ViewBag.Id />
-                    @Html.TextBoxFor(m => m.Level4.Nombre, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50", id="Descripcion" })
+                    @Html.TextBoxFor(m => m.Level4.name, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50", id="Descripcion" })
                     <div id="Requerido" style="color:red;display:none">Descripción Requerida</div>
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.Nombre)</small>
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.name)</small>
                 </fieldset>
             </div>
         </div>

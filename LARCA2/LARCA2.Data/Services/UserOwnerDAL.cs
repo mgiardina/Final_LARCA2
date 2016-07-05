@@ -41,7 +41,7 @@ namespace LARCA2.Data.Services
             using (Larca2Entities ObjEnt = new Larca2Entities())
             {
                 IQueryable<LARCA20_User_Owner> ObjFiltro = from q in ObjEnt.LARCA20_User_Owner
-                                                           where q.IdUsuario == Tx1
+                                                           where q.Id == Tx1
                                                            select q;
                 
                 List<LARCA20_User_Owner> ListaReturn = new List<LARCA20_User_Owner>();
@@ -57,7 +57,7 @@ namespace LARCA2.Data.Services
 
         public List<LARCA20_User_Owner> TraerPorIdUsuario(int idUser)
         {
-            return Context.LARCA20_User_Owner.Where(u => u.IdUsuario == idUser && u.Borrado == false).ToList();
+            return Context.LARCA20_User_Owner.Where(u => u.Id == idUser && u.deleted == false).ToList();
         }
 
         //esto no funciona, como lo implementamos?
@@ -66,7 +66,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;

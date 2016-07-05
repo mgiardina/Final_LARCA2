@@ -14,9 +14,9 @@ namespace LARCA2.Data.DatabaseModels
     {
         public class LARCA20_MasterDataMD
         {
-            [Required(ErrorMessage = "Requerido")]
+            [Required(ErrorMessage = "Required")]
             public string Data { get; set; }
-            [Required(ErrorMessage = "Requerido")]
+            [Required(ErrorMessage = "Required")]
             public string DataIni { get; set; }
         }
     }

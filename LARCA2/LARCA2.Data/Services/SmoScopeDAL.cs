@@ -57,7 +57,7 @@ namespace LARCA2.Data.Services
 
         public List<LARCA20_SmoScope> TodosConExclusiones()
         {
-            var list = Context.LARCA20_SmoScope.Where(r => r.Borrado == false).ToList();
+            var list = Context.LARCA20_SmoScope.Where(r => r.deleted == false).ToList();
             var finalList = new List<LARCA20_SmoScope>();
             var exclusiones = new MasterDataDAL().TraerExclusiones();
             foreach (var item in list)
@@ -75,7 +75,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;

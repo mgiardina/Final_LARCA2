@@ -57,9 +57,9 @@
             <div class="col-sm-12">
                 <input type="submit" value="Export Excel" name="command" class="btn btn-success" />
                 @{
-        var user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)HttpContext.Current.Session["Usuario"];
+        var user = (LARCA2.Data.DatabaseModels.LARCA20_Users)HttpContext.Current.Session["Usuario"];
                 }
-                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1)
+                @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1)
                 {
                     <input type="submit" value="Send Email" name="command" class="btn btn-warning" />
                     <input type="submit" value="Send All Reports" name="command" class="btn btn-danger" />

@@ -24,6 +24,6 @@ namespace LARCA2.Data.DatabaseModels
         public string SapSite { get; set; }
         public string Customer { get; set; }
         public Nullable<decimal> SU_Cases { get; set; }
-        public bool Borrado { get; set; }
+        public bool deleted { get; set; }
     }
 }

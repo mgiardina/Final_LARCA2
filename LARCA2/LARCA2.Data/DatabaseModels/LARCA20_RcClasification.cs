@@ -22,12 +22,12 @@ namespace LARCA2.Data.DatabaseModels
             this.LARCA20_SmoScopeDetail1 = new HashSet<LARCA20_SmoScopeDetail>();
         }
     
-        public long IdRenglon { get; set; }
-        public string Nivel { get; set; }
-        public string Codigo { get; set; }
-        public string Descripcion { get; set; }
+        public long Id { get; set; }
+        public string level_name { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
         public string Ownership { get; set; }
-        public bool Borrado { get; set; }
+        public bool deleted { get; set; }
     
         public virtual ICollection<LARCA20_Level4> LARCA20_Level4 { get; set; }
         public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }

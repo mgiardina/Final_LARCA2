@@ -127,7 +127,8 @@
 
                             foreach (LARCA2.Data.DatabaseModels.LARCA20_RcClasification RcClasification in Model.Level3List)
                             {
-                                <option value="@RcClasification.IdRenglon">@RcClasification.Descripcion</option>
+                                <option value="@RcClasification.Id">@RcClasification.Description</option>
+                       
 
                             }
 
@@ -139,7 +140,7 @@
 
                             foreach (LARCA2.Data.DatabaseModels.LARCA20_RcClasification RcClasification in Model.Level3List)
                             {
-                                <option value="@RcClasification.IdRenglon">@RcClasification.Descripcion</option>
+                                <option value="@RcClasification.Id">@RcClasification.Description</option>
 
                             }
 
@@ -193,10 +194,10 @@
 
                         if (Model.Level4List != null)
                         {
-                            if (Model.LimiteFiltro != null && Model.LimiteFiltro != 0)
+                            if (Model.filterlimit != null && Model.filterlimit != 0)
                             {
 
-                                @*for (int i = 0; i < Model.LimiteFiltro; i++)
+                                @*for (int i = 0; i < Model.filterlimit; i++)
                                 {
                                     <tr id="tr">
                                         <td width="10%" align="center">
@@ -213,7 +214,7 @@
     var x = 0;
         foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 Level4 in Model.Level4List)
         {
-            if (x < Model.LimiteFiltro) 
+            if (x < Model.filterlimit) 
             {              
              <tr id="tr">
                 <td width="10%" align="center">
@@ -221,7 +222,7 @@
                 </td>
                 <td width="20%" align="center">
                     <label>
-                        @Level4.Nombre
+                        @Level4.name
                     </label>
                 </td>
             </tr>

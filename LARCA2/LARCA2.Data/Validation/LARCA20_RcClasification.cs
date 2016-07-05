@@ -14,12 +14,12 @@ namespace LARCA2.Data.DatabaseModels
     {
         public class LARCA20_RcClasificationMD
         {
-            [Required(ErrorMessage = "Requerido")]
-            public string Nivel { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            public string Codigo { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            public string Descripcion { get; set; }
+            [Required(ErrorMessage = "Required")]
+            public string level_name { get; set; }
+            [Required(ErrorMessage = "Required")]
+            public string Code { get; set; }
+            [Required(ErrorMessage = "Required")]
+            public string Description { get; set; }
         }
     }
 }

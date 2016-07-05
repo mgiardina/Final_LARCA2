@@ -27,14 +27,14 @@ namespace LARCA2.Business.Services
             if (smoFin.Length > 0)
             {
                 var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
-                var items = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin).GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
+                var items = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                 foreach (var item in items.Take(toplvl2))
                 {
-                    var volumen = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin && s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                    var volumen = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin && s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                     var row = new ReportRow();
                     row.SMO = item.ToList()[0].MasterSMO.DataFin;
                     row.RBU = "TOTAL";
-                    row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
+                    row.CUT = new RCClassificationBLL().Traer(item.Key).Description;
                     row.Details = new List<ReportRow>();
                     row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                     row.PROBLEM = "View Details Below";
@@ -47,15 +47,15 @@ namespace LARCA2.Business.Services
                         {
                             SMO = subitem.MasterSMO.DataFin,
                             RBU = subitem.MasterBU.DataFin,
-                            CUT = subitem.MasterLvl.Descripcion,
+                            CUT = subitem.MasterLvl.Description,
                             VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                             PROBLEM = subitem.Problem,
                             WHY1 = subitem.Why1,
                             WHY2 = subitem.Why2,
                             WHY3 = subitem.Why3,
                             ACTIONPLAN = subitem.ActionPlan,
-                            RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Nombre.ToString() : string.Empty,
-                            LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
+                            RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                            LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                         };
                         row.Details.Add(detailRow);
                     }
@@ -66,14 +66,14 @@ namespace LARCA2.Business.Services
                 if (buFin.Length > 0)
                 {
                     var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
-                    var items = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin).GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
+                    var items = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                     foreach (var item in items.Take(toplvl2))
                     {
-                        var volumen = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin && s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                        var volumen = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin && s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                         var row = new ReportRow();
                         row.SMO = "TOTAL";
                         row.RBU = item.ToList()[0].MasterBU.DataFin;
-                        row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
+                        row.CUT = new RCClassificationBLL().Traer(item.Key).Description;
                         row.Details = new List<ReportRow>();
                         row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                         row.PROBLEM = "View Details Below";
@@ -85,15 +85,15 @@ namespace LARCA2.Business.Services
                             {
                                 SMO = subitem.MasterSMO.DataFin,
                                 RBU = subitem.MasterBU.DataFin,
-                                CUT = subitem.MasterLvl.Descripcion,
+                                CUT = subitem.MasterLvl.Description,
                                 VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                                 PROBLEM = subitem.Problem,
                                 WHY1 = subitem.Why1,
                                 WHY2 = subitem.Why2,
                                 WHY3 = subitem.Why3,
                                 ACTIONPLAN = subitem.ActionPlan,
-                                RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Nombre.ToString() : string.Empty,
-                                LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
+                                RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                             };
                             row.Details.Add(detailRow);
                         }
@@ -105,14 +105,14 @@ namespace LARCA2.Business.Services
                     if (regionId == "1")
                     {
                         var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
-                        var items = SmoScopeDAL.Todos().GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
+                        var items = SmoScopeDAL.Todos().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                         foreach (var item in items.Take(toplvl2))
                         {
-                            var volumen = SmoScopeDAL.Todos().Where(s => s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                            var volumen = SmoScopeDAL.Todos().Where(s => s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                             var row = new ReportRow();
                             row.SMO = "TOTAL";
                             row.RBU = "TOTAL";
-                            row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
+                            row.CUT = new RCClassificationBLL().Traer(item.Key).Description;
                             row.Details = new List<ReportRow>();
                             row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                             row.PROBLEM = "View Details Below";
@@ -124,15 +124,15 @@ namespace LARCA2.Business.Services
                                 {
                                     SMO = subitem.MasterSMO.DataFin,
                                     RBU = subitem.MasterBU.DataFin,
-                                    CUT = subitem.MasterLvl.Descripcion,
+                                    CUT = subitem.MasterLvl.Description,
                                     VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                                     PROBLEM = subitem.Problem,
                                     WHY1 = subitem.Why1,
                                     WHY2 = subitem.Why2,
                                     WHY3 = subitem.Why3,
                                     ACTIONPLAN = subitem.ActionPlan,
-                                    RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Nombre.ToString() : string.Empty,
-                                    LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
+                                    RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                    LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                                 };
                                 row.Details.Add(detailRow);
                             }
@@ -143,14 +143,14 @@ namespace LARCA2.Business.Services
                         if (regionId == "2")
                         {
                             var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
-                            var items = SmoScopeDAL.TodosConExclusiones().GroupBy(p => p.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Codigo.Split(Convert.ToChar("."))[1]);
+                            var items = SmoScopeDAL.TodosConExclusiones().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                             foreach (var item in items.Take(toplvl2))
                             {
-                                var volumen = SmoScopeDAL.Todos().Where(s => s.MasterLvl.Codigo.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Codigo.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                                var volumen = SmoScopeDAL.Todos().Where(s => s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                                 var row = new ReportRow();
                                 row.SMO = "TOTAL";
                                 row.RBU = "TOTAL";
-                                row.CUT = new RCClassificationBLL().Traer(item.Key).Descripcion;
+                                row.CUT = new RCClassificationBLL().Traer(item.Key).Description;
                                 row.Details = new List<ReportRow>();
                                 row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                                 row.PROBLEM = "View Details Below";
@@ -162,15 +162,15 @@ namespace LARCA2.Business.Services
                                     {
                                         SMO = subitem.MasterSMO.DataFin,
                                         RBU = subitem.MasterBU.DataFin,
-                                        CUT = subitem.MasterLvl.Descripcion,
+                                        CUT = subitem.MasterLvl.Description,
                                         VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
                                         PROBLEM = subitem.Problem,
                                         WHY1 = subitem.Why1,
                                         WHY2 = subitem.Why2,
                                         WHY3 = subitem.Why3,
                                         ACTIONPLAN = subitem.ActionPlan,
-                                        RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Nombre.ToString() : string.Empty,
-                                        LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).Nombre : string.Empty
+                                        RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                        LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                                     };
                                     row.Details.Add(detailRow);
                                 }

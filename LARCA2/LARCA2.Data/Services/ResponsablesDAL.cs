@@ -12,11 +12,11 @@ namespace LARCA2.Data.Services
         {
             try
             {
-                if (entity.IdRenglon == 0)
+                if (entity.Id == 0)
                 {
                     Context.LARCA20_Responsable.Add(entity);
                     Context.SaveChanges();
-                    int id = entity.IdRenglon;
+                    int id = entity.Id;
                 }
                 else
                 {
@@ -38,25 +38,25 @@ namespace LARCA2.Data.Services
 
         public override LARCA20_Responsable Traer(long id)
         {
-            return Context.LARCA20_Responsable.SingleOrDefault(u => u.IdRenglon == id);
+            return Context.LARCA20_Responsable.SingleOrDefault(u => u.Id == id);
         }
 
         public LARCA20_Responsable TraerPorNombreDeResponsable(string name)
         {
-            return Context.LARCA20_Responsable.SingleOrDefault(u => u.Nombre == name);
+            return Context.LARCA20_Responsable.SingleOrDefault(u => u.Name == name);
         }
 
         public LARCA20_Responsable TraerPorNombreDeUsuario(string username)
         {
 
-          LARCA20_Usuarios user = Context.LARCA20_Usuarios.Where(x => x.Usuario == username).FirstOrDefault();
+          LARCA20_Users user = Context.LARCA20_Users.Where(x => x.user_name == username).FirstOrDefault();
 
-            return Context.LARCA20_Responsable.SingleOrDefault(u => u.RefIdUsuario == user.IdRenglon);
+            return Context.LARCA20_Responsable.SingleOrDefault(u => u.RefIdUser == user.Id);
         }
 
         public string TraerSuNombreDeUsuario(int refIdResponsable)
         {
-            return Context.LARCA20_Usuarios.Where(x => x.IdRenglon == Context.LARCA20_Responsable.FirstOrDefault(u => u.IdRenglon == refIdResponsable).RefIdUsuario).ToList()[0].Usuario;
+            return Context.LARCA20_Users.Where(x => x.Id == Context.LARCA20_Responsable.FirstOrDefault(u => u.Id == refIdResponsable).RefIdUser).ToList()[0].user_name;
 
         }
 
@@ -66,7 +66,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;

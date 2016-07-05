@@ -20,9 +20,9 @@ namespace LARCA2.Data.DatabaseModels
         public int XlsRowFrom { get; set; }
         public int XlsColumnFrom { get; set; }
         public int Toplvl4 { get; set; }
-        public int CntAdjuntos { get; set; }
-        public int LimiteFiltro { get; set; }
-        public int DiasReporte { get; set; }
         public Nullable<int> SmoDays { get; set; }
+        public int qtyattach { get; set; }
+        public int filterlimit { get; set; }
+        public int reportdays { get; set; }
     }
 }

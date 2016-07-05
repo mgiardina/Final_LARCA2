@@ -17,27 +17,27 @@ namespace LARCA2.Business.Services
             UsuariosDAL = new Data.Services.UsuariosDAL();
         }
 
-        public bool Guardar(LARCA20_Usuarios user)
+        public bool Guardar(LARCA20_Users user)
         {
             return UsuariosDAL.Guardar(user);
         }
 
-        public List<LARCA20_Usuarios> Todos()
+        public List<LARCA20_Users> Todos()
         {
             return UsuariosDAL.Todos();
         }
 
-        public List<LARCA20_Usuarios> TodosFiltro(string txNombre, string txApellido)
+        public List<LARCA20_Users> TodosFiltro(string txNombre, string txApellido)
         {
             return UsuariosDAL.TodosFiltro(txNombre, txApellido);
         }
 
-        public LARCA20_Usuarios Traer(long id)
+        public LARCA20_Users Traer(long id)
         {
             return UsuariosDAL.Traer(id);
         }
 
-        public LARCA20_Usuarios TraerPorNombreDeUsuario(string username)
+        public LARCA20_Users TraerPorNombreDeUsuario(string username)
         {
             return UsuariosDAL.TraerPorNombreDeUsuario(username);
         }

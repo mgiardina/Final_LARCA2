@@ -24,20 +24,20 @@ namespace Larca2.Controllers
            
 
             //Reviso el usuario logueado, sino como prueba traigo al de ID 2
-            LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
 
             //determino el rol del usuario para entender qué filtros y funcionalidades disponer
             LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
-            viewModel.userRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).Descripcion;
-            viewModel.idRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).IdRenglon;
+            viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
 
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
             List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = new List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner>(); 
             if (viewModel.idRole != 1) //NOT ADMINISTRATOR
-                luo = uobll.TraerPorIdUsuario(user.IdRenglon);
+                luo = uobll.TraerPorIdUsuario(user.Id);
 
             // Quito de la lista de SMO y BU de los filtros aquellos no contemplados por un registro existente de UserOwner para el usuario logueado
            // viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
@@ -126,7 +126,7 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
 
-            LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
 
@@ -134,10 +134,10 @@ namespace Larca2.Controllers
             //determino el rol del usuario para entender qué filtros y funcionalidades disponer
             LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
-            viewModel.userRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).Descripcion;
-            viewModel.idRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).IdRenglon;
+            viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
             
-            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.IdRenglon);
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
 
          //   viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
@@ -220,17 +220,17 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
             LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
 
-            LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
 
             //determino el rol del usuario para entender qué filtros y funcionalidades disponer
             LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
-            viewModel.userRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).Descripcion;
-            viewModel.idRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).IdRenglon;
+            viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
 
-            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.IdRenglon);
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
        //     viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
       //      viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
@@ -452,7 +452,7 @@ namespace Larca2.Controllers
                 result = result + "<td>" + mbl.Traer("BU", Int32.Parse(det.BuID.ToString())).DataIni + "</td>";
                 result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td>";
                 result = result + "<td>" + (det.Customer == null ? "-" : det.Customer.ToString()) + "</td>";
-                result = result + "<td>" + det.Fecha.ToString() + "</td></tr>";
+                result = result + "<td>" + det.date.ToString() + "</td></tr>";
 
                 //  result = result + "<tr><td>" + det.Fecha.ToString() + "</td>";
                 // result = result + "<td>" + mbl.Traer("SMO", Int32.Parse(det.SmoID.ToString())).DataIni + "</td>";
@@ -486,7 +486,7 @@ namespace Larca2.Controllers
 
 
             //Reviso el usuario logueado, sino como prueba traigo al de ID 2
-            LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
 
@@ -495,10 +495,10 @@ namespace Larca2.Controllers
             //determino el rol del usuario para entender qué filtros y funcionalidades disponer
             LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
-            viewModel.userRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).Descripcion;
-            viewModel.idRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).IdRenglon;
+            viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
-            List <LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.IdRenglon);
+            List <LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
 
             // Quito de la lista de SMO y BU de los filtros aquellos no contemplados por un registro existente de UserOwner para el usuario logueado
@@ -538,10 +538,10 @@ namespace Larca2.Controllers
             //viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             //viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
-             if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
+             if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
                  viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
 
-            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
          
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
@@ -562,17 +562,17 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
           
 
-            LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
 
             //determino el rol del usuario para entender qué filtros y funcionalidades disponer
             LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
-            viewModel.userRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).Descripcion;
-            viewModel.idRole = robll.Traer(urbll.Traer(user.IdRenglon).RefIdRoles).IdRenglon;
+            viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
             
-            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.IdRenglon);
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
 
 
@@ -608,11 +608,11 @@ namespace Larca2.Controllers
             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
             
             viewModel.Responsables = new List<SelectListItem>();
-            List<LARCA2.Data.DatabaseModels.LARCA20_Usuarios> listaDeUsuariosParaRespons = repoUsuarios.Todos();
+            List<LARCA2.Data.DatabaseModels.LARCA20_Users> listaDeUsuariosParaRespons = repoUsuarios.Todos();
             viewModel.Responsables.Add(new SelectListItem { Text = "Choose a valid Owner:", Value = "0" });
             foreach (LARCA2.Data.DatabaseModels.LARCA20_Responsable userResponsable in repoResponsables.Todos())
             {
-                viewModel.Responsables.Add(new SelectListItem { Text = listaDeUsuariosParaRespons.Where(u => u.IdRenglon == userResponsable.RefIdUsuario).FirstOrDefault().Usuario, Value = userResponsable.IdRenglon.ToString() });
+                viewModel.Responsables.Add(new SelectListItem { Text = listaDeUsuariosParaRespons.Where(u => u.Id == userResponsable.RefIdUser).FirstOrDefault().user_name, Value = userResponsable.Id.ToString() });
             }
 
 
@@ -626,9 +626,9 @@ namespace Larca2.Controllers
 
             if(viewModel.mesSeleccionado == "0")
             {
-                if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
+                if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
                     viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
              }
             else
             {
@@ -638,7 +638,7 @@ namespace Larca2.Controllers
                     viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = true });
                 }
 
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month < DateTime.Now.Month).ToList();
             }
 
             
@@ -665,7 +665,7 @@ namespace Larca2.Controllers
               LARCA2.Business.Services.UsuariosRolesBLL userRoles = new LARCA2.Business.Services.UsuariosRolesBLL();
 
                //Reviso el usuario logueado, sino como prueba traigo al de ID 2
-            LARCA2.Data.DatabaseModels.LARCA20_Usuarios user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
 
@@ -738,33 +738,33 @@ namespace Larca2.Controllers
                     DateTime due;
                     clon.SmoScopeID = 0;
                     clon.ActionPlan = actFilt[9];
-                    clon.Borrado = false;
+                    clon.deleted = false;
                     clon.DueDate = (DateTime.TryParse(actFilt[11], out due)? due : DateTime.Now.AddDays(7));
-                    clon.Fecha = DateTime.Now;
+                    clon.date = DateTime.Now;
                     clon.Volumen = Decimal.Parse(actFilt[0]); //antes 3
                     clon.Problem = actFilt[5];
                     clon.Why1 = actFilt[6];
                     clon.Why2 = actFilt[7];
                     clon.Why3 = actFilt[8];
                     clon.O_C = (actFilt[12] == "O" || actFilt[12] == "C"? actFilt[12] : "O" );
-                    clon.RefIdBU = mdClones.TraerPorDataFin("BU", actFilt[2]).IdRenglon;
-                    clon.RefIdSMO = mdClones.TraerPorData("SMO", actFilt[1]).IdRenglon;
-                    if (userRoles.Traer(user.IdRenglon).RefIdRoles != 1) //NOT ADMIN
-                        clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.IdRenglon).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
+                    clon.RefIdBU = mdClones.TraerPorDataFin("BU", actFilt[2]).id;
+                    clon.RefIdSMO = mdClones.TraerPorData("SMO", actFilt[1]).id;
+                    if (userRoles.Traer(user.Id).RefIdRoles != 1) //NOT ADMIN
+                        clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.Id).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
                     else
                         try
                         {
-                            clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.IdRenglon).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
+                            clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.Id).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
                         }
                         catch (Exception e) { clon.RefIdOwner = null; } 
-                    clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).IdRenglon;
+                    clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).Id;
                     int io;
                     if (Int32.TryParse(actFilt[9].ToString(), out io) == true)
-                        clon.RefIdResponsable = respoClones.Traer(Int32.Parse(actFilt[10])).IdRenglon;
+                        clon.RefIdResponsable = respoClones.Traer(Int32.Parse(actFilt[10])).Id;
                     else
                         clon.RefIdResponsable = null;
 
-                    clon.Level4 = lvlClones.Todos().Where(l => l.Borrado == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
+                    clon.Level4 = lvlClones.Todos().Where(l => l.deleted == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
 
                     repoGuardado.Guardar(clon);
                     //buscar IDs y guardar en tabla LARCA20_SmoScope -en user owner no deberia hacer falta, cuando haya que hacer pruebas revisar si con un solo user owner se obtienen todos los registros de la tabla de smo scope correspondientes-
@@ -814,7 +814,7 @@ namespace Larca2.Controllers
             test = test++;
 
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
-            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.IdRenglon);
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
 
             //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
@@ -857,9 +857,9 @@ namespace Larca2.Controllers
 
             if (viewModel.mesSeleccionado == "0")
             {
-                if (viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
+                if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
                     viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month == DateTime.Now.Month).ToList();
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
             }
             else
             {
@@ -869,7 +869,7 @@ namespace Larca2.Controllers
                     viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = true });
                 }
 
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.Fecha.Value.Month < DateTime.Now.Month).ToList();
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month < DateTime.Now.Month).ToList();
             }
 
 
@@ -879,11 +879,11 @@ namespace Larca2.Controllers
 
 
             viewModel.Responsables = new List<SelectListItem>();
-            List<LARCA2.Data.DatabaseModels.LARCA20_Usuarios> listaDeUsuariosParaRespons = repoUsuarios.Todos();
+            List<LARCA2.Data.DatabaseModels.LARCA20_Users> listaDeUsuariosParaRespons = repoUsuarios.Todos();
             viewModel.Responsables.Add(new SelectListItem { Text = "Choose a valid Owner:", Value = "0" });
             foreach (LARCA2.Data.DatabaseModels.LARCA20_Responsable userResponsable in repoResponsables.Todos())
             {
-                viewModel.Responsables.Add(new SelectListItem { Text = listaDeUsuariosParaRespons.Where(u => u.IdRenglon == userResponsable.RefIdUsuario).FirstOrDefault().Usuario, Value = userResponsable.IdRenglon.ToString() });
+                viewModel.Responsables.Add(new SelectListItem { Text = listaDeUsuariosParaRespons.Where(u => u.Id == userResponsable.RefIdUser).FirstOrDefault().user_name, Value = userResponsable.Id.ToString() });
             }
 
 

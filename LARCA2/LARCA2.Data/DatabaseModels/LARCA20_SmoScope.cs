@@ -20,7 +20,6 @@ namespace LARCA2.Data.DatabaseModels
         }
     
         public long SmoScopeID { get; set; }
-        public Nullable<System.DateTime> Fecha { get; set; }
         public Nullable<long> RefIdSMO { get; set; }
         public Nullable<long> RefIdBU { get; set; }
         public Nullable<long> RefIdOwner { get; set; }
@@ -34,14 +33,15 @@ namespace LARCA2.Data.DatabaseModels
         public Nullable<int> RefIdResponsable { get; set; }
         public Nullable<System.DateTime> DueDate { get; set; }
         public string O_C { get; set; }
-        public bool Borrado { get; set; }
         public Nullable<long> Level4 { get; set; }
+        public Nullable<System.DateTime> date { get; set; }
+        public bool deleted { get; set; }
     
+        public virtual ICollection<LARCA20_SmoScopeDetail> SmoScopeDetail { get; set; }
         public virtual LARCA20_MasterData MasterBU { get; set; }
         public virtual LARCA20_MasterData MasterOwner { get; set; }
         public virtual LARCA20_MasterData MasterSMO { get; set; }
         public virtual LARCA20_RcClasification MasterLvl { get; set; }
         public virtual LARCA20_Responsable ResponsableSmo { get; set; }
-        public virtual ICollection<LARCA20_SmoScopeDetail> SmoScopeDetail { get; set; }
     }
 }

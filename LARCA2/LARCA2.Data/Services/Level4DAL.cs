@@ -34,7 +34,7 @@ namespace LARCA2.Data.Services
 
         public override List<LARCA2.Data.DatabaseModels.LARCA20_Level4> Todos()
         {
-            return Context.LARCA20_Level4.OrderBy(q => q.LARCA20_RcClasification.Descripcion).ThenBy(q => q.Nombre).ToList();
+            return Context.LARCA20_Level4.OrderBy(q => q.LARCA20_RcClasification.Description).ThenBy(q => q.name).ToList();
         }
 
         public List<LARCA2.Data.DatabaseModels.LARCA20_Level4> TodosFiltro(string Tx1)
@@ -68,7 +68,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;
@@ -81,7 +81,7 @@ namespace LARCA2.Data.Services
 
         public List<LARCA2.Data.DatabaseModels.LARCA20_Level4> ValidarMaximo(int lvl3)
         {
-            return Context.LARCA20_Level4.Where(q => q.RefIdLevel3==lvl3 && q.Borrado== false).ToList();
+            return Context.LARCA20_Level4.Where(q => q.RefIdLevel3==lvl3 && q.deleted== false).ToList();
         }
     }
 }

@@ -48,19 +48,19 @@ namespace Larca2.Views.ViewModels
               
                         foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MBLL.Todos().Where(x=> x.Data == "BU"))
                         {
-                           BUList.Add(new SelectListItem{Text = md.DataFin, Value = md.IdRenglon.ToString()});
+                           BUList.Add(new SelectListItem{Text = md.DataFin, Value = md.id.ToString()});
                         }
                         
                         foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MBLL.Todos().Where(x=> x.Data == "SMO"))
                         {
-                            SMOList.Add(new SelectListItem { Text = md.DataFin, Value = md.IdRenglon.ToString() });
+                            SMOList.Add(new SelectListItem { Text = md.DataFin, Value = md.id.ToString() });
                         }
 
                         L4List.Add(new SelectListItem { Text = "Choose a valid Level 4", Value = "0" });
 
                         foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 md in L4BLL.Todos())
                         {
-                            L4List.Add(new SelectListItem { Text = md.Nombre, Value = md.Id.ToString() });
+                            L4List.Add(new SelectListItem { Text = md.name, Value = md.Id.ToString() });
                         }
 
            // LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
@@ -71,11 +71,11 @@ namespace Larca2.Views.ViewModels
            // this.RegistrosSMO = repo.Todos();
           //  this.EditablesSMO = this.RegistrosSMO;
             this.Responsables = new List<SelectListItem>();
-            List<LARCA2.Data.DatabaseModels.LARCA20_Usuarios> listaDeUsuarios = repoUsuarios.Todos();
+            List<LARCA2.Data.DatabaseModels.LARCA20_Users> listaDeUsuarios = repoUsuarios.Todos();
             this.Responsables.Add(new SelectListItem { Text = "Choose a valid Owner:", Value = "0"});
             foreach (LARCA2.Data.DatabaseModels.LARCA20_Responsable user in repoResponsables.Todos())
             {
-                this.Responsables.Add(new SelectListItem { Text = listaDeUsuarios.Where(u => u.IdRenglon == user.RefIdUsuario).FirstOrDefault().Usuario, Value = user.IdRenglon.ToString()});
+                this.Responsables.Add(new SelectListItem { Text = listaDeUsuarios.Where(u => u.Id == user.RefIdUser).FirstOrDefault().user_name, Value = user.Id.ToString()});
             }
 
 

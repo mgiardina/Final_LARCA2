@@ -128,7 +128,7 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.UsuariosBLL repositorioUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.RolesBLL repositorioRoles = new LARCA2.Business.Services.RolesBLL();
 
-            LARCA20_Usuarios usuario = repositorioUsuarios.TraerPorNombreDeUsuario(loginViewModel.Usuario.NombreUsuario);
+            LARCA20_Users usuario = repositorioUsuarios.TraerPorNombreDeUsuario(loginViewModel.Usuario.NombreUsuario);
 
             bool cumpleReintentos = true;
             if (usuario == null)
@@ -145,7 +145,7 @@ namespace Larca2.Controllers
             string prueba = "username";
             if (loginViewModel.Usuario.NombreUsuario.Contains("admin") || loginViewModel.Usuario.NombreUsuario.Contains("Admin"))
             {
-               adAuthentication = (Crypto.Decrypt(usuario.Clave) == loginViewModel.Usuario.Clave ? true : false);      
+               adAuthentication = (Crypto.Decrypt(usuario.pass) == loginViewModel.Usuario.Clave ? true : false);      
             }
             else
             {
@@ -162,7 +162,7 @@ namespace Larca2.Controllers
 
             bool probando = true;  //poner en false cuando haya un Active Directory valido en el que funcionar
 
-            if (probando) adAuthentication = (Crypto.Decrypt(usuario.Clave) == loginViewModel.Usuario.Clave ? true : false);
+            if (probando) adAuthentication = (Crypto.Decrypt(usuario.pass) == loginViewModel.Usuario.Clave ? true : false);
 
             //GruposDeAD(usuario.Usuario, dominio) <- Esta linea devuelve los grupos de AD de un usuario, para interpretar roles
 
@@ -184,11 +184,11 @@ namespace Larca2.Controllers
                 if (!cumpleReintentos)
                 {
                      loginViewModel.Error = "Se superó el máximo de reintentos. El usuario ha sido bloqueado.";
-                    if (usuario != null && !usuario.Borrado)
+                    if (usuario != null && !usuario.deleted)
                     {
                         LARCA2.Business.Services.UsuariosBLL repo = new LARCA2.Business.Services.UsuariosBLL();
-                        LARCA20_Usuarios user = repo.Traer(usuario.IdRenglon);
-                        user.Borrado = true;
+                        LARCA20_Users user = repo.Traer(usuario.Id);
+                        user.deleted = true;
                         repo.Guardar(user);
                     }
                     myCookie.Value = "0";
@@ -201,7 +201,7 @@ namespace Larca2.Controllers
                     {
                         if (usuario != null)
                         {
-                            if (usuario.Borrado)
+                            if (usuario.deleted)
                                 loginViewModel.Error = "El usuario está bloqueado.";
                             else
                                 loginViewModel.Error = "El usuario o contraseña son inválidos";
@@ -256,16 +256,16 @@ namespace Larca2.Controllers
 
         public ActionResult PrimerAccesoCambioClave()
         {
-          LARCA2.Data.DatabaseModels.LARCA20_Usuarios usuario = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)Session["Usuario"];
+          LARCA2.Data.DatabaseModels.LARCA20_Users usuario = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             ModificarPasswordViewModel modificarPasswordViewModel = new ModificarPasswordViewModel();
             return View("PrimerAccesoCambioClave", modificarPasswordViewModel);
         }
 
         public ActionResult GuardarPassword(ModificarPasswordViewModel modificarPasswordViewModel)
         {
-                  LARCA20_Usuarios usuario = (  LARCA20_Usuarios)Session["Usuario"];
+                  LARCA20_Users usuario = (  LARCA20_Users)Session["Usuario"];
 
-            if (!ModelState.IsValid || modificarPasswordViewModel.PasswordViejo != Crypto.Decrypt(usuario.Clave) ||
+            if (!ModelState.IsValid || modificarPasswordViewModel.PasswordViejo != Crypto.Decrypt(usuario.pass) ||
                 modificarPasswordViewModel.PasswordNuevo != modificarPasswordViewModel.RepeticionPasswordNuevo)
             {
                 if (ModelState.IsValid)
@@ -279,10 +279,10 @@ namespace Larca2.Controllers
             }
 
               LARCA2.Business.Services.UsuariosBLL  repositorioUsuarios = new   LARCA2.Business.Services.UsuariosBLL ();
-            usuario.Clave = Crypto.Encrypt(modificarPasswordViewModel.PasswordNuevo);
+            usuario.pass = Crypto.Encrypt(modificarPasswordViewModel.PasswordNuevo);
             Session["Usuario"] = usuario;
-            LARCA20_Usuarios usuarioActualizar = repositorioUsuarios.Traer(usuario.IdRenglon);
-            usuarioActualizar.Clave = Crypto.Encrypt(modificarPasswordViewModel.PasswordNuevo);
+            LARCA20_Users usuarioActualizar = repositorioUsuarios.Traer(usuario.Id);
+            usuarioActualizar.pass = Crypto.Encrypt(modificarPasswordViewModel.PasswordNuevo);
             repositorioUsuarios.Guardar(usuarioActualizar);
 
             return Content("<script language='javascript' type='text/javascript'>alert('The password has been modified.');document.location = '../Home/Index';</script>");

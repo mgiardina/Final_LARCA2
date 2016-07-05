@@ -34,7 +34,7 @@ namespace LARCA2.Data.Services
 
         public override List<LARCA20_SmoScopeDetail> Todos()
         {
-            return Context.LARCA20_SmoScopeDetail.Where(s => s.Borrado == false).ToList();
+            return Context.LARCA20_SmoScopeDetail.Where(s => s.deleted == false).ToList();
         }
 
         public override LARCA20_SmoScopeDetail Traer(long id)
@@ -47,7 +47,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = false;
+                entity.deleted = false;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;

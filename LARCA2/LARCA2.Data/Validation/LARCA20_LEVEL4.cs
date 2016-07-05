@@ -14,8 +14,8 @@ namespace LARCA2.Data.DatabaseModels
     {
         public class LARCA20_Level4MD
         {
-            [Required(ErrorMessage = "Requerido")]
-            public string Nombre { get; set; }
+            [Required(ErrorMessage = "Required")]
+            public string name { get; set; }
         }
     }
 }

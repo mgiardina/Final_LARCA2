@@ -596,14 +596,14 @@
 
     @using (Html.BeginForm("ModificarUsuario", "Adm", FormMethod.Post))
     {
-        @Html.HiddenFor(m => m.Usuario.IdRenglon)
+        @Html.HiddenFor(m => m.Usuario.Id)
         <input name="HI_PermisosEsp" id="HI_PermisosEsp" type="hidden" value="@ViewBag.PermisosUser" />
         <div class="row" style="margin-top:10px;">
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">First Name</label>
-                    @Html.TextBoxFor(m => m.Usuario.Nombre, new { @class = "form-control", @placeholder = "First Name ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Nombre)</small>
+                    @Html.TextBoxFor(m => m.Usuario.name, new { @class = "form-control", @placeholder = "First Name ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.name)</small>
                 </fieldset>
             </div>
         </div>
@@ -611,8 +611,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Last Name</label>
-                    @Html.TextBoxFor(m => m.Usuario.Apellido, new { @class = "form-control", @placeholder = "Last Name ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Apellido)</small>
+                    @Html.TextBoxFor(m => m.Usuario.last_name, new { @class = "form-control", @placeholder = "Last Name ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.last_name)</small>
                 </fieldset>
             </div>
         </div>
@@ -620,8 +620,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Username</label>
-                    @Html.TextBoxFor(m => m.Usuario.Usuario, new { @class = "form-control", @placeholder = "Username ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.Usuario)</small>
+                    @Html.TextBoxFor(m => m.Usuario.user_name, new { @class = "form-control", @placeholder = "Username ..." })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.user_name)</small>
                     @if (ViewBag.ErrorUsuario)
                     {
                         <br /><small style="color:red;">Username already exists</small>
@@ -747,7 +747,7 @@
                                 {
 
 
-                                    if (@fila.Borrado == false)
+                                    if (@fila.deleted == false)
                                     {
 
 
@@ -807,7 +807,7 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Deleted</label><br />
-                    @Html.CheckBoxFor(m => m.Usuario.Borrado, new { @class = "form-control" })
+                    @Html.CheckBoxFor(m => m.Usuario.deleted, new { @class = "form-control" })
 
                 </fieldset>
             </div>

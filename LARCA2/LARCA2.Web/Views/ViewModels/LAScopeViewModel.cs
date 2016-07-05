@@ -43,10 +43,10 @@ namespace Larca2.Views.ViewModels
             }
             SMOList.Add(new SelectListItem { Text = "LA", Value = "1" });
             SMOList.Add(new SelectListItem { Text = "LA WITH EXCEPTIONS", Value = "2" });
-            var user = (LARCA20_Usuarios)HttpContext.Current.Session["Usuario"];
+            var user = (LARCA20_Users)HttpContext.Current.Session["Usuario"];
             if (user == null)
                 user = new UsuariosBLL().Traer(2);
-            Permisos = new LARCA2.Business.Services.UserOwnerBLL().TraerPorIdUsuario(user.IdRenglon);
+            Permisos = new LARCA2.Business.Services.UserOwnerBLL().TraerPorIdUsuario(user.Id);
         }
     }
 }

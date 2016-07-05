@@ -20,8 +20,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Level</label>
-                    @Html.TextBoxFor(m => m.RcClasification.Nivel, new { @class = "form-control", @placeholder = "Level ...", @MaxLength = "1" })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Nivel)</small>
+                    @Html.TextBoxFor(m => m.RcClasification.level_name, new { @class = "form-control", @placeholder = "Level ...", @MaxLength = "1" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.level_name)</small>
                 </fieldset>
             </div>
         </div>
@@ -29,8 +29,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Code</label>
-                    @Html.TextBoxFor(m => m.RcClasification.Codigo, new { @class = "form-control", @placeholder = "Code ...", @MaxLength = "7" })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Codigo)</small>
+                    @Html.TextBoxFor(m => m.RcClasification.Code, new { @class = "form-control", @placeholder = "Code ...", @MaxLength = "7" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Code)</small>
                 </fieldset>
             </div>
         </div>
@@ -38,8 +38,8 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Description</label>
-                    @Html.TextBoxFor(m => m.RcClasification.Descripcion, new { @class = "form-control", @placeholder = "Description...", @MaxLength = "50" })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Descripcion)</small>
+                    @Html.TextBoxFor(m => m.RcClasification.Description, new { @class = "form-control", @placeholder = "Description...", @MaxLength = "50" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.RcClasification.Description)</small>
                 </fieldset>
             </div>
         </div>
@@ -55,7 +55,7 @@
             <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre">Delete</label><br />
-                    @Html.CheckBoxFor(m => m.RcClasification.Borrado, new { @class = "form-control" })
+                    @Html.CheckBoxFor(m => m.RcClasification.deleted, new { @class = "form-control" })
                 </fieldset>
             </div>
         </div>

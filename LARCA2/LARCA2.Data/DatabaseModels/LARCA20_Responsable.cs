@@ -16,16 +16,16 @@ namespace LARCA2.Data.DatabaseModels
     {
         public LARCA20_Responsable()
         {
-            this.LARCA20_SmoScope = new HashSet<LARCA20_SmoScope>();
+            this.ResponsableSmo = new HashSet<LARCA20_SmoScope>();
         }
     
-        public int IdRenglon { get; set; }
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Last_name { get; set; }
         public string Email { get; set; }
-        public Nullable<int> RefIdUsuario { get; set; }
-        public bool Borrado { get; set; }
+        public Nullable<int> RefIdUser { get; set; }
+        public bool deleted { get; set; }
     
-        public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
+        public virtual ICollection<LARCA20_SmoScope> ResponsableSmo { get; set; }
     }
 }

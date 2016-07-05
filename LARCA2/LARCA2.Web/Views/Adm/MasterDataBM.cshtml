@@ -195,13 +195,13 @@
                             {
                                 <tr>
                                     <td class="Check" width="10%" align="center">
-                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = MasterData.IdRenglon })
+                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = MasterData.id })
                                     </td>
 
                                     <td width="20%" align="center">
                                         <label>
-                                            @MasterData.IdRenglon
-                                            @Html.HiddenFor(Modell => Modell.MasterDataList[j].IdRenglon, new { @value = MasterData.IdRenglon })
+                                            @MasterData.id
+                                            @Html.HiddenFor(Modell => Modell.MasterDataList[j].id, new { @value = MasterData.id })
                                         </label>
                                     </td>
 
@@ -222,7 +222,7 @@
                                     </td>
                                     <td width="10%" align="center">
                                         <label>
-                                            @MasterData.Borrado
+                                            @MasterData.deleted
                                         </label>
                                     </td>
                                 </tr>

@@ -17,7 +17,7 @@ namespace LARCA2.Controllers
             LARCA2.Business.Services.UsuariosBLL repositorioUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.RolesBLL repositorioRoles = new LARCA2.Business.Services.RolesBLL();
 
-            LARCA20_Usuarios usuario = repositorioUsuarios.TraerPorNombreDeUsuario(user.Identity.Name.Split(Convert.ToChar("\\"))[1]);
+            LARCA20_Users usuario = repositorioUsuarios.TraerPorNombreDeUsuario(user.Identity.Name.Split(Convert.ToChar("\\"))[1]);
 
             if (usuario == null)
             {
@@ -34,7 +34,7 @@ namespace LARCA2.Controllers
         {
             long id = 1;
             Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
-            Data.DatabaseModels.LARCA20_Usuarios userRol = repo.Traer(id);
+            Data.DatabaseModels.LARCA20_Users userRol = repo.Traer(id);
             ViewBag.Email = userRol.Email;
             return View();
         }

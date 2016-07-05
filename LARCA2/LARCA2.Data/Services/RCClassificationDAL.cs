@@ -13,7 +13,7 @@ namespace LARCA2.Data.Services
         {
             try
             {
-                if (entity.IdRenglon == 0)
+                if (entity.Id == 0)
                 {
                     Context.LARCA20_RcClasification.Add(entity);
                     Context.SaveChanges();
@@ -43,7 +43,7 @@ namespace LARCA2.Data.Services
             using (Larca2Entities ObjEnt = new Larca2Entities())
             {
                 IQueryable<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> ObjFiltro = from q in ObjEnt.LARCA20_RcClasification
-                                                        where q.Codigo.Contains(Tx1) && q.Descripcion.Contains(Tx2)
+                                                        where q.Code.Contains(Tx1) && q.Description.Contains(Tx2)
                                                         select q;
                 List<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> ListaReturn = ObjFiltro.ToList();
 
@@ -56,7 +56,7 @@ namespace LARCA2.Data.Services
             using (Larca2Entities ObjEnt = new Larca2Entities())
             {
                 IQueryable<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> ObjFiltro = from q in ObjEnt.LARCA20_RcClasification
-                                                                                           where q.Nivel.Equals("3")
+                                                                                           where q.level_name.Equals("3")
                                                                                            select q;
                 List<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> ListaReturn = ObjFiltro.ToList();
 
@@ -72,7 +72,7 @@ namespace LARCA2.Data.Services
             using (Larca2Entities ObjEnt = new Larca2Entities())
             {
                 IQueryable<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> ObjFiltro = from q in ObjEnt.LARCA20_RcClasification
-                                                                                           where q.Descripcion.Contains(Tx1)
+                                                                                           where q.Description.Contains(Tx1)
                                                                                            select q;
                 List<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> ListaReturn = ObjFiltro.ToList();
 
@@ -83,25 +83,25 @@ namespace LARCA2.Data.Services
 
         public override LARCA2.Data.DatabaseModels.LARCA20_RcClasification Traer(long id)
         {
-            return Context.LARCA20_RcClasification.SingleOrDefault(u => u.IdRenglon == id);
+            return Context.LARCA20_RcClasification.SingleOrDefault(u => u.Id == id);
         }
 
         public LARCA2.Data.DatabaseModels.LARCA20_RcClasification TraerPorDesc(string desc)
         {
-            if (Context.LARCA20_RcClasification.SingleOrDefault(u => u.Descripcion == desc) == null)
-                return Context.LARCA20_RcClasification.SingleOrDefault(u => u.Descripcion.Contains(desc.Substring(0,5)));
-            return Context.LARCA20_RcClasification.SingleOrDefault(u => u.Descripcion == desc);
+            if (Context.LARCA20_RcClasification.SingleOrDefault(u => u.Description == desc) == null)
+                return Context.LARCA20_RcClasification.SingleOrDefault(u => u.Description.Contains(desc.Substring(0,5)));
+            return Context.LARCA20_RcClasification.SingleOrDefault(u => u.Description == desc);
         }
 
         // Overload de metodo Traer
         public LARCA2.Data.DatabaseModels.LARCA20_RcClasification Traer(string codigo)
         {
-            return Context.LARCA20_RcClasification.SingleOrDefault(c => c.Codigo == codigo && c.Borrado== false);
+            return Context.LARCA20_RcClasification.SingleOrDefault(c => c.Code == codigo && c.deleted== false);
         }
 
         public List<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> TodosXLevel(string tx1)
         {
-            return Context.LARCA20_RcClasification.Where(q => q.Nivel == tx1 && q.Borrado == false).OrderBy(q => q.Descripcion).ToList();
+            return Context.LARCA20_RcClasification.Where(q => q.level_name == tx1 && q.deleted == false).OrderBy(q => q.Description).ToList();
         }
 
         public override bool Eliminar(long id)
@@ -109,7 +109,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;

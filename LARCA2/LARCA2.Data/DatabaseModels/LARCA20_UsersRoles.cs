@@ -12,17 +12,14 @@ namespace LARCA2.Data.DatabaseModels
     using System;
     using System.Collections.Generic;
     
-    public partial class LARCA20_Recursos
+    public partial class LARCA20_UsersRoles
     {
-        public LARCA20_Recursos()
-        {
-            this.LARCA20_RolesRecursos = new HashSet<LARCA20_RolesRecursos>();
-        }
+        public int Id { get; set; }
+        public int RefIdUser { get; set; }
+        public int RefIdRoles { get; set; }
+        public bool deleted { get; set; }
     
-        public int IdRenglon { get; set; }
-        public string Descripcion { get; set; }
-        public bool Borrado { get; set; }
-    
-        public virtual ICollection<LARCA20_RolesRecursos> LARCA20_RolesRecursos { get; set; }
+        public virtual LARCA20_Roles LARCA20_Roles { get; set; }
+        public virtual LARCA20_Users LARCA20_Users { get; set; }
     }
 }

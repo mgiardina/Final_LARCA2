@@ -6,15 +6,15 @@ using LARCA2.Data.DatabaseModels;
 
 namespace LARCA2.Data.Services
 {
-    public class UsuariosRolesDAL : BaseDAL<LARCA20_UsuariosRoles>
+    public class UsuariosRolesDAL : BaseDAL<LARCA20_UsersRoles>
     {
-        public override bool Guardar(LARCA20_UsuariosRoles entity)
+        public override bool Guardar(LARCA20_UsersRoles entity)
         {
             try
             {
-                if (entity.IdRenglon == 0)
+                if (entity.Id == 0)
                 {
-                    Context.LARCA20_UsuariosRoles.Add(entity);
+                    Context.LARCA20_UsersRoles.Add(entity);
                     Context.SaveChanges();
                 }
                 else
@@ -30,30 +30,30 @@ namespace LARCA2.Data.Services
             }
         }
 
-        public override List<LARCA20_UsuariosRoles> Todos()
+        public override List<LARCA20_UsersRoles> Todos()
         {
-            return Context.LARCA20_UsuariosRoles.ToList();
+            return Context.LARCA20_UsersRoles.ToList();
         }
 
-        public List<LARCA20_UsuariosRoles> TodosFiltro(string Tx1, string Tx2)
+        public List<LARCA20_UsersRoles> TodosFiltro(string Tx1, string Tx2)
         {
             Tx1 = (Tx1 == null ? "0" : Tx1);
             Tx2 = (Tx2 == null ? "" : Tx2);
             int ValPaso = Convert.ToInt32(Tx1);
             using (Larca2Entities ObjEnt = new Larca2Entities())
             {
-                IQueryable<LARCA20_UsuariosRoles> ObjFiltro = from q in ObjEnt.LARCA20_UsuariosRoles
-                                                           where q.RefIdUsuario == ValPaso
+                IQueryable<LARCA20_UsersRoles> ObjFiltro = from q in ObjEnt.LARCA20_UsersRoles
+                                                           where q.RefIdUser == ValPaso
                                                         select q;
-                List<LARCA20_UsuariosRoles> ListaReturn = ObjFiltro.ToList();
+                List<LARCA20_UsersRoles> ListaReturn = ObjFiltro.ToList();
 
                 return ListaReturn;
             }
         }
 
-        public override LARCA20_UsuariosRoles Traer(long id)
+        public override LARCA20_UsersRoles Traer(long id)
         {
-            return Context.LARCA20_UsuariosRoles.SingleOrDefault(u => u.RefIdUsuario == id);
+            return Context.LARCA20_UsersRoles.SingleOrDefault(u => u.RefIdUser == id);
         }
 
         public override bool Eliminar(long id)
@@ -61,7 +61,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;

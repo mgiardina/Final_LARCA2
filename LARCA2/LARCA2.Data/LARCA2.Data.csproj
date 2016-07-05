@@ -76,16 +76,10 @@
     <Compile Include="DatabaseModels\LARCA20_RcClasification.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseModels\LARCA20_Recursos.cs">
-      <DependentUpon>ModeloPruebas.tt</DependentUpon>
-    </Compile>
     <Compile Include="DatabaseModels\LARCA20_Responsable.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
     <Compile Include="DatabaseModels\LARCA20_Roles.cs">
-      <DependentUpon>ModeloPruebas.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DatabaseModels\LARCA20_RolesRecursos.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
     <Compile Include="DatabaseModels\LARCA20_SmoScope.cs">
@@ -97,13 +91,13 @@
     <Compile Include="DatabaseModels\LARCA20_SmoScopeGroup.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModels\LARCA20_Users.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModels\LARCA20_UsersRoles.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModels\LARCA20_User_Owner.cs">
-      <DependentUpon>ModeloPruebas.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DatabaseModels\LARCA20_Usuarios.cs">
-      <DependentUpon>ModeloPruebas.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DatabaseModels\LARCA20_UsuariosRoles.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
     <Compile Include="DatabaseModels\ModeloPruebas.Context.cs">

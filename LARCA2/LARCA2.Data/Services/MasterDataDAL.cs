@@ -12,7 +12,7 @@ namespace LARCA2.Data.Services
         {
             try
             {
-                if (entity.IdRenglon == 0)
+                if (entity.id == 0)
                 {
                     Context.LARCA20_MasterData.Add(entity);
                     Context.SaveChanges();
@@ -48,7 +48,7 @@ namespace LARCA2.Data.Services
             {
                 if (id.Length > 0)
                 {
-                    listaReturn = Todos().Where(m => m.IdRenglon.ToString() == id).ToList();
+                    listaReturn = Todos().Where(m => m.id.ToString() == id).ToList();
                 }
                 else
                 {
@@ -63,13 +63,13 @@ namespace LARCA2.Data.Services
 
         public override LARCA2.Data.DatabaseModels.LARCA20_MasterData Traer(long id)
         {
-            return Context.LARCA20_MasterData.SingleOrDefault(u => u.IdRenglon == id);
+            return Context.LARCA20_MasterData.SingleOrDefault(u => u.id == id);
         }
 
         // Overload de metodo Traer
         public LARCA2.Data.DatabaseModels.LARCA20_MasterData Traer(string data, int id)
         {
-            return Context.LARCA20_MasterData.SingleOrDefault(c => c.Data == data && c.IdRenglon == id);
+            return Context.LARCA20_MasterData.SingleOrDefault(c => c.Data == data && c.id == id);
         }
 
 
@@ -94,7 +94,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;
@@ -111,7 +111,7 @@ namespace LARCA2.Data.Services
             using (Larca2Entities ObjEnt = new Larca2Entities())
             {
                 IQueryable<LARCA2.Data.DatabaseModels.LARCA20_MasterData> ObjFiltro = from q in ObjEnt.LARCA20_MasterData
-                                                                                      where q.Data == Tx1 && q.Borrado == false
+                                                                                      where q.Data == Tx1 && q.deleted == false
                                                                                       select q;
 
                 List<LARCA2.Data.DatabaseModels.LARCA20_MasterData> ListaReturn = ObjFiltro.ToList();

@@ -14,24 +14,24 @@ namespace LARCA2.Data.DatabaseModels
     {
         public class LARCA20_AuxDataMD
         {
-            [Required(ErrorMessage = "Requerido")]
-            [RegularExpression("^[0-9]*$", ErrorMessage = "Inválido, solo se pueden ingresar números")]
+            [Required(ErrorMessage = "Required")]
+            [RegularExpression("^[0-9]*$", ErrorMessage = "Invalid, Only numbers")]
             public string TopLvl2 { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            [RegularExpression("^[0-9]*$", ErrorMessage = "Inválido, solo se pueden ingresar números")]
+            [Required(ErrorMessage = "Required")]
+            [RegularExpression("^[0-9]*$", ErrorMessage = "Invalid, Only numbers")]
             public string TopLvl3 { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            [RegularExpression("^[0-9]*$", ErrorMessage = "Inválido, solo se pueden ingresar números")]
+            [Required(ErrorMessage = "Required")]
+            [RegularExpression("^[0-9]*$", ErrorMessage = "Invalid, Only numbers")]
             public string Toplvl4 { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            [RegularExpression("^[0-9]*$", ErrorMessage = "Inválido, solo se pueden ingresar números")]
+            [Required(ErrorMessage = "Required")]
+            [RegularExpression("^[0-9]*$", ErrorMessage = "Invalid, Only numbers")]
             public string XlsRowFrom { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            [RegularExpression("^[0-9]*$", ErrorMessage = "Inválido, solo se pueden ingresar números")]
+            [Required(ErrorMessage = "Required")]
+            [RegularExpression("^[0-9]*$", ErrorMessage = "Invalid, Only numbers")]
             public string XlsColumnFrom { get; set; }
-            [Required(ErrorMessage = "Requerido")]
-            [RegularExpression("^[0-9]*$", ErrorMessage = "Inválido, solo se pueden ingresar números")]
-            public string CntAdjuntos { get; set; }
+            [Required(ErrorMessage = "Required")]
+            [RegularExpression("^[0-9]*$", ErrorMessage = "Invalid, Only numbers")]
+            public string qtyattach { get; set; }
         }
     }
 }

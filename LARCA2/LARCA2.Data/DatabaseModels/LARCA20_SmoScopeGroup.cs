@@ -14,10 +14,10 @@ namespace LARCA2.Data.DatabaseModels
     
     public partial class LARCA20_SmoScopeGroup
     {
-        public int IdRenglon { get; set; }
         public Nullable<int> RefIdFrom { get; set; }
         public Nullable<int> RefIdTo { get; set; }
-        public Nullable<System.DateTime> Fecha { get; set; }
-        public bool Borrado { get; set; }
+        public int Id { get; set; }
+        public Nullable<System.DateTime> date { get; set; }
+        public bool deleted { get; set; }
     }
 }

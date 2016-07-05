@@ -20,19 +20,19 @@
             </div>
             <div class="float-right">
                 @{
-                    var user = (LARCA2.Data.DatabaseModels.LARCA20_Usuarios)HttpContext.Current.Session["Usuario"];
+                    var user = (LARCA2.Data.DatabaseModels.LARCA20_Users)HttpContext.Current.Session["Usuario"];
                 }
                 @if (user != null)
                 {
                   //  <nav class="navbar navbar-default">
                         <div class="container-fluid">
                             <ul class="nav navbar-nav navbar-right">
-                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 2)
+                                @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 2)
                                 {
                                     <li>@Html.ActionLink("Analysis Module", "SmoTreatment", "Smo")</li>
                                     <li>@Html.ActionLink("Analysis Clustering Module", "SmoSimple", "Smo")</li>
                                 }
-                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1)
+                                @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1)
                                 {
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration Module<span class="caret"></span></a>
@@ -46,7 +46,7 @@
                                         </ul>
                                     </li>
                                 }
-                                @if (user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsuariosRoles.ToList()[0].RefIdRoles == 3)
+                                @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 3)
                                 {
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>

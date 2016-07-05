@@ -45,7 +45,7 @@ namespace LARCA2.Business.Services
         public bool Procesado(long id)
         {
             var email = EmailsDAL.Traer(id);
-            email.Procesado = true;
+            email.processed = true;
             return EmailsDAL.Guardar(email);
         }
     }

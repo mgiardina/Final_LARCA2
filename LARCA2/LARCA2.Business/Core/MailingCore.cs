@@ -94,27 +94,27 @@ namespace LARCA2.Business.Core
                                                 // Detectamos que tipo de proceso hay que aplicarle al archivo en base a su dia de la semana
                                                 var email = new LARCA20_Emails();
                                                 if (DateTime.Now.DayOfWeek == DayOfWeek.Tuesday)
-                                                    email.TipoProceso = (int)TipoProceso.Parcial;
+                                                    email.processtype = (int)TipoProceso.Parcial;
                                                 else
-                                                    email.TipoProceso = (int)TipoProceso.Total;
+                                                    email.processtype = (int)TipoProceso.Total;
 
                                                 // Completamos la info del email para guardar en la base
                                                 email.MessageID = message.Headers.MessageId;
-                                                email.Fecha = message.Headers.DateSent;
-                                                email.Borrado = false;
-                                                email.Archivo = fileName;
+                                                email.date = message.Headers.DateSent;
+                                                email.deleted = false;
+                                                email.filename = fileName;
 
                                                 // Enviamos a procesar el Excel descargado del email
                                                 try
                                                 {
-                                                    list = new ExcelCore().ProcesarExcel(email.Archivo, (TipoProceso)email.TipoProceso);
-                                                    email.Procesado = true;
+                                                    list = new ExcelCore().ProcesarExcel(email.filename, (TipoProceso)email.processtype);
+                                                    email.processed = true;
                                                     emailsService.Guardar(email);
                                                 }
                                                 catch
                                                 {
                                                     list = new List<MasterRow>();
-                                                    email.Procesado = false;
+                                                    email.processed = false;
                                                     emailsService.Guardar(email);
                                                 }
 

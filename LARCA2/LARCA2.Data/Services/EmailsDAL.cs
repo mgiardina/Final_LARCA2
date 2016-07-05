@@ -43,7 +43,7 @@ namespace LARCA2.Data.Services
         //Chequeo si existe el email en la base de datos
         public bool EmailExiste(string messageId)
         {
-            return Context.LARCA20_Emails.Count(e=> e.MessageID == messageId && e.Procesado) > 0;
+            return Context.LARCA20_Emails.Count(e=> e.MessageID == messageId && e.deleted) > 0;
         }
 
         public override bool Eliminar(long id)
@@ -51,7 +51,7 @@ namespace LARCA2.Data.Services
             try
             {
                 var entity = Traer(id);
-                entity.Borrado = true;
+                entity.deleted = true;
                 Context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
                 Context.SaveChanges();
                 return true;
