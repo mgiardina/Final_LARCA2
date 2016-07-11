@@ -374,6 +374,35 @@ namespace LARCA2.Controllers
             return lsli;
         }
 
+        public static List<SelectListItem> Level4SelectItem(int smoId)
+        {
+            LARCA2.Business.Services.Level4BLL repoNivel = new LARCA2.Business.Services.Level4BLL();          
+            LARCA2.Business.Services.SMOScopeBLL smoBll = new LARCA2.Business.Services.SMOScopeBLL();
+            LARCA2.Business.Services.RCClassificationBLL rcBll = new LARCA2.Business.Services.RCClassificationBLL();
+            LARCA2.Data.DatabaseModels.LARCA20_SmoScope smo = smoBll.Traer(smoId);
+            List<LARCA2.Data.DatabaseModels.LARCA20_Level4> list = repoNivel.Todos();
+            List<SelectListItem> lsli = new List<SelectListItem>();
+            lsli.Add(new SelectListItem() { Text = "Other", Value = "0" });
+            if (smo == null || smo.Level4 == null || smo.Level4 == null)
+            {
+                lsli[0].Selected = true;
+                return lsli;
+            }
+
+            List<SelectListItem> lista = new List<SelectListItem>();
+            List<LARCA20_Level4> l4rc = repoNivel.ListaPorRC(Int32.Parse(smo.RefIdRC.ToString()));
+            foreach (LARCA20_Level4 l4 in l4rc)
+                lista.Add(new SelectListItem() { Text = l4.name, Value = l4.Id.ToString(), Selected = false });
+          
+
+                lsli.AddRange(lista); 
+               
+            foreach (SelectListItem item in lsli)
+                item.Selected = (item.Value == smo.Level4.Value.ToString() ? true : false);
+            return lsli;
+        }
+
+
         public static List<SelectListItem> LeveSelectItem(List<SelectListItem> lsli, int idref)
         {
 

@@ -37,6 +37,11 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_Level4.OrderBy(q => q.LARCA20_RcClasification.Description).ThenBy(q => q.name).ToList();
         }
 
+        public List<LARCA20_Level4> ListaPorRC(int smoRcId)
+        {
+            return Context.LARCA20_Level4.Where(x => x.RefIdLevel3 == smoRcId || x.RefIdLevel3 == null).ToList();
+        }
+
         public List<LARCA2.Data.DatabaseModels.LARCA20_Level4> TodosFiltro(string Tx1)
         {
             Tx1 = (Tx1 == null ? "" : Tx1);        

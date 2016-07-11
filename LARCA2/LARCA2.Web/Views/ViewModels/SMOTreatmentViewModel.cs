@@ -56,7 +56,7 @@ namespace Larca2.Views.ViewModels
                             SMOList.Add(new SelectListItem { Text = md.DataFin, Value = md.id.ToString() });
                         }
 
-                        L4List.Add(new SelectListItem { Text = "Choose a valid Level 4", Value = "0" });
+                        L4List.Add(new SelectListItem { Text = "Other", Value = "0" });
 
                         foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 md in L4BLL.Todos())
                         {

@@ -22,6 +22,11 @@ namespace LARCA2.Business.Services
             return Level4DAL.Guardar(rcClassification);
         }
 
+        public List<LARCA20_Level4> ListaPorRC(int smoRcId)
+        {
+            return Level4DAL.ListaPorRC(smoRcId);
+        }
+
         public List<LARCA20_Level4> Todos()
         {
             return Level4DAL.Todos();

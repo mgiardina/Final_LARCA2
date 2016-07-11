@@ -256,7 +256,9 @@ namespace Larca2.Controllers
                         actualOriginal.Problem = scope.Problem;
                     if (scope.DueDate != actualOriginal.DueDate)
                         actualOriginal.DueDate = scope.DueDate;
-                    if (scope.RefIdResponsable != actualOriginal.RefIdResponsable && scope.RefIdResponsable != 0)
+                    if (scope.RefIdResponsable == 0)
+                        actualOriginal.RefIdResponsable = null;
+                    else  if (scope.RefIdResponsable != actualOriginal.RefIdResponsable) 
                         actualOriginal.RefIdResponsable = scope.RefIdResponsable;
                     if (scope.O_C != actualOriginal.O_C && (scope.O_C != null && (scope.O_C == "O" || scope.O_C == "o" || scope.O_C == "C" || scope.O_C == "c")))
                         actualOriginal.O_C = scope.O_C.ToUpper();
@@ -306,7 +308,7 @@ namespace Larca2.Controllers
 
 
 
-                    if (!(LARCA2.Business.Services.SMOScopeBLL.esAgrupable(repo.Traer(viewModel.RegistrosSMO[countitemcer].SmoScopeID), repo.Traer(viewModel.RegistrosSMO[countitem].SmoScopeID))))
+                    if (!(LARCA2.Business.Services.SMOScopeBLL.esAgrupable(repo.Traer(viewModel.EditablesSMO[countitemcer].SmoScopeID), repo.Traer(viewModel.EditablesSMO[countitem].SmoScopeID))))
                     {
                         puedeAgruparse = false;
                         break;
@@ -316,6 +318,8 @@ namespace Larca2.Controllers
                 {
                     LARCA2.Data.DatabaseModels.LARCA20_SmoScope smoAgrup = repo.Traer(viewModel.RegistrosSMO[countitemcer].SmoScopeID);
                     LARCA2.Data.DatabaseModels.LARCA20_SmoScope smoAgrup2;
+                    LARCA2.Business.Services.SMOScopeGroupedRowsBLL grbll = new LARCA2.Business.Services.SMOScopeGroupedRowsBLL();
+
                     for (int i = 1; i < seleccionados; i++)
                     {
                         smoAgrup = repo.Traer(viewModel.RegistrosSMO[countitemcer].SmoScopeID);
@@ -347,9 +351,12 @@ namespace Larca2.Controllers
                         else
                             smoAgrup.RefIdResponsable = smoAgrup.RefIdResponsable;
 
-                        repo.Guardar(smoAgrup);
-                        repo.Eliminar(smoAgrup2.SmoScopeID);
 
+                        //now this part of the method doesnt just delete the old register but it adapts it to groupedrows table and saves it there
+                        repo.Guardar(smoAgrup);
+                        //repo.Eliminar(smoAgrup2.SmoScopeID);
+                        LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows adapt= new LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows(repo.Traer(smoAgrup2.SmoScopeID));
+                        grbll.Guardar(adapt);
                     }
 
                 }
@@ -431,7 +438,33 @@ namespace Larca2.Controllers
 
         }
 
+        [HttpGet]
+        public JsonResult Desagrupar(string id)
+        {
+        
+            int groupId = Int32.Parse(id);
+            LARCA2.Business.Services.SMOScopeGroupedRowsBLL rbl = new LARCA2.Business.Services.SMOScopeGroupedRowsBLL();
+            LARCA2.Business.Services.SMOScopeBLL smbl = new LARCA2.Business.Services.SMOScopeBLL();
+            
+            List<LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows> listOfRowsForGroup = rbl.TraerPorGroupId(groupId);
+            if (listOfRowsForGroup.Count == 0)
+              return Json("Group has already been disbanded. Please refresh the page.", JsonRequestBehavior.AllowGet);
 
+            foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows groupedRow in listOfRowsForGroup)
+            {
+                //se crea el smo correspondiente y se borra el smogrouped
+                LARCA2.Data.DatabaseModels.LARCA20_SmoScope nuevScope = new LARCA2.Data.DatabaseModels.LARCA20_SmoScope(groupedRow);
+                smbl.Guardar(nuevScope);
+                rbl.Eliminar(groupedRow.SmoScopeID);
+            }
+
+            smbl.Eliminar(groupId);
+
+            return Json("Group succesfully disbanded. Refresh the page to reflect the changes in the view.", JsonRequestBehavior.AllowGet);
+        }
+
+        
+      
 
         [HttpGet]
         public JsonResult MostrarDetalle(string id)
@@ -448,8 +481,9 @@ namespace Larca2.Controllers
 
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScopeDetail det in details)
             {
-                result = result + "<tr><td>" + det.Volumen.ToString() + "</td>";
-                result = result + "<td>" + mbl.Traer("BU", Int32.Parse(det.BuID.ToString())).DataIni + "</td>";
+             //   result = result + "<tr><td>" + det.Volumen.ToString() + "</td>";
+                result = result + "<tr><td>" + decimal.Round(decimal.Parse(det.Volumen.ToString()), 2).ToString() + "</td>";
+                result = result + "<td>" + mbl.Traer("BU", Int32.Parse(det.BuID.ToString())).DataFin + "</td>"; //showed dataini, now datafin
                 result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td>";
                 result = result + "<td>" + (det.Customer == null ? "-" : det.Customer.ToString()) + "</td>";
                 result = result + "<td>" + det.date.ToString() + "</td></tr>";
@@ -763,8 +797,11 @@ namespace Larca2.Controllers
                         clon.RefIdResponsable = respoClones.Traer(Int32.Parse(actFilt[10])).Id;
                     else
                         clon.RefIdResponsable = null;
-
-                    clon.Level4 = lvlClones.Todos().Where(l => l.deleted == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
+                    if (actFilt[4] == "0")
+                        clon.Level4 = null;
+                    else
+                        clon.Level4 = Int32.Parse(actFilt[4]);
+                        //lvlClones.Todos().Where(l => l.deleted == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
 
                     repoGuardado.Guardar(clon);
                     //buscar IDs y guardar en tabla LARCA20_SmoScope -en user owner no deberia hacer falta, cuando haya que hacer pruebas revisar si con un solo user owner se obtienen todos los registros de la tabla de smo scope correspondientes-
@@ -800,8 +837,10 @@ namespace Larca2.Controllers
                         actualOriginal.Problem = scope.Problem;
                     if (scope.DueDate != actualOriginal.DueDate)
                        actualOriginal.DueDate = scope.DueDate;
-                    if (scope.RefIdResponsable != actualOriginal.RefIdResponsable && scope.RefIdResponsable != 0)
-                        actualOriginal.RefIdResponsable = scope.RefIdResponsable; 
+                    if (scope.RefIdResponsable == 0)
+                        actualOriginal.RefIdResponsable = null;
+                    else if (scope.RefIdResponsable != actualOriginal.RefIdResponsable)
+                        actualOriginal.RefIdResponsable = scope.RefIdResponsable;
                     if (scope.O_C != actualOriginal.O_C && (scope.O_C != null && (scope.O_C == "O" || scope.O_C == "o" || scope.O_C == "C" || scope.O_C == "c")))
                         actualOriginal.O_C = scope.O_C.ToUpper();
                     if (scope.Level4 != actualOriginal.Level4 && (scope.Level4 != null && scope.Level4 != 0))
