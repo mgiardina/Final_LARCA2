@@ -75,7 +75,7 @@ namespace LARCA2.Business.Services
                     contador.Add(ms.DataFin, 1);
                 }
             }
-            return ListaReturn;
+            return ListaReturn.OrderBy(m => m.DataFin).ToList();
         }
     }
 }

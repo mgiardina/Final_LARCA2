@@ -36,6 +36,11 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_Users.ToList();
         }
 
+        public LARCA20_Users TraerPrimerAdminDisponible()
+        {
+            return Context.LARCA20_Users.FirstOrDefault(u => u.LARCA20_UsersRoles.Where(r => r.RefIdRoles == 1).Count() > 0 && u.deleted == false);
+        }
+
         public List<LARCA20_Users> TodosFiltro(string Tx1, string Tx2)
         {
             Tx1 = (Tx1 == null ? "" : Tx1);

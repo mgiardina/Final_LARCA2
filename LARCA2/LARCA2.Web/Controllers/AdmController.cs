@@ -32,7 +32,6 @@ namespace LARCA2.Controllers
             Business.Services.MasterDataBLL masterOW = new Business.Services.MasterDataBLL();
             ViewBag.MasterOW = new SelectList(masterOW.TraerSoloData("OWNER"), "Id", "DataFin");
 
-
             ViewBag.ErrorPermiso = false;
             ViewBag.ErrorRol = false;
 
@@ -73,20 +72,6 @@ namespace LARCA2.Controllers
                         Data.DatabaseModels.LARCA20_UsersRoles userRol = new Data.DatabaseModels.LARCA20_UsersRoles();
                         Data.DatabaseModels.Larca2Entities ff = new Data.DatabaseModels.Larca2Entities();
                         int lastProductId = ff.LARCA20_Users.Max(item => item.Id);
-
-                        // Ahora guardamos la row si el user es responsable
-                        if (model.Responsible)
-                        {
-                            ResponsablesBLL repoResponsible = new ResponsablesBLL();
-                            LARCA20_Responsable responsible = new LARCA20_Responsable();
-                            responsible.RefIdUser = lastProductId;
-                            responsible.Name = user.name;
-                            responsible.Last_name = user.last_name;
-                            responsible.Email = user.Email;
-                            responsible.deleted = false;
-                            repoResponsible.Guardar(responsible);
-
-                        }
 
                         userRol.RefIdUser = lastProductId;
                         userRol.RefIdRoles = Convert.ToInt32(CboRoles);
@@ -221,41 +206,6 @@ namespace LARCA2.Controllers
                             Data.DatabaseModels.LARCA20_UsersRoles userRol = repoRol.Traer(model.Usuario.Id);
                             userRol.RefIdRoles = Convert.ToInt32(CboRoles);
                             repoRol.Guardar(userRol);
-
-                            // Ahora guardamos la row si el user es responsable
-                            if (model.Responsible)
-                            {
-                                ResponsablesBLL repoResponsible = new ResponsablesBLL();
-                                if (repoResponsible.TraerPorNombreDeUsuario(model.Usuario.user_name) != null)
-                                {
-                                    var responsible = repoResponsible.TraerPorNombreDeUsuario(model.Usuario.user_name);
-                                    responsible.RefIdUser = model.Usuario.Id;
-                                    responsible.Name = user.name;
-                                    responsible.Last_name = user.last_name;
-                                    responsible.Email = user.Email;
-                                    responsible.deleted = false;
-                                    repoResponsible.Guardar(responsible);
-                                }
-                                else
-                                {
-                                    LARCA20_Responsable responsible = new LARCA20_Responsable();
-                                    responsible.RefIdUser = model.Usuario.Id;
-                                    responsible.Name = user.name;
-                                    responsible.Last_name = user.last_name;
-                                    responsible.Email = user.Email;
-                                    responsible.deleted = false;
-                                    repoResponsible.Guardar(responsible);
-                                }
-                            }
-                            else
-                            {
-                                ResponsablesBLL repoResponsible = new ResponsablesBLL();
-                                if (repoResponsible.TraerPorNombreDeUsuario(model.Usuario.user_name) != null)
-                                {
-                                    var responsible = repoResponsible.TraerPorNombreDeUsuario(model.Usuario.user_name);
-                                    repoResponsible.Eliminar(responsible.Id);
-                                }
-                            }
 
                             // Ahora guardo los Permisos
                             // Primero elimino los que tenga y despues agrego los que quedaron seleccionados
@@ -433,21 +383,6 @@ namespace LARCA2.Controllers
             Data.DatabaseModels.LARCA20_Users userdefault = repo.Traer(id);
             Larca2.Models.UserForm userForm = new Larca2.Models.UserForm();
 
-            // Evaluacion de Responsable
-            bool existe = true;
-            if (repoResponsible.TraerPorNombreDeUsuario(userdefault.user_name) != null)
-            {
-                if (repoResponsible.TraerPorNombreDeUsuario(userdefault.user_name).deleted)
-                {
-                     existe = false;
-                }
-            }
-            else
-            {
-                existe = false;
-            }
-
-            userForm.Responsible = existe;
             userForm.Usuario = userdefault;
             //userForm.Usuario.Clave = Larca2.Utilities.Crypto.Decrypt(userForm.Usuario.Clave);
             Business.Services.RolesBLL RepoRol = new Business.Services.RolesBLL();

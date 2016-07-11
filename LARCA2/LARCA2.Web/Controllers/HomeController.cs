@@ -32,10 +32,10 @@ namespace LARCA2.Controllers
 
         public ActionResult InvalidUser()
         {
-            long id = 1;
-            Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
-            Data.DatabaseModels.LARCA20_Users userRol = repo.Traer(id);
-            ViewBag.Email = userRol.Email;
+            var repo = new Business.Services.UsuariosBLL();
+            var usuario = repo.TraerPrimerAdminDisponible();
+            ViewBag.Admin = usuario.user_name;
+            ViewBag.Email = usuario.Email;
             return View();
         }
     }

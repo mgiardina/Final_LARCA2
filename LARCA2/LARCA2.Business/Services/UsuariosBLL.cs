@@ -42,6 +42,11 @@ namespace LARCA2.Business.Services
             return UsuariosDAL.TraerPorNombreDeUsuario(username);
         }
 
+        public LARCA20_Users TraerPrimerAdminDisponible()
+        {
+            return UsuariosDAL.TraerPrimerAdminDisponible();
+        }
+
         public bool Eliminar(long id)
         {
             return UsuariosDAL.Eliminar(id);

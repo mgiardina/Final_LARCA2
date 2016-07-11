@@ -24,7 +24,7 @@ namespace Larca2.Views.ViewModels
         public List<SelectListItem> BUList { get; set; }
         public List<SelectListItem> SMOList { get; set; }
         public List<SelectListItem> L4List { get; set; }
-        public LARCA2.Business.Services.Level4BLL L4BLL { get; set; }
+        public LARCA2.Business.Services.Level4BLL Level4BLL { get; set; }
         public LARCA2.Business.Services.MasterDataBLL MBLL { get; set; }
         public List<Boolean> selectedItems { get; set; }
 
@@ -35,6 +35,7 @@ namespace Larca2.Views.ViewModels
             mesSeleccionado = "0";
             RCBLL = new LARCA2.Business.Services.RCClassificationBLL();
             MBLL = new LARCA2.Business.Services.MasterDataBLL();
+            Level4BLL = new LARCA2.Business.Services.Level4BLL();
             LARCA2.Business.Services.Level4BLL L4BLL = new LARCA2.Business.Services.Level4BLL();
             ResponsiblesBLL = new LARCA2.Business.Services.ResponsablesBLL();
             BUList = new List<SelectListItem>();
@@ -66,7 +67,7 @@ namespace Larca2.Views.ViewModels
            // LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
-            L4BLL.Todos();
+            Level4BLL.Todos();
             
            // this.RegistrosSMO = repo.Todos();
           //  this.EditablesSMO = this.RegistrosSMO;

@@ -24,40 +24,47 @@
                 }
                 @if (user != null)
                 {
-                  //  <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <ul class="nav navbar-nav navbar-right">
-                                @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 2)
-                                {
-                                    <li>@Html.ActionLink("Analysis Module", "SmoTreatment", "Smo")</li>
-                                    <li>@Html.ActionLink("Analysis Clustering Module", "SmoSimple", "Smo")</li>
-                                }
-                                @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1)
-                                {
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration Module<span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li>@Html.ActionLink("Users", "UserBM", "Adm")</li>
-                                            <li>@Html.ActionLink("RC clasification", "RcClasificationBM", "Adm")</li>
-                                            <li>@Html.ActionLink("Master Data", "MasterDataBM", "Adm")</li>
-                                            <li>@Html.ActionLink("Other Classification", "Level4", "Adm")</li>
-                                            <li>@Html.ActionLink("General Parameters", "AuxDataBM", "Adm")</li>
-                                            <li>@Html.ActionLink("Manual Upload", "Index", "ManualLoad")</li>
-                                        </ul>
-                                    </li>
-                                }
-                                @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 3)
-                                {
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li>@Html.ActionLink("LARCA News", "Index", "LAScope")</li>
+                    //  <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <ul class="nav navbar-nav navbar-right">
+                            @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 && user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 2)
+                            {
+                                <li>@Html.ActionLink("Analysis Module", "SmoTreatment", "Smo")</li>
+
+                            }
+                            @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles != 3 && user.LARCA20_UsersRoles.ToList()[0].RefIdRoles != 2)
+                            {
+                                <li>@Html.ActionLink("Analysis Clustering Module", "SmoSimple", "Smo")</li>
+                            }
+                            @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1)
+                            {
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration Module<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("Users", "UserBM", "Adm")</li>
+                                        <li>@Html.ActionLink("RC clasification", "RcClasificationBM", "Adm")</li>
+                                        <li>@Html.ActionLink("Master Data", "MasterDataBM", "Adm")</li>
+                                        <li>@Html.ActionLink("Other Classification", "Level4", "Adm")</li>
+                                        <li>@Html.ActionLink("General Parameters", "AuxDataBM", "Adm")</li>
+                                        <li>@Html.ActionLink("Manual Upload", "Index", "ManualLoad")</li>
+                                    </ul>
+                                </li>
+                            }
+                            @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 3)
+                            {
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("LARCA News", "Index", "LAScope")</li>
+                                        @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 4 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 6)
+                                        {
                                             <li>@Html.ActionLink("LARCA Pending Analysys", "Index", "PendingAnalysis")</li>
-                                        </ul>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                     //</nav>
                 }
             </div>
@@ -72,7 +79,7 @@
     <footer>
         <div class="content-wrapper">
             <div class="float-left" style="padding:20px;">
-                <p>&copy; 2016 – Latin American Root Cause Analysis</p>
+                <p>&copy; 2016 – Latin America Root Cause Analysis</p>
             </div>
         </div>
     </footer>
@@ -80,12 +87,5 @@
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
 
-    <div id="modalTest" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                PRUEBA
-            </div>
-        </div>
-    </div>
 </body>
 </html>
