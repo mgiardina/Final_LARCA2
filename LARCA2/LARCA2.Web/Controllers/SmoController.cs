@@ -355,7 +355,7 @@ namespace Larca2.Controllers
                         //now this part of the method doesnt just delete the old register but it adapts it to groupedrows table and saves it there
                         repo.Guardar(smoAgrup);
                         //repo.Eliminar(smoAgrup2.SmoScopeID);
-                        LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows adapt= new LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows(repo.Traer(smoAgrup2.SmoScopeID));
+                        LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows adapt= grbll.crearGroup(repo.Traer(smoAgrup2.SmoScopeID));
                         grbll.Guardar(adapt);
                     }
 
@@ -453,7 +453,7 @@ namespace Larca2.Controllers
             foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows groupedRow in listOfRowsForGroup)
             {
                 //se crea el smo correspondiente y se borra el smogrouped
-                LARCA2.Data.DatabaseModels.LARCA20_SmoScope nuevScope = new LARCA2.Data.DatabaseModels.LARCA20_SmoScope(groupedRow);
+                LARCA2.Data.DatabaseModels.LARCA20_SmoScope nuevScope = smbl.crearGroup(groupedRow);
                 smbl.Guardar(nuevScope);
                 rbl.Eliminar(groupedRow.SmoScopeID);
             }

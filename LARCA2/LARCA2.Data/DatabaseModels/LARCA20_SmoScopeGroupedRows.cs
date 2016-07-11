@@ -32,31 +32,5 @@ namespace LARCA2.Data.DatabaseModels
         public bool deleted { get; set; }
         public Nullable<long> Level4 { get; set; }
         public long GroupSmoID { get; set; }
-
-         public LARCA20_SmoScopeGroupedRows()
-        { }
-
-        public LARCA20_SmoScopeGroupedRows(LARCA20_SmoScope smo)
-    {
-        this.GroupSmoID = smo.SmoScopeID;
-        this.date = smo.date;
-        this.ActionPlan = smo.ActionPlan;
-        this.deleted = smo.deleted;
-        this.DueDate = smo.DueDate;
-        this.Level4 = smo.Level4;
-        this.O_C = smo.O_C;
-        this.Problem = smo.Problem;
-        this.RefIdBU = smo.RefIdBU;
-        this.RefIdOwner = smo.RefIdOwner;
-        this.RefIdRC = smo.RefIdRC;
-        this.RefIdResponsable = smo.RefIdResponsable;
-        this.RefIdSMO = smo.RefIdSMO;
-        this.Volumen = smo.Volumen;
-        this.Why1 = smo.Why1;
-        this.Why2 = smo.Why2;
-        this.Why3 = smo.Why3;
-        
-    }
-
     }
 }

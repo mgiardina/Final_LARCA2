@@ -43,25 +43,5 @@ namespace LARCA2.Data.DatabaseModels
         public virtual LARCA20_MasterData MasterSMO { get; set; }
         public virtual LARCA20_RcClasification MasterLvl { get; set; }
         public virtual LARCA20_Responsable ResponsableSmo { get; set; }
-
-        public LARCA20_SmoScope(LARCA20_SmoScopeGroupedRows smo)
-        {
-            this.date = smo.date;
-            this.ActionPlan = smo.ActionPlan;
-            this.deleted = smo.deleted;
-            this.DueDate = smo.DueDate;
-            this.Level4 = smo.Level4;
-            this.O_C = smo.O_C;
-            this.Problem = smo.Problem;
-            this.RefIdBU = smo.RefIdBU;
-            this.RefIdOwner = smo.RefIdOwner;
-            this.RefIdRC = smo.RefIdRC;
-            this.RefIdResponsable = smo.RefIdResponsable;
-            this.RefIdSMO = smo.RefIdSMO;
-            this.Volumen = smo.Volumen;
-            this.Why1 = smo.Why1;
-            this.Why2 = smo.Why2;
-            this.Why3 = smo.Why3;
-        }
     }
 }

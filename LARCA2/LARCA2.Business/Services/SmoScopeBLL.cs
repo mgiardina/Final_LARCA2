@@ -18,6 +18,31 @@ namespace LARCA2.Business.Services
 
         }
 
+        public LARCA20_SmoScope crearGroup(LARCA20_SmoScopeGroupedRows smo)
+        {
+            LARCA20_SmoScope nuevo = new LARCA20_SmoScope();
+
+            nuevo.date = smo.date;
+            nuevo.ActionPlan = smo.ActionPlan;
+            nuevo.deleted = smo.deleted;
+            nuevo.DueDate = smo.DueDate;
+            nuevo.Level4 = smo.Level4;
+            nuevo.O_C = smo.O_C;
+            nuevo.Problem = smo.Problem;
+            nuevo.RefIdBU = smo.RefIdBU;
+            nuevo.RefIdOwner = smo.RefIdOwner;
+            nuevo.RefIdRC = smo.RefIdRC;
+            nuevo.RefIdResponsable = smo.RefIdResponsable;
+            nuevo.RefIdSMO = smo.RefIdSMO;
+            nuevo.Volumen = smo.Volumen;
+            nuevo.Why1 = smo.Why1;
+            nuevo.Why2 = smo.Why2;
+            nuevo.Why3 = smo.Why3;
+
+
+            return nuevo;
+        }
+
         public bool Guardar(LARCA20_SmoScope smo)
         {
             return SMOScopesDAL.Guardar(smo);
