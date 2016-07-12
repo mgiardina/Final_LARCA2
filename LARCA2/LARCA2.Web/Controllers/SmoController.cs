@@ -19,6 +19,7 @@ namespace Larca2.Controllers
             //Declaro BLLs e inicializo viewModel
             Larca2.Views.ViewModels.SMOScopeViewModel viewModel = new Larca2.Views.ViewModels.SMOScopeViewModel();
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+            LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
             LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
            
@@ -109,6 +110,9 @@ namespace Larca2.Controllers
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+            viewModel.responsibles = new List<string>();
+            foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
             return View("SmoSimple", viewModel);
 
@@ -206,6 +210,12 @@ namespace Larca2.Controllers
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
             viewModel.EditablesSMO = viewModel.RegistrosSMO;           
               viewModel.selectedItems = new List<bool>();
+
+              viewModel.responsibles = new List<string>();
+              foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                  viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
+
             return View("SmoSimple", viewModel);
 
         }
@@ -316,13 +326,14 @@ namespace Larca2.Controllers
                 }
                 if (puedeAgruparse == true)
                 {
-                    LARCA2.Data.DatabaseModels.LARCA20_SmoScope smoAgrup = repo.Traer(viewModel.RegistrosSMO[countitemcer].SmoScopeID);
+                    LARCA2.Data.DatabaseModels.LARCA20_SmoScope smoAgrup = repo.Traer(viewModel.EditablesSMO[countitemcer].SmoScopeID);
                     LARCA2.Data.DatabaseModels.LARCA20_SmoScope smoAgrup2;
+
                     LARCA2.Business.Services.SMOScopeGroupedRowsBLL grbll = new LARCA2.Business.Services.SMOScopeGroupedRowsBLL();
 
                     for (int i = 1; i < seleccionados; i++)
                     {
-                        smoAgrup = repo.Traer(viewModel.RegistrosSMO[countitemcer].SmoScopeID);
+                        smoAgrup = repo.Traer(viewModel.EditablesSMO[countitemcer].SmoScopeID);
                         //desde aca incluyendo el primer for obtiene el index en la lista de registros
                         int countbool = i + 1;
                         int countitem = 0;
@@ -337,7 +348,12 @@ namespace Larca2.Controllers
                         }
 
 
-                        smoAgrup2 = repo.Traer(viewModel.RegistrosSMO[countitem].SmoScopeID);
+                        smoAgrup2 = repo.Traer(viewModel.EditablesSMO[countitem].SmoScopeID);
+
+                        //preparo y guardo el primero
+                        LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows adapt = grbll.crearGroup(repo.Traer(smoAgrup.SmoScopeID));
+                       if(seleccionados > 2)
+                        grbll.Guardar(adapt);
 
                         smoAgrup.ActionPlan = smoAgrup.ActionPlan + (smoAgrup.ActionPlan != null && smoAgrup2.ActionPlan != null ? "-" : "") + smoAgrup2.ActionPlan;
                         smoAgrup.Why1 = smoAgrup.Why1 + (smoAgrup.Why1 != null && smoAgrup2.Why1 != null? "-" : "") + smoAgrup2.Why1;
@@ -355,8 +371,13 @@ namespace Larca2.Controllers
                         //now this part of the method doesnt just delete the old register but it adapts it to groupedrows table and saves it there
                         repo.Guardar(smoAgrup);
                         //repo.Eliminar(smoAgrup2.SmoScopeID);
-                        LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows adapt= grbll.crearGroup(repo.Traer(smoAgrup2.SmoScopeID));
+                         adapt= grbll.crearGroup(repo.Traer(smoAgrup2.SmoScopeID));
+                         adapt.GroupSmoID = smoAgrup.SmoScopeID;
                         grbll.Guardar(adapt);
+
+                       
+
+                        repo.Eliminar(smoAgrup2.SmoScopeID);
                     }
 
                 }
@@ -433,6 +454,10 @@ namespace Larca2.Controllers
 
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
             viewModel.selectedItems = new List<bool>();
+            viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
 
             return View("SmoSimple", viewModel);
 
@@ -781,8 +806,8 @@ namespace Larca2.Controllers
                     clon.Why2 = actFilt[7];
                     clon.Why3 = actFilt[8];
                     clon.O_C = (actFilt[12] == "O" || actFilt[12] == "C"? actFilt[12] : "O" );
-                    clon.RefIdBU = mdClones.TraerPorDataFin("BU", actFilt[2]).id;
-                    clon.RefIdSMO = mdClones.TraerPorData("SMO", actFilt[1]).id;
+                    clon.RefIdBU = mdClones.Traer(Int32.Parse(actFilt[2])).id;
+                    clon.RefIdSMO = mdClones.Traer(Int32.Parse(actFilt[1])).id;
                     if (userRoles.Traer(user.Id).RefIdRoles != 1) //NOT ADMIN
                         clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.Id).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
                     else

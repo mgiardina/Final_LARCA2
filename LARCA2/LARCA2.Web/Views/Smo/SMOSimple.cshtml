@@ -187,10 +187,7 @@
                     </tr>
 
                     @{int j = 0;
-                if (Model.L4BLL == null)
-                {
-                    Model.L4BLL = new LARCA2.Business.Services.Level4BLL();
-                }
+                      LARCA2.Business.Services.UsuariosBLL users = new LARCA2.Business.Services.UsuariosBLL();
                
                 LARCA2.Business.Services.SMOScopeGroupedRowsBLL grsmo = new LARCA2.Business.Services.SMOScopeGroupedRowsBLL();
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
@@ -298,7 +295,8 @@
                         </td>
                         <td width="5%" align="center">
                             <label>
-                                @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value)))
+                                @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) 
+                                @*@Html.TextBoxFor(model => model.responsibles[j], new { @class = "form-control", @placeholder = Model.responsibles[j] }) *@  
                             </label>
                         </td>
                         <td width="5%" align="center">

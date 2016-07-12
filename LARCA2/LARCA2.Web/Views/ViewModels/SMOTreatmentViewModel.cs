@@ -24,8 +24,11 @@ namespace Larca2.Views.ViewModels
         public List<SelectListItem> BUList { get; set; }
         public List<SelectListItem> SMOList { get; set; }
         public List<SelectListItem> L4List { get; set; }
+
         public LARCA2.Business.Services.Level4BLL Level4BLL { get; set; }
         public LARCA2.Business.Services.MasterDataBLL MBLL { get; set; }
+
+        public List<string> responsibles { get; set; }
         public List<Boolean> selectedItems { get; set; }
 
         public SMOScopeViewModel()

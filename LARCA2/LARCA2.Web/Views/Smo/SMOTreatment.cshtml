@@ -52,6 +52,10 @@
                 { } //cuidado con esto, si se borra un registro clonado van a haber nulls. este if los elimina de la carga final
                 else
                 {
+                    var nsmoId =  document.getElementById("clSmo" + i).value;
+                    var nbuId = document.getElementById("clBu" + i ).value;
+            
+
                     var act0 = act.getElementsByTagName("td")[0];
                     var act1 = act.getElementsByTagName("td")[1];
                     var act2 = act.getElementsByTagName("td")[2];
@@ -69,8 +73,8 @@
 
                     //en variable de carga dejo solo los datos relevantes de cada atributo, sin la cascara de HTML de cada uno
                     var cargaFOR = act0.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%" +
-                        act1.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%"
-                        + act2.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%"
+                        nsmoId + "%%"
+                        + nbuId + "%%"
                         + act3.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "%%" +
                         act4.getElementsByTagName("select")[0].selectedIndex + "%%" +
                         act5.getElementsByTagName("label")[0].getElementsByTagName("textarea")[0].value + "%%" +
@@ -81,6 +85,7 @@
                         act10.getElementsByTagName("select")[0].selectedIndex + "%%" +
                         act11.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%" +
                         act12.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=");
+                  
                      //separador de atributo %% separador de fila ##
                     if ($("#HI_SmoEsp").val() == "")
                         $("#HI_SmoEsp").val(cargaFOR.replace("\n", "").replace("\r\n", ""));
@@ -113,6 +118,9 @@
       //  alert(num);
         var z = document.getElementById(num);
         //obtengo todas las columnas
+        var smoId = document.getElementById("EditablesSMO_" + num + "__RefIdSMO").value;
+        var buId = document.getElementById("EditablesSMO_" + num + "__RefIdBU").value;
+
         var t0 = z.getElementsByTagName("td")[0];
         var t1 = z.getElementsByTagName("td")[1];
         var t2 = z.getElementsByTagName("td")[2];
@@ -184,7 +192,7 @@
 
         var elem = t4.innerHTML.split('</label>');
         label = elem[0];
-        cell4.innerHTML = label + '</label>' + '<button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button>';
+        cell4.innerHTML = label + '</label>' + '<input name="clBu' + contadorval + '" id="clBu' + contadorval + '" type="hidden" value="' + buId + '" /> ' + '<input name="clSmo' + contadorval + '" id="clSmo' + contadorval + '" type="hidden" value="' + smoId + '" /> ' + '<button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button>';
 
         cell5.innerHTML = t5.innerHTML;
         cell6.innerHTML = t6.innerHTML;
@@ -194,12 +202,8 @@
         cell10.innerHTML = t10.innerHTML;
         cell11.innerHTML = t11.innerHTML;
         cell12.innerHTML = t12.innerHTML;
-    
-
-        
-        
+      
        // alert(num);
-
       /*  
         //cargo en la tabla la nueva fila
         self.
@@ -335,10 +339,7 @@
                              </tr>
 
                              @{int j = 0;
-                             if (Model.L4BLL == null)
-                             {
-                                 Model.L4BLL = new LARCA2.Business.Services.Level4BLL();
-                             }
+                            
                              if (Model.MBLL == null)
                              {
                                  Model.MBLL = new LARCA2.Business.Services.MasterDataBLL();
@@ -347,6 +348,8 @@
                              {
                                  <tr id=@(j.ToString())>
                                      @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
+                                     @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
+                                     @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
                                      <td width="5%" align="center">
                                          <label>
                                              @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()),2).ToString()
