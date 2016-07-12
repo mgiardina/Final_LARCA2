@@ -215,7 +215,6 @@ ul#menu {
 }
 
     .featured .content-wrapper {
-        height: 70px;
         background-color: #7ac0da;
         background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);

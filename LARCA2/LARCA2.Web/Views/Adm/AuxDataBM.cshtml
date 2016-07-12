@@ -18,7 +18,7 @@
     {
         <div class="row" style="margin-top:10px;">
             <div class="col-sm-12">
-                <input type="submit" value="Edit Row" name="Modificar" id="Modificar" class="btn btn-warning" />
+                <input type="submit" value="Save" name="Modificar" id="Modificar" class="btn btn-success" />
             </div>
         </div>
         <div class="row">
@@ -54,42 +54,42 @@
                         <tr>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.TopLvl2
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.TopLvl2, new { @value = Model.AuxData.TopLvl2 })
                                 </label>
                             </td>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.TopLvl3
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.TopLvl2, new { @value = Model.AuxData.TopLvl3 })
                                 </label>
                             </td>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.Toplvl4
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.TopLvl2, new { @value = Model.AuxData.Toplvl4 })
                                 </label>
                             </td>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.XlsRowFrom
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.XlsRowFrom, new { @value = Model.AuxData.XlsRowFrom })
                                 </label>
                             </td>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.XlsColumnFrom
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.XlsColumnFrom, new { @value = Model.AuxData.XlsColumnFrom })
                                 </label>
                             </td>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.qtyattach
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.qtyattach, new { @value = Model.AuxData.qtyattach })
                                 </label>
                             </td>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.reportdays
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.reportdays, new { @value = Model.AuxData.reportdays })
                                 </label>
                             </td>
                             <td align="center">
                                 <label>
-                                    @Model.AuxData.SmoDays
+                                    @Html.TextBoxFor(Modell => Modell.AuxData.SmoDays, new { @value = Model.AuxData.SmoDays })
                                 </label>
                             </td>
                         </tr>

@@ -43,6 +43,7 @@
         <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner" />
         <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner1" />
         <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_Usuarios" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScopeGroupedRows" Width="1.5" PointX="0.75" PointY="12.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

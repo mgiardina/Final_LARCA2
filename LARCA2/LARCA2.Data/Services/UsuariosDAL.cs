@@ -66,6 +66,11 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_Users.SingleOrDefault(u => u.user_name == username && u.deleted == false);
         }
 
+        public LARCA20_Roles TraerRolUsuario(long usuarioId)
+        {
+            return Context.LARCA20_UsersRoles.SingleOrDefault(u => u.RefIdUser == usuarioId && u.deleted == false).LARCA20_Roles;
+        }
+
         public override bool Eliminar(long id)
         {
             try

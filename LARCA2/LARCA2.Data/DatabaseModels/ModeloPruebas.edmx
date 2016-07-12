@@ -163,6 +163,29 @@
           <Property Name="date" Type="smalldatetime" />
           <Property Name="deleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="LARCA20_SmoScopeGroupedRows">
+          <Key>
+            <PropertyRef Name="SmoScopeID" />
+          </Key>
+          <Property Name="SmoScopeID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="RefIdSMO" Type="bigint" />
+          <Property Name="RefIdBU" Type="bigint" />
+          <Property Name="RefIdOwner" Type="bigint" />
+          <Property Name="RefIdRC" Type="bigint" />
+          <Property Name="Volumen" Type="decimal" Precision="20" Scale="15" />
+          <Property Name="Problem" Type="nvarchar" MaxLength="100" />
+          <Property Name="Why1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Why2" Type="nvarchar" MaxLength="100" />
+          <Property Name="Why3" Type="nvarchar" MaxLength="100" />
+          <Property Name="ActionPlan" Type="nvarchar" MaxLength="100" />
+          <Property Name="RefIdResponsable" Type="int" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="O_C" Type="char" MaxLength="1" />
+          <Property Name="deleted" Type="bit" Nullable="false" />
+          <Property Name="Level4" Type="bigint" />
+          <Property Name="GroupSmoID" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="LARCA20_User_Owner">
           <Key>
             <PropertyRef Name="Id" />
@@ -475,6 +498,7 @@
           <EntitySet Name="LARCA20_SmoScope" EntityType="Self.LARCA20_SmoScope" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LARCA20_SmoScopeDetail" EntityType="Self.LARCA20_SmoScopeDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LARCA20_SmoScopeGroup" EntityType="Self.LARCA20_SmoScopeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LARCA20_SmoScopeGroupedRows" EntityType="Self.LARCA20_SmoScopeGroupedRows" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LARCA20_User_Owner" EntityType="Self.LARCA20_User_Owner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LARCA20_Users" EntityType="Self.LARCA20_Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LARCA20_UsersRoles" EntityType="Self.LARCA20_UsersRoles" Schema="dbo" store:Type="Tables" />
@@ -820,13 +844,14 @@
             <End Role="LARCA20_Users" EntitySet="LARCA20_Users" />
             <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
           </AssociationSet>
+          <EntitySet Name="LARCA20_SmoScopeGroupedRows" EntityType="Larca2Model.LARCA20_SmoScopeGroupedRows" />
           </EntityContainer>
         <EntityType Name="LARCA20_MasterData">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Data" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Data" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="DataIni" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DataFin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="deleted" Type="Boolean" Nullable="false" />
@@ -1177,6 +1202,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LARCA20_SmoScopeGroupedRows">
+          <Key>
+            <PropertyRef Name="SmoScopeID" />
+          </Key>
+          <Property Name="SmoScopeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="RefIdSMO" Type="Int64" />
+          <Property Name="RefIdBU" Type="Int64" />
+          <Property Name="RefIdOwner" Type="Int64" />
+          <Property Name="RefIdRC" Type="Int64" />
+          <Property Name="Volumen" Type="Decimal" Precision="20" Scale="15" />
+          <Property Name="Problem" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Why1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Why2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Why3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ActionPlan" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RefIdResponsable" Type="Int32" />
+          <Property Name="DueDate" Type="DateTime" Precision="3" />
+          <Property Name="O_C" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="deleted" Type="Boolean" Nullable="false" />
+          <Property Name="Level4" Type="Int64" />
+          <Property Name="GroupSmoID" Type="Int64" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1388,6 +1436,30 @@
                 <ScalarProperty Name="IdOwner" ColumnName="IdOwner" />
                 <ScalarProperty Name="IdUser" ColumnName="IdUser" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LARCA20_SmoScopeGroupedRows">
+            <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScopeGroupedRows">
+              <MappingFragment StoreEntitySet="LARCA20_SmoScopeGroupedRows">
+                <ScalarProperty Name="GroupSmoID" ColumnName="GroupSmoID" />
+                <ScalarProperty Name="Level4" ColumnName="Level4" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+                <ScalarProperty Name="O_C" ColumnName="O_C" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="RefIdResponsable" ColumnName="RefIdResponsable" />
+                <ScalarProperty Name="ActionPlan" ColumnName="ActionPlan" />
+                <ScalarProperty Name="Why3" ColumnName="Why3" />
+                <ScalarProperty Name="Why2" ColumnName="Why2" />
+                <ScalarProperty Name="Why1" ColumnName="Why1" />
+                <ScalarProperty Name="Problem" ColumnName="Problem" />
+                <ScalarProperty Name="Volumen" ColumnName="Volumen" />
+                <ScalarProperty Name="RefIdRC" ColumnName="RefIdRC" />
+                <ScalarProperty Name="RefIdOwner" ColumnName="RefIdOwner" />
+                <ScalarProperty Name="RefIdBU" ColumnName="RefIdBU" />
+                <ScalarProperty Name="RefIdSMO" ColumnName="RefIdSMO" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="SmoScopeID" ColumnName="SmoScopeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
