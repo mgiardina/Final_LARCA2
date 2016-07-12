@@ -27,7 +27,7 @@
         ListGrupos.Add(new SelectListItem() { Value = "BU", Text = "BU", Selected = (@ViewBag.Grupo == "BU" ? true : false) });
         ListGrupos.Add(new SelectListItem() { Value = "SMO", Text = "SMO", Selected = (@ViewBag.Grupo == "SMO" ? true : false) });
         ListGrupos.Add(new SelectListItem() { Value = "OWNER", Text = "OWNER", Selected = (@ViewBag.Grupo == "OWNER" ? true : false) });
-        ListGrupos.Add(new SelectListItem() { Value = "REASON", Text = "REASON", Selected = (@ViewBag.Grupo == "REASON" ? true : false) });
+        ListGrupos.Add(new SelectListItem() { Value = "REASON CODE", Text = "REASON CODE", Selected = (@ViewBag.Grupo == "REASON CODE" ? true : false) });
                 }
                 @Html.DropDownListFor(m => m.MasterData.Data, ListGrupos, new { @class = "form-control", @placeholder = "Role ..." })
                 <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.Data)</small>

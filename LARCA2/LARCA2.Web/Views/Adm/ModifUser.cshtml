@@ -661,7 +661,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <fieldset class="form-group">
-                        <label for="Nombre">Special Permits</label>
+                        <label for="Nombre">Special Permissions</label>
                         @if (ViewBag.ErrorPermiso)
                         {
                             <br /><small style="color:red;">Required</small>
@@ -673,10 +673,10 @@
             <div class="=row">
                 <div id="BU_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre">BU Permit</label>
+                        <label for="Nombre">BU</label>
                         @{
                         List<SelectListItem> ListBU = new List<SelectListItem>();
-                        ListBU.Add(new SelectListItem() { Value = "0", Text = "Choose a BU", Selected = false });
+                        ListBU.Add(new SelectListItem() { Value = "0", Text = "Choose BU", Selected = false });
 
                         var listItems1 = new SelectList(@ViewBag.MasterBU);
                         foreach (var fila in ViewBag.MasterBU)
@@ -689,10 +689,10 @@
                 </div>
                 <div id="SMO_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre" style="width:200px;">SMO Permit</label>
+                        <label for="Nombre" style="width:200px;">SMO</label>
                         @{
                         List<SelectListItem> ListSMO = new List<SelectListItem>();
-                        ListSMO.Add(new SelectListItem() { Value = "0", Text = "Choose an SMO", Selected = false });
+                        ListSMO.Add(new SelectListItem() { Value = "0", Text = "Choose SMO", Selected = false });
 
                         var listItems2 = new SelectList(@ViewBag.MasterSMO);
                         foreach (var fila in ViewBag.MasterSMO)
@@ -705,7 +705,7 @@
                 </div>
                 <div id="OWNER_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre" style="width:200px;">OWNER Permit</label>
+                        <label for="Nombre" style="width:200px;">Role</label>
                         @{
                         List<SelectListItem> ListOWNER = new List<SelectListItem>();
                         ListOWNER.Add(new SelectListItem() { Value = "0", Text = "Choose OWNER", Selected = false });
@@ -721,7 +721,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="Nombre">Action</label><br />
-                    <input type="button" value="Add Permits" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
+                    <input type="button" value="Add Permission" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
                 </div>
             </div>
             <div class="row">
@@ -729,9 +729,9 @@
                     <div class="table-responsive">
                         <table class="table" id="tablaPermisos">
                             <thead>
-                                <tr id="tr_label_todos" style="display:none"><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> Permits BU</td> <td width=30%>Permits SMO</td> <td width=30%>Permits OWNER</td> <td width=30%>Delete</td></tr>
-                                <tr id="tr_label_smo" style="display:none"><td style="display: none"><td width=30%>Permits SMO</td><td width=30%>Delete</td></tr>
-                                <tr id="tr_label_bu" style="display:none"><td style="display: none"><td width=30%>Permits BU</td><td width=30%>Delete</td></tr>
+                                <tr id="tr_label_todos" style="display:none"><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%>BU</td> <td width=30%>SMO</td> <td width=30%>OWNER</td> <td width=30%>Delete</td></tr>
+                                <tr id="tr_label_smo" style="display:none"><td style="display: none"><td width=30%>SMO</td><td width=30%>Delete</td></tr>
+                                <tr id="tr_label_bu" style="display:none"><td style="display: none"><td width=30%>BU</td><td width=30%>Delete</td></tr>
                             </thead>
                             <tbody>
 

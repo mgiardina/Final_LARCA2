@@ -458,7 +458,7 @@
             <div class="=row">
                 <div id="BU_Permits_div" class="col-sm-3">
                     <fieldset class="form-group">
-                        <label for="Nombre">BU  </label>
+                        <label for="Nombre">BU</label>
                         @{
                         List<SelectListItem> ListBU = new List<SelectListItem>();
                         ListBU.Add(new SelectListItem() { Value = "0", Text = "Choose BU", Selected = false });
@@ -506,15 +506,15 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="Nombre">Action</label><br />
-                    <input type="button" value="Add Permissions" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
+                    <input type="button" value="Add Permission" id="Agregar" class="btn btn-info" onclick="AgregaPermisoESP();" />
                 </div>
             </div>
             <div class="row">
                 <table id="tablaPermisos" width=100% class="table">
                     <thead>    
-                        <tr id="tr_label_todos" style="display:none"><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> Permits BU</td> <td width=30%>Permits SMO</td> <td width=30%>Permits OWNER</td> <td width=30%>Delete</td></tr>
-                        <tr id="tr_label_smo" style="display:none"><td style="display: none"><td width=30%>Permits SMO</td><td width=30%>Delete</td></tr>
-                        <tr id="tr_label_bu" style="display:none"><td style="display: none"><td width=30%>Permits BU</td><td width=30%>Delete</td></tr>
+                        <tr id="tr_label_todos" style="display:none"><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> BU</td> <td width=30%>SMO</td> <td width=30%>OWNER</td> <td width=30%>Delete</td></tr>
+                        <tr id="tr_label_smo" style="display:none"><td style="display: none"><td width=30%>SMO</td><td width=30%>Delete</td></tr>
+                        <tr id="tr_label_bu" style="display:none"><td style="display: none"><td width=30%>BU</td><td width=30%>Delete</td></tr>
                     </thead>
                     <tbody></tbody>
                 </table>

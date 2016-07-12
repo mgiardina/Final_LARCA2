@@ -492,14 +492,17 @@ namespace LARCA2.Controllers
         {
             long id = Int32.Parse(txtIdRenglon);
             var repo = new Business.Services.RCClassificationBLL();
-            var updated = repo.Traer(id);
-            var edited = model.RcClasificationList.SingleOrDefault(m => m.Id == id);
-            updated.level_name = edited.level_name;
-            updated.Code = edited.Code;
-            updated.Description = edited.Description;
-            updated.Ownership = edited.Ownership;
-            updated.deleted = edited.deleted;
-            repo.Guardar(updated);
+            foreach (var rc in model.RcClasificationList)
+            {
+                var updated = repo.Traer(rc.Id);
+                var edited = rc;
+                updated.level_name = updated.level_name;
+                updated.Code = updated.Code;
+                updated.Description = edited.Description;
+                updated.Ownership = edited.Ownership;
+                updated.deleted = edited.deleted;
+                repo.Guardar(updated);
+            }
             return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/RcClasificationBM';</script>");
 
         }
@@ -534,17 +537,19 @@ namespace LARCA2.Controllers
 
         public ActionResult AgregarRcClasification(Larca2.Models.RcClasificationSearchForm model)
         {
-            if (ModelState.IsValid)
+            if (model.RcClasification.Description.Length > 0 && model.RcClasification.Ownership.Length > 0)
             {
                 Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
                 Data.DatabaseModels.LARCA20_RcClasification user = new Data.DatabaseModels.LARCA20_RcClasification();
-                user.level_name = model.RcClasification.level_name;
-                user.Code = model.RcClasification.Code;
+                var description = model.RcClasification.Description.Split(Convert.ToChar(" "));
+                var level = description[0].Split(Convert.ToChar("."));
+                user.level_name = level[0];
+                user.Code = description[0];
                 user.deleted = false;
                 user.Description = model.RcClasification.Description;
                 user.Ownership = (model.RcClasification.Ownership == null ? "" : model.RcClasification.Ownership);
                 repo.Guardar(user);
-                return Content("<script language='javascript' type='text/javascript'>alert('Se guardo con éxito');document.location = '../Adm/RcClasificationBM';</script>");
+                return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/RcClasificationBM';</script>");
             }
             else
             {
@@ -565,14 +570,25 @@ namespace LARCA2.Controllers
             return View("AuxDataBM", AuxDataSearchForm);
         }
 
-
         public ActionResult ModifAuxData(Larca2.Models.AuxDataSearchForm AuxDataSearchForm)
         {
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
-            Data.DatabaseModels.LARCA20_AuxData userdefault = repo.Traer(1);
-            Larca2.Models.AuxDataSearchForm userForm = new Larca2.Models.AuxDataSearchForm();
-            userForm.AuxData = userdefault;
-            return View("ModifAuxData", userForm);
+
+            Data.DatabaseModels.LARCA20_AuxData auxData = new Data.DatabaseModels.LARCA20_AuxData();
+            auxData.RowId = 1;
+            auxData.TopLvl2 = AuxDataSearchForm.AuxData.TopLvl2;
+            auxData.TopLvl3 = AuxDataSearchForm.AuxData.TopLvl3;
+            auxData.Toplvl4 = AuxDataSearchForm.AuxData.Toplvl4;
+            auxData.XlsRowFrom = AuxDataSearchForm.AuxData.XlsRowFrom;
+            auxData.XlsColumnFrom = AuxDataSearchForm.AuxData.XlsColumnFrom;
+            auxData.qtyattach = AuxDataSearchForm.AuxData.qtyattach;
+            auxData.reportdays = AuxDataSearchForm.AuxData.reportdays;
+            auxData.SmoDays = AuxDataSearchForm.AuxData.SmoDays;
+            repo.Guardar(auxData);
+
+            return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/AuxDataBM';</script>");
+
+            //return View("ModifAuxData", userForm);
         }
 
         public ActionResult ModificarAuxData(Larca2.Models.AuxDataSearchForm model)
@@ -652,13 +668,13 @@ namespace LARCA2.Controllers
 
         public ActionResult AgregarMasterData(Larca2.Models.MasterDataSearchForm model)
         {
-            if (ModelState.IsValid)
+            if (model.MasterData.DataIni != null)
             {
                 Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
                 Data.DatabaseModels.LARCA20_MasterData user = new Data.DatabaseModels.LARCA20_MasterData();
                 user.Data = model.MasterData.Data;
                 user.DataIni = model.MasterData.DataIni;
-                user.DataFin = model.MasterData.DataFin;
+                user.DataFin = model.MasterData.DataIni;
                 repo.Guardar(user);
                 return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/MasterDataBM';</script>");
             }
@@ -686,11 +702,15 @@ namespace LARCA2.Controllers
                 {
                     long id = Int32.Parse(txtIdRenglon);
                     Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
-                    Data.DatabaseModels.LARCA20_MasterData masterData = repo.Traer(id);
-                    masterData.Data = masterData.Data;
-                    masterData.DataIni = masterData.DataIni;
-                    masterData.DataFin = model.MasterDataList.SingleOrDefault(m => m.id == id).DataFin;
-                    repo.Guardar(masterData);
+                    foreach(var editedMaster in model.MasterDataList)
+                    {
+                        Data.DatabaseModels.LARCA20_MasterData masterData = repo.Traer(editedMaster.id);
+                        masterData.Data = masterData.Data;
+                        masterData.DataIni = masterData.DataIni;
+                        masterData.DataFin = editedMaster.DataFin;
+                        masterData.deleted = editedMaster.deleted;
+                        repo.Guardar(masterData);
+                    }
                     return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/MasterDataBM';</script>");
                 }
                 else

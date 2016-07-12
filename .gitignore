@@ -260,3 +260,4 @@ LARCA2/LARCA2.Business/packages.config
 LARCA2/LARCA2.Business/App.config
 LARCA2/LARCA2.Web/Controllers/SmoController.cs
 LARCA2/LARCA2.Web/Views/Smo/SMOSimple.cshtml
+LARCA2/LARCA2.Business/LARCA2.Business.csproj

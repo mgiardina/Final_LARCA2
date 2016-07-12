@@ -22,48 +22,35 @@
                     <label for="Nombre">Group</label>
                     @{
         List<SelectListItem> ListGrupos = new List<SelectListItem>();
-        ListGrupos.Add(new SelectListItem() { Value = "", Text = "Select ...", Selected = true });
-        ListGrupos.Add(new SelectListItem() { Value = "BU", Text = "BU", Selected = false });
-        ListGrupos.Add(new SelectListItem() { Value = "SMO", Text = "SMO", Selected = false });
-        ListGrupos.Add(new SelectListItem() { Value = "OWNER", Text = "OWNER", Selected = false });
-        ListGrupos.Add(new SelectListItem() { Value = "REFER", Text = "REFER", Selected = false });
+        ListGrupos.Add(new SelectListItem() { Value = "OWNER", Text = "OWNER", Selected = true });
                     }
                     @Html.DropDownListFor(m => m.MasterData.Data, ListGrupos, new { @class = "form-control", @placeholder = "Role ..." })
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.Data)</small>
                 </fieldset>
             </div>
         </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <fieldset class="form-group">
-                <label for="Nombre">Original Data</label>
-                @Html.TextBoxFor(m => m.MasterData.DataIni, new { @class = "form-control", @placeholder = "Original Data", @MaxLength = "100" })
-                <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.DataIni)</small>
-            </fieldset>
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset class="form-group">
+                    <label for="Nombre">Original Data</label>
+                    @Html.TextBoxFor(m => m.MasterData.DataIni, new { @class = "form-control", @placeholder = "Name", @MaxLength = "100" })
+                    <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.DataIni)</small>
+                </fieldset>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <fieldset class="form-group">
-                <label for="Nombre">Final Data</label>
-                @Html.TextBoxFor(m => m.MasterData.DataFin, new { @class = "form-control", @placeholder = "Final Data", @MaxLength = "50" })
-                <small class="text-muted">@Html.ValidationMessageFor(m => m.MasterData.DataFin)</small>
-            </fieldset>
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset class="form-group">
+                    <label for="Nombre">Deleted</label><br />
+                    @Html.CheckBoxFor(m => m.MasterData.deleted, new { @class = "form-control" })
+                </fieldset>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <fieldset class="form-group">
-                <label for="Nombre">Deleted</label><br />
-                @Html.CheckBoxFor(m => m.MasterData.deleted, new { @class = "form-control" })
-            </fieldset>
+        <div class="row">
+            <div class="col-sm-3">
+                <input type="submit" value="Save" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("MasterDataBM", "Adm") + "'");" />
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-3">
-            <input type="submit" value="Save" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
-            <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("MasterDataBM", "Adm") + "'");" />
-        </div>
-    </div>
     }
 </div>

@@ -41,12 +41,12 @@
                 }
                 else {
 
-                    if (CheckedCount > 1) {
-                        document.getElementById("Check2").style.display = 'none';
-                        document.getElementById("Check1").style.display = "";
+                    //if (CheckedCount > 1) {
+                    //    document.getElementById("Check2").style.display = 'none';
+                    //    document.getElementById("Check1").style.display = "";
 
-                        return false;
-                    }
+                    //    return false;
+                    //}
 
                     if (CheckedCount < 1) {
                         document.getElementById("Check1").style.display = 'none';
@@ -141,12 +141,12 @@
 
                                     <td width="20%" align="center">
                                         <label>
-                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].level_name, new { @value = RcClasification.level_name })
+                                            @RcClasification.level_name
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
                                         <label>
-                                            @Html.TextBoxFor(Modell => Modell.RcClasificationList[j].Code, new { @value = RcClasification.Code })
+                                            @RcClasification.Code
                                         </label>
                                     </td>
                                     <td width="20%" align="center">
