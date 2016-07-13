@@ -90,37 +90,33 @@
 
             @Html.HiddenFor(m => m.AccionBoton)
 
-            @if (Model.idRole != 4)
-            {
+
             <div class="row">
                 <div class="col-sm-13">
-                    <h5 style="border-bottom:1px solid #c7d1d6; margin-left:18px;">  BU</h5>
+                    <h5 style="border-bottom:1px solid #c7d1d6; margin-left:18px;">  FILTERS    </h5>
                 </div>
             </div>
             <div class="row">
+@if (Model.idRole != 4)
+            {
                 <div class="col-sm-4">
                     <fieldset class="form-group">
                         @Html.DropDownListFor(model => model.bu, Model.BUList)
                     </fieldset>
                 </div>
-            </div>
             }
-
             @if (Model.idRole != 6)
             {
-            <div class="row">
-                <div class="col-sm-13">
-                    <h5 style="border-bottom:1px solid #c7d1d6;margin-left:18px;">  SMO</h5>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-sm-4">
                     <fieldset class="form-group">
                         @Html.DropDownListFor(model => model.smo, Model.SMOList)
                     </fieldset>
                 </div>
+            }  
             </div>
-            }
+            
+
+         
           
         </div>
     <div class="container-fluid" style="margin-bottom:20px;">
@@ -139,7 +135,7 @@
         </div>
         </div>
         <div style="overflow:scroll">
-            <div class="content-wrapper" style="margin-bottom:20px;width:2500px;height:250px">
+            <div class="content-wrapper" style="margin-bottom:20px;width:2500px;height:300px">
                 <label id="testme"></label>
                 <table id="tablaSmor" class="table" width="2000">
 
