@@ -22,14 +22,14 @@
 <script src="../Scripts/jquery.ui.datepicker-es.js"></script>
 <script type="text/javascript">
     $(function () {
-        document.getElementById("testme").innerHTML = "date validation function not working yet";
+        document.getElementById("testme").innerHTML = "";
         var listOfDates = document.getElementsByTagName("input");
         for (i = 0; i < listOfDates.length; i++) {
             if (listOfDates[i].id.indexOf("duedatepicker") > -1) {
                 $("#duedatepicker" + i).datepicker();
             }
         }    
-        document.getElementById("testme").innerHTML = "date validation function working";
+        document.getElementById("testme").innerHTML = "";
     });
     $(document).ready(function () {
         $.datepicker.setDefaults({ dateFormat: 'dd/mm/yy' });
@@ -76,17 +76,22 @@
         });
     }
 
+    function LlamarAccionBoton(accion) {
+        document.forms['myForm'].AccionBoton.value = accion;
+        document.getElementById('myForm').submit();
+    }
     
 </script>
 
 
-<div class="container-fluid" style="margin-bottom:20px;">
-    @using (Html.BeginForm("SmoSimpleFiltrado", "Smo", FormMethod.Post, new { name = "myform" }))
+    @using (Html.BeginForm("SmoSimpleResult", "Smo", FormMethod.Post, new { id = "myForm", name = "myform" }))
     {
+        <div class="container-fluid" style="margin-bottom:20px;">
 
+            @Html.HiddenFor(m => m.AccionBoton)
 
-        if (Model.idRole != 4)
-        {
+            @if (Model.idRole != 4)
+            {
             <div class="row">
                 <div class="col-sm-13">
                     <h5 style="border-bottom:1px solid #c7d1d6; margin-left:18px;">  BU</h5>
@@ -99,10 +104,10 @@
                     </fieldset>
                 </div>
             </div>
-        }
+            }
 
-        if (Model.idRole != 6)
-        {
+            @if (Model.idRole != 6)
+            {
             <div class="row">
                 <div class="col-sm-13">
                     <h5 style="border-bottom:1px solid #c7d1d6;margin-left:18px;">  SMO</h5>
@@ -115,24 +120,22 @@
                     </fieldset>
                 </div>
             </div>
-        }
-        <div align="left">
-            <input type="submit" value="Search" name="Search" class="btn btn-info" />
+            }
+          
         </div>
-
-    }
-
-</div>
-
-@using (Html.BeginForm("SmoSimpleAgrupar", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" }))
-{
     <div class="container-fluid" style="margin-bottom:20px;">
         <div align="left">
+         
+            <input type="submit" value="Search" name="Search" onclick="LlamarAccionBoton('filter')" class="btn btn-info" />
+           
             @* <input type="submit" value="Guardar Cambios" name="Guardar Cambios" class="btn btn-default" /> *@
-            <input type="submit" value="Save Changes" id="guardar1" onclick="LoadEm()" class=" btn btn-info" />
+            <input type="submit" value="Save Changes" id="guardar1" onclick="LlamarAccionBoton('modif')" class=" btn btn-info" />
      
+
+            <input type="submit" value="Group" id="guardar2" onclick="LlamarAccionBoton('group')" class=" btn btn-info" />
+
             @* <input type="submit" value="Guardar Cambios" name="Guardar Cambios" class="btn btn-default" /> *@
-            <input type="submit" value="Group" id="guardar2" onclick="LoadEm()" class=" btn btn-info" />
+            @* <input type="submit" value="Group" id="guardar2" onclick="LoadEm()" class=" btn btn-info" /> *@
         </div>
         </div>
         <div style="overflow:scroll">
@@ -200,7 +203,7 @@
 
                         @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
                         <td width="5%" align="center">
-                            <input type="button" value="Show" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
+                            <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
                             @if (grsmo.TraerPorGroupId(Int32.Parse(Model.RegistrosSMO[j].SmoScopeID.ToString())).Count > 0)
                             { 
                             <input type="button" value="Ungroup" id="Ung(@(j.ToString()))" class="btn btn-danger" onclick="Ungroup(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
