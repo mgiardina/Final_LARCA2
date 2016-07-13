@@ -112,6 +112,13 @@ namespace Larca2.Controllers
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
             
             viewModel.responsibles = new List<string>();
+
+            LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+            int valMax = adb.Todos()[0].Toplvl4;
+            viewModel.maxClones = new List<int>();
+            for(int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            { viewModel.maxClones.Add(valMax); }
+
             foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
@@ -211,6 +218,11 @@ namespace Larca2.Controllers
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
             viewModel.EditablesSMO = viewModel.RegistrosSMO;           
               viewModel.selectedItems = new List<bool>();
+              LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+              int valMax = adb.Todos()[0].Toplvl4;
+              viewModel.maxClones = new List<int>();
+              for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
+              { viewModel.maxClones.Add(valMax); }
 
               viewModel.responsibles = new List<string>();
               foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
@@ -475,6 +487,13 @@ namespace Larca2.Controllers
 
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
             viewModel.selectedItems = new List<bool>();
+            LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+            int valMax = adb.Todos()[0].Toplvl4;
+            viewModel.maxClones = new List<int>();
+            for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            { viewModel.maxClones.Add(valMax); }
+
+
             viewModel.responsibles = new List<string>();
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
@@ -627,6 +646,15 @@ namespace Larca2.Controllers
 
             //Copio la lista a los editables para poder modificar los datos necesarios.
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+
+            LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+            int valMax = adb.Todos()[0].Toplvl4;
+            viewModel.maxClones = new List<int>();
+            for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            { viewModel.maxClones.Add(valMax); }
+
+
             return View("SmoTreatment", viewModel);
 
         }
@@ -727,6 +755,13 @@ namespace Larca2.Controllers
 
        //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+            LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+            int valMax = adb.Todos()[0].Toplvl4;
+            viewModel.maxClones = new List<int>();
+            for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            { viewModel.maxClones.Add(valMax); }
+
 
             return View("SmoTreatment", viewModel);
 
@@ -970,6 +1005,13 @@ namespace Larca2.Controllers
             {
                 viewModel.Responsables.Add(new SelectListItem { Text = listaDeUsuariosParaRespons.Where(u => u.Id == userResponsable.RefIdUser).FirstOrDefault().user_name, Value = userResponsable.Id.ToString() });
             }
+
+
+            LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+            int valMax = adb.Todos()[0].Toplvl4;
+            viewModel.maxClones = new List<int>();
+            for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            { viewModel.maxClones.Add(valMax); }
 
 
             ViewBag.Message = "";

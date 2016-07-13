@@ -21,25 +21,8 @@
 <script src="../Scripts/jquery-ui.min.js"></script>
 <script src="../Scripts/jquery.ui.datepicker-es.js"></script>
 <script type="text/javascript">
-    $(function () {
-        document.getElementById("testme").innerHTML = "";
-        var listOfDates = document.getElementsByTagName("input");
-        for (i = 0; i < listOfDates.length; i++) {
-            if (listOfDates[i].id.indexOf("duedatepicker") > -1) {
-                $("#duedatepicker" + i).datepicker();
-            }
-        }    
-        document.getElementById("testme").innerHTML = "";
-    });
-    $(document).ready(function () {
-        $.datepicker.setDefaults({ dateFormat: 'dd/mm/yy' });
-        var listOfDates = document.getElementsByTagName("input");
-        for (i = 0; i < listOfDates.length; i++) {
-            if (listOfDates[i].id.indexOf("duedatepicker") > -1) {
-                $("#duedatepicker" + i).datepicker($.datepicker.regional['es']);
-            }
-        }
-    });
+    
+
     function Details(id) {
         $.ajax({
             url: '@Url.Action("MostrarDetalle", "Smo")',
@@ -189,7 +172,7 @@
 
                         @if (Model.MBLL == null)
                         { Model.MBLL = new LARCA2.Business.Services.MasterDataBLL(); }
-
+                        @Html.HiddenFor(x => x.maxClones[j])
                         @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
                         <td width="5%" align="center">
                             <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />

@@ -30,6 +30,7 @@ namespace Larca2.Views.ViewModels
         public LARCA2.Business.Services.Level4BLL Level4BLL { get; set; }
         public LARCA2.Business.Services.MasterDataBLL MBLL { get; set; }
 
+        public List<int> maxClones { get; set; }
         public List<string> responsibles { get; set; }
         public List<Boolean> selectedItems { get; set; }
 

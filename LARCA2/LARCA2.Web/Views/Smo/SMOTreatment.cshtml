@@ -102,6 +102,12 @@
     }
     function AgregaRegistroFinalESP(num) {
 
+        document.getElementById("maxClones_" + num + "_").value = document.getElementById("maxClones_" + num + "_").value - 1;
+        if (document.getElementById("maxClones_" + num + "_").value == 0)
+            document.getElementById("Clone" + num).style.visibility = 'hidden';
+        else
+            document.getElementById("Clone" + num).style.visibility = 'visible';
+
         //guardo el id del registro clonado, puede que me sirva dpeendiendo de la solucion que implemente
         if ($("#HI_NumEsp").val() == "")
             $("#HI_NumEsp").val(num);
@@ -192,7 +198,7 @@
 
         var elem = t4.innerHTML.split('</label>');
         label = elem[0];
-        cell4.innerHTML = label + '</label>' + '<input name="clBu' + contadorval + '" id="clBu' + contadorval + '" type="hidden" value="' + buId + '" /> ' + '<input name="clSmo' + contadorval + '" id="clSmo' + contadorval + '" type="hidden" value="' + smoId + '" /> ' + '<button id="btn_LESSPermiso" onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button>';
+        cell4.innerHTML = label + '</label>' + '<input name="clBu' + contadorval + '" id="clBu' + contadorval + '" type="hidden" value="' + buId + '" /> ' + '<input name="clSmo' + contadorval + '" id="clSmo' + contadorval + '" type="hidden" value="' + smoId + '" /> ' + '<button id="btn_LESSPermiso" name="clhid' + contadorval + '_' + num + '"  onclick="FuncLESSRegistro(this)" value="Quitar" class="btn btn-warning">Remove</button>                 ';
 
         cell5.innerHTML = t5.innerHTML;
         cell6.innerHTML = t6.innerHTML;
@@ -219,6 +225,14 @@
 
     function FuncLESSRegistro(donde) {
         //copiado de nuevoUsuario, no me fije con detalle como funciona, pero ya implemente el borrado a partir de esto y funciona bien con mecanismos implementados en otras partes del codigo.
+
+        var number = document.getElementById($(donde).closest('tr').attr('id')).getElementsByTagName('button')[0].getAttribute("name").split("_")[1];
+        document.getElementById("maxClones_" + number + "_").value = document.getElementById("maxClones_" + number + "_").value + 1;
+        if (document.getElementById("maxClones_" + number + "_").value <= 0)
+            document.getElementById("Clone" + number).style.visibility = 'hidden';
+        else
+            document.getElementById("Clone" + number).style.visibility = 'visible';
+
         $(donde).closest('tr').remove();
         $("#HI_SmoEsp").val("");
         $("#tablaRegistros tr").each(function (index) {
@@ -347,9 +361,12 @@
                              foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
                              {
                                  <tr id=@(j.ToString())>
+
+                                     @Html.HiddenFor(x => x.maxClones[j], new { @class = "hidden-control", @value = Model.maxClones[j] })
                                      @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
                                      @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
                                      @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
+
                                      <td width="5%" align="center">
                                          <label>
                                              @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()),2).ToString()
@@ -415,7 +432,7 @@
                                              </label>
 
                                          }
-                                         <input type="button" value="+" id="Clone" class="btn btn-info" onclick="AgregaRegistroFinalESP(@(j.ToString()))" />
+                                         <input type="button" value="+" id="Clone@(j.ToString())" class="btn btn-info" hidden="" onclick="AgregaRegistroFinalESP(@(j.ToString()))" />
 
                                      </td>
                                      <td align="center">
@@ -451,7 +468,7 @@
                                      </td>
                                      <td width="5%" align="center">
                                          <label>
-                                             @Html.TextBoxFor(m => m.EditablesSMO[j].DueDate, new { @class = "form-control", @placeholder = (SmoScope.DueDate == null ? "-" : SmoScope.DueDate.Value.Date.ToShortDateString()) })
+                                             @Html.TextBoxFor(m => m.EditablesSMO[j].DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
                                          </label>
                                      </td>
                                      <td width="3%" align="center">
