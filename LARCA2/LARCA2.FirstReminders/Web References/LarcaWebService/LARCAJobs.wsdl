@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="ProcesarEmails">
+        <s:complexType />
+      </s:element>
+      <s:element name="ProcesarEmailsResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="EnviarPrimerosRemiders">
+        <s:complexType />
+      </s:element>
+      <s:element name="EnviarPrimerosRemidersResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="EnviarSegundosRemiders">
+        <s:complexType />
+      </s:element>
+      <s:element name="EnviarSegundosRemidersResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="ProcesarEmailsSoapIn">
+    <wsdl:part name="parameters" element="tns:ProcesarEmails" />
+  </wsdl:message>
+  <wsdl:message name="ProcesarEmailsSoapOut">
+    <wsdl:part name="parameters" element="tns:ProcesarEmailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="EnviarPrimerosRemidersSoapIn">
+    <wsdl:part name="parameters" element="tns:EnviarPrimerosRemiders" />
+  </wsdl:message>
+  <wsdl:message name="EnviarPrimerosRemidersSoapOut">
+    <wsdl:part name="parameters" element="tns:EnviarPrimerosRemidersResponse" />
+  </wsdl:message>
+  <wsdl:message name="EnviarSegundosRemidersSoapIn">
+    <wsdl:part name="parameters" element="tns:EnviarSegundosRemiders" />
+  </wsdl:message>
+  <wsdl:message name="EnviarSegundosRemidersSoapOut">
+    <wsdl:part name="parameters" element="tns:EnviarSegundosRemidersResponse" />
+  </wsdl:message>
+  <wsdl:portType name="LARCAJobsSoap">
+    <wsdl:operation name="ProcesarEmails">
+      <wsdl:input message="tns:ProcesarEmailsSoapIn" />
+      <wsdl:output message="tns:ProcesarEmailsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EnviarPrimerosRemiders">
+      <wsdl:input message="tns:EnviarPrimerosRemidersSoapIn" />
+      <wsdl:output message="tns:EnviarPrimerosRemidersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EnviarSegundosRemiders">
+      <wsdl:input message="tns:EnviarSegundosRemidersSoapIn" />
+      <wsdl:output message="tns:EnviarSegundosRemidersSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LARCAJobsSoap" type="tns:LARCAJobsSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcesarEmails">
+      <soap:operation soapAction="http://tempuri.org/ProcesarEmails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnviarPrimerosRemiders">
+      <soap:operation soapAction="http://tempuri.org/EnviarPrimerosRemiders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnviarSegundosRemiders">
+      <soap:operation soapAction="http://tempuri.org/EnviarSegundosRemiders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LARCAJobsSoap12" type="tns:LARCAJobsSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcesarEmails">
+      <soap12:operation soapAction="http://tempuri.org/ProcesarEmails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnviarPrimerosRemiders">
+      <soap12:operation soapAction="http://tempuri.org/EnviarPrimerosRemiders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EnviarSegundosRemiders">
+      <soap12:operation soapAction="http://tempuri.org/EnviarSegundosRemiders" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LARCAJobs">
+    <wsdl:port name="LARCAJobsSoap" binding="tns:LARCAJobsSoap">
+      <soap:address location="http://pscapps.pg.com:8080/LARCAService/WebService/LARCAJobs.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LARCAJobsSoap12" binding="tns:LARCAJobsSoap12">
+      <soap12:address location="http://pscapps.pg.com:8080/LARCAService/WebService/LARCAJobs.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

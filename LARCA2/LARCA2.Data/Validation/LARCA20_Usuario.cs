@@ -15,16 +15,7 @@ namespace LARCA2.Data.DatabaseModels
         public class LARCA20_UsuarioMD
         {
             [Required(ErrorMessage = "Required")]
-            public string name { get; set; }
-            [Required(ErrorMessage = "Required")]
-            public string last_name { get; set; }
-            [Required(ErrorMessage = "Required")]
-            [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Invalid")]
-            public string Email { get; set; }
-            [Required(ErrorMessage = "Required")]
             public string user_name { get; set; }
-            [Required(ErrorMessage = "Required")]
-            public string pass { get; set; }
         }
     }
 }

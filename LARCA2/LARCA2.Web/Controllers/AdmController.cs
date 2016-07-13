@@ -45,7 +45,7 @@ namespace LARCA2.Controllers
             ViewBag.ErrorPermiso = false;
             ViewBag.ErrorRol = false;
             bool Error = false;
-            if (ModelState.IsValid)
+            if (model.Usuario.user_name != null)
             {
                 if (CboRoles != "0")
                 {
@@ -56,8 +56,8 @@ namespace LARCA2.Controllers
                             return Content("<script language='javascript' type='text/javascript'>alert('The username entered already exists , try another.');document.location = '../Adm/NuevoUsuario';</script>");
 
                         Data.DatabaseModels.LARCA20_Users user = new Data.DatabaseModels.LARCA20_Users();
-                        user.name = model.Usuario.name;
-                        user.last_name = model.Usuario.last_name;
+                        user.name = model.Usuario.name == null ? string.Empty : model.Usuario.name;
+                        user.last_name = model.Usuario.last_name == null ? string.Empty : model.Usuario.last_name;
                         user.deleted = false;
                         // user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
                         user.date = DateTime.Now;

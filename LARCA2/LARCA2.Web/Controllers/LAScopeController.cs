@@ -95,10 +95,20 @@ namespace Larca2.Controllers
                 {
                     if (command.Equals("Send All Reports"))
                     {
-                        masterRows = new ReportsBLL().LARCANews(string.Empty, string.Empty, "1");
-                        var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
-                        new MailingCore().EnviarReporte(file);
-                        ViewBag.Result = "File Exported and sent!.";
+                        foreach(var item in model.SMOList)
+                        {
+                            masterRows = new ReportsBLL().LARCANews(item.Value, string.Empty, string.Empty);
+                            var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
+                            new MailingCore().EnviarReporte(file);
+                        }
+
+                        foreach (var item in model.BUList)
+                        {
+                            masterRows = new ReportsBLL().LARCANews(string.Empty, item.Value, string.Empty);
+                            var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
+                            new MailingCore().EnviarReporte(file);
+                        }
+                        ViewBag.Result = "Multiple Files Exported and sent!.";
                     }
                 }
             }

@@ -26,6 +26,7 @@ namespace LARCA2.Data.DatabaseModels
         public string Customer { get; set; }
         public Nullable<System.DateTime> date { get; set; }
         public bool deleted { get; set; }
+        public string originaldate { get; set; }
     
         public virtual LARCA20_SmoScope SmoScopeDetail { get; set; }
         public virtual LARCA20_MasterData MasterBUDetail { get; set; }

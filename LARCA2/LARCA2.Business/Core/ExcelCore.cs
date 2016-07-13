@@ -97,6 +97,7 @@ namespace LARCA2.Business.Core
 
                                 }
                             }
+                            smoDetail.originaldate = item.Day;
                             smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.ProfitCenter);
                             smoDetail.BuID = smoDetail.MasterBUDetail.id;
                             smoDetail.MasterSMODetail = new MasterDataBLL().Traer("SMO", item.ReportingCountry);

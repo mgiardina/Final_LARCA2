@@ -71,7 +71,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Data" Type="nvarchar" MaxLength="10" />
+          <Property Name="Data" Type="nvarchar" MaxLength="20" />
           <Property Name="DataIni" Type="nvarchar" MaxLength="100" />
           <Property Name="DataFin" Type="nvarchar" MaxLength="50" />
           <Property Name="deleted" Type="bit" Nullable="false" />
@@ -152,6 +152,7 @@
           <Property Name="ReasonID" Type="bigint" />
           <Property Name="Customer" Type="nvarchar(max)" />
           <Property Name="deleted" Type="bit" Nullable="false" />
+          <Property Name="originaldate" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -716,6 +717,7 @@
           <NavigationProperty Name="MasterLvl3Detail" Relationship="Larca2Model.MasterLvl3Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <Property Name="date" Type="DateTime" Precision="3" />
           <Property Name="deleted" Type="Boolean" Nullable="false" />
+          <Property Name="originaldate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -1332,6 +1334,7 @@
           <EntitySetMapping Name="LARCA20_SmoScopeDetail">
             <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScopeDetail">
               <MappingFragment StoreEntitySet="LARCA20_SmoScopeDetail">
+                <ScalarProperty Name="originaldate" ColumnName="originaldate" />
                 <ScalarProperty Name="deleted" ColumnName="deleted" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="Customer" ColumnName="Customer" />
