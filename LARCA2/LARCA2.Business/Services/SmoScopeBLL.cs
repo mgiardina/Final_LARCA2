@@ -120,7 +120,7 @@ namespace LARCA2.Business.Services
             if (!((smoScope.Why3 != null || smoScope1.Why3 == null) && smoScope.Why3 == smoScope1.Why3)) return false;
             if (!((smoScope.ActionPlan != null || smoScope1.ActionPlan == null) && smoScope.ActionPlan == smoScope1.ActionPlan)) return false;
             //if (!((smoScope.RefIdResponsable != null || smoScope1.RefIdResponsable == null) && (smoScope.RefIdResponsable != 0 || smoScope1.RefIdResponsable == 0) && respon.IdRenglon == redal.Traer(smoScope1.RefIdResponsable.Value).IdRenglon)) return false;
-            if (!(((smoScope.RefIdResponsable == null && smoScope1.RefIdResponsable == null) || (smoScope.RefIdResponsable == smoScope1.RefIdResponsable)))) return false;
+            if (!(((smoScope.RefIdResponsable == null && smoScope1.RefIdResponsable == null) || ((smoScope.RefIdResponsable == 0 && smoScope1.RefIdResponsable == null) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable)))) return false;
             if (!((smoScope.DueDate != null || smoScope1.DueDate == null) && smoScope.DueDate.Equals(smoScope1.DueDate))) return false;
             if (!(((smoScope.O_C == null && smoScope1.O_C == null) || (smoScope.O_C == smoScope1.O_C)))) return false;
             //  smoScope.Borrado.Equals(this.Borrado) ))return false;
