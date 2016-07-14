@@ -27,11 +27,14 @@
                     //  <nav class="navbar navbar-default">
                     <div class="container-fluid">
                         <ul class="nav navbar-nav navbar-right">
-                            @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 && user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 2)
+
+                            <li>@Html.ActionLink("Dashboard", "Dashboard", "Smo")</li>
+                            @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 2)
                             {
                                 <li>@Html.ActionLink("Analysis Module", "SmoTreatment", "Smo")</li>
 
                             }
+
                             @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles != 3 && user.LARCA20_UsersRoles.ToList()[0].RefIdRoles != 2)
                             {
                                 <li>@Html.ActionLink("Analysis Clustering Module", "SmoSimple", "Smo")</li>
