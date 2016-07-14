@@ -432,13 +432,12 @@
                                      <td width="10%" align="left">
                                          @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
                                          {
-                                             <label>
-                                                 @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                                            <label> @Model.Level4BLL.Traer(SmoScope.Level4.Value).name                                                   
                                              </label>}
                                          else
                                          {
                                              <label>
-                                                 @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, 0))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                                                 
                                              </label>
 
                                          }
@@ -447,8 +446,9 @@
                                      </td>
                                      @Html.HiddenFor(x => x.maxClones[j], new { @class = "hidden-control", @value = Math.Min(Model.maxClones[j], LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, 0).Count) })
                                      <td align="center">
-                                         <label>
-                                             @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-family: Verdana"})
+                                         <label>      
+                                                                                   
+                                             @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-family: Verdana; readonly: readonly" })
                                          </label>
                                      </td>
 
