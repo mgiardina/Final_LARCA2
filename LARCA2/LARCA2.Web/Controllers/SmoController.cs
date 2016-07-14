@@ -111,7 +111,7 @@ namespace Larca2.Controllers
 
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
             
-            viewModel.responsibles = new List<string>();
+          
 
             LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
             int valMax = adb.Todos()[0].Toplvl4;
@@ -119,6 +119,7 @@ namespace Larca2.Controllers
             for(int i = 0; i < viewModel.EditablesSMO.Count; i++)
             { viewModel.maxClones.Add(valMax); }
 
+            viewModel.responsibles = new List<string>();
             foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
@@ -785,6 +786,11 @@ namespace Larca2.Controllers
             for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
             { viewModel.maxClones.Add(valMax); }
 
+            LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
+            viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
 
             return View("SmoTreatment", viewModel);
 
@@ -893,6 +899,11 @@ namespace Larca2.Controllers
             for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
             { viewModel.maxClones.Add(valMax); }
 
+            viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
+
 
             return View("SmoTreatment", viewModel);
 
@@ -983,7 +994,7 @@ namespace Larca2.Controllers
 
                     DateTime due;
                     clon.SmoScopeID = 0;
-                    clon.ActionPlan = actFilt[9];
+                    
                     clon.deleted = false;
                     clon.DueDate = (DateTime.TryParse(actFilt[11], out due)? due : DateTime.Now.AddDays(7));
                     clon.date = DateTime.Now;
@@ -992,7 +1003,8 @@ namespace Larca2.Controllers
                     clon.Why1 = actFilt[6];
                     clon.Why2 = actFilt[7];
                     clon.Why3 = actFilt[8];
-                    clon.O_C = (actFilt[12] == "O" || actFilt[12] == "C"? actFilt[12] : "O" );
+                    clon.ActionPlan = actFilt[9];
+                    clon.O_C = (actFilt[12].ToUpper() == "O" || actFilt[12].ToUpper() == "C"? actFilt[12] : "O" );
                     clon.RefIdBU = mdClones.Traer(Int32.Parse(actFilt[2])).id;
                     clon.RefIdSMO = mdClones.Traer(Int32.Parse(actFilt[1])).id;
                     if (userRoles.Traer(user.Id).RefIdRoles != 1) //NOT ADMIN
@@ -1003,12 +1015,67 @@ namespace Larca2.Controllers
                             clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.Id).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
                         }
                         catch (Exception e) { clon.RefIdOwner = null; } 
+
                     clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).Id;
-                    int io;
+                   
+                    
+                    
+                    
+                    
+                 /*   int io;
                     if (Int32.TryParse(actFilt[9].ToString(), out io) == true)
                         clon.RefIdResponsable = respoClones.Traer(Int32.Parse(actFilt[10])).Id;
                     else
                         clon.RefIdResponsable = null;
+                    */
+                    //responsClones
+                    if (actFilt[10] == "")
+                        clon.RefIdResponsable = null;
+                     else
+                    { //aca puede pasar que:
+                        LARCA2.Business.Services.ResponsablesBLL repoResponsables2 = new LARCA2.Business.Services.ResponsablesBLL();
+
+                        if (repoUsuarios.ExisteUsuario(actFilt[10]) == false)
+                        {
+                            //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
+                            LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
+                            newUser.user_name = actFilt[10];
+                            newUser.deleted = false;
+                            newUser.date = DateTime.Now;
+                            repoUsuarios.Guardar(newUser);
+                            //no le creo rol porque no se definió cual poner
+
+                            LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                            newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                            newResp.deleted = false;
+                            repoResponsables2.Guardar(newResp);
+                            clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                        }
+                        else
+                        {
+
+                            if (repoResponsables2.Todos().Where(x => x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(actFilt[10]).Id).Count() > 0)
+                            {
+                                //el responsable ingresado exista y sea un usuario que existe, entonces solo se asigna.
+                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                            }
+                            else
+                            {
+                                //el responsable ingresado no exista pero exista el usuario, hay que crear el responsable.
+                                LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                                newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                                newResp.deleted = false;
+                                repoResponsables2.Guardar(newResp);
+                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                            }
+                        }
+
+
+                    }
+                    //fin clonesRespons
+
+
+
                     if (actFilt[4] == "0")
                         clon.Level4 = null;
                     else
@@ -1029,39 +1096,90 @@ namespace Larca2.Controllers
         //user traido mas arriba
 
            int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
-           foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope in viewModel.EditablesSMO)
-            {
-             
-                LARCA2.Data.DatabaseModels.LARCA20_SmoScope actualOriginal = repo.Traer(scope.SmoScopeID);
-                if (actualOriginal == null) { } //no existe en la tabla
-                if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope)) //existe Y fue modificado
-                {
-                    
-                    if (scope.Why1 != actualOriginal.Why1) 
-                        actualOriginal.Why1 = scope.Why1;
-                    if (scope.Why2 != actualOriginal.Why2) 
-                        actualOriginal.Why2 = scope.Why2;
-                    if (scope.Why3 != actualOriginal.Why3) 
-                        actualOriginal.Why3 = scope.Why3;
-                    if (scope.ActionPlan != actualOriginal.ActionPlan) 
-                        actualOriginal.ActionPlan = scope.ActionPlan;
-                    if (scope.Problem != actualOriginal.Problem)
-                        actualOriginal.Problem = scope.Problem;
-                    if (scope.DueDate != actualOriginal.DueDate)
-                       actualOriginal.DueDate = scope.DueDate;
-                    if (scope.RefIdResponsable == 0)
-                        actualOriginal.RefIdResponsable = null;
-                    else if (scope.RefIdResponsable != actualOriginal.RefIdResponsable)
-                        actualOriginal.RefIdResponsable = scope.RefIdResponsable;
-                    if (scope.O_C != actualOriginal.O_C && (scope.O_C != null && (scope.O_C == "O" || scope.O_C == "o" || scope.O_C == "C" || scope.O_C == "c")))
-                        actualOriginal.O_C = scope.O_C.ToUpper();
-                    if (scope.Level4 != actualOriginal.Level4 && (scope.Level4 != null && scope.Level4 != 0))
-                        actualOriginal.Level4 = scope.Level4;
-                    repo.Guardar(actualOriginal);
-                    test++;
-                }
+       //    foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope in viewModel.EditablesSMO)
+           for (int countModif = 0; countModif < viewModel.EditablesSMO.Count; countModif++ )
+           {
+               LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope = viewModel.EditablesSMO[countModif];
+               LARCA2.Data.DatabaseModels.LARCA20_SmoScope actualOriginal = repo.Traer(scope.SmoScopeID);
+               if (actualOriginal == null) { } //no existe en la tabla
+            //   if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope)) //existe Y fue modificado
+               if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope, viewModel.responsibles[countModif])) //existe Y fue modificado
+               {
 
-            }
+                   if (scope.Why1 != actualOriginal.Why1)
+                       actualOriginal.Why1 = scope.Why1;
+                   if (scope.Why2 != actualOriginal.Why2)
+                       actualOriginal.Why2 = scope.Why2;
+                   if (scope.Why3 != actualOriginal.Why3)
+                       actualOriginal.Why3 = scope.Why3;
+                   if (scope.ActionPlan != actualOriginal.ActionPlan)
+                       actualOriginal.ActionPlan = scope.ActionPlan;
+                   if (scope.Problem != actualOriginal.Problem)
+                       actualOriginal.Problem = scope.Problem;
+                   if (scope.DueDate != actualOriginal.DueDate)
+                       actualOriginal.DueDate = scope.DueDate;
+                  
+                /*   if (scope.RefIdResponsable == 0)
+                       actualOriginal.RefIdResponsable = null;
+                   else if (scope.RefIdResponsable != actualOriginal.RefIdResponsable)
+                       actualOriginal.RefIdResponsable = scope.RefIdResponsable;
+                  */
+
+                   if (viewModel.responsibles[countModif] == "")
+                       actualOriginal.RefIdResponsable = null;
+                   else if ((actualOriginal.RefIdResponsable == null) || (viewModel.responsibles[countModif] != repoResponsables.TraerSuNombreDeUsuario(Int32.Parse(actualOriginal.RefIdResponsable.ToString()))))
+                   {
+                       //aca puede pasar que:
+
+
+                       if (repoUsuarios.ExisteUsuario(viewModel.responsibles[countModif]) == false)
+                       {
+                           //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
+                           LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
+                           newUser.user_name = viewModel.responsibles[countModif];
+                           newUser.deleted = false;
+                           newUser.date = DateTime.Now;
+                           repoUsuarios.Guardar(newUser);
+                           //no le creo rol porque no se definió cual poner
+
+                           LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                           newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
+                           newResp.deleted = false;
+                           repoResponsables.Guardar(newResp);
+                           actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
+                       }
+                       else
+                       {
+
+                           if (repoResponsables.Todos().Where(x => x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id).Count() > 0)
+                           {
+                               //el responsable ingresado exista y sea un usuario que existe, entonces solo se asigna.
+                               actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
+                           }
+                           else
+                           {
+                               //el responsable ingresado no exista pero exista el usuario, hay que crear el responsable.
+                               LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                               newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
+                               newResp.deleted = false;
+                               repoResponsables.Guardar(newResp);
+                               actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
+                           }
+                       }
+
+                   }
+
+
+
+                   if (scope.O_C != actualOriginal.O_C && (scope.O_C != null && (scope.O_C == "O" || scope.O_C == "o" || scope.O_C == "C" || scope.O_C == "c")))
+                       actualOriginal.O_C = scope.O_C.ToUpper();
+                   if (scope.Level4 != actualOriginal.Level4 && (scope.Level4 != null && scope.Level4 != 0))
+                       actualOriginal.Level4 = scope.Level4;
+                   repo.Guardar(actualOriginal);
+                   test++;
+               }
+
+           }
             test = test++;
 
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
@@ -1143,6 +1261,11 @@ namespace Larca2.Controllers
             viewModel.maxClones = new List<int>();
             for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
             { viewModel.maxClones.Add(valMax); }
+
+            viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
 
 
             ViewBag.Message = "";

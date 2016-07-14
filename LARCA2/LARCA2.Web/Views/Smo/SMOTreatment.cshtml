@@ -82,7 +82,8 @@
                         + act7.getElementsByTagName("label")[0].getElementsByTagName("textarea")[0].value.replace("<", "=").replace(">", "=") + "%%" +
                         act8.getElementsByTagName("label")[0].getElementsByTagName("textarea")[0].value.replace("<", "=").replace(">", "=") + "%%"
                         + act9.getElementsByTagName("label")[0].getElementsByTagName("textarea")[0].value.replace("<", "=").replace(">", "=") + "%%" +
-                        act10.getElementsByTagName("select")[0].selectedIndex + "%%" +
+                     //   act10.getElementsByTagName("select")[0].selectedIndex + "%%" +
+                     act10.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%" +
                         act11.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%" +
                         act12.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=");
                   
@@ -141,6 +142,8 @@
         var t10 = z.getElementsByTagName("td")[10];
         var t11 = z.getElementsByTagName("td")[11];
         var t12 = z.getElementsByTagName("td")[12];
+
+   
         //en variable de carga dejo solo los datos relevantes de cada atributo, sin la cascara de HTML de cada uno
 
         /*var carga = t0.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "##" + t1.getElementsByTagName("label")[0].innerHTML.replace("<", "=").replace(">", "=") + "##"
@@ -474,8 +477,10 @@
                                      </td>
                                      <td width="5%" align="center">
                                          <label>
-                                             @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value)))
-                                   
+                                           @*  @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) *@
+                                             @Html.TextBoxFor(model => model.responsibles[j], new { @class = "form-control", @placeholder = Model.responsibles[j] })
+
+
                                                </label>
                                      </td>
                                      <td width="5%" align="center">
