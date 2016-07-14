@@ -270,8 +270,8 @@
                         </td>
                         <td width="5%" align="center">
                             <label>
-                                @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value)))
-                                @*@Html.TextBoxFor(model => model.responsibles[j], new { @class = "form-control", @placeholder = Model.responsibles[j] }) *@
+                              @*  @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) *@
+                                @Html.TextBoxFor(model => model.responsibles[j], new { @class = "form-control", @placeholder = Model.responsibles[j] }) 
                             </label>
                         </td>
                         <td width="5%" align="center">

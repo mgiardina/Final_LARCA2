@@ -41,6 +41,12 @@ namespace LARCA2.Business.Services
         {
             return UsuariosDAL.TraerPorNombreDeUsuario(username);
         }
+        
+           public bool ExisteUsuario(string username)
+        {
+            return UsuariosDAL.ExisteUsuario(username);
+        }
+
 
         public LARCA20_Users TraerPrimerAdminDisponible()
         {

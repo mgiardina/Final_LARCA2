@@ -99,7 +99,34 @@ namespace LARCA2.Business.Services
             return true;
         }
 
+        public static bool esAgrupable(LARCA20_SmoScope smoScope1, LARCA20_SmoScope smoScope, string newResponsable)
+        {
+            LARCA2.Business.Services.ResponsablesBLL rebll = new ResponsablesBLL();
 
+
+            //     if (!((smoScope.SmoScopeID != 0 || smoScope1.SmoScopeID == 0) && smoScope.SmoScopeID == smoScope1.SmoScopeID)) return false;
+            //    (smoScope.Fecha != null && smoScope.Fecha.Equals(this.Fecha) || (smoScope.Fecha == null && this.Fecha == null)) ))return false;
+            if (!(smoScope.RefIdSMO != null && smoScope.RefIdSMO != 0 && ((smoScope.RefIdSMO == null && smoScope1.RefIdSMO == null) || smoScope.RefIdSMO == smoScope1.RefIdSMO))) return false;
+            if (!(smoScope.RefIdBU != null && smoScope.RefIdBU != 0 && ((smoScope.RefIdBU == null && smoScope1.RefIdBU == null) || smoScope.RefIdBU == smoScope1.RefIdBU))) return false;
+            //  if ((smoScope.RefIdOwner != null && smoScope.RefIdOwner != 0 && smoScope.RefIdOwner == smoScope1.RefIdOwner)) return false;
+            if (!(smoScope.RefIdRC != null && smoScope.RefIdRC != 0 && smoScope.RefIdRC == smoScope1.RefIdRC)) return false;
+            //     smoScope.Volumen != null && smoScope.Volumen != 0 && smoScope.Volumen == this.Volumen ))return false;
+            // if (!((smoScope.Problem != null || smoScope1.Problem == null) &&  ((smoScope.Problem == null && smoScope1.Problem == null) || (smoScope.Problem == smoScope1.Problem)))) return false;
+            //if (!((smoScope.Why1 != null || smoScope1.Why1 == nkull) && smoScope.Why1 == smoScope1.Why1)) return false;
+            //if (!((smoScope.Why2 != null || smoScope1.Why2 == null) && smoScope.Why2 == smoScope1.Why2)) return false;
+            //if (!((smoScope.Why3 != null || smoScope1.Why3 == null) && smoScope.Why3 == smoScope1.Why3)) return false;
+            //if (!((smoScope.ActionPlan != null || smoScope1.ActionPlan == null) && smoScope.ActionPlan == smoScope1.ActionPlan)) return false;
+          //  if (!((((smoScope.RefIdResponsable == null || smoScope1.RefIdResponsable == null)) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable))) return false;
+
+            if (!((smoScope1.RefIdResponsable == null && newResponsable == "") || (smoScope1.RefIdResponsable != null && rebll.TraerSuNombreDeUsuario(Int32.Parse(smoScope1.RefIdResponsable.ToString())) == newResponsable))) return false; //comparacion responsables nuevos
+           
+            
+            //  if (!((smoScope.DueDate != null || smoScope1.DueDate == null) && smoScope.DueDate.Equals(smoScope1.DueDate))) return false;
+            if (!(smoScope.O_C != null && smoScope.O_C.Equals(smoScope1.O_C))) return false;
+            //  smoScope.Borrado.Equals(this.Borrado) ))return false;
+            if (!((((smoScope.Level4 == null || smoScope1.Level4 == null)) || smoScope.Level4 == smoScope1.Level4))) return false;
+            return true;
+        }
 
         public static bool esIgual(LARCA20_SmoScope smoScope1, LARCA20_SmoScope smoScope)
         {
@@ -120,7 +147,46 @@ namespace LARCA2.Business.Services
             if (!((smoScope.Why3 != null || smoScope1.Why3 == null) && smoScope.Why3 == smoScope1.Why3)) return false;
             if (!((smoScope.ActionPlan != null || smoScope1.ActionPlan == null) && smoScope.ActionPlan == smoScope1.ActionPlan)) return false;
             //if (!((smoScope.RefIdResponsable != null || smoScope1.RefIdResponsable == null) && (smoScope.RefIdResponsable != 0 || smoScope1.RefIdResponsable == 0) && respon.IdRenglon == redal.Traer(smoScope1.RefIdResponsable.Value).IdRenglon)) return false;
+            //  if (!(((smoScope.RefIdResponsable == null && smoScope1.RefIdResponsable == null) || ((smoScope.RefIdResponsable == 0 && smoScope1.RefIdResponsable == null) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable)))) return false;
+
+
             if (!(((smoScope.RefIdResponsable == null && smoScope1.RefIdResponsable == null) || ((smoScope.RefIdResponsable == 0 && smoScope1.RefIdResponsable == null) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable)))) return false;
+
+            if (!((smoScope.DueDate != null || smoScope1.DueDate == null) && smoScope.DueDate.Equals(smoScope1.DueDate))) return false;
+            if (!(((smoScope.O_C == null && smoScope1.O_C == null) || (smoScope.O_C == smoScope1.O_C)))) return false;
+            //  smoScope.Borrado.Equals(this.Borrado) ))return false;
+            if (!(((smoScope.Level4 == 0 && smoScope1.Level4 == null) || (smoScope.Level4 == smoScope1.Level4)))) return false;
+
+            return true;
+        }
+
+        public static bool esIgual(LARCA20_SmoScope smoScope1, LARCA20_SmoScope smoScope, string newResponsable)
+        {
+            //en smoscope1 llega el original de la bd, en smoscope llega el que es modificado directo desde el viewmodel
+            LARCA2.Business.Services.ResponsablesBLL rebll = new ResponsablesBLL();
+            LARCA2.Data.Services.ResponsablesDAL redal = new LARCA2.Data.Services.ResponsablesDAL();
+            //   LARCA20_Responsable respon = redal.Traer(smoScope.RefIdResponsable.Value);
+
+            if (!((smoScope.SmoScopeID != 0 || smoScope1.SmoScopeID == 0) && smoScope.SmoScopeID == smoScope1.SmoScopeID)) return false;
+            //    (smoScope.Fecha != null && smoScope.Fecha.Equals(this.Fecha) || (smoScope.Fecha == null && this.Fecha == null)) ))return false;
+            //  smoScope.RefIdSMO != null && smoScope.RefIdSMO != 0 && smoScope.RefIdSMO == this.RefIdSMO ))return false;
+            //     smoScope.RefIdBU != null && smoScope.RefIdBU != 0 && smoScope.RefIdBU == this.RefIdBU ))return false;
+            //    smoScope.RefIdOwner != null && smoScope.RefIdOwner != 0 && smoScope.RefIdOwner == this.RefIdOwner ))return false;
+            //    smoScope.RefIdRC != null && smoScope.RefIdRC != 0 && smoScope.RefIdRC == this.RefIdRC ))return false;
+            //     smoScope.Volumen != null && smoScope.Volumen != 0 && smoScope.Volumen == this.Volumen ))return false;
+            //    (smoScope.Problem != null || this.Problem == null) && smoScope.Problem == this.Problem ))return false;
+            if (!((smoScope.Problem != null || smoScope1.Problem == null) && ((smoScope.Problem == null && smoScope1.Problem == null) || (smoScope.Problem == smoScope1.Problem)))) return false;
+            if (!((smoScope.Why1 != null || smoScope1.Why1 == null) && smoScope.Why1 == smoScope1.Why1)) return false;
+            if (!((smoScope.Why2 != null || smoScope1.Why2 == null) && smoScope.Why2 == smoScope1.Why2)) return false;
+            if (!((smoScope.Why3 != null || smoScope1.Why3 == null) && smoScope.Why3 == smoScope1.Why3)) return false;
+            if (!((smoScope.ActionPlan != null || smoScope1.ActionPlan == null) && smoScope.ActionPlan == smoScope1.ActionPlan)) return false;
+            //if (!((smoScope.RefIdResponsable != null || smoScope1.RefIdResponsable == null) && (smoScope.RefIdResponsable != 0 || smoScope1.RefIdResponsable == 0) && respon.IdRenglon == redal.Traer(smoScope1.RefIdResponsable.Value).IdRenglon)) return false;
+          //  if (!(((smoScope.RefIdResponsable == null && smoScope1.RefIdResponsable == null) || ((smoScope.RefIdResponsable == 0 && smoScope1.RefIdResponsable == null) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable)))) return false;
+
+
+            if (!((smoScope1.RefIdResponsable == null && newResponsable == "") || (smoScope1.RefIdResponsable != null && rebll.TraerSuNombreDeUsuario(Int32.Parse(smoScope1.RefIdResponsable.ToString())) == newResponsable))) return false; //comparacion responsables nuevos
+            //si no se da que ambos son nulos o que ambos apuntan al mismo nombre de usuario, entonces son distintos
+
             if (!((smoScope.DueDate != null || smoScope1.DueDate == null) && smoScope.DueDate.Equals(smoScope1.DueDate))) return false;
             if (!(((smoScope.O_C == null && smoScope1.O_C == null) || (smoScope.O_C == smoScope1.O_C)))) return false;
             //  smoScope.Borrado.Equals(this.Borrado) ))return false;
@@ -128,6 +194,7 @@ namespace LARCA2.Business.Services
           
             return true;
         }
+
         public List<LARCA20_SmoScope> Filtrar(string refidbu, string refidsmo)
         {
             int bu = 0;
