@@ -413,7 +413,15 @@
                 <fieldset class="form-group">
                     <label for="Nombre">Username</label>
                     @Html.TextBoxFor(m => m.Usuario.user_name, new { @class = "form-control", @placeholder = "Username ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(m => m.Usuario.user_name)</small>
+                    @if (ViewBag.ErrorRequired)
+                    {
+                        <small class="text-muted" style="color:red;">Required</small>
+                    }
+                    @if (ViewBag.ErrorAD)
+                    {
+                        <small class="text-muted" style="color:red;">User not exists in ACTIVE DIRECTORY</small>
+                    }
+
                 </fieldset>
             </div>
         </div>

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using LARCA2.Data.DatabaseModels;
 using LARCA2.Business.Services;
+using System.DirectoryServices;
 
 namespace LARCA2.Controllers
 {
@@ -34,6 +35,8 @@ namespace LARCA2.Controllers
 
             ViewBag.ErrorPermiso = false;
             ViewBag.ErrorRol = false;
+            ViewBag.ErrorRequired = false;
+            ViewBag.ErrorAD = false;
 
             return View("NuevoUser");
 
@@ -44,103 +47,115 @@ namespace LARCA2.Controllers
             string[] LosPermisos = Request.Form["HI_PermisosEsp"].Split('/');
             ViewBag.ErrorPermiso = false;
             ViewBag.ErrorRol = false;
+            ViewBag.ErrorRequired = false;
+            ViewBag.ErrorAD = false;
             bool Error = false;
             if (model.Usuario.user_name != null)
             {
-                if (CboRoles != "0")
+                if (!UserExistsInAD(model.Usuario.user_name, "LA"))
                 {
-                    if (LosPermisos[0] != "")
+                    if (CboRoles != "0")
                     {
-                        Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
-                        if (repo.TraerPorNombreDeUsuario(model.Usuario.user_name) != null && repo.TraerPorNombreDeUsuario(model.Usuario.user_name).deleted == false)
-                            return Content("<script language='javascript' type='text/javascript'>alert('The username entered already exists , try another.');document.location = '../Adm/NuevoUsuario';</script>");
-
-                        Data.DatabaseModels.LARCA20_Users user = new Data.DatabaseModels.LARCA20_Users();
-                        user.name = model.Usuario.name == null ? string.Empty : model.Usuario.name;
-                        user.last_name = model.Usuario.last_name == null ? string.Empty : model.Usuario.last_name;
-                        user.deleted = false;
-                        // user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
-                        user.date = DateTime.Now;
-                        user.Email = model.Usuario.user_name + "@pg.com";
-                        // user.Telefono = model.Usuario.Telefono;
-                        user.user_name = model.Usuario.user_name;
-                        
-                        repo.Guardar(user);
-
-                        // Ahora guardo los datos del Rol para este usuario
-                        Business.Services.UsuariosRolesBLL repoRol = new Business.Services.UsuariosRolesBLL();
-                        Data.DatabaseModels.LARCA20_UsersRoles userRol = new Data.DatabaseModels.LARCA20_UsersRoles();
-                        Data.DatabaseModels.Larca2Entities ff = new Data.DatabaseModels.Larca2Entities();
-                        int lastProductId = ff.LARCA20_Users.Max(item => item.Id);
-
-                        userRol.RefIdUser = lastProductId;
-                        userRol.RefIdRoles = Convert.ToInt32(CboRoles);
-                        userRol.deleted = false;
-                        repoRol.Guardar(userRol);
-
-                        // Guardo los Permisos Especiales
-
-                        foreach (string iUs in LosPermisos)
+                        if (LosPermisos[0] != "")
                         {
-                            Business.Services.UserOwnerBLL RepUserOW = new Business.Services.UserOwnerBLL();
-                            Data.DatabaseModels.LARCA20_User_Owner userOW = new Data.DatabaseModels.LARCA20_User_Owner();
-                            string[] PerEsp = iUs.Split('.');
+                            Business.Services.UsuariosBLL repo = new Business.Services.UsuariosBLL();
+                            if (repo.TraerPorNombreDeUsuario(model.Usuario.user_name) != null && repo.TraerPorNombreDeUsuario(model.Usuario.user_name).deleted == false)
+                                return Content("<script language='javascript' type='text/javascript'>alert('The username entered already exists , try another.');document.location = '../Adm/NuevoUsuario';</script>");
 
-                            if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
+                            Data.DatabaseModels.LARCA20_Users user = new Data.DatabaseModels.LARCA20_Users();
+                            user.name = model.Usuario.name == null ? string.Empty : model.Usuario.name;
+                            user.last_name = model.Usuario.last_name == null ? string.Empty : model.Usuario.last_name;
+                            user.deleted = false;
+                            // user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
+                            user.date = DateTime.Now;
+                            user.Email = model.Usuario.user_name + "@pg.com";
+                            // user.Telefono = model.Usuario.Telefono;
+                            user.user_name = model.Usuario.user_name;
+
+                            repo.Guardar(user);
+
+                            // Ahora guardo los datos del Rol para este usuario
+                            Business.Services.UsuariosRolesBLL repoRol = new Business.Services.UsuariosRolesBLL();
+                            Data.DatabaseModels.LARCA20_UsersRoles userRol = new Data.DatabaseModels.LARCA20_UsersRoles();
+                            Data.DatabaseModels.Larca2Entities ff = new Data.DatabaseModels.Larca2Entities();
+                            int lastProductId = ff.LARCA20_Users.Max(item => item.Id);
+
+                            userRol.RefIdUser = lastProductId;
+                            userRol.RefIdRoles = Convert.ToInt32(CboRoles);
+                            userRol.deleted = false;
+                            repoRol.Guardar(userRol);
+
+                            // Guardo los Permisos Especiales
+
+                            foreach (string iUs in LosPermisos)
                             {
-                                userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
-                                userOW.IdUser = lastProductId;
-                                userOW.deleted = false;
-                                RepUserOW.Guardar(userOW);
+                                Business.Services.UserOwnerBLL RepUserOW = new Business.Services.UserOwnerBLL();
+                                Data.DatabaseModels.LARCA20_User_Owner userOW = new Data.DatabaseModels.LARCA20_User_Owner();
+                                string[] PerEsp = iUs.Split('.');
+
+                                if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
+                                {
+                                    userOW.IdBU = Convert.ToInt32(PerEsp[0]);
+                                    userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
+                                    userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
+                                    userOW.IdUser = lastProductId;
+                                    userOW.deleted = false;
+                                    RepUserOW.Guardar(userOW);
+                                }
+
+                                if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                                {
+
+                                    userOW.IdBU = Convert.ToInt32(PerEsp[0]);
+                                    userOW.IdUser = lastProductId;
+                                    userOW.deleted = false;
+                                    RepUserOW.Guardar(userOW);
+                                }
+
+                                if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                                {
+
+                                    userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
+                                    userOW.IdUser = lastProductId;
+                                    userOW.deleted = false;
+                                    RepUserOW.Guardar(userOW);
+                                }
+
+                                if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                                {
+
+                                    userOW.IdUser = lastProductId;
+                                    userOW.deleted = false;
+                                    RepUserOW.Guardar(userOW);
+                                }
                             }
 
-                            if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                            {
 
-                                userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                userOW.IdUser = lastProductId;
-                                userOW.deleted = false;
-                                RepUserOW.Guardar(userOW);
-                            }
-
-                            if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                            {
-
-                                userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                userOW.IdUser = lastProductId;
-                                userOW.deleted = false;
-                                RepUserOW.Guardar(userOW);
-                            }
-
-                            if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                            {
-
-                                userOW.IdUser = lastProductId;
-                                userOW.deleted = false;
-                                RepUserOW.Guardar(userOW);
-                            }
+                            return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/UserBM';</script>");
                         }
-
-
-                        return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/UserBM';</script>");
+                        else
+                        {
+                            Error = true;
+                            ViewBag.ErrorPermiso = true;
+                        }
                     }
                     else
                     {
                         Error = true;
-                        ViewBag.ErrorPermiso = true;
+                        ViewBag.ErrorRol = true;
                     }
                 }
                 else
                 {
                     Error = true;
-                    ViewBag.ErrorRol = true;
+                    ViewBag.ErrorAD = true;
                 }
             }
             else
             {
                 Error = true;
+                ViewBag.ErrorRequired = true;
+                
             }
             if (!Error)
                 return RedirectToAction("UserBM");
@@ -470,6 +485,24 @@ namespace LARCA2.Controllers
                 userSearchForm.Usuarios = repo.TodosFiltro(txtNombre, txtApellido);
 
             return View("UserBM", userSearchForm);
+        }
+
+        public bool UserExistsInAD(string username, string userdomain)
+        {
+            List<string> gruposEncontrados = new List<string>();
+            // Creamos un objeto DirectoryEntry para conectarnos al directorio activo
+            DirectoryEntry adsRoot = new DirectoryEntry("LDAP://" + userdomain);
+            // Creamos un objeto DirectorySearcher para hacer una búsqueda en el directorio activo
+            DirectorySearcher adsSearch = new DirectorySearcher(adsRoot);
+
+            // Ponemos como filtro que busque el usuario actual
+            adsSearch.Filter = "samAccountName=" + username;
+
+            // Extraemos la primera coincidencia
+            SearchResult oResult;
+            oResult = adsSearch.FindOne();
+
+            return oResult == null;
         }
 
         #endregion
