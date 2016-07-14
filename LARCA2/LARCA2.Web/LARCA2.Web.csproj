@@ -327,6 +327,7 @@
     <Content Include="Views\LAScope\Index.cshtml" />
     <Content Include="Views\Home\InvalidUser.cshtml" />
     <Content Include="Views\PendingAnalysis\Index.cshtml" />
+    <Content Include="Views\Smo\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Reports\" />

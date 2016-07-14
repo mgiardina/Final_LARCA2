@@ -91,6 +91,9 @@
     <Compile Include="DatabaseModels\LARCA20_SmoScopeGroup.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModels\LARCA20_SmoScopeGroupedRows.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModels\LARCA20_Users.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
@@ -127,6 +130,7 @@
     <Compile Include="Services\RolesDAL.cs" />
     <Compile Include="Services\ResponsablesDAL.cs" />
     <Compile Include="Services\SmoScopeDetailDAL.cs" />
+    <Compile Include="Services\SmoScopeGroupedRowsDAL.cs" />
     <Compile Include="Services\UserOwnerDAL.cs" />
     <Compile Include="Services\UsuariosDAL.cs" />
     <Compile Include="Validation\LARCA20_AuxData.cs" />
