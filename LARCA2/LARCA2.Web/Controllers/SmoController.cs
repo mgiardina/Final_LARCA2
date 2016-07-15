@@ -255,6 +255,26 @@ namespace Larca2.Controllers
             return View("SmoSimple", viewModel);
         }
 
+        public ActionResult SmoTreatmentResult(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
+        {
+            LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
+            if (user == null)
+                user = repoUsuarios.Traer(2);
+            string action = viewModel.AccionBoton;
+
+            if (action == "modif")
+            {
+                return SmoModificados(viewModel);
+            }
+            else if (action == "filter")
+            {
+                return SmoFiltrado(viewModel);
+            }
+
+            //if something fails, this will redirect to the first view
+            return View("SmoTreatment", viewModel);
+        }
 
         public ActionResult SmoSimpleAgrupar(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
