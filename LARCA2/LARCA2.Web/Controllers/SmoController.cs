@@ -7,14 +7,13 @@ using System.Web.Mvc;
 namespace Larca2.Controllers
 {
     public class SmoController : Controller
-    
     {
 
 
         public ActionResult SmoSimple()
         {
             ViewBag.Message = "";
-            
+
 
             //Declaro BLLs e inicializo viewModel
             Larca2.Views.ViewModels.SMOScopeViewModel viewModel = new Larca2.Views.ViewModels.SMOScopeViewModel();
@@ -22,7 +21,7 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
             LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
-           
+
 
             //Reviso el usuario logueado, sino como prueba traigo al de ID 2
             LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
@@ -36,12 +35,12 @@ namespace Larca2.Controllers
             viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
 
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
-            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = new List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner>(); 
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = new List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner>();
             if (viewModel.idRole != 1) //NOT ADMINISTRATOR
                 luo = uobll.TraerPorIdUsuario(user.Id);
 
             // Quito de la lista de SMO y BU de los filtros aquellos no contemplados por un registro existente de UserOwner para el usuario logueado
-           // viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            // viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
             //viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
             //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
@@ -104,23 +103,32 @@ namespace Larca2.Controllers
 
             viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
-            
+
             viewModel.selectedItems = new List<bool>();
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+<<<<<<< HEAD
+
+            viewModel.responsibles = new List<string>();
+=======
             
           
+>>>>>>> origin/master
 
             LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
             int valMax = adb.Todos()[0].Toplvl4;
             viewModel.maxClones = new List<int>();
-            for(int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
             { viewModel.maxClones.Add(valMax); }
 
+<<<<<<< HEAD
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+=======
             viewModel.responsibles = new List<string>();
             foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+>>>>>>> origin/master
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
             return View("SmoSimple", viewModel);
@@ -149,12 +157,12 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
             viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
             viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
-            
+
             List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
 
-         //   viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
-          //  viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
+            //   viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            //  viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
             //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
             //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
@@ -205,7 +213,7 @@ namespace Larca2.Controllers
 
             viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
-            
+
 
             int bu = Int32.Parse(viewModel.bu);
             int smo = Int32.Parse(viewModel.smo);
@@ -217,17 +225,17 @@ namespace Larca2.Controllers
 
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
-            viewModel.EditablesSMO = viewModel.RegistrosSMO;           
-              viewModel.selectedItems = new List<bool>();
-              LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
-              int valMax = adb.Todos()[0].Toplvl4;
-              viewModel.maxClones = new List<int>();
-              for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
-              { viewModel.maxClones.Add(valMax); }
+            viewModel.EditablesSMO = viewModel.RegistrosSMO;
+            viewModel.selectedItems = new List<bool>();
+            LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+            int valMax = adb.Todos()[0].Toplvl4;
+            viewModel.maxClones = new List<int>();
+            for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            { viewModel.maxClones.Add(valMax); }
 
-              viewModel.responsibles = new List<string>();
-              foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
-                  viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+            viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
 
             return View("SmoSimple", viewModel);
@@ -251,7 +259,7 @@ namespace Larca2.Controllers
                 return SmoSimpleFiltrado(viewModel);
             }
 
-           //if something fails, this will redirect to the first view
+            //if something fails, this will redirect to the first view
             return View("SmoSimple", viewModel);
         }
 
@@ -296,16 +304,16 @@ namespace Larca2.Controllers
 
             List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
-       //     viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
-      //      viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
+            //     viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            //      viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
             int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
-            for ( int countFor = 0; countFor < viewModel.EditablesSMO.Count; countFor++ )
+            for (int countFor = 0; countFor < viewModel.EditablesSMO.Count; countFor++)
             {
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope = viewModel.EditablesSMO[countFor];
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope actualOriginal = repoModif.Traer(scope.SmoScopeID);
                 if (actualOriginal == null) { } //no existe en la tabla
-                if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope,viewModel.responsibles[countFor])) //existe Y fue modificado
+                if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope, viewModel.responsibles[countFor])) //existe Y fue modificado
                 {
 
                     if (scope.Why1 != actualOriginal.Why1)
@@ -320,19 +328,19 @@ namespace Larca2.Controllers
                         actualOriginal.Problem = scope.Problem;
                     if (scope.DueDate != actualOriginal.DueDate)
                         actualOriginal.DueDate = scope.DueDate;
-                  /*  if (scope.RefIdResponsable == 0)
-                        actualOriginal.RefIdResponsable = null;
-                    else  if (scope.RefIdResponsable != actualOriginal.RefIdResponsable) 
-                        actualOriginal.RefIdResponsable = scope.RefIdResponsable;
-                   */
+                    /*  if (scope.RefIdResponsable == 0)
+                          actualOriginal.RefIdResponsable = null;
+                      else  if (scope.RefIdResponsable != actualOriginal.RefIdResponsable) 
+                          actualOriginal.RefIdResponsable = scope.RefIdResponsable;
+                     */
                     //adaptacion nuevos responsables
                     if (viewModel.responsibles[countFor] == "")
                         actualOriginal.RefIdResponsable = null;
                     else if ((actualOriginal.RefIdResponsable == null) || (viewModel.responsibles[countFor] != repoResponsables.TraerSuNombreDeUsuario(Int32.Parse(actualOriginal.RefIdResponsable.ToString()))))
                     {
                         //aca puede pasar que:
-                        
-                    
+
+
                         if (repoUsuarios.ExisteUsuario(viewModel.responsibles[countFor]) == false)
                         {
                             //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
@@ -349,14 +357,15 @@ namespace Larca2.Controllers
                             repoResponsables.Guardar(newResp);
                             actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                         }
-                        else{
-                          
-                            if(repoResponsables.Todos().Where(x=> x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id).Count() > 0)
+                        else
+                        {
+
+                            if (repoResponsables.Todos().Where(x => x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id).Count() > 0)
                             {
                                 //el responsable ingresado exista y sea un usuario que existe, entonces solo se asigna.
                                 actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                             }
-                            else 
+                            else
                             {
                                 //el responsable ingresado no exista pero exista el usuario, hay que crear el responsable.
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
@@ -365,8 +374,8 @@ namespace Larca2.Controllers
                                 repoResponsables.Guardar(newResp);
                                 actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                             }
-                            }
-                        
+                        }
+
                     }
                     if (scope.O_C != actualOriginal.O_C && (scope.O_C != null && (scope.O_C == "O" || scope.O_C == "o" || scope.O_C == "C" || scope.O_C == "c")))
                         actualOriginal.O_C = scope.O_C.ToUpper();
@@ -382,7 +391,7 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
 
             int seleccionados = 0;
-            if(viewModel.selectedItems != null)
+            if (viewModel.selectedItems != null)
                 seleccionados = viewModel.selectedItems.Where(x => x.ToString() == "True").ToList().Count;
             if (seleccionados > 1)
             {
@@ -450,14 +459,14 @@ namespace Larca2.Controllers
 
                         //preparo y guardo el primero
                         LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows adapt = grbll.crearGroup(repo.Traer(smoAgrup.SmoScopeID));
-                       if(seleccionados > 2)
-                        grbll.Guardar(adapt);
+                        if (seleccionados > 2)
+                            grbll.Guardar(adapt);
 
                         smoAgrup.ActionPlan = smoAgrup.ActionPlan + (smoAgrup.ActionPlan != null && smoAgrup2.ActionPlan != null ? "-" : "") + smoAgrup2.ActionPlan;
-                        smoAgrup.Why1 = smoAgrup.Why1 + (smoAgrup.Why1 != null && smoAgrup2.Why1 != null? "-" : "") + smoAgrup2.Why1;
-                        smoAgrup.Why2 = smoAgrup.Why2 + (smoAgrup.Why2 != null && smoAgrup2.Why2 != null? "-" : "") + smoAgrup2.Why2;
-                        smoAgrup.Why3 = smoAgrup.Why3 + (smoAgrup.Why3 != null && smoAgrup2.Why3 != null? "-" : "") + smoAgrup2.Why3;
-                        smoAgrup.Problem = smoAgrup.Problem + (smoAgrup.Problem != null && smoAgrup2.Problem != null ? "-" : "") + smoAgrup2.Problem;                     
+                        smoAgrup.Why1 = smoAgrup.Why1 + (smoAgrup.Why1 != null && smoAgrup2.Why1 != null ? "-" : "") + smoAgrup2.Why1;
+                        smoAgrup.Why2 = smoAgrup.Why2 + (smoAgrup.Why2 != null && smoAgrup2.Why2 != null ? "-" : "") + smoAgrup2.Why2;
+                        smoAgrup.Why3 = smoAgrup.Why3 + (smoAgrup.Why3 != null && smoAgrup2.Why3 != null ? "-" : "") + smoAgrup2.Why3;
+                        smoAgrup.Problem = smoAgrup.Problem + (smoAgrup.Problem != null && smoAgrup2.Problem != null ? "-" : "") + smoAgrup2.Problem;
                         smoAgrup.DueDate = (smoAgrup.DueDate < smoAgrup2.DueDate ? smoAgrup.DueDate : smoAgrup2.DueDate);
                         smoAgrup.Volumen = smoAgrup.Volumen + smoAgrup2.Volumen;
                         if (smoAgrup.RefIdResponsable == null)
@@ -469,11 +478,11 @@ namespace Larca2.Controllers
                         //now this part of the method doesnt just delete the old register but it adapts it to groupedrows table and saves it there
                         repo.Guardar(smoAgrup);
                         //repo.Eliminar(smoAgrup2.SmoScopeID);
-                         adapt= grbll.crearGroup(repo.Traer(smoAgrup2.SmoScopeID));
-                         adapt.GroupSmoID = smoAgrup.SmoScopeID;
+                        adapt = grbll.crearGroup(repo.Traer(smoAgrup2.SmoScopeID));
+                        adapt.GroupSmoID = smoAgrup.SmoScopeID;
                         grbll.Guardar(adapt);
 
-                       
+
 
                         repo.Eliminar(smoAgrup2.SmoScopeID);
                     }
@@ -536,7 +545,7 @@ namespace Larca2.Controllers
 
             viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
-            
+
 
 
 
@@ -571,16 +580,16 @@ namespace Larca2.Controllers
         [HttpGet]
         public JsonResult Desagrupar(string id)
         {
-        
+
             int groupId = Int32.Parse(id);
             LARCA2.Business.Services.SMOScopeGroupedRowsBLL rbl = new LARCA2.Business.Services.SMOScopeGroupedRowsBLL();
             LARCA2.Business.Services.SMOScopeBLL smbl = new LARCA2.Business.Services.SMOScopeBLL();
-            
+
             List<LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows> listOfRowsForGroup = rbl.TraerPorGroupId(groupId);
             if (listOfRowsForGroup.Count == 0)
-              return Json("Group has already been disbanded. Please refresh the page.", JsonRequestBehavior.AllowGet);
+                return Json("Group has already been disbanded. Please refresh the page.", JsonRequestBehavior.AllowGet);
 
-            foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows groupedRow in listOfRowsForGroup)
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScopeGroupedRows groupedRow in listOfRowsForGroup)
             {
                 //se crea el smo correspondiente y se borra el smogrouped
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope nuevScope = smbl.crearGroup(groupedRow);
@@ -593,8 +602,8 @@ namespace Larca2.Controllers
             return Json("Group succesfully disbanded. Refresh the page to reflect the changes in the view.", JsonRequestBehavior.AllowGet);
         }
 
-        
-      
+
+
 
         [HttpGet]
         public JsonResult MostrarDetalle(string id)
@@ -611,7 +620,7 @@ namespace Larca2.Controllers
 
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScopeDetail det in details)
             {
-             //   result = result + "<tr><td>" + det.Volumen.ToString() + "</td>";
+                //   result = result + "<tr><td>" + det.Volumen.ToString() + "</td>";
                 result = result + "<tr><td>" + decimal.Round(decimal.Parse(det.Volumen.ToString()), 2).ToString() + "</td>";
                 result = result + "<td>" + mbl.Traer("BU", Int32.Parse(det.BuID.ToString())).DataFin + "</td>"; //showed dataini, now datafin
                 result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td>";
@@ -723,7 +732,7 @@ namespace Larca2.Controllers
 
         }
 
-    
+
 
         public ActionResult SmoTreatment()
         {
@@ -749,39 +758,39 @@ namespace Larca2.Controllers
             viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
             viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
-            List <LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
 
             // Quito de la lista de SMO y BU de los filtros aquellos no contemplados por un registro existente de UserOwner para el usuario logueado
-         //    viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
-         //    viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
+            //    viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            //    viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
-             //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
-             //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
-             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
-             if (viewModel.idRole != 1)
-             {
-                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
-                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
-                 foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
-                 {
-                     smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
-                     if (smoscopeact != null)
-                     {
-                         viewModel.RegistrosSMO.AddRange(smoscopeact);
-                     }
-                 }
-             }
-             else
-             {
-                 viewModel.RegistrosSMO = ssbll.Filtrar("0", "0").ToList();
-             }
+            //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
+            //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
+            //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
+            if (viewModel.idRole != 1)
+            {
+                List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
+                viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
+                foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
+                {
+                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                    if (smoscopeact != null)
+                    {
+                        viewModel.RegistrosSMO.AddRange(smoscopeact);
+                    }
+                }
+            }
+            else
+            {
+                viewModel.RegistrosSMO = ssbll.Filtrar("0", "0").ToList();
+            }
 
 
 
-             viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
-             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
-            
+            viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
+            viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
+
 
             //LARCA2.Business.Services.MasterDataBLL mdlll = new LARCA2.Business.Services.MasterDataBLL();
             //List<LARCA2.Data.DatabaseModels.LARCA20_MasterData> allmaster = mdlll.Todos().Exists(z => viewModel.SMOList.Where(x => x.Text == z.DataIni).ToList());
@@ -789,11 +798,11 @@ namespace Larca2.Controllers
             //viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             //viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
-             if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
-                 viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
+            if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
+                viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
-         
+
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             //Copio la lista a los editables para poder modificar los datos necesarios.
@@ -816,8 +825,6 @@ namespace Larca2.Controllers
 
         }
 
-    
-
         public ActionResult SmoFiltrado(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
             ViewBag.Message = "";
@@ -825,7 +832,7 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
             LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
-          
+
 
             LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
@@ -836,19 +843,19 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
             viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
             viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
-            
+
             List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
 
 
 
-         //   viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
-         //   viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
+            //   viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            //   viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
             //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
             //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
-            
+
             if (viewModel.idRole != 1)
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
@@ -864,14 +871,14 @@ namespace Larca2.Controllers
             }
             else
             {
-                viewModel.RegistrosSMO = ssbll.Filtrar("0","0").ToList();
+                viewModel.RegistrosSMO = ssbll.Filtrar("0", "0").ToList();
             }
 
 
 
             viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
-            
+
             viewModel.Responsables = new List<SelectListItem>();
             List<LARCA2.Data.DatabaseModels.LARCA20_Users> listaDeUsuariosParaRespons = repoUsuarios.Todos();
             viewModel.Responsables.Add(new SelectListItem { Text = "Choose a valid Owner:", Value = "0" });
@@ -889,12 +896,12 @@ namespace Larca2.Controllers
             if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
-            if(viewModel.mesSeleccionado == "0")
+            if (viewModel.mesSeleccionado == "0")
             {
                 if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
                     viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
-             }
+            }
             else
             {
                 if (viewModel.dropdownMeses.Count < 2)
@@ -906,11 +913,11 @@ namespace Larca2.Controllers
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month < DateTime.Now.Month).ToList();
             }
 
-            
+
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
-       //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
+            //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
 
             LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
@@ -929,7 +936,6 @@ namespace Larca2.Controllers
 
         }
 
-        
         public ActionResult SmoModificados(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
@@ -939,9 +945,9 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.Level4BLL lvlClones = new LARCA2.Business.Services.Level4BLL();
             LARCA2.Business.Services.RCClassificationBLL rcClones = new LARCA2.Business.Services.RCClassificationBLL();
             LARCA2.Business.Services.ResponsablesBLL respoClones = new LARCA2.Business.Services.ResponsablesBLL();
-              LARCA2.Business.Services.UsuariosRolesBLL userRoles = new LARCA2.Business.Services.UsuariosRolesBLL();
+            LARCA2.Business.Services.UsuariosRolesBLL userRoles = new LARCA2.Business.Services.UsuariosRolesBLL();
 
-               //Reviso el usuario logueado, sino como prueba traigo al de ID 2
+            //Reviso el usuario logueado, sino como prueba traigo al de ID 2
             LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
@@ -1016,15 +1022,19 @@ namespace Larca2.Controllers
                     clon.SmoScopeID = 0;
                     
                     clon.deleted = false;
-                    clon.DueDate = (DateTime.TryParse(actFilt[11], out due)? due : DateTime.Now.AddDays(7));
+                    clon.DueDate = (DateTime.TryParse(actFilt[11], out due) ? due : DateTime.Now.AddDays(7));
                     clon.date = DateTime.Now;
                     clon.Volumen = Decimal.Parse(actFilt[0]); //antes 3
                     clon.Problem = actFilt[5];
                     clon.Why1 = actFilt[6];
                     clon.Why2 = actFilt[7];
                     clon.Why3 = actFilt[8];
+<<<<<<< HEAD
+                    clon.O_C = (actFilt[12] == "O" || actFilt[12] == "C" ? actFilt[12] : "O");
+=======
                     clon.ActionPlan = actFilt[9];
                     clon.O_C = (actFilt[12].ToUpper() == "O" || actFilt[12].ToUpper() == "C"? actFilt[12] : "O" );
+>>>>>>> origin/master
                     clon.RefIdBU = mdClones.Traer(Int32.Parse(actFilt[2])).id;
                     clon.RefIdSMO = mdClones.Traer(Int32.Parse(actFilt[1])).id;
                     if (userRoles.Traer(user.Id).RefIdRoles != 1) //NOT ADMIN
@@ -1034,8 +1044,12 @@ namespace Larca2.Controllers
                         {
                             clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.Id).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
                         }
+<<<<<<< HEAD
+                        catch (Exception e) { clon.RefIdOwner = null; }
+=======
                         catch (Exception e) { clon.RefIdOwner = null; } 
 
+>>>>>>> origin/master
                     clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).Id;
                    
                     
@@ -1100,7 +1114,7 @@ namespace Larca2.Controllers
                         clon.Level4 = null;
                     else
                         clon.Level4 = Int32.Parse(actFilt[4]);
-                        //lvlClones.Todos().Where(l => l.deleted == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
+                    //lvlClones.Todos().Where(l => l.deleted == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
 
                     repoGuardado.Guardar(clon);
                     //buscar IDs y guardar en tabla LARCA20_SmoScope -en user owner no deberia hacer falta, cuando haya que hacer pruebas revisar si con un solo user owner se obtienen todos los registros de la tabla de smo scope correspondientes-
@@ -1108,13 +1122,49 @@ namespace Larca2.Controllers
 
             }
             LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
-            
+
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
             LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
 
 
-        //user traido mas arriba
+            //user traido mas arriba
 
+<<<<<<< HEAD
+            int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope in viewModel.EditablesSMO)
+            {
+
+                LARCA2.Data.DatabaseModels.LARCA20_SmoScope actualOriginal = repo.Traer(scope.SmoScopeID);
+                if (actualOriginal == null) { } //no existe en la tabla
+                if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope)) //existe Y fue modificado
+                {
+
+                    if (scope.Why1 != actualOriginal.Why1)
+                        actualOriginal.Why1 = scope.Why1;
+                    if (scope.Why2 != actualOriginal.Why2)
+                        actualOriginal.Why2 = scope.Why2;
+                    if (scope.Why3 != actualOriginal.Why3)
+                        actualOriginal.Why3 = scope.Why3;
+                    if (scope.ActionPlan != actualOriginal.ActionPlan)
+                        actualOriginal.ActionPlan = scope.ActionPlan;
+                    if (scope.Problem != actualOriginal.Problem)
+                        actualOriginal.Problem = scope.Problem;
+                    if (scope.DueDate != actualOriginal.DueDate)
+                        actualOriginal.DueDate = scope.DueDate;
+                    if (scope.RefIdResponsable == 0)
+                        actualOriginal.RefIdResponsable = null;
+                    else if (scope.RefIdResponsable != actualOriginal.RefIdResponsable)
+                        actualOriginal.RefIdResponsable = scope.RefIdResponsable;
+                    if (scope.O_C != actualOriginal.O_C && (scope.O_C != null && (scope.O_C == "O" || scope.O_C == "o" || scope.O_C == "C" || scope.O_C == "c")))
+                        actualOriginal.O_C = scope.O_C.ToUpper();
+                    if (scope.Level4 != actualOriginal.Level4 && (scope.Level4 != null && scope.Level4 != 0))
+                        actualOriginal.Level4 = scope.Level4;
+                    repo.Guardar(actualOriginal);
+                    test++;
+                }
+
+            }
+=======
            int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
        //    foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope in viewModel.EditablesSMO)
            for (int countModif = 0; countModif < viewModel.EditablesSMO.Count; countModif++ )
@@ -1200,6 +1250,7 @@ namespace Larca2.Controllers
                }
 
            }
+>>>>>>> origin/master
             test = test++;
 
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
@@ -1233,7 +1284,7 @@ namespace Larca2.Controllers
 
             viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
-            
+
 
             int bu = Int32.Parse(viewModel.bu);
             int smo = Int32.Parse(viewModel.smo);
@@ -1292,6 +1343,125 @@ namespace Larca2.Controllers
             return View("SmoTreatment", viewModel);
 
         }
-       
+
+        public ActionResult DashboardFiltrado(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
+        {
+
+            ViewBag.Message = "";
+            LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
+            LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+            LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
+            LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
+
+
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
+            if (user == null)
+                user = repoUsuarios.Traer(2);
+
+            //determino el rol del usuario para entender qué filtros y funcionalidades disponer
+            LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
+            LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
+            viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
+
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
+
+
+
+            //   viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            //   viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
+
+            //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
+            //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
+            //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
+            LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
+
+            if (viewModel.idRole != 1)
+            {
+                List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
+                viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
+                foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
+                {
+                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                    if (smoscopeact != null)
+                    {
+                        viewModel.RegistrosSMO.AddRange(smoscopeact);
+                    }
+                }
+            }
+            else
+            {
+                viewModel.RegistrosSMO = ssbll.Filtrar("0", "0").ToList();
+            }
+
+
+
+            viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
+            viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
+
+            viewModel.Responsables = new List<SelectListItem>();
+            List<LARCA2.Data.DatabaseModels.LARCA20_Users> listaDeUsuariosParaRespons = repoUsuarios.Todos();
+            viewModel.Responsables.Add(new SelectListItem { Text = "Choose a valid Owner:", Value = "0" });
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_Responsable userResponsable in repoResponsables.Todos())
+            {
+                viewModel.Responsables.Add(new SelectListItem { Text = listaDeUsuariosParaRespons.Where(u => u.Id == userResponsable.RefIdUser).FirstOrDefault().user_name, Value = userResponsable.Id.ToString() });
+            }
+
+
+            int bu = Int32.Parse(viewModel.bu);
+            int smo = Int32.Parse(viewModel.smo);
+
+            if (viewModel.bu != null && bu != 0)
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdBU == bu).ToList();
+            if (viewModel.smo != null && smo != 0)
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
+
+            if (viewModel.mesSeleccionado == "0")
+            {
+                if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0 && viewModel.dropdownMeses.Count < 2)
+                    viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
+            }
+            else
+            {
+                if (viewModel.dropdownMeses.Count < 2)
+                {
+                    viewModel.dropdownMeses[0].Selected = false;
+                    viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = true });
+                }
+
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month < DateTime.Now.Month).ToList();
+            }
+
+
+
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
+
+            //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
+            viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+            LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
+            int valMax = adb.Todos()[0].Toplvl4;
+            viewModel.maxClones = new List<int>();
+            for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
+            { viewModel.maxClones.Add(valMax); }
+
+
+            return View("Dashboard", viewModel);
+        }
+
+        public ActionResult DashboardModificados(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
+        {
+            var repoUpdate = new LARCA2.Business.Services.SMOScopeBLL();
+            foreach (var smoItem in viewModel.EditablesSMO)
+            {
+                var smoUpdated = repoUpdate.Traer(smoItem.SmoScopeID);
+                smoUpdated.O_C = smoItem.O_C;
+                smoUpdated.DueDate = smoItem.DueDate;
+                repoUpdate.Guardar(smoUpdated);
+            }
+            return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Smo/Dashboard';</script>");
+
+        }
     }
 }
