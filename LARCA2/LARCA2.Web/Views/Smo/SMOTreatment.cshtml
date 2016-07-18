@@ -385,8 +385,10 @@
                              {
                                  Model.MBLL = new LARCA2.Business.Services.MasterDataBLL();
                              }
-                             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
+                             if (Model.RegistrosSMO != null)
                              {
+                                 foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
+                                 {
                         <tr id=@(j.ToString())>
 
 
@@ -396,76 +398,76 @@
 
                             <td width="5%" align="center">
                                 <label>
-                                    @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()),2).ToString()
+                                    @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()), 2).ToString()
                                 </label>
                                 <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
 
                             </td>
                             <td width="4%" align="center">
                                 @if (Model.EditablesSMO[j].RefIdSMO != null)
-                                         {
+                                {
                                         <label>
                                             @Model.MBLL.Traer("SMO", Int32.Parse(SmoScope.RefIdSMO.Value.ToString())).DataIni
                                         </label>
-                                         }
-                                         else
-                                         {
+                                }
+                                else
+                                {
                                         <label>
                                             -
                                         </label>
                                         @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
-                                         }
+                                }
                             </td>
                             <td width="3%" align="center">
                                 @if (Model.EditablesSMO[j].RefIdBU != null)
-                                         {
+                                {
                                         <label>
                                             @Model.MBLL.Traer("BU", Int32.Parse(SmoScope.RefIdBU.Value.ToString())).DataFin
                                         </label>
-                                         }
-                                         else
-                                         {
+                                }
+                                else
+                                {
                                         <label>
                                             -
                                         </label>
                                         @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
-                                         }
+                                }
                             </td>
                             <td width="5%" align="center">
                                 @if (Model.EditablesSMO[j].RefIdRC != null)
-                                         {
+                                {
                                         <label>
                                             @Model.RCBLL.Traer(SmoScope.RefIdRC.Value).Description
                                         </label>
-                                         }
-                                         else
-                                         {
+                                }
+                                else
+                                {
                                         <label>
                                             -
                                         </label>
                                         @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
-                                         }
+                                }
                             </td>
                             <td width="10%" align="left">
                                 @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
-                                         {
+                                {
                                         <label>
                                             @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
                                         </label>}
-                                         else
-                                         {
+                                else
+                                {
                                         <label>
                                             @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, 0))   @* @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
                                         </label>
 
-                                         }
+                                }
                                 <input type="button" value="+" id="Clone@(j.ToString())" class="btn btn-info" hidden="" onclick="AgregaRegistroFinalESP(@(j.ToString()))" />
 
                             </td>
                             @Html.HiddenFor(x => x.maxClones[j], new { @class = "hidden-control", @value = Math.Min(Model.maxClones[j], LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, 0).Count) })
                             <td align="center">
                                 <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-family: Verdana"})
+                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-family: Verdana" })
                                 </label>
                             </td>
 
@@ -505,21 +507,23 @@
                             <td width="3%" align="center">
 
                                 @if (Model.EditablesSMO[j].O_C != null)
-                                         {
+                                {
                                         <label>
                                             @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })
                                         </label>
-                                         }
-                                         else
-                                         {
+                                }
+                                else
+                                {
                                         <label>
                                             @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = "-" })
                                         </label>
-                                         }
+                                }
 
                             </td>
                         </tr>
-                                         j++;
+                                 
+                                j++;
+                                 }
                              }
                             }
                             <tr><td width=5% style="display: none"><td width=4% style="display: none"><td width=3% style="display: none"><td width=5% style="display: none"> </td> <td width=10% style="display: none"></td> <td style="display: none"></td> <td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td width=5% style="display: none"></td><td width=5% style="display: none"></td><td width=3% style="display: none"></td></tr>
