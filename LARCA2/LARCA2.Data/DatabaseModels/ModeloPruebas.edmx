@@ -154,6 +154,7 @@
           <Property Name="Customer" Type="nvarchar(max)" />
           <Property Name="deleted" Type="bit" Nullable="false" />
           <Property Name="originaldate" Type="nvarchar(max)" />
+          <Property Name="FPC" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -885,6 +886,7 @@
           <NavigationProperty Name="MasterLvl2Detail" Relationship="Larca2Model.MasterLvl2Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <NavigationProperty Name="MasterLvl3Detail" Relationship="Larca2Model.MasterLvl3Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <NavigationProperty Name="SmoScopeDetail" Relationship="Larca2Model.SmoScopeDetail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_SmoScope" />
+          <Property Name="FPC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -1381,6 +1383,7 @@
           <EntitySetMapping Name="LARCA20_SmoScopeDetail">
             <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScopeDetail">
               <MappingFragment StoreEntitySet="LARCA20_SmoScopeDetail">
+                <ScalarProperty Name="FPC" ColumnName="FPC" />
                 <ScalarProperty Name="originaldate" ColumnName="originaldate" />
                 <ScalarProperty Name="deleted" ColumnName="deleted" />
                 <ScalarProperty Name="Customer" ColumnName="Customer" />
