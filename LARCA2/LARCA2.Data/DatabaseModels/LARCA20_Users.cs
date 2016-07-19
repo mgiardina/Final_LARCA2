@@ -16,8 +16,8 @@ namespace LARCA2.Data.DatabaseModels
     {
         public LARCA20_Users()
         {
-            this.LARCA20_UsersRoles = new HashSet<LARCA20_UsersRoles>();
             this.LARCA20_User_Owner = new HashSet<LARCA20_User_Owner>();
+            this.LARCA20_UsersRoles = new HashSet<LARCA20_UsersRoles>();
         }
     
         public int Id { get; set; }
@@ -30,7 +30,7 @@ namespace LARCA2.Data.DatabaseModels
         public Nullable<System.DateTime> date { get; set; }
         public bool deleted { get; set; }
     
-        public virtual ICollection<LARCA20_UsersRoles> LARCA20_UsersRoles { get; set; }
         public virtual ICollection<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }
+        public virtual ICollection<LARCA20_UsersRoles> LARCA20_UsersRoles { get; set; }
     }
 }

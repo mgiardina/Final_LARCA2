@@ -34,7 +34,7 @@ namespace LARCA2.Controllers
         {
             var repo = new Business.Services.UsuariosBLL();
             var usuario = repo.TraerPrimerAdminDisponible();
-            ViewBag.Admin = usuario.user_name;
+            ViewBag.Admin = usuario.name + " " + usuario.last_name;
             ViewBag.Email = usuario.Email;
             return View();
         }

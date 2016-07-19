@@ -37,6 +37,11 @@ namespace LARCA2.Business.Services
             return UserOwnerDAL.Traer(id);
         }
 
+        public bool PermisoCheck(long bu, long smo, long owner)
+        {
+            return UserOwnerDAL.PermisoCheck(bu, smo, owner);
+        }
+
         public List<LARCA20_User_Owner> TraerPorIdUsuario(int IdUser)
         {
             return UserOwnerDAL.TraerPorIdUsuario(IdUser);

@@ -102,7 +102,7 @@ namespace LARCA2.Business.Core
                             smoDetail.BuID = smoDetail.MasterBUDetail.id;
                             smoDetail.MasterSMODetail = new MasterDataBLL().Traer("SMO", item.ReportingCountry);
                             smoDetail.SmoID = smoDetail.MasterSMODetail.id;
-                            smoDetail.ReasonID = new MasterDataBLL().Traer("REASON", item.ReasonCode).id;
+                            smoDetail.ReasonID = new MasterDataBLL().Traer("REASON CODE", item.ReasonCode).id;
                             smoDetail.Customer = item.Customer;
 
                             if (tipoProceso == TipoProceso.Parcial)
@@ -121,6 +121,35 @@ namespace LARCA2.Business.Core
                         }
                     }
                 }
+                // Limpiamos los historicos
+                if (tipoProceso == TipoProceso.Total)
+                {
+                    var lista = new SMOScopeBLL().Todos();
+                    foreach (var smo in lista)
+                    {
+                        var newSmo = new LARCA20_SmoScope();
+                        newSmo.SmoScopeID = smo.SmoScopeID;
+                        newSmo.date = smo.date;
+                        newSmo.RefIdSMO = smo.RefIdSMO;
+                        newSmo.RefIdOwner = smo.RefIdOwner;
+                        newSmo.RefIdBU = smo.RefIdBU;
+                        newSmo.RefIdRC = smo.RefIdRC;
+                        newSmo.Volumen = smo.Volumen;
+                        newSmo.Problem = smo.Problem;
+                        newSmo.Why1 = smo.Why1;
+                        newSmo.Why2 = smo.Why2;
+                        newSmo.Why3 = smo.Why3;
+                        newSmo.ActionPlan = smo.ActionPlan;
+                        newSmo.RefIdResponsable = smo.RefIdResponsable;
+                        newSmo.DueDate = smo.DueDate;
+                        newSmo.O_C = smo.O_C;
+                        newSmo.deleted = smo.deleted;
+                        newSmo.Level4 = smo.Level4;
+                        newSmo.historic = true;
+                        new SMOScopeBLL().Guardar(newSmo);
+                    }
+                }
+
                 if (RealizarCalculos(details))
                 {
                     try
@@ -336,8 +365,14 @@ namespace LARCA2.Business.Core
                             smoScope.RefIdOwner = subitem.Owner;
                             smoScope.RefIdRC = subitem.Lvl;
                             smoScope.RefIdBU = buitem.First().BuID;
-                            //smoScope.RefIdResponsable = new ResponsablesBLL().TraerPorNombreDeUsuario(new UsuariosBLL().Traer(2).Usuario).IdRenglon;
+                            smoScope.Problem = string.Empty;
+                            smoScope.Why1 = string.Empty;
+                            smoScope.Why2 = string.Empty;
+                            smoScope.Why3 = string.Empty;
+                            smoScope.ActionPlan = string.Empty;
+                            smoScope.O_C = string.Empty;
                             smoScope.deleted = false;
+                            smoScope.historic = false;
                             var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
                         }
                     }

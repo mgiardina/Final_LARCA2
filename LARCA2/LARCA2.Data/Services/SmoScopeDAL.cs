@@ -35,7 +35,7 @@ namespace LARCA2.Data.Services
         {
             
            // DateTime siev = DateTime.Now.AddDays(-7);
-            return Context.LARCA20_SmoScope.ToList();
+            return Context.LARCA20_SmoScope.Where(s => s.historic == false).ToList();
         }
 
         public List<LARCA20_SmoScope> Filtrar(List<LARCA20_User_Owner> permisos)
@@ -43,7 +43,7 @@ namespace LARCA2.Data.Services
             var listaResult = new List<LARCA20_SmoScope>();
             foreach (var permiso in permisos)
             {
-                var listTemp = Context.LARCA20_SmoScope.ToList().Where(s => s.RefIdBU == permiso.IdBU && s.RefIdSMO == permiso.IdSmo).ToList();
+                var listTemp = Context.LARCA20_SmoScope.Where(s => s.historic == false).ToList().Where(s => s.RefIdBU == permiso.IdBU && s.RefIdSMO == permiso.IdSmo).ToList();
                 listaResult.AddRange(listTemp);
             }
             // DateTime siev = DateTime.Now.AddDays(-7);
@@ -57,7 +57,7 @@ namespace LARCA2.Data.Services
 
         public List<LARCA20_SmoScope> TodosConExclusiones()
         {
-            var list = Context.LARCA20_SmoScope.Where(r => r.deleted == false).ToList();
+            var list = Context.LARCA20_SmoScope.Where(r => r.deleted == false && r.historic == false).ToList();
             var finalList = new List<LARCA20_SmoScope>();
             var exclusiones = new MasterDataDAL().TraerExclusiones();
             foreach (var item in list)

@@ -155,7 +155,7 @@ namespace LARCA2.Controllers
             {
                 Error = true;
                 ViewBag.ErrorRequired = true;
-                
+
             }
             if (!Error)
                 return RedirectToAction("UserBM");
@@ -196,7 +196,7 @@ namespace LARCA2.Controllers
                     Data.DatabaseModels.LARCA20_Users user = repo.Traer(model.Usuario.Id);
                     if (LosPermisos[0] != "" || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 3)
                     {
-                      
+
                         if (repo.TraerPorNombreDeUsuario(model.Usuario.user_name) != null && repo.TraerPorNombreDeUsuario(model.Usuario.user_name).deleted == false && repo.TraerPorNombreDeUsuario(model.Usuario.user_name).Id != user.Id)
                         {
                             Error = true;
@@ -341,7 +341,7 @@ namespace LARCA2.Controllers
 
         public static List<SelectListItem> Level4SelectItem(int smoId)
         {
-            LARCA2.Business.Services.Level4BLL repoNivel = new LARCA2.Business.Services.Level4BLL();          
+            LARCA2.Business.Services.Level4BLL repoNivel = new LARCA2.Business.Services.Level4BLL();
             LARCA2.Business.Services.SMOScopeBLL smoBll = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.RCClassificationBLL rcBll = new LARCA2.Business.Services.RCClassificationBLL();
             LARCA2.Data.DatabaseModels.LARCA20_SmoScope smo = smoBll.Traer(smoId);
@@ -358,10 +358,10 @@ namespace LARCA2.Controllers
             List<LARCA20_Level4> l4rc = repoNivel.ListaPorRC(Int32.Parse(smo.RefIdRC.ToString()));
             foreach (LARCA20_Level4 l4 in l4rc)
                 lista.Add(new SelectListItem() { Text = l4.name, Value = l4.Id.ToString(), Selected = false });
-          
 
-                lsli.AddRange(lista); 
-               
+
+            lsli.AddRange(lista);
+
             foreach (SelectListItem item in lsli)
                 item.Selected = (item.Value == smo.Level4.Value.ToString() ? true : false);
             return lsli;
@@ -503,6 +503,13 @@ namespace LARCA2.Controllers
             oResult = adsSearch.FindOne();
 
             return oResult == null;
+        }
+
+        [HttpGet] // can be HttpGet
+        public ActionResult PermisoCheck(long bu, long smo, long owner)
+        {
+            bool exists = new UserOwnerBLL().PermisoCheck(bu, smo, owner);
+            return Json(exists, JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -735,7 +742,7 @@ namespace LARCA2.Controllers
                 {
                     long id = Int32.Parse(txtIdRenglon);
                     Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
-                    foreach(var editedMaster in model.MasterDataList)
+                    foreach (var editedMaster in model.MasterDataList)
                     {
                         Data.DatabaseModels.LARCA20_MasterData masterData = repo.Traer(editedMaster.id);
                         masterData.Data = masterData.Data;

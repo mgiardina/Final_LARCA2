@@ -626,7 +626,6 @@
                     {
                         <br /><small style="color:red;">Username already exists</small>
                     }
-
                 </fieldset>
             </div>
         </div>
@@ -666,7 +665,6 @@
                         {
                             <br /><small style="color:red;">Required</small>
                         }
-
                     </fieldset>
                 </div>
             </div>
@@ -681,7 +679,10 @@
                         var listItems1 = new SelectList(@ViewBag.MasterBU);
                         foreach (var fila in ViewBag.MasterBU)
                         {
-                            ListBU.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            if (@fila.Text != "OTHER" && @fila.Text != "OTHERS")
+                            {
+                                ListBU.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            }
                         }
                         }
                         @Html.DropDownList("CboBU", ListBU, new { @class = "form-control", @placeholder = "Roles ..." })
@@ -713,7 +714,10 @@
                         var listItems3 = new SelectList(@ViewBag.MasterOW);
                         foreach (var fila in ViewBag.MasterOW)
                         {
-                            ListOWNER.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            if (@fila.Text != "NA")
+                            {
+                                ListOWNER.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            }
                         }
                         }
                         @Html.DropDownList("CboOWNER", ListOWNER, new { @class = "form-control", @placeholder = "Roles ..." })
@@ -737,15 +741,10 @@
 
                                 @foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner fila in Model.Usuario.LARCA20_User_Owner)
                                 {
-
-
                                     if (@fila.deleted == false)
                                     {
-
-
                                         if (@fila.IdBU != 0 && @fila.IdSmo != 0 && @fila.IdOwner != 0)
                                         {
-
                                             <tr id="PermisosTr">
                                                 <td style="display: none">@fila.IdBU</td>
                                                 <td style="display: none">@fila.IdSmo</td>
@@ -760,7 +759,6 @@
 
                                         if (@fila.IdBU != 0 && @fila.IdSmo == 0 && @fila.IdOwner == 0)
                                         {
-
                                             <tr id="PermisosTr">
                                                 <td style="display: none">@fila.IdBU</td>
 
@@ -771,7 +769,6 @@
 
                                         if (@fila.IdBU == 0 && @fila.IdSmo != 0 && @fila.IdOwner == 0)
                                         {
-
                                             <tr id="PermisosTr">
 
                                                 <td style="display: none">@fila.IdSmo</td>
@@ -782,12 +779,8 @@
                                                 <td><button id="btn_LESSPermiso" onclick="FuncLESSPermiso(this)" value="Remove" class="btn btn-warning"> Remove</button></td>
                                             </tr>
                                         }
-
-
                                     }
                                 }
-
-
                             </tbody>
                         </table>
                     </div>
@@ -804,7 +797,6 @@
                 </fieldset>
             </div>
         </div>
-
         <div class="row">
             <div class="pull-right col">
                 <input type="submit" value="Save Changes" name="Save" class="btn btn-success" />&nbsp;&nbsp;&nbsp;

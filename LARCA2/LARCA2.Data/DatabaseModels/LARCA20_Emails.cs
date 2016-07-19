@@ -15,8 +15,8 @@ namespace LARCA2.Data.DatabaseModels
     public partial class LARCA20_Emails
     {
         public long EmailID { get; set; }
-        public string MessageID { get; set; }
         public int processtype { get; set; }
+        public string MessageID { get; set; }
         public System.DateTime date { get; set; }
         public string filename { get; set; }
         public bool processed { get; set; }

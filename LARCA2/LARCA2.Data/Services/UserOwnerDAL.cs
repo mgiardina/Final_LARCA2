@@ -60,6 +60,19 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_User_Owner.Where(u => u.Id == idUser && u.deleted == false).ToList();
         }
 
+        public bool PermisoCheck(long bu, long smo, long owner)
+        {
+            try
+            {
+                var userOwner = Context.LARCA20_User_Owner.SingleOrDefault(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         //esto no funciona, como lo implementamos?
         public override bool Eliminar(long id)
         {

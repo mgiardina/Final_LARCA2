@@ -86,7 +86,7 @@
             var SMO_valo = $("#CboSMO").val();
             var SMO_desc = $("#CboSMO option:selected").text();
             var SMO_valId = $("#CboSMO option:selected").val();
-       
+
             if (SMO_valId == 0) {
                 alert("Choose a valid SMO");
                 return;
@@ -206,7 +206,7 @@
                 }
             });
         }
-     
+
         if (rol == 2) {
 
             var x = $(donde).attr("id");
@@ -278,8 +278,7 @@
         $("#HI_PermisosEsp").val("");
 
 
-        if (rol_selected == "Editor")
-        {
+        if (rol_selected == "Editor") {
             rol = 1;
 
             permisosArray_SMO = [];
@@ -298,15 +297,13 @@
             document.getElementById("BU_Permits_div").style.display = "";
             document.getElementById("Owner_Permits_div").style.display = "";
             document.getElementById("SMO_Permits_div").style.display = "";
-          }
+        }
 
-        else 
-          {
+        else {
 
-            if (rol_selected == "SMO Clustering Editor")
-            {
+            if (rol_selected == "SMO Clustering Editor") {
                 rol = 2;
-                
+
                 permisosArray_BU = [];
                 permisosArray = [];
 
@@ -317,18 +314,16 @@
                 document.getElementById("tr_label_smo").style.display = "";
                 document.getElementById("tr_label_todos").style.display = 'none';
                 document.getElementById("tr_label_bu").style.display = 'none';
-                
+
 
                 document.getElementById("PermisosEspeciales").style.display = "";
                 document.getElementById("SMO_Permits_div").style.display = "";
                 document.getElementById("Owner_Permits_div").style.display = 'none';
                 document.getElementById("BU_Permits_div").style.display = 'none';
-             
-              }
-            else 
-              {
-                if (rol_selected == "BU Clustering Editor")
-                {
+
+            }
+            else {
+                if (rol_selected == "BU Clustering Editor") {
                     rol = 3;
 
                     permisosArray_SMO = [];
@@ -347,14 +342,13 @@
                     document.getElementById("Owner_Permits_div").style.display = 'none';
                     document.getElementById("SMO_Permits_div").style.display = 'none';
 
-                  }
-                else
-                {
+                }
+                else {
 
-                   
+
                     rol = 0;
 
-                  
+
 
                     permisosArray_BU = [];
                     permisosArray_SMO = [];
@@ -363,25 +357,25 @@
                     $('#tablaPermisos #tr_Editor').remove();
                     $('#tablaPermisos #tr_SMO').remove();
                     $('#tablaPermisos #tr_BU').remove();
-                 
+
                     document.getElementById("PermisosEspeciales").style.display = 'none';
 
-                        SMO_valId = "0";
-                        OWN_valId = "0";
-                        CBU_valId = "0";
+                    SMO_valId = "0";
+                    OWN_valId = "0";
+                    CBU_valId = "0";
 
 
-                        var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
-                        if ($("#HI_PermisosEsp").val() == "") {
-                            $("#HI_PermisosEsp").val(carga);
+                    var carga = CBU_valId + "." + SMO_valId + "." + OWN_valId;
+                    if ($("#HI_PermisosEsp").val() == "") {
+                        $("#HI_PermisosEsp").val(carga);
 
-                        }
-                    
+                    }
 
 
-                  }  
-               }
-          }
+
+                }
+            }
+        }
     }
 
 </script>
@@ -430,14 +424,14 @@
                 <fieldset class="form-group">
                     <label for="Nombre">Roles</label>
                     @{
-        List<SelectListItem> ListRoles = new List<SelectListItem>();
-        ListRoles.Add(new SelectListItem() { Value = "0", Text = "Choose a Role", Selected = false });
+                    List<SelectListItem> ListRoles = new List<SelectListItem>();
+                    ListRoles.Add(new SelectListItem() { Value = "0", Text = "Choose a Role", Selected = false });
 
-  
-        foreach (var fila in ViewBag.ComboRol)
-        {
-            ListRoles.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
-        }
+
+                    foreach (var fila in ViewBag.ComboRol)
+                    {
+                        ListRoles.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                    }
                     }
                     @Html.DropDownList("CboRoles", ListRoles, new { @class = "form-control", @placeholder = "Roles ...", onChange = "RolesFunction(this);" })
                     @if (ViewBag.ErrorRol)
@@ -457,7 +451,7 @@
                         <label for="Nombre">Special Permissions</label>
                         @if (ViewBag.ErrorPermiso)
                         {
-                            <br /><small style="color:red;">Required</small>
+                        <br /><small style="color:red;">Required</small>
                         }
 
                     </fieldset>
@@ -474,7 +468,10 @@
                         var listItems1 = new SelectList(@ViewBag.MasterBU);
                         foreach (var fila in ViewBag.MasterBU)
                         {
-                            ListBU.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            if (@fila.Text != "OTHER" && @fila.Text != "OTHERS")
+                            {
+                                ListBU.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            }
                         }
                         }
                         @Html.DropDownList("CboBU", ListBU, new { @class = "form-control", @placeholder = "Roles ..." })
@@ -506,7 +503,10 @@
                         var listItems3 = new SelectList(@ViewBag.MasterOW);
                         foreach (var fila in ViewBag.MasterOW)
                         {
-                            ListOWNER.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            if (@fila.Text != "NA")
+                            {
+                                ListOWNER.Add(new SelectListItem() { Value = @fila.Value, Text = @fila.Text, Selected = false });
+                            }
                         }
                         }
                         @Html.DropDownList("CboOWNER", ListOWNER, new { @class = "form-control", @placeholder = "Roles ..." })
@@ -518,14 +518,16 @@
                 </div>
             </div>
             <div class="row">
-                <table id="tablaPermisos" width=100% class="table">
-                    <thead>    
-                        <tr id="tr_label_todos" style="display:none"><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> BU</td> <td width=30%>SMO</td> <td width=30%>OWNER</td> <td width=30%>Delete</td></tr>
-                        <tr id="tr_label_smo" style="display:none"><td style="display: none"><td width=30%>SMO</td><td width=30%>Delete</td></tr>
-                        <tr id="tr_label_bu" style="display:none"><td style="display: none"><td width=30%>BU</td><td width=30%>Delete</td></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div class="col-sm-12">
+                    <table id="tablaPermisos" width=100% class="table">
+                        <thead>
+                            <tr id="tr_label_todos" style="display:none"><td style="display: none"><td style="display: none"><td style="display: none"><td width=30%> BU</td> <td width=30%>SMO</td> <td width=30%>OWNER</td> <td width=30%>Delete</td></tr>
+                            <tr id="tr_label_smo" style="display:none"><td style="display: none"><td width=30%>SMO</td><td width=30%>Delete</td></tr>
+                            <tr id="tr_label_bu" style="display:none"><td style="display: none"><td width=30%>BU</td><td width=30%>Delete</td></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
 
         </div>
@@ -540,4 +542,3 @@
         </div>
     }
 </div>
-

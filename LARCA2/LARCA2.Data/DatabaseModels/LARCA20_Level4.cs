@@ -15,8 +15,8 @@ namespace LARCA2.Data.DatabaseModels
     public partial class LARCA20_Level4
     {
         public long Id { get; set; }
-        public Nullable<long> RefIdLevel3 { get; set; }
         public string name { get; set; }
+        public Nullable<long> RefIdLevel3 { get; set; }
         public Nullable<bool> deleted { get; set; }
     
         public virtual LARCA20_RcClasification LARCA20_RcClasification { get; set; }

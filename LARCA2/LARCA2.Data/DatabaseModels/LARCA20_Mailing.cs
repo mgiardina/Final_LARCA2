@@ -14,9 +14,9 @@ namespace LARCA2.Data.DatabaseModels
     
     public partial class LARCA20_Mailing
     {
+        public int Id { get; set; }
         public string Data { get; set; }
         public string Email { get; set; }
-        public int Id { get; set; }
         public bool deleted { get; set; }
     }
 }
