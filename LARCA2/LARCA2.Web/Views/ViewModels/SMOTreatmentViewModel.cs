@@ -21,6 +21,8 @@ namespace Larca2.Views.ViewModels
         public string userRole { get; set; }
         public int idRole { get; set; }
         public int tempInt { get; set; }
+        public string mensaje { get; set; }
+
         public List<SelectListItem> dropdownMeses { get; set; }
         public List<SelectListItem> BUList { get; set; }
         public List<SelectListItem> SMOList { get; set; }

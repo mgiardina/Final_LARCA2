@@ -165,6 +165,7 @@
                       LARCA2.Business.Services.UsuariosBLL users = new LARCA2.Business.Services.UsuariosBLL();
 
                 LARCA2.Business.Services.SMOScopeGroupedRowsBLL grsmo = new LARCA2.Business.Services.SMOScopeGroupedRowsBLL();
+                if (Model.RegistrosSMO != null) { 
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
                 {
                     Model.selectedItems.Add(new bool { });
@@ -299,6 +300,7 @@
                     </tr>
                             j++;
                 }
+                }
                         }
                     </table>
 
@@ -306,5 +308,5 @@
            
         </div>
     <br />
-    <div align="center"> <label id="Message"></label> </div> @* this is where controller messages will be left after each action. *@
+    <div align="center"> <label id="Message">@Model.mensaje</label> </div> @* this is where controller messages will be left after each action. *@
 }
