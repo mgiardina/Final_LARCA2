@@ -27,6 +27,7 @@ namespace LARCA2.Data.DatabaseModels
         public string Customer { get; set; }
         public bool deleted { get; set; }
         public string originaldate { get; set; }
+        public string FPC { get; set; }
     
         public virtual LARCA20_MasterData MasterBUDetail { get; set; }
         public virtual LARCA20_MasterData MasterOwnerDetail { get; set; }

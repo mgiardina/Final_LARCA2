@@ -18,7 +18,6 @@
         <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScope" Width="1.5" PointX="3" PointY="5.5" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScopeDetail" Width="1.5" PointX="8.25" PointY="5.875" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScopeGroup" Width="1.5" PointX="10.75" PointY="5.75" />
-        <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScopeGroupedRows" Width="1.5" PointX="11.75" PointY="8.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_User_Owner" Width="1.5" PointX="6" PointY="6.5" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_Users" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_UsersRoles" Width="1.5" PointX="6" PointY="1.25" />

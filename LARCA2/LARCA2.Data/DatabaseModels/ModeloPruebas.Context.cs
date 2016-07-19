@@ -38,7 +38,6 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
         public virtual DbSet<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail { get; set; }
         public virtual DbSet<LARCA20_SmoScopeGroup> LARCA20_SmoScopeGroup { get; set; }
-        public virtual DbSet<LARCA20_SmoScopeGroupedRows> LARCA20_SmoScopeGroupedRows { get; set; }
         public virtual DbSet<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }
         public virtual DbSet<LARCA20_Users> LARCA20_Users { get; set; }
         public virtual DbSet<LARCA20_UsersRoles> LARCA20_UsersRoles { get; set; }
