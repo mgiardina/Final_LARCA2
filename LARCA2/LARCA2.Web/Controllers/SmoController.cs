@@ -122,6 +122,7 @@ namespace Larca2.Controllers
             viewModel.responsibles = new List<string>();
             foreach(LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
 
+
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
             return View("SmoSimple", viewModel);
@@ -239,34 +240,35 @@ namespace Larca2.Controllers
         public ActionResult SmoSimpleResult(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
 
-            try{
-                
-            LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
-            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
-            if (user == null)
-                user = repoUsuarios.Traer(2);
-            string action = viewModel.AccionBoton;
-
-            if (action == "group" || action == "modif")
+            try
             {
-                return SmoSimpleAgrupar(viewModel);
+
+                LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+                LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
+                if (user == null)
+                    user = repoUsuarios.Traer(2);
+                string action = viewModel.AccionBoton;
+
+                if (action == "group" || action == "modif")
+                {
+                    return SmoSimpleAgrupar(viewModel);
+                }
+                else if (action == "filter")
+                {
+                    return SmoSimpleFiltrado(viewModel);
+                }
+
+                //if something fails, this will redirect to the first view
+
+                viewModel.mensaje = "Failed to identify action, please make sure you use the visible buttons.";
+
+
+                return View("SmoSimple", viewModel);
+
             }
-            else if (action == "filter")
+            catch (Exception exT)
             {
-                return SmoSimpleFiltrado(viewModel);
-            }
 
-            //if something fails, this will redirect to the first view
-
-            viewModel.mensaje = "Failed to identify action, please make sure you use the visible buttons.";
-
-
-            return View("SmoSimple", viewModel);
-
-               }
-            catch(Exception exT)
-            {
-                
                 viewModel.mensaje = "An error has occurred. Please refresh the page and try again.";
 
 
@@ -302,7 +304,7 @@ namespace Larca2.Controllers
                 //if something fails, this will redirect to the first view
                 return View("SmoTreatment", viewModel);
             }
-            catch(Exception exT)
+            catch (Exception exT)
             {
                 viewModel = new Views.ViewModels.SMOScopeViewModel();
                 viewModel.mensaje = "An error has occurred. Please refresh the page and try again.";
@@ -918,8 +920,8 @@ namespace Larca2.Controllers
             viewModel.responsibles = new List<string>();
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
-           
-            viewModel.mensaje = test + " registers were modified. " + seleccionados + " registers selected for grouping. "+exitoAgrup+" registers succesfully grouped.";
+
+            viewModel.mensaje = test + " registers were modified. " + seleccionados + " registers selected for grouping. " + exitoAgrup + " registers succesfully grouped.";
 
 
             return View("SmoSimple", viewModel);
@@ -1189,7 +1191,7 @@ namespace Larca2.Controllers
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
-           
+
             return View("SmoTreatment", viewModel);
 
         }
@@ -1299,7 +1301,7 @@ namespace Larca2.Controllers
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
-            viewModel.mensaje = "Filters succesfully applied. "+ viewModel.EditablesSMO.Count +" registers match the search criteria.";
+            viewModel.mensaje = "Filters succesfully applied. " + viewModel.EditablesSMO.Count + " registers match the search criteria.";
 
             return View("SmoTreatment", viewModel);
 
@@ -1399,8 +1401,10 @@ namespace Larca2.Controllers
                     clon.Why2 = actFilt[7];
                     clon.Why3 = actFilt[8];
 
+
                     clon.ActionPlan = actFilt[9];
                     clon.O_C = (actFilt[12].ToUpper() == "O" || actFilt[12].ToUpper() == "C"? actFilt[12] : "O" );
+
 
                     clon.RefIdBU = mdClones.Traer(Int32.Parse(actFilt[2])).id;
                     clon.RefIdSMO = mdClones.Traer(Int32.Parse(actFilt[1])).id;
@@ -1413,14 +1417,12 @@ namespace Larca2.Controllers
                         }
 
 
+
                         catch (Exception e) { clon.RefIdOwner = null; }
+
 
                     clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).Id;
                    
-                    
-                    
-                    
-                    
                  /*   int io;
                     if (Int32.TryParse(actFilt[9].ToString(), out io) == true)
                         clon.RefIdResponsable = respoClones.Traer(Int32.Parse(actFilt[10])).Id;
@@ -1493,6 +1495,7 @@ namespace Larca2.Controllers
 
 
             //user traido mas arriba
+
 
            int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
        //    foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope in viewModel.EditablesSMO)
@@ -1580,6 +1583,7 @@ namespace Larca2.Controllers
 
            }
             test = test + 0;
+
 
 
             //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
