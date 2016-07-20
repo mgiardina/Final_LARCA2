@@ -76,6 +76,11 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_UsersRoles.SingleOrDefault(u => u.RefIdUser == usuarioId && u.deleted == false).LARCA20_Roles;
         }
 
+        public int TraerUltimoId()
+        {
+            return Context.LARCA20_Users.Max(item => item.Id);
+        }
+
         public override bool Eliminar(long id)
         {
             try

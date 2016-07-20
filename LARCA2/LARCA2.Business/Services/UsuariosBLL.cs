@@ -37,6 +37,11 @@ namespace LARCA2.Business.Services
             return UsuariosDAL.Traer(id);
         }
 
+        public int TraerUltimoId()
+        {
+            return UsuariosDAL.TraerUltimoId();
+        }
+
         public LARCA20_Users TraerPorNombreDeUsuario(string username)
         {
             return UsuariosDAL.TraerPorNombreDeUsuario(username);

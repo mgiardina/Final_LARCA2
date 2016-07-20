@@ -367,7 +367,6 @@ namespace LARCA2.Controllers
             return lsli;
         }
 
-
         public static List<SelectListItem> LeveSelectItem(List<SelectListItem> lsli, int idref)
         {
 
