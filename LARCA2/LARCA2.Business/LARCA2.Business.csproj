@@ -81,7 +81,6 @@
     <Compile Include="Services\RolesBLL.cs" />
     <Compile Include="Services\ResponsablesBLL.cs" />
     <Compile Include="Services\SmoScopeDetailBLL.cs" />
-    <Compile Include="Services\SmoScopeGroupedRowsBLL.cs" />
     <Compile Include="Services\UserOwnerBLL.cs" />
     <Compile Include="Services\UsuariosBLL.cs" />
     <Compile Include="Services\UsuariosRolesBLL.cs" />

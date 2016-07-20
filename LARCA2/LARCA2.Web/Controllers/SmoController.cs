@@ -397,6 +397,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
                                 newUser.user_name = viewModel.responsibles[countFor];
                                 newUser.deleted = false;
+                                newUser.name = String.Empty;
+                                newUser.last_name = String.Empty;
                                 newUser.date = DateTime.Now;
                                 repoUsuarios.Guardar(newUser);
                                 //no le creo rol porque no se definió cual poner
@@ -502,6 +504,7 @@ namespace Larca2.Controllers
                
                 first.GroupId = newGroupId;
                 repo.Guardar(first);
+                exitoAgrup++;
                 //por cada seleccionado true excepto el primero
                 for (int i = 1; i < seleccionados; i++)
                 {
@@ -531,7 +534,7 @@ namespace Larca2.Controllers
                     current.historic = first.historic;
                     current.Level4 = first.Level4;
                     repo.Guardar(current);
-                  
+                    exitoAgrup++;
                 }
                 
             }
@@ -994,7 +997,7 @@ namespace Larca2.Controllers
                 //   result = result + "<tr><td>" + det.Volumen.ToString() + "</td>";
                 result = result + "<tr><td>" + decimal.Round(decimal.Parse(det.Volumen.ToString()), 2).ToString() + "</td>";
                 result = result + "<td>" + (det.FPC == null? "-" : det.FPC) + "</td>"; //showed dataini, then datafin, now fpc
-                result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td>";
+                result = result + "<td>" + mbl.Traer("REASON CODE", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td>";
                 result = result + "<td>" + (det.Customer == null ? "-" : det.Customer.ToString()) + "</td>";
                 result = result + "<td>" + (det.originaldate == null ? "" : det.originaldate.ToString()) + "</td></tr>";
 
@@ -1443,6 +1446,8 @@ namespace Larca2.Controllers
                             newUser.user_name = actFilt[10];
                             newUser.deleted = false;
                             newUser.date = DateTime.Now;
+                            newUser.name = String.Empty;
+                            newUser.last_name = String.Empty;
                             repoUsuarios.Guardar(newUser);
                             //no le creo rol porque no se definió cual poner
 

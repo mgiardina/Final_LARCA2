@@ -57,7 +57,7 @@ namespace LARCA2.Data.Services
 
         public List<LARCA20_User_Owner> TraerPorIdUsuario(int idUser)
         {
-            return Context.LARCA20_User_Owner.Where(u => u.Id == idUser && u.deleted == false).ToList();
+            return Context.LARCA20_User_Owner.Where(u => u.IdUser == idUser && u.deleted == false).ToList();
         }
 
         public bool PermisoCheck(long bu, long smo, long owner)

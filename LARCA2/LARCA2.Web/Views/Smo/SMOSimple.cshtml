@@ -178,9 +178,9 @@
                             @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
                             <td width="5%" align="center">
                                 <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
-
+                                @if (Model.EditablesSMO[j].GroupId != null) { 
                                 <input type="button" value="Ungroup" id="Ung(@(j.ToString()))" class="btn btn-danger" onclick="Ungroup(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
-
+                                }
                                 @Html.CheckBoxFor(m => m.selectedItems[j])
                             </td>
                             <td width="5%" align="center">
