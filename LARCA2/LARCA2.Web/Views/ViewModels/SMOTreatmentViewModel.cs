@@ -35,6 +35,7 @@ namespace Larca2.Views.ViewModels
         public List<int> maxClones { get; set; }
         public List<string> responsibles { get; set; }
         public List<Boolean> selectedItems { get; set; }
+        public List<Boolean> displayedGroups { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime TestDate { get; set; }

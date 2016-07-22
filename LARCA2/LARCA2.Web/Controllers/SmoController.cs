@@ -125,6 +125,14 @@ namespace Larca2.Controllers
 
 
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+           
+            viewModel.selectedItems = new List<bool>();
+            viewModel.displayedGroups = new List<bool>();
+            int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            for (int i = 0; i < maxim; i++)
+            {
+                viewModel.displayedGroups.Add(false);
+            }
 
             return View("SmoSimple", viewModel);
 
@@ -233,6 +241,13 @@ namespace Larca2.Controllers
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
             viewModel.mensaje = "Filters succesfully applied. " + viewModel.EditablesSMO.Count + " registers match the search criteria.";
+
+            viewModel.displayedGroups = new List<bool>();
+            int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            for (int i = 0; i < maxim; i++)
+            {
+                viewModel.displayedGroups.Add(false);
+            }
 
             return View("SmoSimple", viewModel);
 
@@ -343,15 +358,31 @@ namespace Larca2.Controllers
             //      viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
             int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
+            int grupoAfectado = 0; //para corroborar cantidad de registros de grupos modificados al finalizar la actualizacion de valores
             int usersNOAD = 0;
+
+            List<bool> listaGrupos = new List<bool>();
+            int maximoGrupo = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            bool groupFlag = false;
+            for (int i = 0; i <= maximoGrupo; i++)
+            {
+                listaGrupos.Add(new bool { });
+                listaGrupos[i] = false;
+            }
+
             for (int countFor = 0; countFor < viewModel.EditablesSMO.Count; countFor++)
             {
+
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope = viewModel.EditablesSMO[countFor];
              
-
-
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope actualOriginal = repoModif.Traer(scope.SmoScopeID);
-               
+
+
+                groupFlag = false;
+                if (actualOriginal.GroupId == null || ((actualOriginal.GroupId != null) && (listaGrupos[actualOriginal.GroupId.Value] == false)))
+                { groupFlag = true; } //groupFlag indicates that a register is the first one of its group to be displayed
+                       
+
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope scopeCopia = new LARCA2.Data.DatabaseModels.LARCA20_SmoScope();
                 scopeCopia.Why1 = actualOriginal.Why1;
                 scopeCopia.ActionPlan = actualOriginal.ActionPlan;
@@ -363,7 +394,7 @@ namespace Larca2.Controllers
                 scopeCopia.Level4 = actualOriginal.Level4;
 
                 if (actualOriginal == null) { } //no existe en la tabla
-                if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope, viewModel.responsibles[countFor])) //existe Y fue modificado
+                if (actualOriginal != null && groupFlag && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope, viewModel.responsibles[countFor])) //existe Y fue modificado
                 {
 
                     if (scope.Why1 != actualOriginal.Why1) { 
@@ -450,35 +481,39 @@ namespace Larca2.Controllers
                         List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> delGrupo = repoModif.TraerGrupo(actualOriginal.GroupId.Value).Where(x=> x.SmoScopeID != actualOriginal.SmoScopeID).ToList();
                         foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope groupSmo in delGrupo) 
                         {
-
+                            bool flagChange = false;
                             LARCA2.Data.DatabaseModels.LARCA20_SmoScope current = repoModif.Traer(groupSmo.SmoScopeID);      
                         
                             if (actualOriginal.Why1 != scopeCopia.Why1)
-                        current.Why1 = actualOriginal.Why1;
+                            {flagChange = true; current.Why1 = actualOriginal.Why1;}
                             if (actualOriginal.Why2 != scopeCopia.Why2)
-                        current.Why2 = actualOriginal.Why2;
+                           {flagChange = true;current.Why2 = actualOriginal.Why2;}
                             if (actualOriginal.Why3 != scopeCopia.Why3)
-                        current.Why3 = actualOriginal.Why3;
+                          {flagChange = true; current.Why3 = actualOriginal.Why3;}
                             if (actualOriginal.ActionPlan != scopeCopia.ActionPlan)
-                        current.ActionPlan = actualOriginal.ActionPlan;
+                           {flagChange = true;current.ActionPlan = actualOriginal.ActionPlan;}
                             if (actualOriginal.DueDate != scopeCopia.DueDate)
-                        current.DueDate = actualOriginal.DueDate;
+                           {flagChange = true;current.DueDate = actualOriginal.DueDate;}
                             if (actualOriginal.O_C != scopeCopia.O_C)
-                        current.O_C = actualOriginal.O_C;
+                           {flagChange = true;current.O_C = actualOriginal.O_C;}
                             if (actualOriginal.Problem != scopeCopia.Problem)
-                        current.Problem = actualOriginal.Problem;
+                          {flagChange = true; current.Problem = actualOriginal.Problem;}
                             if (actualOriginal.RefIdResponsable != scopeCopia.RefIdResponsable)
-                        current.RefIdResponsable = actualOriginal.RefIdResponsable;
+                          {flagChange = true; current.RefIdResponsable = actualOriginal.RefIdResponsable;}
                             if (actualOriginal.historic != scopeCopia.historic)
-                        current.historic = actualOriginal.historic;
-                            if (actualOriginal.Level4 != scopeCopia.Level4)
-                        current.Level4 = actualOriginal.Level4;
+                          {flagChange = true; current.historic = actualOriginal.historic;}
+                         //   if (actualOriginal.Level4 != scopeCopia.Level4)
+                        //    { flagChange = true; current.Level4 = actualOriginal.Level4; }
 
                         repoModif.Guardar(current);
+                            if(flagChange == true)
+                            { grupoAfectado++; }
                         }
                 }
                     test++;
                 }
+                if (actualOriginal.GroupId != null)
+                { listaGrupos[actualOriginal.GroupId.Value] = true; }
 
             }
             test = test + 0; //for debugging purposes
@@ -541,7 +576,7 @@ namespace Larca2.Controllers
                     current.Problem = first.Problem;
                     current.RefIdResponsable = first.RefIdResponsable;
                     current.historic = first.historic;
-                    current.Level4 = first.Level4;
+                    //current.Level4 = first.Level4;
                     repo.Guardar(current);
                     exitoAgrup++;
                 }
@@ -628,8 +663,15 @@ namespace Larca2.Controllers
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
            
-            viewModel.mensaje = test + " registers were modified. " + seleccionados + " registers selected for grouping. "+exitoAgrup+" registers succesfully grouped.";
+            viewModel.mensaje = test + (grupoAfectado == 0? "": "(+ " + grupoAfectado + ")") +" registers were modified. " + seleccionados + " registers selected for grouping. "+exitoAgrup+" registers succesfully grouped.";
             if (usersNOAD > 0) viewModel.mensaje = viewModel.mensaje + " Failed to create " + usersNOAD + " responsibles. Make sure they exist in Active Directory.";
+
+            viewModel.displayedGroups = new List<bool>();
+            int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            for (int i = 0; i < maxim; i++)
+            {
+                viewModel.displayedGroups.Add(false);
+            }
 
             return View("SmoSimple", viewModel);
 
@@ -954,7 +996,7 @@ namespace Larca2.Controllers
             smo.GroupId = null;
             smbl.Guardar(smo);
 
-            return Json("Register removed from its group. Refresh the page to reflect the changes in the view.", JsonRequestBehavior.AllowGet);
+            return Json("Register succesfully removed from its group.", JsonRequestBehavior.AllowGet);
         }
 
 
@@ -1221,8 +1263,13 @@ namespace Larca2.Controllers
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
-
-            return View("SmoTreatment", viewModel);
+            viewModel.displayedGroups = new List<bool>();
+            int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            for (int i = 0; i < maxim; i++)
+            {
+                viewModel.displayedGroups.Add(false);
+            }
+                return View("SmoTreatment", viewModel);
 
         }
 
@@ -1332,6 +1379,13 @@ namespace Larca2.Controllers
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
             viewModel.mensaje = "Filters succesfully applied. " + viewModel.EditablesSMO.Count + " registers match the search criteria.";
+
+            viewModel.displayedGroups = new List<bool>();
+            int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            for (int i = 0; i < maxim; i++)
+            {
+                viewModel.displayedGroups.Add(false);
+            }
 
             return View("SmoTreatment", viewModel);
 
@@ -1729,6 +1783,14 @@ namespace Larca2.Controllers
 
             viewModel.mensaje = test + " registers were modified. " + (RegistrosClonados != null? RegistrosClonados.Count.ToString() : "0") + " clones succesfully created.";
             if (usersNOAD > 0) viewModel.mensaje = viewModel.mensaje + " Failed to create " + usersNOAD + " responsibles. Make sure they exist in Active Directory.";
+
+
+            viewModel.displayedGroups = new List<bool>();
+            int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            for (int i = 0; i < maxim; i++)
+            {
+                viewModel.displayedGroups.Add(false);
+            }
 
             ViewBag.Message = "";
             return View("SmoTreatment", viewModel);

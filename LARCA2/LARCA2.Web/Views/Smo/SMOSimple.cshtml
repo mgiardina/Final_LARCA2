@@ -42,21 +42,22 @@
     }
 
     function Ungroup(id) {
-        alert('Ungrouping row ' + id);
-        $.ajax({
-            url: '@Url.Action("NewDesagrupar", "Smo")',
-            type: 'GET',
-            dataType: 'json',
-            cache: false,
-            data: { 'id': id },
-            success: function (results) {
-                alert(results);
-
-            },
-            error: function () {
-                alert('Error occured');
-            }
-        });
+        if (confirm('Ungroup row? Unsaved changes in the page will be lost.')) {
+            $.ajax({
+                url: '@Url.Action("NewDesagrupar", "Smo")',
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                data: { 'id': id },
+                success: function (results) {
+                    alert(results);
+                    location.reload(false);
+                },
+                error: function () {
+                    alert('Error occured');
+                }
+            });
+        }
     }
 
     function LlamarAccionBoton(accion) {
@@ -111,8 +112,7 @@
     </div>
     <div style="overflow:scroll">
         <div class="content-wrapper" style="margin-bottom:20px;width:2500px;height:300px">
-            <label id="testme"></label>
-
+           
             <table id="tablaSmor" class="table" width="2000">
 
                 <tr>
@@ -163,144 +163,378 @@
 
                 @{int j = 0;
                 LARCA2.Business.Services.UsuariosBLL users = new LARCA2.Business.Services.UsuariosBLL();
-
+                bool groupFlag = false;
                 LARCA2.Business.Services.SMOScopeBLL grsmo = new LARCA2.Business.Services.SMOScopeBLL();
-                if (Model.RegistrosSMO != null)
+                }
+                @if (Model.RegistrosSMO != null)
                 {
+                    if (Model.selectedItems == null) { 
+                        Model.selectedItems = new List<bool>();}
+                    Model.displayedGroups = new List<bool>();
+                    int maxim = Model.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+
+                    for (int i = 0; i <= maxim; i++)
+                    {
+                        Model.displayedGroups.Add(new bool { });
+                        Model.displayedGroups[i] = false;
+                    }
+
+
                     foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
                     {
                         Model.selectedItems.Add(new bool { });
+                        groupFlag = false;
+                        if (Model.EditablesSMO[j].GroupId == null || ((Model.EditablesSMO[j].GroupId != null) && (Model.displayedGroups[Model.EditablesSMO[j].GroupId.Value] == false)))
+                        { groupFlag = true; } //groupFlag indicates that a register is the first one of its group to be displayed -or also if it doesn't have a group-
                         <tr id=@(j.ToString())>
 
                             @if (Model.MBLL == null)
                             { Model.MBLL = new LARCA2.Business.Services.MasterDataBLL(); }
                             @Html.HiddenFor(x => x.maxClones[j])
                             @Html.HiddenFor(x => x.EditablesSMO[j].SmoScopeID)
-                            <td width="5%" align="center">
-                                <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
-                                @if (Model.EditablesSMO[j].GroupId != null) { 
-                                <input type="button" value="Ungroup" id="Ung(@(j.ToString()))" class="btn btn-danger" onclick="Ungroup(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
-                                }
-                                @Html.CheckBoxFor(m => m.selectedItems[j])
-                            </td>
-                            <td width="5%" align="center">
-                                <label>
-                                    @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()), 2).ToString()
-                                </label>
-                            </td>
-
-                            <td width="4%" align="center">
-                                @if (Model.EditablesSMO[j].RefIdSMO != null)
-                                {
-                                    <label>
-                                        @Model.MBLL.Traer("SMO", Int32.Parse(SmoScope.RefIdSMO.Value.ToString())).DataIni
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        -
-                                    </label>
-                                    @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
-                                }
-                            </td>
-                            <td width="3%" align="center">
-                                @if (Model.EditablesSMO[j].RefIdBU != null)
-                                {
-                                    <label>
-                                        @Model.MBLL.Traer("BU", Int32.Parse(SmoScope.RefIdBU.Value.ToString())).DataFin
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        -
-                                    </label>
-                                    @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
-                                }
-                            </td>
-                            <td width="5%" align="center">
-                                @if (Model.EditablesSMO[j].RefIdRC != null)
-                                {
-                                    <label>
-                                        @Model.RCBLL.Traer(SmoScope.RefIdRC.Value).Description
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        -
-                                    </label>
-                                    @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
-                                }
-                            </td>
-                            <td width="10%" align="center">
-
-                                <label>
-                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())))   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
-                                </label>
-
-                                @*        @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Model.Level4List, 0))      @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0) @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-size: 6px; font-family: Arial, Sans-serif;" })
-                                </label>
-                            </td>
+                            @Html.HiddenFor(x => x.EditablesSMO[j].GroupId)
+                            @if (groupFlag)
+                            {
+                                <td width="5%" align="center" style="background-color:#c7d1d6">
 
 
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Why1, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why1 })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Why2, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why2 })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].Why3, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why3 })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextAreaFor(m => m.EditablesSMO[j].ActionPlan, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.ActionPlan })
-                                </label>
-                            </td>
-                            <td width="5%" align="center">
-                                <label>
-                                    @*  @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) *@
-                                    @Html.TextBoxFor(model => model.responsibles[j], new { @class = "form-control", @placeholder = Model.responsibles[j] })
-                                </label>
-                            </td>
-                            <td width="5%" align="center">
+                                    <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
+                                    @if (Model.EditablesSMO[j].GroupId != null)
+                                    {
+                                        <input type="button" value="Ungroup" id="Ung(@(j.ToString()))" class="btn btn-danger" onclick="Ungroup(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
+                                          @Html.HiddenFor(m => m.selectedItems[j])
+                                    }
+                                    else
+                                    {
+                                        @Html.CheckBoxFor(m => m.selectedItems[j])
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td width="5%" align="center" style="background-color:#808080">
+
+
+                                    <input type="button" value="Details" id="Sel(@(j.ToString()))" class="btn btn-warning" onclick="Details(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
+                                    @if (Model.EditablesSMO[j].GroupId != null)
+                                    {
+                                        <input type="button" value="Ungroup" id="Ung(@(j.ToString()))" class="btn btn-danger" onclick="Ungroup(@(Model.RegistrosSMO[j].SmoScopeID.ToString()))" />
+                                         @Html.HiddenFor(m => m.selectedItems[j])
+                                    }
+                                    else
+                                    {
+                                        @Html.CheckBoxFor(m => m.selectedItems[j])
+                                    }
+
+                                </td>
+                            }
+                            @if (groupFlag)
+                            {
+                                <td width="5%" align="center" style="background-color:#c7d1d6">
+                                    <label>
+                                        @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()), 2).ToString()
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td width="5%" align="center" style="background-color:#808080">
+                                    <label>
+                                        @decimal.Round(decimal.Parse(SmoScope.Volumen.ToString()), 2).ToString()
+                                    </label>
+                                </td>
+                            }
+                            @if (groupFlag)
+                            {
+                                <td width="4%" align="center" style="background-color:#c7d1d6">
+                                    @if (Model.EditablesSMO[j].RefIdSMO != null)
+                                    {
+                                        <label>
+                                            @Model.MBLL.Traer("SMO", Int32.Parse(SmoScope.RefIdSMO.Value.ToString())).DataIni
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            -
+                                        </label>
+                                        @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td width="4%" align="center" style="background-color:#808080">
+                                    @if (Model.EditablesSMO[j].RefIdSMO != null)
+                                    {
+                                        <label>
+                                            @Model.MBLL.Traer("SMO", Int32.Parse(SmoScope.RefIdSMO.Value.ToString())).DataIni
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            -
+                                        </label>
+                                        @Html.HiddenFor(x => x.EditablesSMO[j].RefIdSMO)
+                                    }
+                                </td>
+                            }
+                            @if (groupFlag)
+                            {
+                                <td width="3%" align="center" style="background-color:#c7d1d6">
+                                    @if (Model.EditablesSMO[j].RefIdBU != null)
+                                    {
+                                        <label>
+                                            @Model.MBLL.Traer("BU", Int32.Parse(SmoScope.RefIdBU.Value.ToString())).DataFin
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            -
+                                        </label>
+                                        @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td width="3%" align="center" style="background-color:#808080">
+                                    @if (Model.EditablesSMO[j].RefIdBU != null)
+                                    {
+                                        <label>
+                                            @Model.MBLL.Traer("BU", Int32.Parse(SmoScope.RefIdBU.Value.ToString())).DataFin
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            -
+                                        </label>
+                                        @Html.HiddenFor(x => x.EditablesSMO[j].RefIdBU)
+                                    }
+                                </td>
+
+                            }
+                            @if (groupFlag)
+                            {
+                                <td width="5%" align="center" style="background-color:#c7d1d6">
+                                    @if (Model.EditablesSMO[j].RefIdRC != null)
+                                    {
+                                        <label>
+                                            @Model.RCBLL.Traer(SmoScope.RefIdRC.Value).Description
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            -
+                                        </label>
+                                        @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td width="5%" align="center" style="background-color:#808080">
+                                    @if (Model.EditablesSMO[j].RefIdRC != null)
+                                    {
+                                        <label>
+                                            @Model.RCBLL.Traer(SmoScope.RefIdRC.Value).Description
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <label>
+                                            -
+                                        </label>
+                                        @Html.HiddenFor(x => x.EditablesSMO[j].RefIdRC)
+                                    }
+                                </td>
+
+                            }
+
+                            @if (groupFlag)
+                            {
+                                <td width="10%" align="center" style="background-color:#c7d1d6">
+
+                                    <label>
+                                        @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())))   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
+                                    </label>
+
+                                    @*        @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Model.Level4List, 0))      @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0) @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                                </td>
+                            }
+                            else
+                            {
+                                <td width="10%" align="center" style="background-color:#808080">
+
+                                    <label>
+                                        @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())), new { @disabled = "disabled" })   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
+                                    </label>
+
+                                    @*        @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Model.Level4List, 0))      @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0) @Model.L4BLL.Traer(SmoScope.Level4.Value).Nombre  *@
+                                </td>
+                            }
+
+                            @if (groupFlag)
+                            {
+                                <td align="center" style="background-color:#c7d1d6">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-size: 6px; font-family: Arial, Sans-serif;" })
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td align="center" style="background-color:#808080">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @readonly = true, @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-size: 6px; font-family: Arial, Sans-serif;" })
+                                    </label>
+                                </td>
+                            }
+                            @if (groupFlag)
+                            {
+                                <td align="center" style="background-color:#c7d1d6">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Why1, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why1 })
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td align="center" style="background-color:#808080">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Why1, new { @class = "form-control", @readonly = true, @cols = 150, @rows = 5, @placeholder = SmoScope.Why1 })
+                                    </label>
+                                </td>
+                            }
+
+                            @if (groupFlag)
+                            {
+                                <td align="center" style="background-color:#c7d1d6">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Why2, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why2 })
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td align="center" style="background-color:#808080">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Why2, new { @class = "form-control", @readonly = true, @cols = 150, @rows = 5, @placeholder = SmoScope.Why2 })
+                                    </label>
+                                </td>
+                            }
+
+                            @if (groupFlag)
+                            {
+                                <td align="center" style="background-color:#c7d1d6">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Why3, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Why3 })
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td align="center" style="background-color:#808080">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Why3, new { @class = "form-control", @readonly = true, @cols = 150, @rows = 5, @placeholder = SmoScope.Why3 })
+                                    </label>
+                                </td>
+                            }
+                            @if (groupFlag)
+                            {
+                                <td align="center" style="background-color:#c7d1d6">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].ActionPlan, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.ActionPlan })
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td align="center" style="background-color:#808080">
+                                    <label>
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].ActionPlan, new { @class = "form-control", @readonly = true, @cols = 150, @rows = 5, @placeholder = SmoScope.ActionPlan })
+                                    </label>
+                                </td>
+                            }
+
+                            @if (groupFlag)
+                            {
+                                <td width="5%"  align="center" style="background-color:#c7d1d6">
+                                    <label>
+                                        @*  @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) *@
+
+
+                                        @Html.TextBoxFor(m => m.responsibles[j], new { @class = "form-control",  @placeholder = Model.responsibles[j] })
+                                    </label>
+                                </td>
+                            }
+                            else
+                            {
+                                <td width="5%"  align="center" style="background-color:#808080">
+                                    <label>
+                                        @*  @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) *@
+
+
+                                        @Html.TextBoxFor(m => m.responsibles[j], new { @class = "form-control", @readonly = true, @placeholder = Model.responsibles[j] })
+                                    </label>
+                                </td>
+                            }
+
+                          @if (groupFlag)
+                          {
+                            <td width="5%" align="center" style="background-color:#c7d1d6">
                                 <label>
                                     @Html.TextBoxFor(m => m.EditablesSMO[j].DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
                                     <!--<id = "FechaDePago", class = "inputForm" }) -->
                                 </label>
                             </td>
-                            <td width="3%" align="center">
-
-                                @if (Model.EditablesSMO[j].O_C != null)
-                                {
-                                    <label>
-                                        @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })
-                                    </label>
-                                }
-                                else
-                                {
-                                    <label>
-                                        @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = "-" })
-                                    </label>
-                                }
-
+                          }
+                          else
+                          {
+                            <td width="5%" align="center" style="background-color:#808080">
+                                <label>
+                                    @Html.TextBoxFor(m => m.EditablesSMO[j].DueDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @readonly = true, @type = "date" })
+                                    <!--<id = "FechaDePago", class = "inputForm" }) -->
+                                </label>
                             </td>
+                          }
+
+@if (groupFlag)
+{
+    <td width="3%" align="center" style="background-color:#c7d1d6">
+
+
+        <label>
+            @*  @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })*@
+
+            @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C))
+
+        </label>
+    </td>
+}
+else
+{
+    <td width="3%" align="center" style="background-color:#808080">
+        <label>
+            @*  @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })*@
+
+            @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C), new { @disabled = "disabled" })
+
+        </label>
+    </td>
+}
                         </tr>
-                                j++;
+
+                            if (Model.EditablesSMO[j].GroupId != null)
+                            { Model.displayedGroups[Model.EditablesSMO[j].GroupId.Value] = true; }
+
+                            j++;
                     }
-                }
+                
                 }
             </table>
 
