@@ -1785,12 +1785,12 @@ namespace Larca2.Controllers
             if (usersNOAD > 0) viewModel.mensaje = viewModel.mensaje + " Failed to create " + usersNOAD + " responsibles. Make sure they exist in Active Directory.";
 
 
-            viewModel.displayedGroups = new List<bool>();
-            int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
-            for (int i = 0; i < maxim; i++)
-            {
-                viewModel.displayedGroups.Add(false);
-            }
+            //viewModel.displayedGroups = new List<bool>();
+            //int maxim = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+           // for (int i = 0; i < maxim; i++)
+           // {
+           //     viewModel.displayedGroups.Add(false);
+           // }
 
             ViewBag.Message = "";
             return View("SmoTreatment", viewModel);

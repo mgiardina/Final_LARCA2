@@ -171,7 +171,7 @@ namespace LARCA2.Business.Services
             //si no se da que ambos son nulos o que ambos apuntan al mismo nombre de usuario, entonces son distintos
 
             if (!((smoScope.DueDate != null || smoScope1.DueDate == null) && smoScope.DueDate.Equals(smoScope1.DueDate))) return false;
-            if (!(((smoScope.O_C == "0" && smoScope1.O_C == null) || (smoScope.O_C == smoScope1.O_C)))) return false;
+            if (!((((smoScope.O_C == "0" || smoScope.O_C == null) && smoScope1.O_C == null) || (smoScope.O_C == smoScope1.O_C)))) return false;
             //  smoScope.Borrado.Equals(this.Borrado) ))return false;
             if (!(((smoScope.Level4 == 0 && smoScope1.Level4 == null) || (smoScope.Level4 == smoScope1.Level4)))) return false;
           
