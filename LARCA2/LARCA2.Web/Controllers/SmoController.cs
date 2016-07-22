@@ -1458,7 +1458,7 @@ namespace Larca2.Controllers
                     clon.Why1 = actFilt[6];
                     clon.Why2 = actFilt[7];
                     clon.Why3 = actFilt[8];
-
+                    clon.historic = false;
 
                     clon.ActionPlan = actFilt[9];
                     clon.O_C = (actFilt[12].ToUpper() == "O" || actFilt[12].ToUpper() == "C" ? actFilt[12] : "O");
