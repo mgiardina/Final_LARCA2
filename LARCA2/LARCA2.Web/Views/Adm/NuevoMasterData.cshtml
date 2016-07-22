@@ -39,14 +39,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12">
-                <fieldset class="form-group">
-                    <label for="Nombre">Deleted</label><br />
-                    @Html.CheckBoxFor(m => m.MasterData.deleted, new { @class = "form-control" })
-                </fieldset>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-sm-3">
                 <input type="submit" value="Save" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
                 <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("MasterDataBM", "Adm") + "'");" />

@@ -27,14 +27,25 @@ namespace LARCA2.Business.Services
             return UserOwnerDAL.Todos();
         }
 
-       /* public List<LARCA20_User_Owner> TodosFiltro(string txNombre, string txApellido)
-        {
-            return UserOwnerDAL.TodosFiltro(txNombre, txApellido);
-        }
-        */
+        /* public List<LARCA20_User_Owner> TodosFiltro(string txNombre, string txApellido)
+         {
+             return UserOwnerDAL.TodosFiltro(txNombre, txApellido);
+         }
+         */
         public LARCA20_User_Owner Traer(long id)
         {
             return UserOwnerDAL.Traer(id);
+        }
+
+        public List<string> OwnerEnUso(long id)
+        {
+            var listado = new List<string>();
+            var userOwners = UserOwnerDAL.Todos().Where(u => u.IdOwner == id && u.deleted == false);
+            foreach (var item in userOwners)
+            {
+                listado.Add("Cannot delete OWNER: " + new MasterDataBLL().Traer(id).DataFin + ". OWNER Assigned to: " + item.LARCA20_Users.user_name);
+            }
+            return listado;
         }
 
         public bool PermisoCheck(long bu, long smo, long owner)

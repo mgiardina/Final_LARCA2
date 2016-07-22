@@ -673,6 +673,8 @@ namespace LARCA2.Controllers
         {
             Larca2.Models.MasterDataSearchForm MasterDataSearchForm = new Larca2.Models.MasterDataSearchForm();
             Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
+            ViewBag.Listado = new List<string>();
+            ViewBag.ErrorOwner = false;
 
             if (ddlGrupos != "0")
             {
@@ -709,12 +711,13 @@ namespace LARCA2.Controllers
         {
             if (model.MasterData.DataIni != null)
             {
-                Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
-                Data.DatabaseModels.LARCA20_MasterData user = new Data.DatabaseModels.LARCA20_MasterData();
-                user.Data = model.MasterData.Data;
-                user.DataIni = model.MasterData.DataIni;
-                user.DataFin = model.MasterData.DataIni;
-                repo.Guardar(user);
+                var repo = new MasterDataBLL();
+                var masterData = new LARCA20_MasterData();
+                masterData.Data = model.MasterData.Data;
+                masterData.DataIni = model.MasterData.DataIni;
+                masterData.DataFin = model.MasterData.DataIni;
+                masterData.deleted = false;
+                repo.Guardar(masterData);
                 return Content("<script language='javascript' type='text/javascript'>alert('Saved!');document.location = '../Adm/MasterDataBM';</script>");
             }
             else
@@ -741,16 +744,48 @@ namespace LARCA2.Controllers
                 {
                     long id = Int32.Parse(txtIdRenglon);
                     Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
+                    var saved = false;
                     foreach (var editedMaster in model.MasterDataList)
                     {
-                        Data.DatabaseModels.LARCA20_MasterData masterData = repo.Traer(editedMaster.id);
+                        var masterData = repo.Traer(editedMaster.id);
                         masterData.Data = masterData.Data;
                         masterData.DataIni = masterData.DataIni;
                         masterData.DataFin = editedMaster.DataFin;
                         masterData.deleted = editedMaster.deleted;
-                        repo.Guardar(masterData);
+                        if (masterData.Data == "OWNER" && editedMaster.deleted)
+                        {
+                            var repoOwners = new UserOwnerBLL();
+                            var listado = repoOwners.OwnerEnUso(editedMaster.id);
+                            if (listado.Count > 0)
+                            {
+                                ViewBag.Listado = listado;
+                                ViewBag.ErrorOwner = true;
+                                break;
+                            }
+                            else
+                            {
+                                repo.Guardar(masterData);
+                                ViewBag.ErrorOwner = false;
+                                saved = true;
+                            }
+                        }
+                        else
+                        {
+                            repo.Guardar(masterData);
+                            ViewBag.ErrorOwner = false;
+                            saved = true;
+                        }
                     }
-                    return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/MasterDataBM';</script>");
+                    if (saved)
+                        return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/MasterDataBM';</script>");
+
+                    else
+                    {
+                        Larca2.Models.MasterDataSearchForm MasterDataSearchForm = new Larca2.Models.MasterDataSearchForm();
+                        MasterDataSearchForm.MasterDataList = new List<LARCA20_MasterData>();
+                        return View("MasterDataBM", MasterDataSearchForm);
+                    }
+                   
                 }
                 else
                 {

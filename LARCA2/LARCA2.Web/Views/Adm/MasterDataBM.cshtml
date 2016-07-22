@@ -145,6 +145,15 @@
             <div class="col-sm-4" id="Seleccionar" style="color:red;display:none">Select One Filter</div>
             <div class="col-sm-4" id="Check1" style="color:red;display:none">Select Only one Row</div>
             <div class="col-sm-4" id="Check2" style="color:red;display:none">Select a Row</div>
+            @if (ViewBag.ErrorOwner)
+            {
+                <div class="col-sm-4" id="Check3" style="color:red;">
+                    @foreach (string item in ViewBag.Listado)
+                    {
+                        @item.ToString(); <br />
+                    }
+                </div>
+            }
         </div>
         <div class="row">
             <div class="col-sm-12 pull-right">
@@ -187,7 +196,7 @@
                             {
                                 <tr>
                                     <td class="Check" align="center">
-                                        @Html.CheckBoxFor(m => m.Selected[j], new { @value = MasterData.id })
+                                        @Html.CheckBoxFor(Modell => Model.Selected[j], new { @value = MasterData.id })
                                     </td>
 
                                     <td align="center">
