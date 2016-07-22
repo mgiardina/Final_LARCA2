@@ -339,6 +339,28 @@ namespace LARCA2.Controllers
             return lsli;
         }
 
+        public static List<SelectListItem> OCSelectItem(string O_C)
+        {
+            int x = 0;
+            List<SelectListItem> lsli = new List<SelectListItem>();
+            if (O_C == null) 
+            { 
+                x++;
+            lsli.Add(new SelectListItem() { Text = "-", Value = "0", Selected = true });
+            }
+            
+                 lsli.Add(new SelectListItem() { Text = "O", Value = "O", Selected = false} );
+                 lsli.Add(new SelectListItem() { Text = "C", Value = "C", Selected = false });
+           
+            
+            if(O_C != null && O_C.ToUpper() == "C")
+                lsli[1+x].Selected = true;
+            else 
+                 if(O_C != null && O_C.ToUpper() == "O")
+                      lsli[0+x].Selected = true;
+            return lsli;
+        }
+
         public static List<SelectListItem> Level4SelectItem(int smoId)
         {
             LARCA2.Business.Services.Level4BLL repoNivel = new LARCA2.Business.Services.Level4BLL();
@@ -348,22 +370,31 @@ namespace LARCA2.Controllers
             List<LARCA2.Data.DatabaseModels.LARCA20_Level4> list = repoNivel.Todos();
             List<SelectListItem> lsli = new List<SelectListItem>();
             lsli.Add(new SelectListItem() { Text = "Other", Value = "0" });
-            if (smo == null || smo.Level4 == null || smo.Level4 == null)
+            if (smo == null )
             {
+            
                 lsli[0].Selected = true;
                 return lsli;
             }
 
-            List<SelectListItem> lista = new List<SelectListItem>();
-            List<LARCA20_Level4> l4rc = repoNivel.ListaPorRC(Int32.Parse(smo.RefIdRC.ToString()));
-            foreach (LARCA20_Level4 l4 in l4rc)
-                lista.Add(new SelectListItem() { Text = l4.name, Value = l4.Id.ToString(), Selected = false });
+
+            if (smo.RefIdRC != null)
+            {
+                List<SelectListItem> lista = new List<SelectListItem>();
+                List<LARCA20_Level4> l4rc = repoNivel.ListaPorRC(Int32.Parse(smo.RefIdRC.ToString()));
+                foreach (LARCA20_Level4 l4 in l4rc)
+                    lista.Add(new SelectListItem() { Text = l4.name, Value = l4.Id.ToString(), Selected = false });
 
 
-            lsli.AddRange(lista);
-
+                lsli.AddRange(lista);
+            }
+            if (smo.Level4 == null)
+                lsli[0].Selected = true;
+            else
             foreach (SelectListItem item in lsli)
                 item.Selected = (item.Value == smo.Level4.Value.ToString() ? true : false);
+
+
             return lsli;
         }
 
