@@ -94,43 +94,43 @@
                                 <th> Why</th>
                                 <th> Action Plan</th>
                                 <th> Responsible</th>
-                                <th> GAP Analysis</th>
+                                <th> GAP Analysis Owner</th>
                             </tr>
                             @foreach (var item in (List<LARCA2.Business.Entities.ReportRow>)ViewData["MasterRows"])
                             {
-                            <tr style="background-color:gray;">
-                                <td style="background-color:gray;color:#fff;">@item.RBU</td>
-                                <td style="background-color:gray;color:#fff;">@item.SMO</td>
-                                <td style="background-color:gray;color:#fff;">@item.CUT</td>
-                                <td style="background-color:gray;color:#fff;">@item.LEVEL4</td>
-                                <td style="background-color:gray;color:#fff;">@item.VOLUME</td>
-                                <td style="background-color:gray;color:#fff;">@item.GAP</td>
-                                <td style="background-color:gray;color:#fff;">@item.PROBLEM</td>
-                                <td style="background-color:gray;color:#fff;">@item.WHY1</td>
-                                <td style="background-color:gray;color:#fff;">@item.WHY2</td>
-                                <td style="background-color:gray;color:#fff;">@item.WHY3</td>
-                                <td style="background-color:gray;color:#fff;">@item.ACTIONPLAN</td>
-                                <td style="background-color:gray;color:#fff;">@item.RESPONSIBLE</td>
-                                <td style="background-color:gray;color:#fff;">@item.GAPANALYSIS</td>
+                                <tr style="background-color:gray;">
+                                    <td style="background-color:gray;color:#fff;">@item.RBU</td>
+                                    <td style="background-color:gray;color:#fff;">@item.SMO</td>
+                                    <td style="background-color:gray;color:#fff;">@item.CUT</td>
+                                    <td style="background-color:gray;color:#fff;">@item.LEVEL4</td>
+                                    <td style="background-color:gray;color:#fff;">@item.VOLUME</td>
+                                    <td style="background-color:gray;color:#fff;">@item.GAP</td>
+                                    <td style="background-color:gray;color:#fff;">@item.PROBLEM</td>
+                                    <td style="background-color:gray;color:#fff;">@item.WHY1</td>
+                                    <td style="background-color:gray;color:#fff;">@item.WHY2</td>
+                                    <td style="background-color:gray;color:#fff;">@item.WHY3</td>
+                                    <td style="background-color:gray;color:#fff;">@item.ACTIONPLAN</td>
+                                    <td style="background-color:gray;color:#fff;">@item.RESPONSIBLE</td>
+                                    <td style="background-color:gray;color:#fff;">@item.GAPANALYSIS</td>
 
-                            </tr>
+                                </tr>
                                 foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.OrderByDescending(r => Convert.ToDecimal(r.VOLUME)).ToList())
                                 {
-                            <tr>
-                                <td> @detail.RBU</td>
-                                <td> @detail.SMO</td>
-                                <td> @detail.CUT</td>
-                                <td> @detail.LEVEL4</td>
-                                <td> @detail.VOLUME</td>
-                                <td> @detail.GAP</td>
-                                <td> @detail.PROBLEM</td>
-                                <td> @detail.WHY1</td>
-                                <td> @detail.WHY2</td>
-                                <td> @detail.WHY3</td>
-                                <td> @detail.ACTIONPLAN</td>
-                                <td> @detail.RESPONSIBLE</td>
-                                <td> @detail.GAPANALYSIS</td>
-                            </tr>
+                                    <tr>
+                                        <td> @detail.RBU</td>
+                                        <td> @detail.SMO</td>
+                                        <td> @detail.CUT</td>
+                                        <td> @detail.LEVEL4</td>
+                                        <td> @detail.VOLUME</td>
+                                        <td> @detail.GAP</td>
+                                        <td> @detail.PROBLEM</td>
+                                        <td> @detail.WHY1</td>
+                                        <td> @detail.WHY2</td>
+                                        <td> @detail.WHY3</td>
+                                        <td> @detail.ACTIONPLAN</td>
+                                        <td> @detail.RESPONSIBLE</td>
+                                        <td> @detail.GAPANALYSIS</td>
+                                    </tr>
                                 }
                             }
                         </tbody>

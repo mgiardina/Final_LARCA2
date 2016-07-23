@@ -39,14 +39,14 @@ namespace Larca2.Controllers
                     {
                         var rows = new ExcelCore().ProcesarExcel(fileName, TipoProceso.Total);
                         ViewData["MasterRows"] = rows;
-                        ViewBag.Result = rows.Count > 0 ? "Partial File Uploaded and Processed!" : "No Rows Processed. Check XLS Reading Parameters.";
+                        ViewBag.Result = rows.Count > 0 ? "Complete File Uploaded and Processed!" : "No Rows Processed. Check XLS Reading Parameters.";
                     }
                         
                     else
                     {
                         var rows = new ExcelCore().ProcesarExcel(fileName, TipoProceso.Parcial);
                         ViewData["MasterRows"] = rows;
-                        ViewBag.Result = rows.Count > 0 ? "Complete File Uploaded and Processed!" : "No Rows Processed. Check XLS Reading Parameters.";
+                        ViewBag.Result = rows.Count > 0 ? "Partial File Uploaded and Processed!" : "No Rows Processed. Check XLS Reading Parameters.";
                     }
                 }
                 else
