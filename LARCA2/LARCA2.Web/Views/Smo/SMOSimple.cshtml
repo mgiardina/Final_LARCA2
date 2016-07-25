@@ -41,6 +41,24 @@
         });
     }
 
+    function CheckforAD(name) {
+      var checkthis=  document.getElementById('respo'+name).value;
+            $.ajax({
+                url: '@Url.Action("CheckForAD", "Smo")',
+                type: 'GET',
+                dataType: 'json',
+                cache: false,
+                data: { 'name': checkthis },
+                success: function (results) {
+                    alert(results);
+                },
+                error: function () {
+                    alert('Error occured');
+                }
+            });
+        
+    }
+
     function Ungroup(id) {
         if (confirm('Ungroup row? Unsaved changes in the page will be lost.')) {
             $.ajax({
@@ -468,7 +486,7 @@
                                         @*  @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) *@
 
 
-                                        @Html.TextBoxFor(m => m.responsibles[j], new { @class = "form-control",  @placeholder = Model.responsibles[j] })
+                                        @Html.TextBoxFor(m => m.responsibles[j], new { @class = "form-control", @id = "respo" + j.ToString(), @placeholder = Model.responsibles[j], onblur = "CheckforAD(" + j.ToString() + ")" })
                                     </label>
                                 </td>
                             }
@@ -479,7 +497,7 @@
                                         @*  @Html.DropDownListFor(model => model.EditablesSMO[j].RefIdResponsable, LARCA2.Controllers.AdmController.RespSelectItem(Model.Responsables, (Model.EditablesSMO[j].RefIdResponsable == null ? 0 : Model.EditablesSMO[j].RefIdResponsable.Value))) *@
 
 
-                                        @Html.TextBoxFor(m => m.responsibles[j], new { @class = "form-control", @readonly = true, @placeholder = Model.responsibles[j] })
+                                        @Html.TextBoxFor(m => m.responsibles[j], new { @class = "form-control" , @readonly = true, @placeholder = Model.responsibles[j] })
                                     </label>
                                 </td>
                             }

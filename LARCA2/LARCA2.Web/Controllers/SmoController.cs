@@ -1029,6 +1029,18 @@ namespace Larca2.Controllers
 
                 */
 
+
+
+
+        [HttpGet]
+        public JsonResult CheckForAD(string name)
+        {
+            bool resultado =  UserExistsInAD(name,"LA");
+
+            return Json(resultado ? "Username " + name + " is available." : "Invalid username: " + name + " doesn't exist in Active Directory.", JsonRequestBehavior.AllowGet);
+        }
+
+
         public bool UserExistsInAD(string username, string userdomain)
         {
             List<string> gruposEncontrados = new List<string>();
@@ -1438,7 +1450,7 @@ namespace Larca2.Controllers
                     /*OLD
     RC
     SMO
-    BU
+    BU                    
     VOLUMEN
     PROBLEM
     WHY1
@@ -1454,6 +1466,7 @@ namespace Larca2.Controllers
     VOLUMEN
     SMO
     BU
+    -SMOID-NEW
     RC
     LEVEL4
     PROBLEM
@@ -1465,39 +1478,30 @@ namespace Larca2.Controllers
     DUEDATE
     O_C*/
 
+                    LARCA20_SmoScope origin = repoGuardado.Traer(Int32.Parse(actFilt[3]));
+
                     DateTime due;
                     clon.SmoScopeID = 0;
 
                     clon.deleted = false;
-                    clon.DueDate = (DateTime.TryParse(actFilt[11], out due) ? due : DateTime.Now.AddDays(7));
+                    clon.DueDate = (DateTime.TryParse(actFilt[12], out due) ? due : DateTime.Now.AddDays(7));
                     clon.date = DateTime.Now;
                     clon.Volumen = Decimal.Parse(actFilt[0]); //antes 3
-                    clon.Problem = actFilt[5];
-                    clon.Why1 = actFilt[6];
-                    clon.Why2 = actFilt[7];
-                    clon.Why3 = actFilt[8];
+                    clon.Problem = actFilt[6];
+                    clon.Why1 = actFilt[7];
+                    clon.Why2 = actFilt[8];
+                    clon.Why3 = actFilt[9];
                     clon.historic = false;
 
-                    clon.ActionPlan = actFilt[9];
-                    clon.O_C = (actFilt[12].ToUpper() == "O" || actFilt[12].ToUpper() == "C" ? actFilt[12] : "O");
+                    clon.ActionPlan = actFilt[10];
+                    clon.O_C = (actFilt[13].ToUpper() == "O" || actFilt[13].ToUpper() == "C" ? actFilt[13] : "O");
 
 
                     clon.RefIdBU = mdClones.Traer(Int32.Parse(actFilt[2])).id;
                     clon.RefIdSMO = mdClones.Traer(Int32.Parse(actFilt[1])).id;
-                    if (userRoles.Traer(user.Id).RefIdRoles != 1) //NOT ADMIN
-                        clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.Id).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
-                    else
-                        try
-                        {
-                            clon.RefIdOwner = uoClones.TraerPorIdUsuario(user.Id).Where(x => x.IdBU == clon.RefIdBU && x.IdSmo == clon.RefIdSMO).FirstOrDefault().IdOwner; // :O
-                        }
-
-
-
-                        catch (Exception e) { clon.RefIdOwner = null; }
-
-
-                    clon.RefIdRC = rcClones.TraerPorDesc(actFilt[3]).Id;
+                    clon.RefIdOwner = origin.RefIdOwner;
+                    clon.GroupId = origin.GroupId;
+                    clon.RefIdRC = rcClones.TraerPorDesc(actFilt[4]).Id;
 
                     /*   int io;
                        if (Int32.TryParse(actFilt[9].ToString(), out io) == true)
@@ -1506,22 +1510,22 @@ namespace Larca2.Controllers
                            clon.RefIdResponsable = null;
                        */
                     //responsClones
-                    if (actFilt[10] == "")
+                    if (actFilt[11] == "")
                         clon.RefIdResponsable = null;
                     else
                     { //aca puede pasar que:
                         LARCA2.Business.Services.ResponsablesBLL repoResponsables2 = new LARCA2.Business.Services.ResponsablesBLL();
 
-                        if (repoUsuarios.ExisteUsuario(actFilt[10]) == false)
+                        if (repoUsuarios.ExisteUsuario(actFilt[11]) == false)
                         {
 
-                            if (!UserExistsInAD(actFilt[10], "LA"))
+                            if (!UserExistsInAD(actFilt[11], "LA"))
                             {
 
 
                                 //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
                                 LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
-                                newUser.user_name = actFilt[10];
+                                newUser.user_name = actFilt[11];
                                 newUser.deleted = false;
                                 newUser.date = DateTime.Now;
                                 newUser.name = String.Empty;
@@ -1530,10 +1534,10 @@ namespace Larca2.Controllers
                                 //no le creo rol porque no se definió cual poner
 
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
-                                newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                                newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[11]).Id;
                                 newResp.deleted = false;
                                 repoResponsables2.Guardar(newResp);
-                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[11]).Id;
                             }
                             else { usersNOAD++; clon.RefIdResponsable = null; }
 
@@ -1541,19 +1545,19 @@ namespace Larca2.Controllers
                         else
                         {
 
-                            if (repoResponsables2.Todos().Where(x => x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(actFilt[10]).Id).Count() > 0)
+                            if (repoResponsables2.Todos().Where(x => x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(actFilt[11]).Id).Count() > 0)
                             {
                                 //el responsable ingresado exista y sea un usuario que existe, entonces solo se asigna.
-                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[11]).Id;
                             }
                             else
                             {
                                 //el responsable ingresado no exista pero exista el usuario, hay que crear el responsable.
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
-                                newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                                newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[11]).Id;
                                 newResp.deleted = false;
                                 repoResponsables2.Guardar(newResp);
-                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[10]).Id;
+                                clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[11]).Id;
                             }
                         }
 
@@ -1563,10 +1567,10 @@ namespace Larca2.Controllers
 
 
 
-                    if (actFilt[4] == "0")
+                    if (actFilt[5] == "0")
                         clon.Level4 = null;
                     else
-                        clon.Level4 = Int32.Parse(actFilt[4]);
+                        clon.Level4 = Int32.Parse(actFilt[5]);
                     //lvlClones.Todos().Where(l => l.deleted == false && l.Id == Int32.Parse(actFilt[4])).First().Id;
 
                     repoGuardado.Guardar(clon);
@@ -1583,15 +1587,46 @@ namespace Larca2.Controllers
             //user traido mas arriba
 
 
+
+
+            int grupoAfectado = 0; //para corroborar cantidad de registros de grupos modificados al finalizar la actualizacion de valores
+            List<bool> listaGrupos = new List<bool>();
+            int maximoGrupo = viewModel.EditablesSMO.Max(x => x.GroupId.GetValueOrDefault(0));
+            bool groupFlag = false;
+            for (int i = 0; i <= maximoGrupo; i++)
+            {
+                listaGrupos.Add(new bool { });
+                listaGrupos[i] = false;
+            }
+
+
+
             int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
             //    foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope in viewModel.EditablesSMO)
             for (int countModif = 0; countModif < viewModel.EditablesSMO.Count; countModif++)
             {
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope = viewModel.EditablesSMO[countModif];
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope actualOriginal = repo.Traer(scope.SmoScopeID);
+
+
+                groupFlag = false;
+                if (actualOriginal.GroupId == null || ((actualOriginal.GroupId != null) && (listaGrupos[actualOriginal.GroupId.Value] == false)))
+                { groupFlag = true; } //groupFlag indicates that a register is the first one of its group to be displayed
+
+
+                LARCA2.Data.DatabaseModels.LARCA20_SmoScope scopeCopia = new LARCA2.Data.DatabaseModels.LARCA20_SmoScope();
+                scopeCopia.Why1 = actualOriginal.Why1;
+                scopeCopia.ActionPlan = actualOriginal.ActionPlan;
+                scopeCopia.Why2 = actualOriginal.Why2;
+                scopeCopia.Why3 = actualOriginal.Why3;
+                scopeCopia.Problem = actualOriginal.Problem;
+                scopeCopia.DueDate = actualOriginal.DueDate;
+                scopeCopia.RefIdResponsable = actualOriginal.RefIdResponsable;
+                scopeCopia.Level4 = actualOriginal.Level4;
+                
                 if (actualOriginal == null) { } //no existe en la tabla
                 //   if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope)) //existe Y fue modificado
-                if (actualOriginal != null && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope, viewModel.responsibles[countModif])) //existe Y fue modificado
+                if (actualOriginal != null && groupFlag && !LARCA2.Business.Services.SMOScopeBLL.esIgual(actualOriginal, scope, viewModel.responsibles[countModif])) //existe Y fue modificado
                 {
 
                     if (scope.Why1 != actualOriginal.Why1)
@@ -1676,8 +1711,48 @@ namespace Larca2.Controllers
                         actualOriginal.Level4 = scope.Level4;
                     repo.Guardar(actualOriginal);
                     test++;
-                }
+                
+                
 
+                     if (actualOriginal.GroupId != null)
+                    {
+                        List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> delGrupo = repo.TraerGrupo(actualOriginal.GroupId.Value).Where(x => x.SmoScopeID != actualOriginal.SmoScopeID).ToList();
+                        foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope groupSmo in delGrupo)
+                        {
+                            bool flagChange = false;
+                            LARCA2.Data.DatabaseModels.LARCA20_SmoScope current = repo.Traer(groupSmo.SmoScopeID);
+
+                            if (actualOriginal.Why1 != scopeCopia.Why1)
+                            { flagChange = true; current.Why1 = actualOriginal.Why1; }
+                            if (actualOriginal.Why2 != scopeCopia.Why2)
+                            { flagChange = true; current.Why2 = actualOriginal.Why2; }
+                            if (actualOriginal.Why3 != scopeCopia.Why3)
+                            { flagChange = true; current.Why3 = actualOriginal.Why3; }
+                            if (actualOriginal.ActionPlan != scopeCopia.ActionPlan)
+                            { flagChange = true; current.ActionPlan = actualOriginal.ActionPlan; }
+                            if (actualOriginal.DueDate != scopeCopia.DueDate)
+                            { flagChange = true; current.DueDate = actualOriginal.DueDate; }
+                            if (actualOriginal.O_C != scopeCopia.O_C)
+                            { flagChange = true; current.O_C = actualOriginal.O_C; }
+                            if (actualOriginal.Problem != scopeCopia.Problem)
+                            { flagChange = true; current.Problem = actualOriginal.Problem; }
+                            if (actualOriginal.RefIdResponsable != scopeCopia.RefIdResponsable)
+                            { flagChange = true; current.RefIdResponsable = actualOriginal.RefIdResponsable; }
+                            if (actualOriginal.historic != scopeCopia.historic)
+                            { flagChange = true; current.historic = actualOriginal.historic; }
+                            //   if (actualOriginal.Level4 != scopeCopia.Level4)
+                            //    { flagChange = true; current.Level4 = actualOriginal.Level4; }
+
+                            repo.Guardar(current);
+                            if (flagChange == true)
+                            { grupoAfectado++; }
+                        }
+                    }
+                
+                
+                }
+                if (actualOriginal.GroupId != null)
+                { listaGrupos[actualOriginal.GroupId.Value] = true; }
             }
             test = test + 0;
 
@@ -1768,7 +1843,8 @@ namespace Larca2.Controllers
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
 
-            viewModel.mensaje = test + " registers were modified. " + (RegistrosClonados != null ? RegistrosClonados.Count.ToString() : "0") + " clones succesfully created.";
+
+            viewModel.mensaje = test + (grupoAfectado == 0 ? "" : "(+ " + grupoAfectado + ")") + " registers were modified. " + (RegistrosClonados != null ? RegistrosClonados.Count.ToString() : "0") + " clones succesfully created.";
             if (usersNOAD > 0) viewModel.mensaje = viewModel.mensaje + " Failed to create " + usersNOAD + " responsibles. Make sure they exist in Active Directory.";
 
             ViewBag.Message = "";
