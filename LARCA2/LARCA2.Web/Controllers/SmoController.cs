@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.DirectoryServices;
 using LARCA2.Data.DatabaseModels;
 using LARCA2.Business.Services;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Larca2.Controllers
 {
@@ -110,8 +111,37 @@ namespace Larca2.Controllers
             viewModel.selectedItems = new List<bool>();
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
-
+           
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+           
+            int bumax = viewModel.BUList.Count;
+            for(int co = 0 ; co < bumax; co++)
+            {
+                int comparacion = viewModel.BUList.Where(x=> x.Text == viewModel.BUList[co].Text).Count();
+
+                if(comparacion>1)
+                {
+                   
+                    for (int coin = co+1; coin <= bumax; )
+                    { 
+                        if(viewModel.BUList[co].Text == viewModel.BUList[coin].Text)
+                                {
+                                    viewModel.BUList.Remove(viewModel.BUList[coin]);
+                                    bumax--;
+                                    comparacion--;
+                                    if (comparacion == 1)
+                                        break;
+                                }
+                        else
+                              { coin++; }
+                    }
+                    
+                }
+                else { 
+                    //aparece solo una vez
+                }
+            }
 
 
 
@@ -148,7 +178,7 @@ namespace Larca2.Controllers
             if (user == null)
                 user = repoUsuarios.Traer(2);
 
-
+            
             //determino el rol del usuario para entender qué filtros y funcionalidades disponer
             LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
             LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
@@ -209,6 +239,9 @@ namespace Larca2.Controllers
             }
 
             viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
+            
+            
+            
             viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
 
@@ -216,13 +249,54 @@ namespace Larca2.Controllers
             int smo = Int32.Parse(viewModel.smo);
 
             if (viewModel.bu != null && bu != 0)
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdBU == bu).ToList();
+            {
+                MasterDataBLL mdb = new MasterDataBLL();
+                 List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
+                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+               
+            }
+
             if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+
+
+            int bumax = viewModel.BUList.Count;
+            for (int co = 0; co < bumax; co++)
+            {
+                int comparacion = viewModel.BUList.Where(x => x.Text == viewModel.BUList[co].Text).Count();
+
+                if (comparacion > 1)
+                {
+
+                    for (int coin = co + 1; coin <= bumax; )
+                    {
+                        if (viewModel.BUList[co].Text == viewModel.BUList[coin].Text)
+                        {
+                            viewModel.BUList.Remove(viewModel.BUList[coin]);
+                            bumax--;
+                            comparacion--;
+                            if (comparacion == 1)
+                                break;
+                        }
+                        else
+                        { coin++; }
+                    }
+
+                }
+                else
+                {
+                    //aparece solo una vez
+                }
+            }
+
+
+            
+            
             viewModel.selectedItems = new List<bool>();
             LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
             int valMax = adb.Todos()[0].Toplvl4;
@@ -425,7 +499,7 @@ namespace Larca2.Controllers
 
                         if (repoUsuarios.ExisteUsuario(viewModel.responsibles[countFor]) == false)
                         {
-                            if (!UserExistsInAD(viewModel.responsibles[countFor], "LA"))
+                            if (!UserExistsInAD(viewModel.responsibles[countFor]))
                             {
                                 //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
                                 LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
@@ -643,14 +717,56 @@ namespace Larca2.Controllers
             int bu = Int32.Parse(viewModel.bu);
             int smo = Int32.Parse(viewModel.smo);
 
-            if (viewModel.bu != null && bu != 0)
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdBU == bu).ToList();
-            if (viewModel.smo != null && smo != 0)
+         
+                if (viewModel.bu != null && bu != 0)
+                {
+                    MasterDataBLL mdb = new MasterDataBLL();
+                    List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
+                    viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+
+                }
+                
+                
+                if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+
+            int bumax = viewModel.BUList.Count;
+            for (int co = 0; co < bumax; co++)
+            {
+                int comparacion = viewModel.BUList.Where(x => x.Text == viewModel.BUList[co].Text).Count();
+
+                if (comparacion > 1)
+                {
+
+                    for (int coin = co + 1; coin <= bumax; )
+                    {
+                        if (viewModel.BUList[co].Text == viewModel.BUList[coin].Text)
+                        {
+                            viewModel.BUList.Remove(viewModel.BUList[coin]);
+                            bumax--;
+                            comparacion--;
+                            if (comparacion == 1)
+                                break;
+                        }
+                        else
+                        { coin++; }
+                    }
+
+                }
+                else
+                {
+                    //aparece solo una vez
+                }
+            }
+
+
+
+
             viewModel.selectedItems = new List<bool>();
             LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
             int valMax = adb.Todos()[0].Toplvl4;
@@ -1035,12 +1151,12 @@ namespace Larca2.Controllers
         [HttpGet]
         public JsonResult CheckForAD(string name)
         {
-            bool resultado =  UserExistsInAD(name,"LA");
+            bool resultado =  UserExistsInAD(name);
 
             return Json(resultado ? "Username " + name + " is available." : "Invalid username: " + name + " doesn't exist in Active Directory.", JsonRequestBehavior.AllowGet);
         }
 
-
+        /*
         public bool UserExistsInAD(string username, string userdomain)
         {
             List<string> gruposEncontrados = new List<string>();
@@ -1058,6 +1174,43 @@ namespace Larca2.Controllers
 
             return oResult == null;
         }
+        */
+
+
+        public bool UserExistsInAD(string username)
+        {
+            bool finded = false;
+            // Traigo el listado de Dominios 
+            var lista = new List<string>();
+            using (var forest = Forest.GetCurrentForest())
+            {
+                foreach (Domain domain in forest.Domains)
+                {
+                    var userdomain = domain.Name.Split(Convert.ToChar("."))[0].ToUpper();
+
+                    List<string> gruposEncontrados = new List<string>();
+                    // Creamos un objeto DirectoryEntry para conectarnos al directorio activo
+                    DirectoryEntry adsRoot = new DirectoryEntry("LDAP://" + userdomain);
+                    // Creamos un objeto DirectorySearcher para hacer una búsqueda en el directorio activo
+                    DirectorySearcher adsSearch = new DirectorySearcher(adsRoot);
+
+                    // Ponemos como filtro que busque el usuario actual
+                    adsSearch.Filter = "samAccountName=" + username;
+
+                    SearchResult oResult;
+                    // Extraemos la primera coincidencia
+                    oResult = adsSearch.FindOne();
+                    if (oResult != null)
+                    {
+                        finded = true;
+                        break;
+                    }
+                }
+            }
+            return finded == false;
+        }
+
+
 
         [HttpGet]
         public JsonResult MostrarDetalle(string id)
@@ -1171,6 +1324,12 @@ namespace Larca2.Controllers
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
+            //traigo aquellos de los cuales el user es el responsable
+            ResponsablesBLL respBLL = new ResponsablesBLL();
+            int idResp = respBLL.TraerPorNombreDeUsuario(user.user_name).Id;
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x=> x.RefIdResponsable != null && x.RefIdResponsable.Value == idResp).ToList();
+
+
             //Copio la lista a los editables para poder modificar los datos necesarios.
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
 
@@ -1263,6 +1422,39 @@ namespace Larca2.Controllers
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
 
 
+
+            int bumax = viewModel.BUList.Count;
+            for (int co = 0; co < bumax; co++)
+            {
+                int comparacion = viewModel.BUList.Where(x => x.Text == viewModel.BUList[co].Text).Count();
+
+                if (comparacion > 1)
+                {
+
+                    for (int coin = co + 1; coin <= bumax; )
+                    {
+                        if (viewModel.BUList[co].Text == viewModel.BUList[coin].Text)
+                        {
+                            viewModel.BUList.Remove(viewModel.BUList[coin]);
+                            bumax--;
+                            comparacion--;
+                            if (comparacion == 1)
+                                break;
+                        }
+                        else
+                        { coin++; }
+                    }
+
+                }
+                else
+                {
+                    //aparece solo una vez
+                }
+            }
+
+
+
+
             LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
             int valMax = adb.Todos()[0].Toplvl4;
             viewModel.maxClones = new List<int>();
@@ -1346,7 +1538,12 @@ namespace Larca2.Controllers
             int smo = Int32.Parse(viewModel.smo);
 
             if (viewModel.bu != null && bu != 0)
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdBU == bu).ToList();
+            {
+                MasterDataBLL mdb = new MasterDataBLL();
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+
+            }
             if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
@@ -1373,6 +1570,38 @@ namespace Larca2.Controllers
 
             //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+
+            int bumax = viewModel.BUList.Count;
+            for (int co = 0; co < bumax; co++)
+            {
+                int comparacion = viewModel.BUList.Where(x => x.Text == viewModel.BUList[co].Text).Count();
+
+                if (comparacion > 1)
+                {
+
+                    for (int coin = co + 1; coin <= bumax; )
+                    {
+                        if (viewModel.BUList[co].Text == viewModel.BUList[coin].Text)
+                        {
+                            viewModel.BUList.Remove(viewModel.BUList[coin]);
+                            bumax--;
+                            comparacion--;
+                            if (comparacion == 1)
+                                break;
+                        }
+                        else
+                        { coin++; }
+                    }
+
+                }
+                else
+                {
+                    //aparece solo una vez
+                }
+            }
+
+
 
             LARCA2.Business.Services.ApplicationDataBLL adb = new LARCA2.Business.Services.ApplicationDataBLL();
             int valMax = adb.Todos()[0].Toplvl4;
@@ -1519,7 +1748,7 @@ namespace Larca2.Controllers
                         if (repoUsuarios.ExisteUsuario(actFilt[11]) == false)
                         {
 
-                            if (!UserExistsInAD(actFilt[11], "LA"))
+                            if (!UserExistsInAD(actFilt[11]))
                             {
 
 
@@ -1657,7 +1886,7 @@ namespace Larca2.Controllers
 
                         if (repoUsuarios.ExisteUsuario(viewModel.responsibles[countModif]) == false)
                         {
-                            if (!UserExistsInAD(viewModel.responsibles[countModif], "LA"))
+                            if (!UserExistsInAD(viewModel.responsibles[countModif]))
                             {
 
 
@@ -1795,7 +2024,12 @@ namespace Larca2.Controllers
             int smo = Int32.Parse(viewModel.smo);
 
             if (viewModel.bu != null && bu != 0)
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdBU == bu).ToList();
+            {
+                MasterDataBLL mdb = new MasterDataBLL();
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+
+            }
             if (viewModel.smo != null && smo != 0)
                 viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
 
@@ -1821,6 +2055,37 @@ namespace Larca2.Controllers
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
             //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
+
+
+            int bumax = viewModel.BUList.Count;
+            for (int co = 0; co < bumax; co++)
+            {
+                int comparacion = viewModel.BUList.Where(x => x.Text == viewModel.BUList[co].Text).Count();
+
+                if (comparacion > 1)
+                {
+
+                    for (int coin = co + 1; coin <= bumax; )
+                    {
+                        if (viewModel.BUList[co].Text == viewModel.BUList[coin].Text)
+                        {
+                            viewModel.BUList.Remove(viewModel.BUList[coin]);
+                            bumax--;
+                            comparacion--;
+                            if (comparacion == 1)
+                                break;
+                        }
+                        else
+                        { coin++; }
+                    }
+
+                }
+                else
+                {
+                    //aparece solo una vez
+                }
+            }
+
 
 
             viewModel.Responsables = new List<SelectListItem>();
@@ -1944,6 +2209,14 @@ namespace Larca2.Controllers
 
 
             viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
+
+
+            //traigo aquellos de los cuales el user es el responsable
+            ResponsablesBLL respBLL = new ResponsablesBLL();
+            int idResp = respBLL.TraerPorNombreDeUsuario(user.user_name).Id;
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdResponsable != null && x.RefIdResponsable.Value == idResp).ToList();
+
+
 
             //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;

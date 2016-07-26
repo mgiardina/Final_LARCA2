@@ -47,6 +47,11 @@ namespace LARCA2.Business.Services
             return MasterDataDAL.TraerPorDataFin(data, dataIni);
         }
 
+        public List<LARCA20_MasterData> TraerVariosPorDataFin(string dataFin)
+        {
+            return MasterDataDAL.TraerVariosPorDataFin(dataFin);
+        }
+
         public LARCA20_MasterData Traer(string data, int id)
         {
             return MasterDataDAL.Traer(data, id);

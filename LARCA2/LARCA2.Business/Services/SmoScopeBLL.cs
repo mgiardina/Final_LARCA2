@@ -183,6 +183,49 @@ namespace LARCA2.Business.Services
             int bu = 0;
             int smo = 0;
 
+            if ((refidbu != null) || (refidbu == ""))
+            {
+                bu = Int32.Parse(refidbu);
+            }
+
+            if ((refidsmo != null) || (refidbu == ""))
+            {
+                smo = Int32.Parse(refidsmo);
+            }
+
+            Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
+            DateTime siev = DateTime.Now.AddDays(-repo.Todos().First().SmoDays.Value);
+
+            List<LARCA20_SmoScope> result = SMOScopesDAL.Todos();
+            result = result.Where(x => x.deleted == false && x.date >= siev).ToList();
+
+
+
+
+          //  if (refidbu != null && bu != 0)
+          //  {
+          //      Business.Services.MasterDataBLL mdb = new MasterDataBLL();
+         //       List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
+          //      result = result.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+          //  }
+
+            
+            if (refidbu != null && bu != 0)
+              result = result.Where(x => x.RefIdBU == bu).ToList();
+
+
+
+            if (refidsmo != null && smo != 0)
+                result = result.Where(x => x.RefIdSMO == smo).ToList();
+            return result;
+        }
+
+
+        public List<LARCA20_SmoScope> FiltrarNew(string refidbu, string refidsmo)
+        {
+            int bu = 0;
+            int smo = 0;
+
             if ((refidbu != null) || (refidbu == "")) {
              bu = Int32.Parse(refidbu);
                 }
@@ -196,9 +239,23 @@ namespace LARCA2.Business.Services
 
             List<LARCA20_SmoScope> result = SMOScopesDAL.Todos();
             result = result.Where(x => x.deleted == false && x.date >= siev).ToList();
+
+
            
+
             if (refidbu != null && bu != 0)
-                result = result.Where(x => x.RefIdBU == bu).ToList();
+            {
+                Business.Services.MasterDataBLL mdb = new MasterDataBLL();   
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
+                      result = result.Where(x=> todosConSuDATAFIN.Exists(a=> a.id == x.RefIdBU)).ToList();
+        }
+
+            //old
+            //if (refidbu != null && bu != 0)
+              //  result = result.Where(x => x.RefIdBU == bu).ToList();
+
+
+
             if (refidsmo != null && smo != 0)
                 result = result.Where(x => x.RefIdSMO == smo).ToList();
             return result;

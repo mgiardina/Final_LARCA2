@@ -89,6 +89,12 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_MasterData.FirstOrDefault(c => c.Data == data && c.DataFin == dataFin );
         }
 
+        public List<LARCA2.Data.DatabaseModels.LARCA20_MasterData> TraerVariosPorDataFin(string dataFin)
+        {
+            return Context.LARCA20_MasterData.Where(c => c.DataFin == dataFin).ToList();
+        }
+
+
         public override bool Eliminar(long id)
         {
             try
