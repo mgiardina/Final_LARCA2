@@ -372,6 +372,9 @@
                                 {
                                     Model.MBLL = new LARCA2.Business.Services.MasterDataBLL();
                                 }
+
+                                if (Model.RegistrosSMO != null && Model.RegistrosSMO.Count > 0)
+                                { 
                                 foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
                                 {
                                     <tr id=@(j.ToString())>
@@ -482,6 +485,8 @@
                                     </tr>
                                             j++;
                                 }
+                                }
+                                
                                 }
                                 <tr><td width=5% style="display: none"><td width=4% style="display: none"><td width=3% style="display: none"><td width=5% style="display: none"> </td> <td width=10% style="display: none"></td> <td style="display: none"></td> <td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td width=5% style="display: none"></td><td width=5% style="display: none"></td><td width=3% style="display: none"></td></tr>
                             </thread>
