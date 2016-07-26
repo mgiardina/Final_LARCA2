@@ -114,7 +114,6 @@ namespace Larca2.Controllers
             }
 
             ViewData["MasterRows"] = masterRows;
-            model = new Larca2.Views.ViewModels.LAScopeViewModel();
             return View("Index", model);
         }
 

@@ -209,7 +209,7 @@ namespace LARCA2.Business.Core
             var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/SampleAlert.htm"), FileMode.Open);
             var sr = new StreamReader(fs);
             string subject = "LARCA ALERT System";
-            var to = "larca_mailing@yahoo.com";
+            var to = "solano.a.1@pg.com";
             var body = sr.ReadToEnd();
             sr.Close();
             fs.Close();
@@ -380,14 +380,15 @@ namespace LARCA2.Business.Core
             {
                 smtp.Credentials = new NetworkCredential(UserName, Password);
                 smtp.EnableSsl = false;
-                try
-                {
-                    smtp.Send(msg);
-                }
-                catch
-                {
+                smtp.Send(msg);
+                //try
+                //{
+                //    smtp.Send(msg);
+                //}
+                //catch
+                //{
 
-                }
+                //}
             }
         }
     }

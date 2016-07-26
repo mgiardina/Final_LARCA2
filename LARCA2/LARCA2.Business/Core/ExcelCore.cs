@@ -237,18 +237,82 @@ namespace LARCA2.Business.Core
             foreach (var item in lista)
             {
                 ws.Cell(row, 1).Value = item.RBU;
+                ws.Cell(row, 1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 1).Style.Font.Bold = true;
+                ws.Cell(row, 1).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 1).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 2).Value = item.SMO;
+                ws.Cell(row, 2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 2).Style.Font.Bold = true;
+                ws.Cell(row, 2).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 2).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 3).Value = item.CUT;
+                ws.Cell(row, 3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 3).Style.Font.Bold = true;
+                ws.Cell(row, 3).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 3).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 4).Value = item.LEVEL4;
+                ws.Cell(row, 4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 4).Style.Font.Bold = true;
+                ws.Cell(row, 4).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 4).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 5).Value = item.VOLUME;
+                ws.Cell(row, 5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 5).Style.Font.Bold = true;
+                ws.Cell(row, 5).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 5).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 6).Value = item.GAP;
+                ws.Cell(row, 6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 6).Style.Font.Bold = true;
+                ws.Cell(row, 6).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 6).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 7).Value = item.PROBLEM;
+                ws.Cell(row, 7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 7).Style.Font.Bold = true;
+                ws.Cell(row, 7).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 7).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 8).Value = item.WHY1;
+                ws.Cell(row, 8).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 8).Style.Font.Bold = true;
+                ws.Cell(row, 8).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 8).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 9).Value = item.WHY2;
+                ws.Cell(row, 9).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 9).Style.Font.Bold = true;
+                ws.Cell(row, 9).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 9).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 10).Value = item.WHY3;
+                ws.Cell(row, 10).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 10).Style.Font.Bold = true;
+                ws.Cell(row, 10).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 10).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 11).Value = item.ACTIONPLAN;
+                ws.Cell(row, 11).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 11).Style.Font.Bold = true;
+                ws.Cell(row, 11).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 11).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 12).Value = item.RESPONSIBLE;
+                ws.Cell(row, 12).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 12).Style.Font.Bold = true;
+                ws.Cell(row, 12).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 12).Style.Fill.BackgroundColor = XLColor.Gray;
+
                 ws.Cell(row, 13).Value = item.GAPANALYSIS;
+                ws.Cell(row, 13).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                ws.Cell(row, 13).Style.Font.Bold = true;
+                ws.Cell(row, 13).Style.Font.FontColor = XLColor.White;
+                ws.Cell(row, 13).Style.Fill.BackgroundColor = XLColor.Gray;
 
                 row++;
 

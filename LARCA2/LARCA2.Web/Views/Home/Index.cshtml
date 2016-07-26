@@ -8,7 +8,10 @@
                 <h1>LARCA 2 (Latin America Root Cause Analysis) is a weekly regional process that consolidates incidents data and share it with key stakeholders in a defined format in order to gather the root cause of those incidents for analysis and action plans creation, ensuring that those plans are tracked until completion.</h1>
             </hgroup>
             <p>
-                
+                @foreach (string item in ViewBag.Groups)
+                {
+                    @item <br />
+                }
             </p>
         </div>
     </section>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using LARCA2.Data.DatabaseModels;
 using LARCA2.Business.Services;
 using System.DirectoryServices;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace LARCA2.Controllers
 {
@@ -52,7 +53,7 @@ namespace LARCA2.Controllers
             bool Error = false;
             if (model.Usuario.user_name != null)
             {
-                if (!UserExistsInAD(model.Usuario.user_name, "LA"))
+                if (!UserExistsInAD(model.Usuario.user_name))
                 {
                     if (CboRoles != "0")
                     {
@@ -517,22 +518,37 @@ namespace LARCA2.Controllers
             return View("UserBM", userSearchForm);
         }
 
-        public bool UserExistsInAD(string username, string userdomain)
+        public bool UserExistsInAD(string username)
         {
-            List<string> gruposEncontrados = new List<string>();
-            // Creamos un objeto DirectoryEntry para conectarnos al directorio activo
-            DirectoryEntry adsRoot = new DirectoryEntry("LDAP://" + userdomain);
-            // Creamos un objeto DirectorySearcher para hacer una búsqueda en el directorio activo
-            DirectorySearcher adsSearch = new DirectorySearcher(adsRoot);
+            bool finded = false;
+            // Traigo el listado de Dominios 
+            var lista = new List<string>();
+            using (var forest = Forest.GetCurrentForest())
+            {
+                foreach (Domain domain in forest.Domains)
+                {
+                    var userdomain = domain.Name.Split(Convert.ToChar("."))[0].ToUpper();
 
-            // Ponemos como filtro que busque el usuario actual
-            adsSearch.Filter = "samAccountName=" + username;
+                    List<string> gruposEncontrados = new List<string>();
+                    // Creamos un objeto DirectoryEntry para conectarnos al directorio activo
+                    DirectoryEntry adsRoot = new DirectoryEntry("LDAP://" + userdomain);
+                    // Creamos un objeto DirectorySearcher para hacer una búsqueda en el directorio activo
+                    DirectorySearcher adsSearch = new DirectorySearcher(adsRoot);
 
-            // Extraemos la primera coincidencia
-            SearchResult oResult;
-            oResult = adsSearch.FindOne();
+                    // Ponemos como filtro que busque el usuario actual
+                    adsSearch.Filter = "samAccountName=" + username;
 
-            return oResult == null;
+                    SearchResult oResult;
+                    // Extraemos la primera coincidencia
+                    oResult = adsSearch.FindOne();
+                    if (oResult != null)
+                    {
+                        finded = true;
+                        break;
+                    }
+                }
+            }
+            return finded == false;
         }
 
         [HttpGet] // can be HttpGet
