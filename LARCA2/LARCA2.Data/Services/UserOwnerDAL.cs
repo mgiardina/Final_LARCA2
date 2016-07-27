@@ -60,9 +60,9 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_User_Owner.Where(u => u.IdUser == idUser && u.deleted == false).ToList();
         }
 
-        public bool PermisoCheck(long bu, long smo, long owner)
+        public bool PermisoCheck(long bu, long smo, long owner, long user)
         {
-            return Context.LARCA20_User_Owner.Where(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false).Count() > 0;
+            return Context.LARCA20_User_Owner.Where(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false && u.IdUser != user).Count() > 0;
         }
 
         //esto no funciona, como lo implementamos?

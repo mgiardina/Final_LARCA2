@@ -63,6 +63,24 @@ namespace LARCA2.Controllers
                             if (repo.TraerPorNombreDeUsuario(model.Usuario.user_name) != null && repo.TraerPorNombreDeUsuario(model.Usuario.user_name).deleted == false)
                                 return Content("<script language='javascript' type='text/javascript'>alert('The username entered already exists , try another.');document.location = '../Adm/NuevoUsuario';</script>");
 
+                            // Chequeo Permisos
+                            foreach (string iUs in LosPermisos)
+                            {
+                                var RepUserOW = new Business.Services.UserOwnerBLL();
+                                string[] PerEsp = iUs.Split('.');
+
+                                if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
+                                {
+                                    var IdBU = Convert.ToInt32(PerEsp[0]);
+                                    var IdSmo = Convert.ToInt32(PerEsp[1]);
+                                    var IdOwner = Convert.ToInt32(PerEsp[2]);
+                                    if (RepUserOW.PermisoCheck(IdBU,IdSmo,IdOwner, 0))
+                                    {
+                                        return Content("<script language='javascript' type='text/javascript'>alert('Permissions already assigned to another user , try again.');document.location = '../Adm/NuevoUsuario';</script>");
+                                    }
+                                }
+                            }
+
                             Data.DatabaseModels.LARCA20_Users user = new Data.DatabaseModels.LARCA20_Users();
                             user.name = model.Usuario.name == null ? string.Empty : model.Usuario.name;
                             user.last_name = model.Usuario.last_name == null ? string.Empty : model.Usuario.last_name;
@@ -206,83 +224,105 @@ namespace LARCA2.Controllers
                         }
                         else
                         {
-                            user.Id = model.Usuario.Id;
-                            user.name = model.Usuario.name;
-                            user.last_name = model.Usuario.last_name;
-                            user.deleted = model.Usuario.deleted;
-                            //user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
-                            user.date = DateTime.Now;
-                            user.Email = model.Usuario.user_name + "@pg.com";
-                            //user.Telefono = model.Usuario.Telefono;
-                            user.user_name = model.Usuario.user_name;
-                            repo.Guardar(user);
-
-                            // Ahora guardo los datos del Rol para este usuario
-                            Business.Services.UsuariosRolesBLL repoRol = new Business.Services.UsuariosRolesBLL();
-                            Data.DatabaseModels.LARCA20_UsersRoles userRol = repoRol.Traer(model.Usuario.Id);
-                            userRol.RefIdRoles = Convert.ToInt32(CboRoles);
-                            repoRol.Guardar(userRol);
-
-                            // Ahora guardo los Permisos
-                            // Primero elimino los que tenga y despues agrego los que quedaron seleccionados
-                            Business.Services.UserOwnerBLL RepUserOW = new Business.Services.UserOwnerBLL();
-                            foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner fila in user.LARCA20_User_Owner)
-                            {
-                                RepUserOW.Eliminar(fila.Id);
-                            }
+                            bool ok = true;
+                            // Chequeo Permisos
                             foreach (string iUs in LosPermisos)
                             {
-                                Data.DatabaseModels.LARCA20_User_Owner userOW = new Data.DatabaseModels.LARCA20_User_Owner();
+                                var RepUserOW = new Business.Services.UserOwnerBLL();
                                 string[] PerEsp = iUs.Split('.');
-
 
                                 if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
                                 {
-                                    userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                    userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                    userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
-                                    userOW.IdUser = model.Usuario.Id;
-                                    userOW.deleted = false;
-                                    RepUserOW.Guardar(userOW);
+                                    var IdBU = Convert.ToInt32(PerEsp[0]);
+                                    var IdSmo = Convert.ToInt32(PerEsp[1]);
+                                    var IdOwner = Convert.ToInt32(PerEsp[2]);
+                                    if (RepUserOW.PermisoCheck(IdBU, IdSmo, IdOwner, model.Usuario.Id))
+                                    {
+                                        ok = false;
+                                        return Content("<script language='javascript' type='text/javascript'>alert('Permissions already assigned to another user , try again.');document.location = '../Adm/UserBM';</script>");
+                                    }
                                 }
-
-                                if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                                {
-
-                                    userOW.IdBU = Convert.ToInt32(PerEsp[0]);
-                                    userOW.IdSmo = null;
-                                    userOW.IdOwner = null;
-                                    userOW.IdUser = model.Usuario.Id;
-                                    userOW.deleted = false;
-                                    RepUserOW.Guardar(userOW);
-                                }
-
-                                if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                                {
-
-                                    userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
-                                    userOW.IdOwner = null;
-                                    userOW.IdBU = null;
-                                    userOW.IdUser = model.Usuario.Id;
-                                    userOW.deleted = false;
-                                    RepUserOW.Guardar(userOW);
-                                }
-
-                                if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
-                                {
-
-                                    userOW.IdSmo = null;
-                                    userOW.IdOwner = null;
-                                    userOW.IdBU = null;
-                                    userOW.IdUser = model.Usuario.Id;
-                                    userOW.deleted = false;
-                                    RepUserOW.Guardar(userOW);
-                                }
-
-
                             }
 
-                            return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/UserBM';</script>");
+                            if (ok)
+                            {
+                                user.Id = model.Usuario.Id;
+                                user.name = model.Usuario.name;
+                                user.last_name = model.Usuario.last_name;
+                                user.deleted = model.Usuario.deleted;
+                                //user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
+                                user.date = DateTime.Now;
+                                user.Email = model.Usuario.user_name + "@pg.com";
+                                //user.Telefono = model.Usuario.Telefono;
+                                user.user_name = model.Usuario.user_name;
+                                repo.Guardar(user);
+
+                                // Ahora guardo los datos del Rol para este usuario
+                                Business.Services.UsuariosRolesBLL repoRol = new Business.Services.UsuariosRolesBLL();
+                                Data.DatabaseModels.LARCA20_UsersRoles userRol = repoRol.Traer(model.Usuario.Id);
+                                userRol.RefIdRoles = Convert.ToInt32(CboRoles);
+                                repoRol.Guardar(userRol);
+
+                                // Ahora guardo los Permisos
+                                // Primero elimino los que tenga y despues agrego los que quedaron seleccionados
+                                var repUserOW = new Business.Services.UserOwnerBLL();
+                                foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner fila in user.LARCA20_User_Owner)
+                                {
+                                    repUserOW.Eliminar(fila.Id);
+                                }
+                                foreach (string iUs in LosPermisos)
+                                {
+                                    Data.DatabaseModels.LARCA20_User_Owner userOW = new Data.DatabaseModels.LARCA20_User_Owner();
+                                    string[] PerEsp = iUs.Split('.');
+
+
+                                    if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
+                                    {
+                                        userOW.IdBU = Convert.ToInt32(PerEsp[0]);
+                                        userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
+                                        userOW.IdOwner = Convert.ToInt32(PerEsp[2]);
+                                        userOW.IdUser = model.Usuario.Id;
+                                        userOW.deleted = false;
+                                        repUserOW.Guardar(userOW);
+                                    }
+
+                                    if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                                    {
+
+                                        userOW.IdBU = Convert.ToInt32(PerEsp[0]);
+                                        userOW.IdSmo = null;
+                                        userOW.IdOwner = null;
+                                        userOW.IdUser = model.Usuario.Id;
+                                        userOW.deleted = false;
+                                        repUserOW.Guardar(userOW);
+                                    }
+
+                                    if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                                    {
+
+                                        userOW.IdSmo = Convert.ToInt32(PerEsp[1]);
+                                        userOW.IdOwner = null;
+                                        userOW.IdBU = null;
+                                        userOW.IdUser = model.Usuario.Id;
+                                        userOW.deleted = false;
+                                        repUserOW.Guardar(userOW);
+                                    }
+
+                                    if (Convert.ToInt32(PerEsp[0]) == 0 && Convert.ToInt32(PerEsp[1]) == 0 && Convert.ToInt32(PerEsp[2]) == 0)
+                                    {
+
+                                        userOW.IdSmo = null;
+                                        userOW.IdOwner = null;
+                                        userOW.IdBU = null;
+                                        userOW.IdUser = model.Usuario.Id;
+                                        userOW.deleted = false;
+                                        repUserOW.Guardar(userOW);
+                                    }
+
+
+                                }
+                                return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/UserBM';</script>");
+                            }
                         }
                     }
                     else
@@ -549,13 +589,6 @@ namespace LARCA2.Controllers
                 }
             }
             return finded == false;
-        }
-
-        [HttpGet] // can be HttpGet
-        public ActionResult PermisoCheck(long bu, long smo, long owner)
-        {
-            bool exists = new UserOwnerBLL().PermisoCheck(bu, smo, owner);
-            return Json(exists, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

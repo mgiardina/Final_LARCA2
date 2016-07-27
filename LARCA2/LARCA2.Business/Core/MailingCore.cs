@@ -233,7 +233,7 @@ namespace LARCA2.Business.Core
             var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/NewMasterData.htm"), FileMode.Open);
             var sr = new StreamReader(fs);
             string subject = "LARCA ALERT System";
-            var to = "larca_mailing@yahoo.com";
+            var to = "solano.a.1@pg.com";
             var body = sr.ReadToEnd();
             sr.Close();
             fs.Close();
@@ -249,7 +249,7 @@ namespace LARCA2.Business.Core
             var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/NewActionPlan.htm"), FileMode.Open);
             var sr = new StreamReader(fs);
             string subject = "LARCA ALERT System";
-            var to = "larca_mailing@yahoo.com";
+            var to = "solano.a.1@pg.com";
             var body = sr.ReadToEnd();
             body = body.Replace("[owner]", owner);
             body = body.Replace("[drpmal]", drpmal);
@@ -269,7 +269,7 @@ namespace LARCA2.Business.Core
             var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/SampleAlert.htm"), FileMode.Open);
             var sr = new StreamReader(fs);
             string subject = "LARCA ALERT System";
-            var to = "larca_mailing@yahoo.com";
+            var to = "solano.a.1@pg.com";
             var body = sr.ReadToEnd();
             sr.Close();
             fs.Close();
@@ -288,7 +288,7 @@ namespace LARCA2.Business.Core
             var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/AnalysisAvailable.htm"), FileMode.Open);
             var sr = new StreamReader(fs);
             string subject = "LARCA ALERT System";
-            var to = "larca_mailing@yahoo.com";
+            var to = "solano.a.1@pg.com";
             var body = sr.ReadToEnd();
             sr.Close();
             fs.Close();
@@ -306,7 +306,7 @@ namespace LARCA2.Business.Core
             var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/MassiveUploadErrorsAdmin.htm"), FileMode.Open);
             var sr = new StreamReader(fs);
             string subject = "LARCA ALERT System";
-            var to = "larca_mailing@yahoo.com";
+            var to = "solano.a.1@pg.com";
             var body = sr.ReadToEnd();
             sr.Close();
             fs.Close();
@@ -317,7 +317,7 @@ namespace LARCA2.Business.Core
             fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/MassiveUploadErrorsUser.htm"), FileMode.Open);
             sr = new StreamReader(fs);
             subject = "LARCA ALERT System";
-            to = "larca_mailing@yahoo.com";
+            to = "solano.a.1@pg.com";
             body = sr.ReadToEnd();
             sr.Close();
             fs.Close();
@@ -380,15 +380,14 @@ namespace LARCA2.Business.Core
             {
                 smtp.Credentials = new NetworkCredential(UserName, Password);
                 smtp.EnableSsl = false;
-                smtp.Send(msg);
-                //try
-                //{
-                //    smtp.Send(msg);
-                //}
-                //catch
-                //{
+                try
+                {
+                    smtp.Send(msg);
+                }
+                catch
+                {
 
-                //}
+                }
             }
         }
     }
