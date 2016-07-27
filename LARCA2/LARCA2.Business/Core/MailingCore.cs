@@ -380,15 +380,15 @@ namespace LARCA2.Business.Core
             {
                 smtp.Credentials = new NetworkCredential(UserName, Password);
                 smtp.EnableSsl = false;
-                smtp.Send(msg);
-                //try
-                //{
-                //    smtp.Send(msg);
-                //}
-                //catch
-                //{
+               // smtp.Send(msg);
+                try
+                {
+                    smtp.Send(msg);
+                }
+                catch
+                {
 
-                //}
+                }
             }
         }
     }
