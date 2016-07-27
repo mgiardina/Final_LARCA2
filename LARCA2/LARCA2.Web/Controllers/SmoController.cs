@@ -511,6 +511,16 @@ namespace Larca2.Controllers
                                 repoUsuarios.Guardar(newUser);
                                 //no le creo rol porque no se definió cual poner
 
+                                //asignorol
+                                LARCA2.Business.Services.UsuariosRolesBLL urb = new UsuariosRolesBLL();
+                                LARCA20_UsersRoles rolNewUser = new LARCA20_UsersRoles();
+                                rolNewUser.deleted = false;
+                                rolNewUser.RefIdRoles = 3; //reporter
+                                rolNewUser.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
+                                urb.Guardar(rolNewUser);
+
+
+
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                                 newResp.deleted = false;
@@ -1151,8 +1161,10 @@ namespace Larca2.Controllers
         [HttpGet]
         public JsonResult CheckForAD(string name)
         {
-            bool resultado =  UserExistsInAD(name);
-
+             bool resultado = false;
+             if (!(name == "" || name == string.Empty))
+               resultado =  UserExistsInAD(name);
+          
             return Json(resultado ? "Username " + name + " is available." : "Invalid username: " + name + " doesn't exist in Active Directory.", JsonRequestBehavior.AllowGet);
         }
 
@@ -1747,8 +1759,8 @@ namespace Larca2.Controllers
 
                         if (repoUsuarios.ExisteUsuario(actFilt[11]) == false)
                         {
-
-                            if (!UserExistsInAD(actFilt[11]))
+                          //  if(false)
+                           if (!UserExistsInAD(actFilt[11]))
                             {
 
 
@@ -1761,7 +1773,16 @@ namespace Larca2.Controllers
                                 newUser.last_name = String.Empty;
                                 repoUsuarios.Guardar(newUser);
                                 //no le creo rol porque no se definió cual poner
+                                
+                               //poner rol reporter al user
+                                LARCA2.Business.Services.UsuariosRolesBLL urb = new UsuariosRolesBLL();
+                                LARCA20_UsersRoles rolNewUser = new LARCA20_UsersRoles();
+                                rolNewUser.deleted = false;
+                                rolNewUser.RefIdRoles = 3; //reporter
+                                rolNewUser.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[11]).Id;
+                                urb.Guardar(rolNewUser);
 
+                               //crear responsable
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[11]).Id;
                                 newResp.deleted = false;
@@ -1897,6 +1918,15 @@ namespace Larca2.Controllers
                                 newUser.date = DateTime.Now;
                                 repoUsuarios.Guardar(newUser);
                                 //no le creo rol porque no se definió cual poner
+
+                                //poner rol reporter al user
+                                LARCA2.Business.Services.UsuariosRolesBLL urb = new UsuariosRolesBLL();
+                                LARCA20_UsersRoles rolNewUser = new LARCA20_UsersRoles();
+                                rolNewUser.deleted = false;
+                                rolNewUser.RefIdRoles = 3; //reporter
+                                rolNewUser.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
+                                urb.Guardar(rolNewUser);
+
 
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;

@@ -184,7 +184,7 @@
                 bool groupFlag = false;
                 LARCA2.Business.Services.SMOScopeBLL grsmo = new LARCA2.Business.Services.SMOScopeBLL();
                 }
-                @if (Model.RegistrosSMO != null)
+                @if (Model.RegistrosSMO != null && Model.RegistrosSMO.Count > 0)
                 {
                     if (Model.selectedItems == null) { 
                         Model.selectedItems = new List<bool>();}

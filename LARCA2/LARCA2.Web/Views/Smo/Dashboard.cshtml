@@ -372,6 +372,8 @@
                                 {
                                     Model.MBLL = new LARCA2.Business.Services.MasterDataBLL();
                                 }
+                                if (Model.RegistrosSMO != null && Model.RegistrosSMO.Count > 0)
+                                { 
                                 foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope SmoScope in Model.RegistrosSMO)
                                 {
                                     <tr id=@(j.ToString())>
@@ -468,13 +470,17 @@
                                             @if (Model.EditablesSMO[j].O_C != null)
                                             {
                                                 <label>
-                                                    @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = SmoScope.O_C })
+                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C))
+
+
                                                 </label>
                                             }
                                             else
                                             {
                                                 <label>
-                                                    @Html.TextBoxFor(m => m.EditablesSMO[j].O_C, new { @class = "form-control", @placeholder = "-" })
+                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C))
+
+
                                                 </label>
                                             }
 
@@ -482,6 +488,8 @@
                                     </tr>
                                             j++;
                                 }
+                                }
+                                
                                 }
                                 <tr><td width=5% style="display: none"><td width=4% style="display: none"><td width=3% style="display: none"><td width=5% style="display: none"> </td> <td width=10% style="display: none"></td> <td style="display: none"></td> <td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td style="display: none"></td><td width=5% style="display: none"></td><td width=5% style="display: none"></td><td width=3% style="display: none"></td></tr>
                             </thread>
