@@ -435,7 +435,7 @@ namespace LARCA2.Business.Core
                             smoScope.Why2 = string.Empty;
                             smoScope.Why3 = string.Empty;
                             smoScope.ActionPlan = string.Empty;
-                            smoScope.O_C = string.Empty;
+                            smoScope.O_C = "O";
                             smoScope.deleted = false;
                             smoScope.historic = false;
                             var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);

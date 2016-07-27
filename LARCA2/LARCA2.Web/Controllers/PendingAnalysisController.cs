@@ -18,7 +18,7 @@ namespace Larca2.Controllers
         public ActionResult Index()
         {
             var model = new Larca2.Views.ViewModels.SMOScopeViewModel();
-            ViewData["MasterRows"] = new SMOScopeBLL().Todos().Where(smo => smo.O_C == string.Empty || smo.O_C == null || smo.O_C == "O" || smo.O_C == "o").ToList();
+            ViewData["MasterRows"] = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.ActionPlan != null || smo.Why1 != null || smo.Why2 != null | smo.Why3 != null)).ToList();
             return View(model);
         }
 
