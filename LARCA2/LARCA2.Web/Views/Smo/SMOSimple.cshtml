@@ -400,7 +400,7 @@
                             {
                                 <td align="center" style="background-color:#c7d1d6">
                                     <label>
-                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = SmoScope.Problem, @Styles = "font-size: 6px; font-family: Arial, Sans-serif;" })
+                                        @Html.TextAreaFor(m => m.EditablesSMO[j].Problem, new { @class = "form-control", @cols = 150, @rows = 5, @value = SmoScope.Problem, @innerHTML = SmoScope.Problem, @placeholder = SmoScope.Problem, @Styles = "font-size: 6px; font-family: Arial, Sans-serif;" })
                                     </label>
                                 </td>
                             }

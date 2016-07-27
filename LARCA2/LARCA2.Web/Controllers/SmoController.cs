@@ -167,7 +167,9 @@ namespace Larca2.Controllers
         public ActionResult SmoSimpleFiltrado(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
             ViewBag.Message = "";
-
+            viewModel.RegistrosSMO = null;
+            viewModel.EditablesSMO = null;
+            ModelState.Clear();
             LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
@@ -1352,6 +1354,12 @@ namespace Larca2.Controllers
             for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
             { viewModel.maxClones.Add(valMax); }
 
+            ResponsablesBLL repoResponsables = new ResponsablesBLL();
+            viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+
+
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
             return View("Dashboard", viewModel);
 
@@ -1486,6 +1494,7 @@ namespace Larca2.Controllers
         public ActionResult SmoFiltrado(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
             ViewBag.Message = "";
+            ModelState.Clear();
             LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();
@@ -2151,6 +2160,7 @@ namespace Larca2.Controllers
         {
 
             ViewBag.Message = "";
+            ModelState.Clear();
             LARCA2.Business.Services.SMOScopeBLL repo = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.ResponsablesBLL repoResponsables = new LARCA2.Business.Services.ResponsablesBLL();

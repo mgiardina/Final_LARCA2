@@ -33,6 +33,24 @@
         });
     }
 
+    function CheckforAD(name) {
+        var checkthis = document.getElementById('respo' + name).value;
+        $.ajax({
+            url: '@Url.Action("CheckForAD", "Smo")',
+            type: 'GET',
+            dataType: 'json',
+            cache: false,
+            data: { 'name': checkthis },
+            success: function (results) {
+                alert(results);
+            },
+            error: function () {
+                alert('Error occured');
+            }
+        });
+
+    }
+
     function LoadEm() {
         //durante el posteo del form relevo todos los clones a un request que le llegue al controlador.
         if ($("#HI_Counter").val() == "")
@@ -78,9 +96,9 @@
                         + act7.getElementsByTagName("label")[0].getElementsByTagName("textarea")[0].value.replace("<", "=").replace(">", "=") + "%%" +
                         act8.getElementsByTagName("label")[0].getElementsByTagName("textarea")[0].value.replace("<", "=").replace(">", "=") + "%%"
                         + act9.getElementsByTagName("label")[0].getElementsByTagName("textarea")[0].value.replace("<", "=").replace(">", "=") + "%%" +
-                        act10.getElementsByTagName("select")[0].selectedIndex + "%%" +
+                        act10.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value + "%%" +
                         act11.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=") + "%%" +
-                        act12.getElementsByTagName("label")[0].getElementsByTagName("input")[0].value.replace("<", "=").replace(">", "=");
+                        act12.getElementsByTagName("label")[0].getElementsByTagName("select")[0].value;
 
                     //separador de atributo %% separador de fila ##
                     if ($("#HI_SmoEsp").val() == "")
@@ -450,7 +468,9 @@
                                             @if (Model.EditablesSMO[j].RefIdResponsable != null && Model.EditablesSMO[j].RefIdResponsable != 0)
                                             {
                                                 <label>
-                                                    @Model.ResponsiblesBLL.Traer(SmoScope.RefIdResponsable.Value).Name
+                                                    @Html.TextBoxFor(m => m.responsibles[j], new { @class = "form-control", @id = "respo" + j.ToString(), @placeholder = Model.responsibles[j], onblur = "CheckforAD(" + j.ToString() + ")" })
+
+
                                                 </label>}
                                             else
                                             {
