@@ -44,12 +44,6 @@
                             <th align="center">
                                 <label>Expected report subscriptions</label>
                             </th>
-                            <th align="center">
-                                <label>Available days</label>
-                            </th>
-                            <th align="center">
-                                <label>SMO days</label>
-                            </th>
                         </tr>
                         <tr>
                             <td align="center">
@@ -80,16 +74,6 @@
                             <td align="center">
                                 <label>
                                     @Html.TextBoxFor(Modell => Modell.AuxData.qtyattach, new { @value = Model.AuxData.qtyattach })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextBoxFor(Modell => Modell.AuxData.reportdays, new { @value = Model.AuxData.reportdays })
-                                </label>
-                            </td>
-                            <td align="center">
-                                <label>
-                                    @Html.TextBoxFor(Modell => Modell.AuxData.SmoDays, new { @value = Model.AuxData.SmoDays })
                                 </label>
                             </td>
                         </tr>
