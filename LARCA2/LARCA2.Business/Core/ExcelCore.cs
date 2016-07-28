@@ -56,7 +56,6 @@ namespace LARCA2.Business.Core
                     }
                 }
                 excelReader.Close();
-                var details = new List<LARCA20_SmoScopeDetail>();
                 // Recorro la lista generada
                 foreach (var item in list)
                 {
@@ -99,29 +98,32 @@ namespace LARCA2.Business.Core
                             }
                             smoDetail.originaldate = item.Day;
                             smoDetail.FPC = item.FPC;
-                            smoDetail.MasterBUDetail = new MasterDataBLL().Traer("BU", item.ProfitCenter);
-                            smoDetail.BuID = smoDetail.MasterBUDetail.id;
-                            smoDetail.MasterSMODetail = new MasterDataBLL().Traer("SMO", item.ReportingCountry);
-                            smoDetail.SmoID = smoDetail.MasterSMODetail.id;
-                            smoDetail.ReasonID = new MasterDataBLL().Traer("REASON CODE", item.ReasonCode).id;
+                            smoDetail.BuID = new MasterDataBLL().Traer("BU", item.ProfitCenter).id;
+                            smoDetail.SmoID = new MasterDataBLL().Traer("SMO", item.ReportingCountry).id;
+                            smoDetail.ReasonID = new MasterDataBLL().TraerPorDataFin("REASON CODE", item.ReasonCode.Split(Convert.ToChar(" "))[0]).id;
                             smoDetail.Customer = item.Customer;
 
+                            var detailService = new SMOScopeDetailBLL();
                             if (tipoProceso == TipoProceso.Parcial)
                             {
-                                if (!ExistsDetail(smoDetail))
-                                    details.Add(smoDetail);
+                          
+                                var dias = -new ApplicationDataBLL().TraerDias();
+                                var dateDesde = DateTime.Now.AddDays(dias);
+                                if (detailService.Existe(smoDetail.BuID, smoDetail.Customer, smoDetail.Lvl2ID, smoDetail.Lvl3ID, smoDetail.SmoID, smoDetail.Volumen, smoDetail.ReasonID, dateDesde))
+                                    detailService.Guardar(smoDetail);
                             }
                             else
                             {
-                                details.Add(smoDetail);
+                                detailService.Guardar(smoDetail);
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             // Loggear Error
                         }
                     }
                 }
+
                 // Limpiamos los historicos
                 if (tipoProceso == TipoProceso.Total)
                 {
@@ -151,7 +153,7 @@ namespace LARCA2.Business.Core
                     }
                 }
 
-                if (RealizarCalculos(details))
+                if (RealizarCalculos(new SMOScopeDetailBLL().Todos()))
                 {
                     try
                     {

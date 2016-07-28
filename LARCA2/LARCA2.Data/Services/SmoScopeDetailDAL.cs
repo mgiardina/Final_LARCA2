@@ -12,7 +12,7 @@ namespace LARCA2.Data.Services
         {
             try
             {
-                if (entity.SmoScopeID == 0)
+                if (entity.DetailID == 0 )
                 {
                     Context.LARCA20_SmoScopeDetail.Add(entity);
                     Context.SaveChanges();

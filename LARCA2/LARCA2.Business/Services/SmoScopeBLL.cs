@@ -18,7 +18,7 @@ namespace LARCA2.Business.Services
 
         }
 
-        
+
         public bool Guardar(LARCA20_SmoScope smo)
         {
             return SMOScopesDAL.Guardar(smo);
@@ -33,8 +33,9 @@ namespace LARCA2.Business.Services
                     foreach (var detail in details)
                     {
                         var SmoDetailDAL = new SmoDetailDAL();
-                        detail.SmoScopeID = smo.SmoScopeID;
-                        SmoDetailDAL.Guardar(detail);
+                        var d = SmoDetailDAL.Traer(detail.DetailID);
+                        d.SmoScopeID = smo.SmoScopeID;
+                        SmoDetailDAL.Guardar(d);
                     }
                     return true;
                 }
@@ -99,11 +100,11 @@ namespace LARCA2.Business.Services
             //if (!((smoScope.Why2 != null || smoScope1.Why2 == null) && smoScope.Why2 == smoScope1.Why2)) return false;
             //if (!((smoScope.Why3 != null || smoScope1.Why3 == null) && smoScope.Why3 == smoScope1.Why3)) return false;
             //if (!((smoScope.ActionPlan != null || smoScope1.ActionPlan == null) && smoScope.ActionPlan == smoScope1.ActionPlan)) return false;
-          //  if (!((((smoScope.RefIdResponsable == null || smoScope1.RefIdResponsable == null)) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable))) return false;
+            //  if (!((((smoScope.RefIdResponsable == null || smoScope1.RefIdResponsable == null)) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable))) return false;
 
             if (!((smoScope1.RefIdResponsable == null && newResponsable == "") || (smoScope1.RefIdResponsable != null && rebll.TraerSuNombreDeUsuario(Int32.Parse(smoScope1.RefIdResponsable.ToString())) == newResponsable))) return false; //comparacion responsables nuevos
-           
-            
+
+
             //  if (!((smoScope.DueDate != null || smoScope1.DueDate == null) && smoScope.DueDate.Equals(smoScope1.DueDate))) return false;
             if (!(smoScope.O_C != null && smoScope.O_C.Equals(smoScope1.O_C))) return false;
             //  smoScope.Borrado.Equals(this.Borrado) ))return false;
@@ -164,7 +165,7 @@ namespace LARCA2.Business.Services
             if (!((smoScope.Why3 != null || smoScope1.Why3 == null) && smoScope.Why3 == smoScope1.Why3)) return false;
             if (!((smoScope.ActionPlan != null || smoScope1.ActionPlan == null) && smoScope.ActionPlan == smoScope1.ActionPlan)) return false;
             //if (!((smoScope.RefIdResponsable != null || smoScope1.RefIdResponsable == null) && (smoScope.RefIdResponsable != 0 || smoScope1.RefIdResponsable == 0) && respon.IdRenglon == redal.Traer(smoScope1.RefIdResponsable.Value).IdRenglon)) return false;
-          //  if (!(((smoScope.RefIdResponsable == null && smoScope1.RefIdResponsable == null) || ((smoScope.RefIdResponsable == 0 && smoScope1.RefIdResponsable == null) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable)))) return false;
+            //  if (!(((smoScope.RefIdResponsable == null && smoScope1.RefIdResponsable == null) || ((smoScope.RefIdResponsable == 0 && smoScope1.RefIdResponsable == null) || smoScope.RefIdResponsable == smoScope1.RefIdResponsable)))) return false;
 
 
             if (!((smoScope1.RefIdResponsable == null && newResponsable == "") || (smoScope1.RefIdResponsable != null && rebll.TraerSuNombreDeUsuario(Int32.Parse(smoScope1.RefIdResponsable.ToString())) == newResponsable))) return false; //comparacion responsables nuevos
@@ -174,7 +175,7 @@ namespace LARCA2.Business.Services
             if (!((((smoScope.O_C == "0" || smoScope.O_C == null) && smoScope1.O_C == null) || (smoScope.O_C == smoScope1.O_C)))) return false;
             //  smoScope.Borrado.Equals(this.Borrado) ))return false;
             if (!(((smoScope.Level4 == 0 && smoScope1.Level4 == null) || (smoScope.Level4 == smoScope1.Level4)))) return false;
-          
+
             return true;
         }
 
@@ -202,16 +203,16 @@ namespace LARCA2.Business.Services
 
 
 
-          //  if (refidbu != null && bu != 0)
-          //  {
-          //      Business.Services.MasterDataBLL mdb = new MasterDataBLL();
-         //       List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
-          //      result = result.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
-          //  }
+            //  if (refidbu != null && bu != 0)
+            //  {
+            //      Business.Services.MasterDataBLL mdb = new MasterDataBLL();
+            //       List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
+            //      result = result.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+            //  }
 
-            
+
             if (refidbu != null && bu != 0)
-              result = result.Where(x => x.RefIdBU == bu).ToList();
+                result = result.Where(x => x.RefIdBU == bu).ToList();
 
 
 
@@ -226,12 +227,14 @@ namespace LARCA2.Business.Services
             int bu = 0;
             int smo = 0;
 
-            if ((refidbu != null) || (refidbu == "")) {
-             bu = Int32.Parse(refidbu);
-                }
+            if ((refidbu != null) || (refidbu == ""))
+            {
+                bu = Int32.Parse(refidbu);
+            }
 
-            if ((refidsmo != null) || (refidbu == "")) {
-              smo = Int32.Parse(refidsmo);
+            if ((refidsmo != null) || (refidbu == ""))
+            {
+                smo = Int32.Parse(refidsmo);
             }
 
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
@@ -241,18 +244,18 @@ namespace LARCA2.Business.Services
             result = result.Where(x => x.deleted == false && x.date >= siev).ToList();
 
 
-           
+
 
             if (refidbu != null && bu != 0)
             {
-                Business.Services.MasterDataBLL mdb = new MasterDataBLL();   
+                Business.Services.MasterDataBLL mdb = new MasterDataBLL();
                 List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
-                      result = result.Where(x=> todosConSuDATAFIN.Exists(a=> a.id == x.RefIdBU)).ToList();
-        }
+                result = result.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+            }
 
             //old
             //if (refidbu != null && bu != 0)
-              //  result = result.Where(x => x.RefIdBU == bu).ToList();
+            //  result = result.Where(x => x.RefIdBU == bu).ToList();
 
 
 

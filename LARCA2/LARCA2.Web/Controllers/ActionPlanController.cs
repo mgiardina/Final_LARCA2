@@ -13,18 +13,18 @@ using System.Web.UI.WebControls;
 
 namespace Larca2.Controllers
 {
-    public class PendingAnalysisController : Controller
+    public class ActionPlanController : Controller
     {
         public ActionResult Index()
         {
             var model = new Larca2.Views.ViewModels.SMOScopeViewModel();
-            ViewData["MasterRows"] = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem != string.Empty && smo.Problem != null)).ToList();
+            ViewData["MasterRows"] = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem == string.Empty || smo.Problem == null)).ToList();
             return View(model);
         }
 
         public ActionResult Export()
         {
-            var masterData = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem != string.Empty && smo.Problem != null)).ToList();
+            var masterData = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem == string.Empty || smo.Problem == null)).ToList();
             var file = new ExcelCore().GenerarExcelPendingAnalysis("LARCA Pending Analysis", masterData);
             DownloadFile(file);
             return Content("<script language='javascript' type='text/javascript'>alert('Exported!');document.location = 'Index';</script>");

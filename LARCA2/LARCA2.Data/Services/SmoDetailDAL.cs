@@ -39,7 +39,7 @@ namespace LARCA2.Data.Services
 
         public override LARCA20_SmoScopeDetail Traer(long id)
         {
-            return Context.LARCA20_SmoScopeDetail.SingleOrDefault(s => s.SmoScopeID == id);
+            return Context.LARCA20_SmoScopeDetail.SingleOrDefault(s => s.DetailID == id);
         }
 
         public override bool Eliminar(long id)

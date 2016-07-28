@@ -71,24 +71,6 @@
                 </fieldset>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <fieldset class="form-group">
-                    <label for="Nombre">Available days for Analysis after complete upload</label>
-                    @Html.TextBoxFor(Model => Model.AuxData.reportdays, new { @class = "form-control", @placeholder = "Available days for Analysis after complete upload ..." })
-                    <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.reportdays)</small>
-                </fieldset>
-            </div>
-        </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <fieldset class="form-group">
-                <label for="Nombre">SMO Days</label>
-                @Html.TextBoxFor(Model => Model.AuxData.SmoDays, new { @class = "form-control", @placeholder = "SMO days ..." })
-                <small class="text-muted">@Html.ValidationMessageFor(Model => Model.AuxData.SmoDays)</small>
-            </fieldset>
-        </div>
-    </div>
 
         <div class="row">
             <div class="col-sm-12">

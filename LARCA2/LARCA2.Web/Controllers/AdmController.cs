@@ -702,8 +702,6 @@ namespace LARCA2.Controllers
             auxData.XlsRowFrom = AuxDataSearchForm.AuxData.XlsRowFrom;
             auxData.XlsColumnFrom = AuxDataSearchForm.AuxData.XlsColumnFrom;
             auxData.qtyattach = AuxDataSearchForm.AuxData.qtyattach;
-            auxData.reportdays = AuxDataSearchForm.AuxData.reportdays;
-            auxData.SmoDays = AuxDataSearchForm.AuxData.SmoDays;
             repo.Guardar(auxData);
 
             return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/AuxDataBM';</script>");

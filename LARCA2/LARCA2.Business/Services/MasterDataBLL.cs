@@ -62,6 +62,11 @@ namespace LARCA2.Business.Services
             return MasterDataDAL.Traer(codigo, ini);
         }
 
+        public LARCA20_MasterData TraerPorDataFin(string fin)
+        {
+            return MasterDataDAL.TraerPorDataFin("REASON CODE", fin);
+        }
+
         public bool Eliminar(long id)
         {
             return MasterDataDAL.Eliminar(id);

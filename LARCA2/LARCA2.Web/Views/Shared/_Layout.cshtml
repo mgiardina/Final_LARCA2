@@ -59,6 +59,7 @@
                                     <li>@Html.ActionLink("LARCA News", "Index", "LAScope")</li>
                                     @if (user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 1 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 4 || user.LARCA20_UsersRoles.ToList()[0].RefIdRoles == 6)
                                     {
+                                        <li>@Html.ActionLink("LARCA Action Plan Report", "Index", "ActionPlan")</li>
                                         <li>@Html.ActionLink("LARCA Pending Analysys", "Index", "PendingAnalysis")</li>
                                     }
                                 </ul>

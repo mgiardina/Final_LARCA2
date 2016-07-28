@@ -30,7 +30,7 @@ namespace LARCA2.Business.Services
                 var items = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                 foreach (var item in items.Take(toplvl2))
                 {
-                    var volumen = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin && s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                    var volumen = SmoDetailDAL.Todos().Where(s => s.MasterSMODetail.DataFin == smoFin && s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                     var row = new ReportRow();
                     row.SMO = item.ToList()[0].MasterSMO.DataFin;
                     row.RBU = "TOTAL";
@@ -40,11 +40,12 @@ namespace LARCA2.Business.Services
                     row.PROBLEM = "View Details Below";
 
                     var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
+                    decimal vol = 0;
                     foreach (var subitem in item.ToList().Take(toplvl3))
                     {
-
                         var detailRow = new ReportRow
                         {
+
                             SMO = subitem.MasterSMO.DataFin,
                             RBU = subitem.MasterBU.DataFin,
                             CUT = subitem.MasterLvl.Description,
@@ -57,7 +58,9 @@ namespace LARCA2.Business.Services
                             RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
                             LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                         };
-                        row.Details.Add(detailRow);
+                        vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                        if (vol * 100 / Convert.ToDecimal(row.VOLUME) <= 80)
+                            row.Details.Add(detailRow);
                     }
                     lista.Add(row);
                 }
@@ -69,7 +72,7 @@ namespace LARCA2.Business.Services
                     var items = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                     foreach (var item in items.Take(toplvl2))
                     {
-                        var volumen = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin && s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                        var volumen = SmoDetailDAL.Todos().Where(s => s.MasterBUDetail.DataFin == buFin && s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                         var row = new ReportRow();
                         row.SMO = "TOTAL";
                         row.RBU = item.ToList()[0].MasterBU.DataFin;
@@ -77,7 +80,8 @@ namespace LARCA2.Business.Services
                         row.Details = new List<ReportRow>();
                         row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                         row.PROBLEM = "View Details Below";
-
+                        decimal vol = 0;
+                        int i = 1;
                         var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                         foreach (var subitem in item.ToList().Take(toplvl3))
                         {
@@ -95,7 +99,23 @@ namespace LARCA2.Business.Services
                                 RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
                                 LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                             };
-                            row.Details.Add(detailRow);
+                            if (i == 1)
+                            {
+                                i++;
+                                vol = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                                row.Details.Add(detailRow);
+                            }
+                            else
+                            {
+                                if (vol * 100 / volumen <= 80)
+                                {
+                                    i++;
+                                    vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                                    row.Details.Add(detailRow);
+                                }
+                            }
+
+
                         }
                         lista.Add(row);
                     }
@@ -108,7 +128,7 @@ namespace LARCA2.Business.Services
                         var items = SmoScopeDAL.Todos().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                         foreach (var item in items.Take(toplvl2))
                         {
-                            var volumen = SmoScopeDAL.Todos().Where(s => s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                            var volumen = SmoDetailDAL.Todos().Where(s => s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                             var row = new ReportRow();
                             row.SMO = "TOTAL";
                             row.RBU = "TOTAL";
@@ -116,7 +136,7 @@ namespace LARCA2.Business.Services
                             row.Details = new List<ReportRow>();
                             row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                             row.PROBLEM = "View Details Below";
-
+                            decimal vol = 0;
                             var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                             foreach (var subitem in item.ToList().Take(toplvl3))
                             {
@@ -134,7 +154,9 @@ namespace LARCA2.Business.Services
                                     RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
                                     LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                                 };
-                                row.Details.Add(detailRow);
+                                vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                                if (vol * 100 / Convert.ToDecimal(row.VOLUME) <= 80)
+                                    row.Details.Add(detailRow);
                             }
                             lista.Add(row);
                         }
@@ -146,7 +168,7 @@ namespace LARCA2.Business.Services
                             var items = SmoScopeDAL.TodosConExclusiones().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                             foreach (var item in items.Take(toplvl2))
                             {
-                                var volumen = SmoScopeDAL.Todos().Where(s => s.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
+                                var volumen = SmoDetailDAL.Todos().Where(s => s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                                 var row = new ReportRow();
                                 row.SMO = "TOTAL";
                                 row.RBU = "TOTAL";
@@ -154,7 +176,7 @@ namespace LARCA2.Business.Services
                                 row.Details = new List<ReportRow>();
                                 row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                                 row.PROBLEM = "View Details Below";
-
+                                decimal vol = 0;
                                 var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                                 foreach (var subitem in item.ToList().Take(toplvl3))
                                 {
@@ -172,7 +194,9 @@ namespace LARCA2.Business.Services
                                         RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
                                         LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
                                     };
-                                    row.Details.Add(detailRow);
+                                    vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                                    if (vol * 100 / Convert.ToDecimal(row.VOLUME) <= 80)
+                                        row.Details.Add(detailRow);
                                 }
                                 lista.Add(row);
                             }

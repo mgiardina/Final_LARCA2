@@ -96,7 +96,7 @@ namespace LARCA2.Data.Services
         // Overload de metodo Traer
         public LARCA2.Data.DatabaseModels.LARCA20_RcClasification Traer(string codigo)
         {
-            return Context.LARCA20_RcClasification.SingleOrDefault(c => c.Code == codigo && c.deleted== false);
+            return Context.LARCA20_RcClasification.SingleOrDefault(c => c.Code.Trim() == codigo.Trim() && c.deleted== false);
         }
 
         public List<LARCA2.Data.DatabaseModels.LARCA20_RcClasification> TodosXLevel(string tx1)
