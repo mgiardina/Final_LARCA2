@@ -1012,7 +1012,7 @@ namespace LARCA2.Controllers
         public ActionResult NuevoLevel4(string Id)
         {
 
-            ViewBag.Message = "Alta.";
+            ViewBag.Message = "";
             ViewBag.Id = Id;
             return View("NuevoLevel4");
 

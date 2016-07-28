@@ -10,7 +10,7 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                This screen allows the visualization, modification and deletion of level 4 in the system.
+                This screen allows the visualization, modification and deletion of other classifications in the system.
             </p>
         </div>
     </section>
@@ -105,12 +105,12 @@
 
 </script>
 
-<div class="container-fluid">
+<div class="container-fluid" align ="left">
     @using (Html.BeginForm("ModifLevel4", "Adm", FormMethod.Post, new { name = "myform"}))
     {
         <div class="row">
             <div class="col-sm-13">
-                <h5 style="border-bottom:1px solid #c7d1d6;">FILTER</h5>
+                <h5 style="border-bottom:1px solid #c7d1d6;padding-left:8px;margin-left:8px;">FILTER</h5>
             </div>
         </div>
         <div class="row">
@@ -160,7 +160,7 @@
                 <br style="margin-bottom:3px;" />
                 <br style="margin-bottom:3px;" />
                 <div id="SelectNivel" style="color:red;display:none">Level 3</div>
-                <div id="SelectNivelAgregar" style="color:red;display:none">Filter</div>
+                <div id="SelectNivelAgregar" style="color:red;display:none;padding-left:20px;margin-left:20px;">Filter</div>
                
             </div>
         </div>
@@ -171,30 +171,31 @@
             <div class="col-sm-4" id="Check2" style="color:red;display:none">Seleccione una Descripción de Nivel 3 para Modificar</div>
         </div>
         <div class="row">
-            <div class="pull-right col">
-                <input type="button" value="Add" name="Nuevo" id="Nuevo" class="btn btn-default" />
-                <input type="submit" value="Change" name="Modificar" id="Modificar" class="btn btn-default" />
+            <div class="pull-left2 col" align="left" style="margin-left:10px;">
+                <input type="button" value="Add" name="Nuevo" id="Nuevo" class="btn btn-default" align="left" style="margin-left:10px;" />
+                <input type="submit" value="Change" name="Modificar" id="Modificar" class="btn btn-default" align="left" style="margin-left:10px;"  />
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-13">
-                <div class="table-responsive">
-                    <table class="table">
-                        <tr>
-                            <th width="10%" align="center"></th>
-                            <th width="20%" align="center">
-                                <label>Description</label>
-                            </th>
-                        </tr>
+        
+        <div class="col-sm-13" align="left">
+            <div class="content" align="left" style="margin-bottom:20px;width:1000px;height:350px">
+                @*antes era class table-responsive*@
+                <table class="table" align="left">
+                    <tr>
+                        <th width="10%" align="center"></th>
+                        <th width="20%" align="center">
+                            <label>Description</label>
+                        </th>
+                    </tr>
 
-                        @{int j = 0;
+                    @{int j = 0;
 
-                        if (Model.Level4List != null)
+                    if (Model.Level4List != null)
+                    {
+                        if (Model.filterlimit != null && Model.filterlimit != 0)
                         {
-                            if (Model.filterlimit != null && Model.filterlimit != 0)
-                            {
 
-                                @*for (int i = 0; i < Model.filterlimit; i++)
+                            @*for (int i = 0; i < Model.filterlimit; i++)
                                 {
                                     <tr id="tr">
                                         <td width="10%" align="center">
@@ -208,30 +209,30 @@
                                     </tr>
                                 }*@
 
-    var x = 0;
-        foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 Level4 in Model.Level4List)
-        {
-            if (x < Model.filterlimit) 
-            {              
-             <tr id="tr">
-                <td width="10%" align="center">
-                    @Html.CheckBoxFor(m => m.Selected[j], new { @value = Level4.Id })
-                </td>
-                <td width="20%" align="center">
-                    <label>
-                        @Level4.name
-                    </label>
-                </td>
-            </tr>
-            j++;
-            x++;
-               }
-        }
-
-                            }
-                            else
+                            var x = 0;
+                            foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 Level4 in Model.Level4List)
                             {
-                                @*var x = 0;
+                                if (x < Model.filterlimit)
+                                {
+                                    <tr id="tr">
+                                        <td width="10%" align="center">
+                                            @Html.CheckBoxFor(m => m.Selected[j], new { @value = Level4.Id })
+                                        </td>
+                                        <td width="20%" align="center">
+                                            <label>
+                                                @Level4.name
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    j++;
+                                    x++;
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            @*var x = 0;
                                 foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 Level4 in Model.Level4List)
                                 {
 
@@ -249,14 +250,13 @@
                                     x++;
                                     //    }
                                 }*@
-                            }
                         }
-                        }
+                    }
+                    }
 
-                    </table>
+                </table>
 
 
-                </div>
             </div>
         </div>
     }

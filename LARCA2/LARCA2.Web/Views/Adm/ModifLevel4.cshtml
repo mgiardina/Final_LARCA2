@@ -1,7 +1,7 @@
 ﻿@model Larca2.Models.Level4SearchForm
 
 @{
-    ViewBag.Title = "Modify Existing Level 4";
+    ViewBag.Title = "Modify Existing Other Classification";
 }
 @section featured {
     <section class="featured">
@@ -11,7 +11,7 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                Here you can modify a level 4 from the system.
+                Here you can modify other classification from the system.
             </p>
         </div>
     </section>
@@ -22,19 +22,19 @@
     {
         @Html.HiddenFor(m => m.Level4.Id)
         <div class="row">
-            <div class="col-sm-13">
+            <div class="col-sm-13" style="width:500px">
                 <fieldset class="form-group">
-                    <label for="Nombre">Descripcion</label>
-                    @Html.TextBoxFor(m => m.Level4.name, new { @class = "form-control", @placeholder = "Descripcion...", @MaxLength = "50" })
+                    <label for="Nombre" style="margin-left:10px">Description</label>
+                    @Html.TextBoxFor(m => m.Level4.name, new { @class = "form-control", @placeholder = "Description...", @MaxLength = "50" })
                     <small class="text-muted">@Html.ValidationMessageFor(m => m.Level4.name)</small>
                 </fieldset>
             </div>
         </div>
 
         <div class="row">
-            <div class="pull-right col">
-                <input type="submit" value="Guardar Cambios" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
-                <input type="button" value="Volver" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("Level4", "Adm") + "'");" />
+            <div class="pull-left col" style="margin-left:10px;">
+                <input type="submit" value="Save Changes" name="Guardar" class="btn btn-success" />&nbsp;&nbsp;&nbsp;
+                <input type="button" value="Back" id="Volver" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("Level4", "Adm") + "'");" />
             </div>
         </div>
     }
