@@ -42,8 +42,9 @@
     }
 
     function CheckforAD(name) {
-      var checkthis=  document.getElementById('respo'+name).value;
-            $.ajax({
+        var checkthis=  document.getElementById('respo'+name).value;
+       
+      $.ajax({
                 url: '@Url.Action("CheckForAD", "Smo")',
                 type: 'GET',
                 dataType: 'json',
