@@ -1165,7 +1165,7 @@ namespace Larca2.Controllers
         {
              bool resultado = false;
              if (!(name == "" || name == string.Empty))
-               resultado =  UserExistsInAD(name);
+              resultado =  UserExistsInAD(name);
           
             return Json(resultado ? "Username " + name + " is available." : "Invalid username: " + name + " doesn't exist in Active Directory.", JsonRequestBehavior.AllowGet);
         }
@@ -1221,7 +1221,7 @@ namespace Larca2.Controllers
                     }
                 }
             }
-            return finded == false;
+            return finded;
         }
 
 
@@ -1744,7 +1744,7 @@ namespace Larca2.Controllers
                     clon.historic = false;
 
                     clon.ActionPlan = actFilt[10];
-                    clon.O_C = (actFilt[13].ToUpper() == "O" || actFilt[13].ToUpper() == "C" ? actFilt[13] : "O");
+                    clon.O_C = (actFilt[13].ToUpper() == "O" || actFilt[13].ToUpper() == "C" ? actFilt[13] : null);
 
 
                     clon.RefIdBU = mdClones.Traer(Int32.Parse(actFilt[2])).id;
@@ -2267,6 +2267,12 @@ namespace Larca2.Controllers
             for (int i = 0; i < viewModel.EditablesSMO.Count; i++)
             { viewModel.maxClones.Add(valMax); }
 
+           viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+
+
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
 
             return View("Dashboard", viewModel);
         }
@@ -2281,6 +2287,14 @@ namespace Larca2.Controllers
                 smoUpdated.DueDate = smoItem.DueDate;
                 repoUpdate.Guardar(smoUpdated);
             }
+
+            ResponsablesBLL repoResponsables = new ResponsablesBLL();
+            viewModel.responsibles = new List<string>();
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
+                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
+            ModelState.Clear();
+
             return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Smo/Dashboard';</script>");
 
         }

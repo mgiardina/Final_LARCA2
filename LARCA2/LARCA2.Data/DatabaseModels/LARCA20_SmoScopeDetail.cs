@@ -29,12 +29,12 @@ namespace LARCA2.Data.DatabaseModels
         public string originaldate { get; set; }
         public string FPC { get; set; }
     
+        public virtual LARCA20_SmoScope SmoScopeDetail { get; set; }
         public virtual LARCA20_MasterData MasterBUDetail { get; set; }
         public virtual LARCA20_MasterData MasterOwnerDetail { get; set; }
         public virtual LARCA20_MasterData MasterReasonDetail { get; set; }
         public virtual LARCA20_MasterData MasterSMODetail { get; set; }
         public virtual LARCA20_RcClasification MasterLvl2Detail { get; set; }
         public virtual LARCA20_RcClasification MasterLvl3Detail { get; set; }
-        public virtual LARCA20_SmoScope SmoScopeDetail { get; set; }
     }
 }

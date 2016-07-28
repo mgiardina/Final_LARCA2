@@ -40,7 +40,9 @@
     function CheckforAD(name) {
 
         if (typeof name == 'number') {
+            
             var checkthis = document.getElementById('respo' + name).value;
+            
             $.ajax({
                 url: '@Url.Action("CheckForAD", "Smo")',
                 type: 'GET',
@@ -58,7 +60,7 @@
         else {
            
             var paramString = document.getElementById("respo" + name.id).value;
-
+           
             $.ajax({
                 url: '@Url.Action("CheckForAD", "Smo")',
                 type: 'GET',

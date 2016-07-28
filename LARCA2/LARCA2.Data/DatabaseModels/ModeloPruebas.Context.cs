@@ -28,11 +28,8 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_AuxData> LARCA20_AuxData { get; set; }
         public virtual DbSet<LARCA20_Emails> LARCA20_Emails { get; set; }
         public virtual DbSet<LARCA20_ImputOriginal> LARCA20_ImputOriginal { get; set; }
-        public virtual DbSet<LARCA20_Level4> LARCA20_Level4 { get; set; }
         public virtual DbSet<LARCA20_Mailing> LARCA20_Mailing { get; set; }
-        public virtual DbSet<LARCA20_MasterData> LARCA20_MasterData { get; set; }
         public virtual DbSet<LARCA20_MasterDataSMOLess> LARCA20_MasterDataSMOLess { get; set; }
-        public virtual DbSet<LARCA20_RcClasification> LARCA20_RcClasification { get; set; }
         public virtual DbSet<LARCA20_Responsable> LARCA20_Responsable { get; set; }
         public virtual DbSet<LARCA20_Roles> LARCA20_Roles { get; set; }
         public virtual DbSet<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
@@ -41,5 +38,8 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }
         public virtual DbSet<LARCA20_Users> LARCA20_Users { get; set; }
         public virtual DbSet<LARCA20_UsersRoles> LARCA20_UsersRoles { get; set; }
+        public virtual DbSet<LARCA20_Level4> LARCA20_Level4 { get; set; }
+        public virtual DbSet<LARCA20_MasterData> LARCA20_MasterData { get; set; }
+        public virtual DbSet<LARCA20_RcClasification> LARCA20_RcClasification { get; set; }
     }
 }

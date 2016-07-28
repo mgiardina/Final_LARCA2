@@ -16,6 +16,7 @@ namespace LARCA2.Data.DatabaseModels
     {
         public LARCA20_MasterData()
         {
+            this.LARCA20_Level4 = new HashSet<LARCA20_Level4>();
             this.LARCA20_User_Owner = new HashSet<LARCA20_User_Owner>();
             this.LARCA20_User_Owner1 = new HashSet<LARCA20_User_Owner>();
             this.LARCA20_User_Owner2 = new HashSet<LARCA20_User_Owner>();
@@ -34,6 +35,7 @@ namespace LARCA2.Data.DatabaseModels
         public string DataFin { get; set; }
         public bool deleted { get; set; }
     
+        public virtual ICollection<LARCA20_Level4> LARCA20_Level4 { get; set; }
         public virtual LARCA20_MasterData LARCA20_MasterData1 { get; set; }
         public virtual LARCA20_MasterData LARCA20_MasterData2 { get; set; }
         public virtual ICollection<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }

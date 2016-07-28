@@ -16,7 +16,6 @@ namespace LARCA2.Data.DatabaseModels
     {
         public LARCA20_RcClasification()
         {
-            this.LARCA20_Level4 = new HashSet<LARCA20_Level4>();
             this.LARCA20_SmoScope = new HashSet<LARCA20_SmoScope>();
             this.LARCA20_SmoScopeDetail = new HashSet<LARCA20_SmoScopeDetail>();
             this.LARCA20_SmoScopeDetail1 = new HashSet<LARCA20_SmoScopeDetail>();
@@ -29,7 +28,6 @@ namespace LARCA2.Data.DatabaseModels
         public string Ownership { get; set; }
         public bool deleted { get; set; }
     
-        public virtual ICollection<LARCA20_Level4> LARCA20_Level4 { get; set; }
         public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
         public virtual ICollection<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail { get; set; }
         public virtual ICollection<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail1 { get; set; }

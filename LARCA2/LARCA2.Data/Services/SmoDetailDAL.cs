@@ -14,8 +14,8 @@ namespace LARCA2.Data.Services
             {
                 if (entity.DetailID == 0)
                 {
-                    entity.MasterBUDetail = null;
-                    entity.MasterSMODetail = null;
+                  //  entity.MasterBUDetail = null;
+                  //  entity.MasterSMODetail = null;
                     Context.LARCA20_SmoScopeDetail.Add(entity);
                     Context.SaveChanges();
                 }

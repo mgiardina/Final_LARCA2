@@ -34,12 +34,12 @@ namespace LARCA2.Data.Services
 
         public override List<LARCA2.Data.DatabaseModels.LARCA20_Level4> Todos()
         {
-            return Context.LARCA20_Level4.OrderBy(q => q.LARCA20_RcClasification.Description).ThenBy(q => q.name).ToList();
+            return Context.LARCA20_Level4.OrderBy(q => q.LARCA20_MasterData.DataFin).ThenBy(q => q.name).ToList();
         }
 
-        public List<LARCA20_Level4> ListaPorRC(int smoRcId)
+        public List<LARCA20_Level4> ListaPorBU(int BUId)
         {
-            return Context.LARCA20_Level4.Where(x => x.RefIdLevel3 == smoRcId || x.RefIdLevel3 == null).ToList();
+            return Context.LARCA20_Level4.Where(x => x.RefIdBU == BUId || x.RefIdBU == null).ToList();
         }
 
         public List<LARCA2.Data.DatabaseModels.LARCA20_Level4> TodosFiltro(string Tx1)
@@ -48,7 +48,7 @@ namespace LARCA2.Data.Services
             using (Larca2Entities ObjEnt = new Larca2Entities())
             {
                 IQueryable<LARCA2.Data.DatabaseModels.LARCA20_Level4> ObjFiltro = from q in ObjEnt.LARCA20_Level4
-                                                        where q.RefIdLevel3.ToString().Equals(Tx1)
+                                                        where q.RefIdBU.ToString().Equals(Tx1)
                                                         select q;
                 List<LARCA2.Data.DatabaseModels.LARCA20_Level4> ListaReturn = ObjFiltro.ToList();
 
@@ -86,7 +86,7 @@ namespace LARCA2.Data.Services
 
         public List<LARCA2.Data.DatabaseModels.LARCA20_Level4> ValidarMaximo(int lvl3)
         {
-            return Context.LARCA20_Level4.Where(q => q.RefIdLevel3==lvl3 && q.deleted== false).ToList();
+            return Context.LARCA20_Level4.Where(q => q.RefIdBU==lvl3 && q.deleted== false).ToList();
         }
     }
 }

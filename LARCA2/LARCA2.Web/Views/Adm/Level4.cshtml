@@ -125,9 +125,9 @@
 
                             <option id="option">Search...</option>
 
-                            foreach (LARCA2.Data.DatabaseModels.LARCA20_RcClasification RcClasification in Model.Level3List)
+                            foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData BU in Model.Level3List)
                             {
-                                <option value="@RcClasification.Id">@RcClasification.Description</option>
+                                <option value="@BU.id">@BU.DataIni</option>
                        
 
                             }
@@ -138,9 +138,9 @@
                         {
                             <option id="option">Search...</option>
 
-                            foreach (LARCA2.Data.DatabaseModels.LARCA20_RcClasification RcClasification in Model.Level3List)
+                            foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData BU in Model.Level3List)
                             {
-                                <option value="@RcClasification.Id">@RcClasification.Description</option>
+                                <option value="@BU.id">@BU.DataIni</option>
 
                             }
 

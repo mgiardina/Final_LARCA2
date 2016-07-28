@@ -419,10 +419,11 @@ namespace LARCA2.Controllers
             }
 
 
-            if (smo.RefIdRC != null)
+            if (smo.RefIdBU != null)
             {
                 List<SelectListItem> lista = new List<SelectListItem>();
-                List<LARCA20_Level4> l4rc = repoNivel.ListaPorRC(Int32.Parse(smo.RefIdRC.ToString()));
+               
+                List<LARCA20_Level4> l4rc =  repoNivel.ListaPorBU(Int32.Parse(smo.RefIdBU.GetValueOrDefault(0).ToString()));
                 foreach (LARCA20_Level4 l4 in l4rc)
                     lista.Add(new SelectListItem() { Text = l4.name, Value = l4.Id.ToString(), Selected = false });
 
@@ -903,7 +904,8 @@ namespace LARCA2.Controllers
 
 
             Larca2.Models.Level4SearchForm Level4SearchForm = new Larca2.Models.Level4SearchForm();
-            Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
+            //Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
+            Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
             Business.Services.Level4BLL repo_level4 = new Business.Services.Level4BLL();
             Business.Services.ApplicationDataBLL repo_Aux = new Business.Services.ApplicationDataBLL();
 
@@ -916,7 +918,7 @@ namespace LARCA2.Controllers
             }
 
 
-            Level4SearchForm.Level3List = repo.TodosNivel3();
+            Level4SearchForm.Level3List = repo.TodosFiltro("","","BU");
 
 
 
@@ -986,7 +988,7 @@ namespace LARCA2.Controllers
                 Business.Services.Level4BLL repo = new Business.Services.Level4BLL();
                 Data.DatabaseModels.LARCA20_Level4 user = new Data.DatabaseModels.LARCA20_Level4();
 
-                user.RefIdLevel3 = RefIdRenglon;
+                user.RefIdBU = RefIdRenglon;
                 user.deleted = false;
                 user.name = model.Level4.name;
                 repo.Guardar(user);

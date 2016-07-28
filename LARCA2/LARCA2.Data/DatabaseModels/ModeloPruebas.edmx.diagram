@@ -4,15 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a9b0f7b5cc7c4db4ad11851a1dd514af" Name="Diagram1" ZoomLevel="83">
+      <Diagram DiagramId="a9b0f7b5cc7c4db4ad11851a1dd514af" Name="Diagram1" ZoomLevel="69">
         <EntityTypeShape EntityType="Larca2Model.LARCA20_AuxData" Width="1.5" PointX="5.75" PointY="11.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_Emails" Width="1.5" PointX="8.75" PointY="2.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_ImputOriginal" Width="1.5" PointX="7.75" PointY="11.75" />
-        <EntityTypeShape EntityType="Larca2Model.LARCA20_Level4" Width="1.5" PointX="3" PointY="15.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_Mailing" Width="1.5" PointX="9.75" PointY="11.75" />
-        <EntityTypeShape EntityType="Larca2Model.LARCA20_MasterData" Width="1.5" PointX="0.75" PointY="6.125" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_MasterDataSMOLess" Width="1.5" PointX="10.75" PointY="2.75" />
-        <EntityTypeShape EntityType="Larca2Model.LARCA20_RcClasification" Width="1.5" PointX="0.75" PointY="2.25" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_Responsable" Width="1.5" PointX="0.75" PointY="12" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_Roles" Width="1.5" PointX="3.75" PointY="12.875" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScope" Width="1.5" PointX="3" PointY="5.5" />
@@ -21,7 +18,17 @@
         <EntityTypeShape EntityType="Larca2Model.LARCA20_User_Owner" Width="1.5" PointX="6" PointY="6.5" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_Users" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_UsersRoles" Width="1.5" PointX="6" PointY="1.25" />
-        <AssociationConnector Association="Larca2Model.FK_LARCA20_Level4_LARCA20_RcClasification" />
+        <AssociationConnector Association="Larca2Model.ResponsableSmo" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_UsuariosRoles_LARCA20_Roles" />
+        <AssociationConnector Association="Larca2Model.SmoScopeDetail" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner1" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_Usuarios" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_UsuariosRoles_LARCA20_Usuarios" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_Level4" Width="1.5" PointX="6" PointY="15.375" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_MasterData" Width="1.5" PointX="12.25" PointY="8.375" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_RcClasification" Width="1.5" PointX="0.75" PointY="7" />
+        <AssociationConnector Association="Larca2Model.FK_LARCA20_Level4_LARCA20_MasterData" />
         <AssociationConnector Association="Larca2Model.FK_LARCA20_MasterData_LARCA20_MasterData" />
         <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_MasterData_BU" />
         <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_MasterData_owner" />
@@ -36,13 +43,6 @@
         <AssociationConnector Association="Larca2Model.MasterLvl" />
         <AssociationConnector Association="Larca2Model.MasterLvl2Detail" />
         <AssociationConnector Association="Larca2Model.MasterLvl3Detail" />
-        <AssociationConnector Association="Larca2Model.ResponsableSmo" />
-        <AssociationConnector Association="Larca2Model.FK_LARCA20_UsuariosRoles_LARCA20_Roles" />
-        <AssociationConnector Association="Larca2Model.SmoScopeDetail" />
-        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner" />
-        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_User_Owner1" />
-        <AssociationConnector Association="Larca2Model.FK_LARCA20_User_Owner_LARCA20_Usuarios" />
-        <AssociationConnector Association="Larca2Model.FK_LARCA20_UsuariosRoles_LARCA20_Usuarios" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
