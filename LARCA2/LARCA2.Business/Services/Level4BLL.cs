@@ -37,6 +37,12 @@ namespace LARCA2.Business.Services
              return Level4DAL.TodosFiltro(tx1);
        }
 
+        public List<LARCA20_Level4> TodosFiltroBU(string tx1)
+        {
+            return Level4DAL.TodosFiltroBU(tx1);
+        }
+
+
         public LARCA20_Level4 Traer(long id)
         {
             return Level4DAL.Traer(id);

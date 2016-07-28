@@ -421,9 +421,16 @@ namespace LARCA2.Controllers
 
             if (smo.RefIdBU != null)
             {
+                 List<LARCA20_Level4> l4rc = repoNivel.Todos();
+                MasterDataBLL mdb = new MasterDataBLL();
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(smo.RefIdBU.Value).DataFin);
+                l4rc = l4rc.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+
+
+
                 List<SelectListItem> lista = new List<SelectListItem>();
                
-                List<LARCA20_Level4> l4rc =  repoNivel.ListaPorBU(Int32.Parse(smo.RefIdBU.GetValueOrDefault(0).ToString()));
+              //  List<LARCA20_Level4> l4rc =  repoNivel.ListaPorBU(Int32.Parse(smo.RefIdBU.GetValueOrDefault(0).ToString()));
                 foreach (LARCA20_Level4 l4 in l4rc)
                     lista.Add(new SelectListItem() { Text = l4.name, Value = l4.Id.ToString(), Selected = false });
 
@@ -900,7 +907,7 @@ namespace LARCA2.Controllers
         public ActionResult Level4(string txtNivel, string txtLimite)
         {
 
-
+            ModelState.Clear();
             Larca2.Models.Level4SearchForm Level4SearchForm = new Larca2.Models.Level4SearchForm();
             //Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
             Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
@@ -918,13 +925,48 @@ namespace LARCA2.Controllers
 
             Level4SearchForm.Level3List = repo.TodosFiltro("","","BU");
 
+       
+
+            int bumax = Level4SearchForm.Level3List.Count;
+            for (int co = 0; co < bumax; co++)
+            {
+                int comparacion = Level4SearchForm.Level3List.Where(x => x.DataFin == Level4SearchForm.Level3List[co].DataFin).Count();
+
+                if (comparacion > 1)
+                {
+
+                    for (int coin = co + 1; coin <= bumax; )
+                    {
+                        if (Level4SearchForm.Level3List[co].DataFin == Level4SearchForm.Level3List[coin].DataFin)
+                        {
+                            Level4SearchForm.Level3List.Remove(Level4SearchForm.Level3List[coin]);
+                            bumax--;
+                            comparacion--;
+                            if (comparacion == 1)
+                                break;
+                        }
+                        else
+                        { coin++; }
+                    }
+
+                }
+                else
+                {
+                    //aparece solo una vez
+                }
+            }
+
 
 
 
             if (txtNivel != null)
             {
 
-                Level4SearchForm.Level4List = repo_level4.TodosFiltro(txtNivel);
+                Level4SearchForm.Level4List = repo_level4.Todos();
+                MasterDataBLL mdb = new MasterDataBLL();
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(Int32.Parse(txtNivel)).DataFin);
+                Level4SearchForm.Level4List = Level4SearchForm.Level4List.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+               
 
             }
             return View("Level4", Level4SearchForm);

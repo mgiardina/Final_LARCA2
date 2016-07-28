@@ -56,6 +56,21 @@ namespace LARCA2.Data.Services
             }
         }
 
+
+        public List<LARCA2.Data.DatabaseModels.LARCA20_Level4> TodosFiltroBU(string Tx1)
+        {
+            Tx1 = (Tx1 == null ? "" : Tx1);
+            using (Larca2Entities ObjEnt = new Larca2Entities())
+            {
+                IQueryable<LARCA2.Data.DatabaseModels.LARCA20_Level4> ObjFiltro = from q in ObjEnt.LARCA20_Level4
+                                                                                  where q.RefIdBU.ToString().Equals(Tx1)
+                                                                                  select q;
+                List<LARCA2.Data.DatabaseModels.LARCA20_Level4> ListaReturn = ObjFiltro.ToList();
+
+                return ListaReturn;
+            }
+        }
+
         public override LARCA2.Data.DatabaseModels.LARCA20_Level4 Traer(long id)
         {
             return Context.LARCA20_Level4.SingleOrDefault(u => u.Id == id);
