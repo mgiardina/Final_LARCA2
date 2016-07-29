@@ -56,6 +56,38 @@ namespace LARCA2.Business.Core
                     }
                 }
                 excelReader.Close();
+
+                // Limpiamos los historicos en caso de Proceso Total
+                if (tipoProceso == TipoProceso.Total)
+                {
+                    new SMOScopeBLL().PasarDetallesHistoricos();
+                    var lista = new SMOScopeBLL().Todos();
+                    foreach (var smo in lista)
+                    {
+                        var newSmo = new LARCA20_SmoScope();
+                        newSmo.SmoScopeID = smo.SmoScopeID;
+                        newSmo.date = smo.date;
+                        newSmo.RefIdSMO = smo.RefIdSMO;
+                        newSmo.RefIdOwner = smo.RefIdOwner;
+                        newSmo.RefIdBU = smo.RefIdBU;
+                        newSmo.RefIdRC = smo.RefIdRC;
+                        newSmo.Volumen = smo.Volumen;
+                        newSmo.Problem = smo.Problem;
+                        newSmo.Why1 = smo.Why1;
+                        newSmo.Why2 = smo.Why2;
+                        newSmo.Why3 = smo.Why3;
+                        newSmo.ActionPlan = smo.ActionPlan;
+                        newSmo.RefIdResponsable = smo.RefIdResponsable;
+                        newSmo.DueDate = smo.DueDate;
+                        newSmo.O_C = smo.O_C;
+                        newSmo.deleted = smo.deleted;
+                        newSmo.Level4 = smo.Level4;
+                        newSmo.historic = true;
+                        new SMOScopeBLL().PasarHistorico(newSmo);
+
+                    }
+                }
+
                 // Recorro la lista generada
                 foreach (var item in list)
                 {
@@ -100,16 +132,24 @@ namespace LARCA2.Business.Core
                             smoDetail.FPC = item.FPC;
                             smoDetail.BuID = new MasterDataBLL().Traer("BU", item.ProfitCenter).id;
                             smoDetail.SmoID = new MasterDataBLL().Traer("SMO", item.ReportingCountry).id;
+                            if (item.ReportingCountry == "COLOMBIA")
+                            {
+                                if ( item.ProfitCenter.Contains("HAIR"))
+                                {
+                                    var pp = 0;
+                                }
+                            }
                             smoDetail.ReasonID = new MasterDataBLL().TraerPorDataFin("REASON CODE", item.ReasonCode.Split(Convert.ToChar(" "))[0]).id;
                             smoDetail.Customer = item.Customer;
+                            smoDetail.historic = false;
+                            smoDetail.deleted = false;
 
                             var detailService = new SMOScopeDetailBLL();
                             if (tipoProceso == TipoProceso.Parcial)
                             {
-                          
                                 var dias = -new ApplicationDataBLL().TraerDias();
-                                var dateDesde = DateTime.Now.AddDays(dias);
-                                if (detailService.Existe(smoDetail.BuID, smoDetail.Customer, smoDetail.Lvl2ID, smoDetail.Lvl3ID, smoDetail.SmoID, smoDetail.Volumen, smoDetail.ReasonID, dateDesde))
+                                var dateDesde = DateTime.Now.AddDays(-7);
+                                if (detailService.Existe(smoDetail.BuID , smoDetail.Customer, smoDetail.Lvl2ID, smoDetail.Lvl3ID, smoDetail.SmoID, smoDetail.Volumen, smoDetail.ReasonID, dateDesde))
                                     detailService.Guardar(smoDetail);
                             }
                             else
@@ -121,35 +161,6 @@ namespace LARCA2.Business.Core
                         {
                             // Loggear Error
                         }
-                    }
-                }
-
-                // Limpiamos los historicos
-                if (tipoProceso == TipoProceso.Total)
-                {
-                    var lista = new SMOScopeBLL().Todos();
-                    foreach (var smo in lista)
-                    {
-                        var newSmo = new LARCA20_SmoScope();
-                        newSmo.SmoScopeID = smo.SmoScopeID;
-                        newSmo.date = smo.date;
-                        newSmo.RefIdSMO = smo.RefIdSMO;
-                        newSmo.RefIdOwner = smo.RefIdOwner;
-                        newSmo.RefIdBU = smo.RefIdBU;
-                        newSmo.RefIdRC = smo.RefIdRC;
-                        newSmo.Volumen = smo.Volumen;
-                        newSmo.Problem = smo.Problem;
-                        newSmo.Why1 = smo.Why1;
-                        newSmo.Why2 = smo.Why2;
-                        newSmo.Why3 = smo.Why3;
-                        newSmo.ActionPlan = smo.ActionPlan;
-                        newSmo.RefIdResponsable = smo.RefIdResponsable;
-                        newSmo.DueDate = smo.DueDate;
-                        newSmo.O_C = smo.O_C;
-                        newSmo.deleted = smo.deleted;
-                        newSmo.Level4 = smo.Level4;
-                        newSmo.historic = true;
-                        new SMOScopeBLL().Guardar(newSmo);
                     }
                 }
 
@@ -348,7 +359,7 @@ namespace LARCA2.Business.Core
             return path;
         }
 
-        public string GenerarExcelPendingAnalysis(string reporte, List<LARCA20_SmoScope> lista)
+        public string GenerarActionReport(string reporte, List<LARCA20_SmoScope> lista)
         {
             var date = DateTime.Now.ToString("ddMMMyyy");
             var random = new Random().Next(0, 1000);
@@ -397,6 +408,82 @@ namespace LARCA2.Business.Core
                 ws.Cell(row, 12).Value = item.DueDate;
                 ws.Cell(row, 13).Value = item.O_C;
 
+                row++;
+            }
+
+            ws.Columns(1, 13).AdjustToContents();
+
+            //Save
+            var path = Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data/Reports/"), fileName);
+            wb.SaveAs(path);
+
+            return path;
+        }
+
+        public string GenerarExcelPendingAnalysis(string reporte, List<LARCA20_SmoScope> lista)
+        {
+            var date = DateTime.Now.ToString("ddMMMyyy");
+            var random = new Random().Next(0, 1000);
+            string fileName = String.Format("{0}_Report_{1}.xlsx", date, random);
+
+            var wb = new XLWorkbook();
+            var ws = wb.Worksheets.Add(reporte);
+
+            int row = 4;
+            // Titulos
+            ws.Cell(1, 1).Value = reporte;
+            ws.Cell(3, 1).Value = "Volume";
+            ws.Cell(3, 2).Value = "SMO";
+            ws.Cell(3, 3).Value = "BU";
+            ws.Cell(3, 4).Value = "Root Cause";
+            ws.Cell(3, 5).Value = "Other classification";
+            ws.Cell(3, 6).Value = "Problem Statement";
+            ws.Cell(3, 7).Value = "Why 1";
+            ws.Cell(3, 8).Value = "Why 2";
+            ws.Cell(3, 9).Value = "Why 3";
+            ws.Cell(3, 10).Value = "Action Plan";
+            ws.Cell(3, 11).Value = "Responsible";
+            ws.Cell(3, 12).Value = "Due Date";
+            ws.Cell(3, 13).Value = "Open or Closed";
+            ws.Cell(3, 14).Value = "Status";
+
+            var rngHeaders = ws.Range("A3:L3");
+            rngHeaders.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            rngHeaders.Style.Font.Bold = true;
+            rngHeaders.Style.Font.FontColor = XLColor.White;
+            rngHeaders.Style.Fill.BackgroundColor = XLColor.DarkBlue;
+
+            // Contenido Filas Grises
+            foreach (var item in lista)
+            {
+                ws.Cell(row, 1).Value = (Math.Round(decimal.Parse(item.Volumen.ToString()), 2)).ToString();
+                ws.Cell(row, 2).Value = item.MasterSMO.DataFin;
+                ws.Cell(row, 3).Value = item.MasterBU.DataFin;
+                ws.Cell(row, 4).Value = new Business.Services.RCClassificationBLL().Traer(item.RefIdRC.Value).Description;
+                ws.Cell(row, 5).Value = item.Level4 != null && item.Level4 != 0 ? new Business.Services.Level4BLL().Traer(item.Level4.Value).name : string.Empty;
+                ws.Cell(row, 6).Value = item.Problem;
+                ws.Cell(row, 7).Value = item.Why1;
+                ws.Cell(row, 8).Value = item.Why2;
+                ws.Cell(row, 9).Value = item.Why3;
+                ws.Cell(row, 10).Value = item.ActionPlan;
+                ws.Cell(row, 11).Value = item.RefIdResponsable != null && item.RefIdResponsable != 0 ? new Business.Services.ResponsablesBLL().Traer(item.RefIdResponsable.Value).Name : string.Empty; ;
+                ws.Cell(row, 12).Value = item.DueDate;
+                ws.Cell(row, 13).Value = item.O_C;
+                if ( item.ActionPlan != null && item.Problem != null )
+                {
+                    if (item.ActionPlan.Length > 0 && item.Problem.Length > 0)
+                    {
+                          ws.Cell(row, 14).Value = "COMPLETED" ;
+                    }
+                    else
+                    {
+                       ws.Cell(row, 14).Value = "INCOMPLETED" ;
+                    }
+                }
+                else
+                {
+                    ws.Cell(row, 14).Value = "INCOMPLETED";
+                }
                 row++;
             }
 

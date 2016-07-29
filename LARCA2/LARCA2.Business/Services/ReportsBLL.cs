@@ -30,6 +30,7 @@ namespace LARCA2.Business.Services
                 var items = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                 foreach (var item in items.Take(toplvl2))
                 {
+                    var volumenSmo = Convert.ToDecimal(SmoDetailDAL.Todos().Where(s => s.MasterSMODetail.DataFin == smoFin).Sum(s => s.Volumen));
                     var volumen = SmoDetailDAL.Todos().Where(s => s.MasterSMODetail.DataFin == smoFin && s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                     var row = new ReportRow();
                     row.SMO = item.ToList()[0].MasterSMO.DataFin;
@@ -38,14 +39,15 @@ namespace LARCA2.Business.Services
                     row.Details = new List<ReportRow>();
                     row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                     row.PROBLEM = "View Details Below";
+                    row.GAP = Math.Round(volumen * 100 / volumenSmo, 2).ToString() + " %";
 
                     var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                     decimal vol = 0;
+                    int i = 1;
                     foreach (var subitem in item.ToList().Take(toplvl3))
                     {
                         var detailRow = new ReportRow
-                        {
-
+                        {      
                             SMO = subitem.MasterSMO.DataFin,
                             RBU = subitem.MasterBU.DataFin,
                             CUT = subitem.MasterLvl.Description,
@@ -56,11 +58,49 @@ namespace LARCA2.Business.Services
                             WHY3 = subitem.Why3,
                             ACTIONPLAN = subitem.ActionPlan,
                             RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
-                            LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
+                            LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                            GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
                         };
-                        vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
-                        if (vol * 100 / Convert.ToDecimal(row.VOLUME) <= 80)
+                        //////
+                        if (i == 1)
+                        {
+                            i++;
+                            vol = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
                             row.Details.Add(detailRow);
+                        }
+                        else
+                        {
+                            if (vol * 100 / volumen <= 80)
+                            {
+                                i++;
+                                vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                                row.Details.Add(detailRow);
+                            }
+                        }
+                        // Chequeo de clones
+                        var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID).Take(1);
+                        if (clones.Count() > 0)
+                        {
+                            foreach (var clon in clones)
+                            {
+                                var detail = new ReportRow
+                                {
+                                    SMO = clon.MasterSMO.DataFin,
+                                    RBU = clon.MasterBU.DataFin,
+                                    CUT = clon.MasterLvl.Description,
+                                    VOLUME = "0",
+                                    PROBLEM = subitem.Problem,
+                                    WHY1 = subitem.Why1,
+                                    WHY2 = subitem.Why2,
+                                    WHY3 = subitem.Why3,
+                                    ACTIONPLAN = subitem.ActionPlan,
+                                    RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                    LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                                    GAP = string.Empty
+                                };
+                                row.Details.Add(detail);
+                            }
+                        }
                     }
                     lista.Add(row);
                 }
@@ -72,6 +112,7 @@ namespace LARCA2.Business.Services
                     var items = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                     foreach (var item in items.Take(toplvl2))
                     {
+                        var volumenBU = Convert.ToDecimal(SmoDetailDAL.Todos().Where(s => s.MasterBUDetail.DataFin == buFin).Sum(s => s.Volumen));
                         var volumen = SmoDetailDAL.Todos().Where(s => s.MasterBUDetail.DataFin == buFin && s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                         var row = new ReportRow();
                         row.SMO = "TOTAL";
@@ -80,6 +121,9 @@ namespace LARCA2.Business.Services
                         row.Details = new List<ReportRow>();
                         row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                         row.PROBLEM = "View Details Below";
+                        row.GAP = Math.Round(volumen * 100 / volumenBU, 2).ToString() + " %";
+
+
                         decimal vol = 0;
                         int i = 1;
                         var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
@@ -97,7 +141,8 @@ namespace LARCA2.Business.Services
                                 WHY3 = subitem.Why3,
                                 ACTIONPLAN = subitem.ActionPlan,
                                 RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
-                                LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
+                                LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                                GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
                             };
                             if (i == 1)
                             {
@@ -114,7 +159,30 @@ namespace LARCA2.Business.Services
                                     row.Details.Add(detailRow);
                                 }
                             }
-
+                            // Chequeo de clones
+                            var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID).Take(1);
+                            if (clones.Count() > 0)
+                            {
+                                foreach (var clon in clones.Take(1))
+                                {
+                                    var detail = new ReportRow
+                                    {
+                                        SMO = clon.MasterSMO.DataFin,
+                                        RBU = clon.MasterBU.DataFin,
+                                        CUT = clon.MasterLvl.Description,
+                                        VOLUME = "0",
+                                        PROBLEM = subitem.Problem,
+                                        WHY1 = subitem.Why1,
+                                        WHY2 = subitem.Why2,
+                                        WHY3 = subitem.Why3,
+                                        ACTIONPLAN = subitem.ActionPlan,
+                                        RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                        LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                                        GAP = string.Empty
+                                    };
+                                    row.Details.Add(detail);
+                                }
+                            }
 
                         }
                         lista.Add(row);
@@ -128,6 +196,7 @@ namespace LARCA2.Business.Services
                         var items = SmoScopeDAL.Todos().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                         foreach (var item in items.Take(toplvl2))
                         {
+                            var volumenTotal = Convert.ToDecimal(SmoDetailDAL.Todos().Sum(s => s.Volumen));
                             var volumen = SmoDetailDAL.Todos().Where(s => s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                             var row = new ReportRow();
                             row.SMO = "TOTAL";
@@ -136,7 +205,10 @@ namespace LARCA2.Business.Services
                             row.Details = new List<ReportRow>();
                             row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                             row.PROBLEM = "View Details Below";
+                            row.GAP = Math.Round(volumen * 100 / volumenTotal, 2).ToString() + " %";
+
                             decimal vol = 0;
+                            int i = 1;
                             var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                             foreach (var subitem in item.ToList().Take(toplvl3))
                             {
@@ -152,11 +224,48 @@ namespace LARCA2.Business.Services
                                     WHY3 = subitem.Why3,
                                     ACTIONPLAN = subitem.ActionPlan,
                                     RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
-                                    LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
+                                    LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                                    GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
                                 };
-                                vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
-                                if (vol * 100 / Convert.ToDecimal(row.VOLUME) <= 80)
+                                if (i == 1)
+                                {
+                                    i++;
+                                    vol = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
                                     row.Details.Add(detailRow);
+                                }
+                                else
+                                {
+                                    if (vol * 100 / volumen <= 80)
+                                    {
+                                        i++;
+                                        vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                                        row.Details.Add(detailRow);
+                                    }
+                                }
+                                // Chequeo de clones
+                                var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID).Take(1);
+                                if (clones.Count() > 0)
+                                {
+                                    foreach (var clon in clones.Take(1))
+                                    {
+                                        var detail = new ReportRow
+                                        {
+                                            SMO = clon.MasterSMO.DataFin,
+                                            RBU = clon.MasterBU.DataFin,
+                                            CUT = clon.MasterLvl.Description,
+                                            VOLUME = "0",
+                                            PROBLEM = subitem.Problem,
+                                            WHY1 = subitem.Why1,
+                                            WHY2 = subitem.Why2,
+                                            WHY3 = subitem.Why3,
+                                            ACTIONPLAN = subitem.ActionPlan,
+                                            RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                            LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                                            GAP = string.Empty
+                                        };
+                                        row.Details.Add(detail);
+                                    }
+                                }
                             }
                             lista.Add(row);
                         }
@@ -168,6 +277,7 @@ namespace LARCA2.Business.Services
                             var items = SmoScopeDAL.TodosConExclusiones().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                             foreach (var item in items.Take(toplvl2))
                             {
+                                var volumenTotal = Convert.ToDecimal(SmoDetailDAL.Todos().Sum(s => s.Volumen));
                                 var volumen = SmoDetailDAL.Todos().Where(s => s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == item.Key).Sum(s => s.Volumen);
                                 var row = new ReportRow();
                                 row.SMO = "TOTAL";
@@ -176,7 +286,10 @@ namespace LARCA2.Business.Services
                                 row.Details = new List<ReportRow>();
                                 row.VOLUME = (Math.Round(decimal.Parse(volumen.ToString()), 2)).ToString();
                                 row.PROBLEM = "View Details Below";
+                                row.GAP = Math.Round(volumen * 100 / volumenTotal, 2).ToString() + " %";
+
                                 decimal vol = 0;
+                                int i = 1;
                                 var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                                 foreach (var subitem in item.ToList().Take(toplvl3))
                                 {
@@ -192,11 +305,48 @@ namespace LARCA2.Business.Services
                                         WHY3 = subitem.Why3,
                                         ACTIONPLAN = subitem.ActionPlan,
                                         RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
-                                        LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty
+                                        LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                                        GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
                                     };
-                                    vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
-                                    if (vol * 100 / Convert.ToDecimal(row.VOLUME) <= 80)
+                                    if (i == 1)
+                                    {
+                                        i++;
+                                        vol = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
                                         row.Details.Add(detailRow);
+                                    }
+                                    else
+                                    {
+                                        if (vol * 100 / volumen <= 80)
+                                        {
+                                            i++;
+                                            vol += (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2));
+                                            row.Details.Add(detailRow);
+                                        }
+                                    }
+                                    // Chequeo de clones
+                                    var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID).Take(1);
+                                    if (clones.Count() > 0)
+                                    {
+                                        foreach (var clon in clones.Take(1))
+                                        {
+                                            var detail = new ReportRow
+                                            {
+                                                SMO = clon.MasterSMO.DataFin,
+                                                RBU = clon.MasterBU.DataFin,
+                                                CUT = clon.MasterLvl.Description,
+                                                VOLUME = "0",
+                                                PROBLEM = subitem.Problem,
+                                                WHY1 = subitem.Why1,
+                                                WHY2 = subitem.Why2,
+                                                WHY3 = subitem.Why3,
+                                                ACTIONPLAN = subitem.ActionPlan,
+                                                RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                                LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
+                                                GAP = string.Empty
+                                            };
+                                            row.Details.Add(detail);
+                                        }
+                                    }
                                 }
                                 lista.Add(row);
                             }

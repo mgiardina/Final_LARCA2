@@ -21,7 +21,7 @@ namespace Larca2.Controllers
             var model = new Larca2.Views.ViewModels.SMOScopeViewModel();
             try
             {
-                ViewData["MasterRows"] = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem != string.Empty && smo.Problem != null)).ToList();
+                ViewData["MasterRows"] = new SMOScopeBLL().Todos().ToList();
             }
             catch
             {
@@ -32,7 +32,7 @@ namespace Larca2.Controllers
 
         public ActionResult Export()
         {
-            var masterData = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem != string.Empty && smo.Problem != null)).ToList();
+            var masterData = new SMOScopeBLL().Todos().ToList();
             var file = new ExcelCore().GenerarExcelPendingAnalysis("LARCA Pending Analysis", masterData);
             DownloadFile(file);
             return Content("<script language='javascript' type='text/javascript'>alert('Exported!');document.location = 'Index';</script>");

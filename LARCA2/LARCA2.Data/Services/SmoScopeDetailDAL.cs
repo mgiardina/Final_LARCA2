@@ -33,7 +33,7 @@ namespace LARCA2.Data.Services
 
         public override List<LARCA20_SmoScopeDetail> Todos()
         {
-            return Context.LARCA20_SmoScopeDetail.Where(r => r.deleted == false).ToList();
+            return Context.LARCA20_SmoScopeDetail.Where(r => r.deleted == false && r.historic == false).ToList();
         }
 
         public override LARCA20_SmoScopeDetail Traer(long id)
@@ -43,10 +43,10 @@ namespace LARCA2.Data.Services
 
         public bool Existe(long? buId, string customer, long? lvl2Id, long? lvl3Id, long? smoId, decimal volume, long? reasonId, DateTime dateDesde)
         {
-            return Context.LARCA20_SmoScopeDetail.Where(dt => dt.BuID == buId && dt.Customer == customer && dt.Lvl2ID == lvl2Id && dt.Lvl3ID == lvl3Id && dt.SmoID == smoId && dt.Volumen == volume && dt.ReasonID == reasonId && dt.date > dateDesde).ToList().Count > 0;
+            return Context.LARCA20_SmoScopeDetail.Where(dt => dt.BuID == buId && dt.Customer == customer && dt.Lvl2ID == lvl2Id && dt.Lvl3ID == lvl3Id && dt.SmoID == smoId && dt.Volumen == volume && dt.ReasonID == reasonId && dt.deleted == false && dt.historic == false && dt.date > dateDesde).ToList().Count > 0;
         }
 
-        public List<LARCA20_SmoScopeDetail> TraerDetalles(int id)
+        public List<LARCA20_SmoScopeDetail> TraerDetalles(long id)
         {
             return Context.LARCA20_SmoScopeDetail.Where(r => r.SmoScopeID == id).ToList();
         }

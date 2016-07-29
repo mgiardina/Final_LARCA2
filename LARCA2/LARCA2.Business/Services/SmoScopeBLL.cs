@@ -24,6 +24,52 @@ namespace LARCA2.Business.Services
             return SMOScopesDAL.Guardar(smo);
         }
 
+        public bool PasarHistorico(LARCA20_SmoScope smo)
+        {
+            try
+            {
+                SMOScopesDAL.Guardar(smo);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+
+        public bool PasarDetallesHistoricos()
+        {
+            try
+            {
+                foreach (var item in new SmoScopeDetailDAL().Todos())
+                {
+                    var newItem = new LARCA20_SmoScopeDetail();
+                    newItem.DetailID = item.DetailID;
+                    newItem.date = item.date;
+                    newItem.OwnerID = item.OwnerID;
+                    newItem.Volumen = item.Volumen;
+                    newItem.Lvl2ID = item.Lvl2ID;
+                    newItem.Lvl3ID = item.Lvl3ID;
+                    newItem.originaldate = item.originaldate;
+                    newItem.FPC = item.FPC;
+                    newItem.BuID = item.BuID;
+                    newItem.SmoID = item.SmoID;
+                    newItem.ReasonID = item.ReasonID;
+                    newItem.Customer = item.Customer;
+                    newItem.historic = true;
+                    newItem.deleted = item.deleted;
+
+                    new SmoScopeDetailDAL().Guardar(newItem);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool Guardar(LARCA20_SmoScope smo, List<LARCA20_SmoScopeDetail> details)
         {
             try

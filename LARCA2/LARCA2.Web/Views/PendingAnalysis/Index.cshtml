@@ -47,6 +47,7 @@
                                 <th> Responsible</th>
                                 <th> Due Date</th>
                                 <th> Open or Closed</th>
+                                <th> Status</th>
                             </tr>
                             @foreach (var item in (List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>)ViewData["MasterRows"])
                             {
@@ -74,6 +75,21 @@
                                     </td>
                                     <td>@item.DueDate</td>
                                     <td>@item.O_C</td>
+                                    @if (item.ActionPlan != null && item.Problem != null)
+                                    {
+                                        if (item.ActionPlan.Length > 0 && item.Problem.Length > 0)
+                                        {
+                                            <td> COMPLETED</td>
+                                        }
+                                        else
+                                        {
+                                            <td> INCOMPLETED</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td> INCOMPLETED</td>
+                                    }
                                 </tr>
                             }
                         </tbody>
