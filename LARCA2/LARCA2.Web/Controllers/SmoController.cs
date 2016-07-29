@@ -484,6 +484,7 @@ namespace Larca2.Controllers
                     {
                         actualOriginal.DueDate = scope.DueDate;
                     }
+                  
                     /*  if (scope.RefIdResponsable == 0)
                           actualOriginal.RefIdResponsable = null;
                       else  if (scope.RefIdResponsable != actualOriginal.RefIdResponsable) 
@@ -501,7 +502,7 @@ namespace Larca2.Controllers
 
                         if (repoUsuarios.ExisteUsuario(viewModel.responsibles[countFor]) == false)
                         {
-                            if (!UserExistsInAD(viewModel.responsibles[countFor]))
+                            if (UserExistsInAD(viewModel.responsibles[countFor]))
                             {
                                 //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
                                 LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
@@ -588,8 +589,8 @@ namespace Larca2.Controllers
                             { flagChange = true; current.RefIdResponsable = actualOriginal.RefIdResponsable; }
                             if (actualOriginal.historic != scopeCopia.historic)
                             { flagChange = true; current.historic = actualOriginal.historic; }
-                            //   if (actualOriginal.Level4 != scopeCopia.Level4)
-                            //    { flagChange = true; current.Level4 = actualOriginal.Level4; }
+                               if (actualOriginal.Level4 != scopeCopia.Level4)
+                                { flagChange = true; current.Level4 = actualOriginal.Level4; }
 
                             repoModif.Guardar(current);
                             if (flagChange == true)
@@ -1769,7 +1770,7 @@ namespace Larca2.Controllers
                         if (repoUsuarios.ExisteUsuario(actFilt[11]) == false)
                         {
                           //  if(false)
-                           if (!UserExistsInAD(actFilt[11]))
+                           if (UserExistsInAD(actFilt[11]))
                             {
 
 
@@ -1916,7 +1917,7 @@ namespace Larca2.Controllers
 
                         if (repoUsuarios.ExisteUsuario(viewModel.responsibles[countModif]) == false)
                         {
-                            if (!UserExistsInAD(viewModel.responsibles[countModif]))
+                            if (UserExistsInAD(viewModel.responsibles[countModif]))
                             {
 
 

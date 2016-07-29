@@ -24,8 +24,7 @@
         var ListIdRenglon;
         $('#Descripcion_nivel3').click(function () {
 
-            $(this).find('#option').hide();
-
+       
         });
 
         $('#Descripcion_nivel3').on('change', function () {
@@ -39,21 +38,14 @@
 
         });
 
-        $('#btnBusca').on('click', function () {
-
-            if (document.getElementById('txtNivel').value == "") {
-
-                document.getElementById("SelectNivel").style.display = "";
-                return false;
-            }
-        });
+  
 
         $('#Nuevo').on('click', function () {
 
             var url = '@Url.Action("NuevoLevel4", "Adm", new {Id =  "IdRenglon"})';
 
 
-            if (document.getElementById('txtNivel').value == "") {
+            if (document.getElementById('txtNivel').value == "" || document.getElementById('txtNivel').value == "Search...") {
 
                 document.getElementById("SelectNivelAgregar").style.display = "";
                 return false;
@@ -160,7 +152,7 @@
                 <br style="margin-bottom:3px;" />
                 <br style="margin-bottom:3px;" />
                 <div id="SelectNivel" style="color:red;display:none">Level 3</div>
-                <div id="SelectNivelAgregar" style="color:red;display:none;padding-left:20px;margin-left:20px;">Filter</div>
+                <div id="SelectNivelAgregar" style="color:red;display:none;padding-left:20px;margin-left:20px;">Please choose a BU for new item</div>
                
             </div>
         </div>
@@ -183,6 +175,9 @@
                 <table class="table" align="left">
                     <tr>
                         <th width="10%" align="center"></th>
+                        <th width="20%" align="center">
+                            <label>BU</label>
+                        </th>
                         <th width="20%" align="center">
                             <label>Description</label>
                         </th>
@@ -217,6 +212,21 @@
                                     <tr id="tr">
                                         <td width="10%" align="center">
                                             @Html.CheckBoxFor(m => m.Selected[j], new { @value = Level4.Id })
+                                        </td>.
+                                        <td width="20%" align="center">
+                                            <label>
+                                                @if (Level4.RefIdBU != null) {
+                                                    <label>
+                                                        @Level4.LARCA20_MasterData.DataFin
+                                                        </label>
+                                                }
+                                                else
+                                                {
+                                                    <label>
+                                                        -
+                                                    </label>
+                                                }
+                                                   
                                         </td>
                                         <td width="20%" align="center">
                                             <label>

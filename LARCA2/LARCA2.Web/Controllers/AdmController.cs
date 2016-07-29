@@ -957,8 +957,15 @@ namespace LARCA2.Controllers
             }
 
 
-
-
+            if (txtNivel != null && (txtNivel == "" || txtNivel == "Search..."))
+            {
+                Level4SearchForm.Level4List = repo_level4.Todos();
+                MasterDataBLL mdb = new MasterDataBLL();
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TodosFiltro("", "", "BU");
+                Level4SearchForm.Level4List = Level4SearchForm.Level4List.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+              
+            }
+            else
             if (txtNivel != null)
             {
 
@@ -969,6 +976,9 @@ namespace LARCA2.Controllers
                
 
             }
+
+            Level4SearchForm.Level4EditedList = Level4SearchForm.Level4List;
+
             return View("Level4", Level4SearchForm);
 
         }
