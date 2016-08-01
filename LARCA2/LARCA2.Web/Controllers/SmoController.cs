@@ -511,6 +511,9 @@ namespace Larca2.Controllers
                                 newUser.deleted = false;
                                 newUser.name = String.Empty;
                                 newUser.last_name = String.Empty;
+                                newUser.pass = String.Empty;
+                                newUser.Email = String.Empty;
+                                newUser.telephone = String.Empty;
                                 newUser.date = DateTime.Now;
                                 repoUsuarios.Guardar(newUser);
                                 //no le creo rol porque no se definió cual poner
@@ -1195,9 +1198,9 @@ namespace Larca2.Controllers
 
         public bool UserExistsInAD(string username)
         {
-          
-            
-            bool finded = false;
+
+        
+           bool finded = false;
             // Traigo el listado de Dominios 
             var lista = new List<string>();
             using (var forest = Forest.GetCurrentForest())
