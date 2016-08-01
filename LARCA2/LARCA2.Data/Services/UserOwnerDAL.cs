@@ -43,7 +43,7 @@ namespace LARCA2.Data.Services
                 IQueryable<LARCA20_User_Owner> ObjFiltro = from q in ObjEnt.LARCA20_User_Owner
                                                            where q.Id == Tx1
                                                            select q;
-                
+
                 List<LARCA20_User_Owner> ListaReturn = new List<LARCA20_User_Owner>();
                 ListaReturn = ObjFiltro.ToList();
                 return ListaReturn;
@@ -64,6 +64,19 @@ namespace LARCA2.Data.Services
         {
             return Context.LARCA20_User_Owner.Where(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false && u.IdUser != user).Count() > 0;
         }
+
+        public int? UserPermisoCheck(long? bu, long? smo, long? owner)
+        {
+            try
+            {
+                return Context.LARCA20_User_Owner.SingleOrDefault(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false).IdUser;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
 
         //esto no funciona, como lo implementamos?
         public override bool Eliminar(long id)

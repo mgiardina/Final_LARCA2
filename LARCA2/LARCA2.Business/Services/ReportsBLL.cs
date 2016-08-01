@@ -52,7 +52,7 @@ namespace LARCA2.Business.Services
                             RBU = subitem.MasterBU.DataFin,
                             CUT = subitem.MasterLvl.Description,
                             VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
-                            PROBLEM = subitem.Problem,
+                            PROBLEM = CheckProblem(subitem.Problem, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner),
                             WHY1 = subitem.Why1,
                             WHY2 = subitem.Why2,
                             WHY3 = subitem.Why3,
@@ -85,10 +85,10 @@ namespace LARCA2.Business.Services
                             {
                                 var detail = new ReportRow
                                 {
-                                    SMO = clon.MasterSMO.DataFin,
-                                    RBU = clon.MasterBU.DataFin,
-                                    CUT = clon.MasterLvl.Description,
-                                    VOLUME = "0",
+                                    SMO = string.Empty,
+                                    RBU = string.Empty,
+                                    CUT = string.Empty,
+                                    VOLUME = string.Empty,
                                     PROBLEM = subitem.Problem,
                                     WHY1 = subitem.Why1,
                                     WHY2 = subitem.Why2,
@@ -135,7 +135,7 @@ namespace LARCA2.Business.Services
                                 RBU = subitem.MasterBU.DataFin,
                                 CUT = subitem.MasterLvl.Description,
                                 VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
-                                PROBLEM = subitem.Problem,
+                                PROBLEM = CheckProblem(subitem.Problem, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner),
                                 WHY1 = subitem.Why1,
                                 WHY2 = subitem.Why2,
                                 WHY3 = subitem.Why3,
@@ -167,10 +167,10 @@ namespace LARCA2.Business.Services
                                 {
                                     var detail = new ReportRow
                                     {
-                                        SMO = clon.MasterSMO.DataFin,
-                                        RBU = clon.MasterBU.DataFin,
-                                        CUT = clon.MasterLvl.Description,
-                                        VOLUME = "0",
+                                        SMO = string.Empty,
+                                        RBU = string.Empty,
+                                        CUT = string.Empty,
+                                        VOLUME = string.Empty,
                                         PROBLEM = subitem.Problem,
                                         WHY1 = subitem.Why1,
                                         WHY2 = subitem.Why2,
@@ -218,7 +218,7 @@ namespace LARCA2.Business.Services
                                     RBU = subitem.MasterBU.DataFin,
                                     CUT = subitem.MasterLvl.Description,
                                     VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
-                                    PROBLEM = subitem.Problem,
+                                    PROBLEM = CheckProblem(subitem.Problem, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner),
                                     WHY1 = subitem.Why1,
                                     WHY2 = subitem.Why2,
                                     WHY3 = subitem.Why3,
@@ -250,10 +250,10 @@ namespace LARCA2.Business.Services
                                     {
                                         var detail = new ReportRow
                                         {
-                                            SMO = clon.MasterSMO.DataFin,
-                                            RBU = clon.MasterBU.DataFin,
-                                            CUT = clon.MasterLvl.Description,
-                                            VOLUME = "0",
+                                            SMO = string.Empty,
+                                            RBU = string.Empty,
+                                            CUT = string.Empty,
+                                            VOLUME = string.Empty,
                                             PROBLEM = subitem.Problem,
                                             WHY1 = subitem.Why1,
                                             WHY2 = subitem.Why2,
@@ -299,7 +299,7 @@ namespace LARCA2.Business.Services
                                         RBU = subitem.MasterBU.DataFin,
                                         CUT = subitem.MasterLvl.Description,
                                         VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
-                                        PROBLEM = subitem.Problem,
+                                        PROBLEM = CheckProblem(subitem.Problem, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner),
                                         WHY1 = subitem.Why1,
                                         WHY2 = subitem.Why2,
                                         WHY3 = subitem.Why3,
@@ -331,10 +331,10 @@ namespace LARCA2.Business.Services
                                         {
                                             var detail = new ReportRow
                                             {
-                                                SMO = clon.MasterSMO.DataFin,
-                                                RBU = clon.MasterBU.DataFin,
-                                                CUT = clon.MasterLvl.Description,
-                                                VOLUME = "0",
+                                                SMO = string.Empty,
+                                                RBU = string.Empty,
+                                                CUT = string.Empty,
+                                                VOLUME = string.Empty,
                                                 PROBLEM = subitem.Problem,
                                                 WHY1 = subitem.Why1,
                                                 WHY2 = subitem.Why2,
@@ -353,6 +353,26 @@ namespace LARCA2.Business.Services
                         }
                 }
             return lista.OrderByDescending(i => Convert.ToDecimal(i.VOLUME)).ToList();
+        }
+
+        private string CheckProblem(string problem, long? bu, long? smo, long? owner)
+        {
+            if (problem != string.Empty)
+            {
+                return problem;
+            }
+            else
+            {
+                var userId = Convert.ToInt64(new UserOwnerBLL().UserPermisoCheck(bu, smo, owner));
+                if (userId > 0)
+                {
+                    return "Analysis pending by " + new UsuariosBLL().Traer(userId).user_name;
+                }
+                else
+                {
+                    return "Analysis pending by " + new UsuariosBLL().Traer(userId).user_name;
+                }
+            }
         }
 
         public List<ReportRow> LARCANews(string regionId, List<LARCA20_User_Owner> permisos)

@@ -473,16 +473,16 @@ namespace LARCA2.Business.Core
                 {
                     if (item.ActionPlan.Length > 0 && item.Problem.Length > 0)
                     {
-                          ws.Cell(row, 14).Value = "COMPLETED" ;
+                          ws.Cell(row, 14).Value = "COMPLETE" ;
                     }
                     else
                     {
-                       ws.Cell(row, 14).Value = "INCOMPLETED" ;
+                       ws.Cell(row, 14).Value = "INCOMPLETE" ;
                     }
                 }
                 else
                 {
-                    ws.Cell(row, 14).Value = "INCOMPLETED";
+                    ws.Cell(row, 14).Value = "INCOMPLETE";
                 }
                 row++;
             }
