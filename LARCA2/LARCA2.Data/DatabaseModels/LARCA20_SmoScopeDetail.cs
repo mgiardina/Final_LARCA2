@@ -28,6 +28,7 @@ namespace LARCA2.Data.DatabaseModels
         public bool deleted { get; set; }
         public string originaldate { get; set; }
         public string FPC { get; set; }
+        public Nullable<bool> historic { get; set; }
     
         public virtual LARCA20_SmoScope SmoScopeDetail { get; set; }
         public virtual LARCA20_MasterData MasterBUDetail { get; set; }

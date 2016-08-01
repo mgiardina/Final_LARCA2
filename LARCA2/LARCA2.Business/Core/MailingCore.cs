@@ -201,6 +201,32 @@ namespace LARCA2.Business.Core
         }
 
         /// <summary>
+        /// Metodo que se encarga de enviar el archivo generado en LARCA NEWS a direccion con datafin
+        /// </summary>
+        /// <param name="filename"></param>
+        public void EnviarReporte(string filename, string dataFin)
+        {
+            var fs = new FileStream(HttpContext.Current.Server.MapPath("~/AlertTemplates/SampleAlert.htm"), FileMode.Open);
+            var sr = new StreamReader(fs);
+            string subject = "LARCA ALERT System";
+           // var to = "solano.a.1@pg.com";
+            var to = "PSC-LARCA-"+ (string.IsNullOrEmpty(dataFin)? "": dataFin) +"@pg.com";
+            var body = sr.ReadToEnd();
+            sr.Close();
+            fs.Close();
+            body = body.Replace("[NotificationMessage]", "LARCA2 Analysis Available and Attached");
+
+            var attachments = new List<Attachment>();
+            var attachment = new Attachment(filename);
+            var random = new Random().Next(0, 10000);
+            attachment.Name = "LARCANewsReport_" + random + ".xlsx";
+            attachments.Add(attachment);
+
+            Send(subject, body, to, attachments);
+        }
+
+
+        /// <summary>
         /// Metodo que se encarga de enviar el archivo generado en LARCA NEWS
         /// </summary>
         /// <param name="filename"></param>

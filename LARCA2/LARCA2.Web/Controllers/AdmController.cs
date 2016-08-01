@@ -906,6 +906,118 @@ namespace LARCA2.Controllers
 
         #region <level4>
 
+
+        public ActionResult Level4NuevoMetodo(Larca2.Models.Level4SearchForm Level4SearchForm, string txtNivel, string txtLimite)
+        {
+
+            ModelState.Clear();
+            //Business.Services.RCClassificationBLL repo = new Business.Services.RCClassificationBLL();
+            Business.Services.MasterDataBLL repo = new Business.Services.MasterDataBLL();
+            Business.Services.Level4BLL repo_level4 = new Business.Services.Level4BLL();
+            Business.Services.ApplicationDataBLL repo_Aux = new Business.Services.ApplicationDataBLL();
+
+            Data.DatabaseModels.LARCA20_AuxData Auxdefault = repo_Aux.Traer(1);
+
+            int count = 0;
+            int changed = 0;
+            bool localChange = false;
+            foreach(LARCA20_Level4 l4 in Level4SearchForm.Level4EditedList)
+            {
+                if (Level4SearchForm.Level4EditedList[count].name != Level4SearchForm.Level4List[count].name)
+                {
+
+
+                    Data.DatabaseModels.LARCA20_Level4 RcC = repo_level4.Traer(Level4SearchForm.Level4List[count].Id);
+                    RcC.name = Level4SearchForm.Level4EditedList[count].name;
+                        repo_level4.Guardar(RcC);
+                        localChange= true;
+                }
+                if (Level4SearchForm.Level4EditedList[count].deleted != Level4SearchForm.Level4List[count].deleted)
+                {
+
+
+                    Data.DatabaseModels.LARCA20_Level4 RcC = repo_level4.Traer(Level4SearchForm.Level4List[count].Id);
+                    RcC.deleted = Level4SearchForm.Level4EditedList[count].deleted;
+                    repo_level4.Guardar(RcC);
+                    localChange = true;
+                }
+                if (localChange)
+                {
+                    count++;
+                    localChange = false;
+                }
+            }
+
+            if (Auxdefault != null && Auxdefault.filterlimit != null)
+            {
+                int Limite = (int)Auxdefault.filterlimit;
+                Level4SearchForm.filterlimit = Limite;
+            }
+
+
+            Level4SearchForm.Level3List = repo.TodosFiltro("", "", "BU");
+
+
+
+            int bumax = Level4SearchForm.Level3List.Count;
+            for (int co = 0; co < bumax; co++)
+            {
+                int comparacion = Level4SearchForm.Level3List.Where(x => x.DataFin == Level4SearchForm.Level3List[co].DataFin).Count();
+
+                if (comparacion > 1)
+                {
+
+                    for (int coin = co + 1; coin <= bumax; )
+                    {
+                        if (Level4SearchForm.Level3List[co].DataFin == Level4SearchForm.Level3List[coin].DataFin)
+                        {
+                            Level4SearchForm.Level3List.Remove(Level4SearchForm.Level3List[coin]);
+                            bumax--;
+                            comparacion--;
+                            if (comparacion == 1)
+                                break;
+                        }
+                        else
+                        { coin++; }
+                    }
+
+                }
+                else
+                {
+                    //aparece solo una vez
+                }
+            }
+
+
+            if (txtNivel != null && (txtNivel == "" || txtNivel == "Search..."))
+            {
+                Level4SearchForm.Level4List = repo_level4.Todos();
+                MasterDataBLL mdb = new MasterDataBLL();
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TodosFiltro("", "", "BU");
+                Level4SearchForm.Level4List = Level4SearchForm.Level4List.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+
+            }
+            else
+                if (txtNivel != null)
+                {
+
+                    Level4SearchForm.Level4List = repo_level4.Todos();
+                    MasterDataBLL mdb = new MasterDataBLL();
+                    List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(Int32.Parse(txtNivel)).DataFin);
+                    Level4SearchForm.Level4List = Level4SearchForm.Level4List.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+
+
+                }
+
+            Level4SearchForm.Level4EditedList = Level4SearchForm.Level4List;
+
+            return View("Level4", Level4SearchForm);
+
+        }
+
+      
+
+
         public ActionResult Level4(string txtNivel, string txtLimite)
         {
 

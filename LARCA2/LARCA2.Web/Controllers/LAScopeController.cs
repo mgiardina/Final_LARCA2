@@ -99,7 +99,7 @@ namespace Larca2.Controllers
                         {
                             masterRows = new ReportsBLL().LARCANews(item.Value, string.Empty, string.Empty);
                             var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
-                            new MailingCore().EnviarReporte(file);
+                            new MailingCore().EnviarReporte(file, item.Text );
                         }
 
                         foreach (var item in model.BUList)

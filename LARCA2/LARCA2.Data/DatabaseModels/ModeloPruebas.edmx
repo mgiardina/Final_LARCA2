@@ -156,6 +156,7 @@
           <Property Name="deleted" Type="bit" Nullable="false" />
           <Property Name="originaldate" Type="nvarchar(max)" />
           <Property Name="FPC" Type="nvarchar(max)" />
+          <Property Name="historic" Type="bit" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -817,6 +818,7 @@
           <NavigationProperty Name="MasterSMODetail" Relationship="Larca2Model.MasterSMODetail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_MasterData" />
           <NavigationProperty Name="MasterLvl2Detail" Relationship="Larca2Model.MasterLvl2Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <NavigationProperty Name="MasterLvl3Detail" Relationship="Larca2Model.MasterLvl3Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
+          <Property Name="historic" Type="Boolean" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -1305,6 +1307,7 @@
           <EntitySetMapping Name="LARCA20_SmoScopeDetail">
             <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScopeDetail">
               <MappingFragment StoreEntitySet="LARCA20_SmoScopeDetail">
+                <ScalarProperty Name="historic" ColumnName="historic" />
                 <ScalarProperty Name="FPC" ColumnName="FPC" />
                 <ScalarProperty Name="originaldate" ColumnName="originaldate" />
                 <ScalarProperty Name="deleted" ColumnName="deleted" />

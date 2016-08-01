@@ -399,6 +399,7 @@ namespace Larca2.Controllers
 
         public ActionResult SmoSimpleAgrupar(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
+            ModelState.Clear();
             ViewBag.Message = "";
             LARCA2.Business.Services.SMOScopeBLL repoModif = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
@@ -1194,6 +1195,8 @@ namespace Larca2.Controllers
 
         public bool UserExistsInAD(string username)
         {
+          
+            
             bool finded = false;
             // Traigo el listado de Dominios 
             var lista = new List<string>();
