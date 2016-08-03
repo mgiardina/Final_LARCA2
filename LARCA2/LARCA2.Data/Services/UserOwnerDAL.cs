@@ -65,15 +65,15 @@ namespace LARCA2.Data.Services
             return Context.LARCA20_User_Owner.Where(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false && u.IdUser != user).Count() > 0;
         }
 
-        public int? UserPermisoCheck(long? bu, long? smo, long? owner)
+        public LARCA20_Users UserPermisoCheck(long? bu, long? smo, long? owner)
         {
             try
             {
-                return Context.LARCA20_User_Owner.SingleOrDefault(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false).IdUser;
+                return Context.LARCA20_User_Owner.SingleOrDefault(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false).LARCA20_Users;
             }
             catch
             {
-                return 0;
+                return new LARCA20_Users();
             }
         }
 

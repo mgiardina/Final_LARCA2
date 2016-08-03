@@ -357,20 +357,20 @@ namespace LARCA2.Business.Services
 
         private string CheckProblem(string problem, long? bu, long? smo, long? owner)
         {
-            if (problem != string.Empty)
+            if (problem != null)
             {
                 return problem;
             }
             else
             {
-                var userId = Convert.ToInt64(new UserOwnerBLL().UserPermisoCheck(bu, smo, owner));
-                if (userId > 0)
+                var user = new UserOwnerBLL().UserPermisoCheck(bu, smo, owner);
+                if (user.Id > 0)
                 {
-                    return "Analysis pending by " + new UsuariosBLL().Traer(userId).user_name;
+                    return "Analysis pending by " + user.user_name;
                 }
                 else
                 {
-                    return "Analysis pending by " + new UsuariosBLL().Traer(userId).user_name;
+                    return "Cut under analysis due to its appearance outside of scope (between Monday and Tuesday), analysis due next week";
                 }
             }
         }

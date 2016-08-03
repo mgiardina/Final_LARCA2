@@ -114,7 +114,7 @@
                                     <td style="background-color:gray;color:#fff;">@item.GAPANALYSIS</td>
 
                                 </tr>
-                                foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.OrderByDescending(r => Convert.ToDecimal(r.VOLUME)).ToList())
+                                foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.ToList())
                                 {
                                     <tr>
                                         <td> @detail.RBU</td>

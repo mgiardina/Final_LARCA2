@@ -53,7 +53,7 @@ namespace LARCA2.Business.Services
             return UserOwnerDAL.PermisoCheck(bu, smo, owner, user);
         }
 
-        public int? UserPermisoCheck(long? bu, long? smo, long? owner)
+        public LARCA20_Users UserPermisoCheck(long? bu, long? smo, long? owner)
         {
             return UserOwnerDAL.UserPermisoCheck(bu, smo, owner);
         }
