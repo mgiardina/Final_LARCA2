@@ -1243,7 +1243,9 @@ namespace Larca2.Controllers
             string result;
             result = "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8' /><title> SMO Scope Detail- LARCA 2</title><link href='~/favicon.ico' rel='shortcut icon' type='image/x-icon' /><meta name='viewport' content='width=device-width' /><style>html {background-color: #e2e2e2;margin: 0;padding: 0;}body {background-color: #fff;border-top: solid 10px #000;color: #333;font-size: .85em;font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif;margin: 0;padding: 0;}table {border-collapse: collapse;border-spacing: 0;margin-top: 0.75em;border: 0 none;}th {font-size: 11px;text-align: left;border: 1px solid #e2e2e2;text-transform:uppercase;background-color:#199ED8;color:#FFFFFF;padding:5px;}th a {display: block;position: relative;}td {text-align: left;border: 1px solid #e2e2e2;font-size:11px;background-color:#FFFFFF;padding:5px;}tr.pager td {padding: 0 0.25em 0 0;}</style></head><body>";
             result = result + "<script type='text/javascript'>";
-            result = result + "function fnExcelReport(){  alert('methodbegins'); }</script>";
+            result = result + "function fnExcelReport(){   alert('started'); var tab_text=\"<table border='2px'><tr bgcolor='#87AFC6'>\";    var textRange; var j=0;    tab = document.getElementById('tablaDetails');     for(j = 0 ; j < tab.rows.length ; j++)    {            tab_text=tab_text+tab.rows[j].innerHTML+\"</tr>\";   }    tab_text=tab_text+\"</table>\";    tab_text= tab_text.replace(/<A[^>]*>|<\\/A>/g, \"\");    tab_text= tab_text.replace(/<img[^>]*>/gi,\"\");     tab_text= tab_text.replace(/<input[^>]*>|<\\/input>/gi, \"\");    var ua = window.navigator.userAgent;    var msie = ua.indexOf(\"MSIE \");     if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\\:11\\./))        {        txtArea1.document.open(\"txt/html\",\"replace\");       txtArea1.document.write(tab_text);        txtArea1.document.close();        txtArea1.focus();         sa=txtArea1.document.execCommand(\"SaveAs\",true,\"Excel.xls\");    }      else              sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));     return (sa);}";
+            result = result + "    function CheckforAD() {        alert('asd'); var checkthis = 'asd';       $.ajax({           url: '@Url.Action(\"CheckForAD\", \"Smo\")',           type: 'GET',            dataType: 'json',           cache: false,           data: { 'name': checkthis },          success: function (results) {               alert(results);            },            error: function () {                alert('Error occured');}}); }";
+            result = result + "</script>";
             //result = result + "<table class='table'><tr><th width='5%' align='center'>Date</th><th width='5%' align='center'>SMO</th><th width='5%' align='center'>BU</th><th width='5%' align='center'>Volume</th><th width='5%' align='center'>OWNER</th><th width='5%' align='center'>Level2</th><th width='5%' align='center'>Level3</th><th width='5%' align='center'>Reason</th></tr>";
             result = result + "<table class='table' id='tablaDetails'><tr><th width='20%' align='center'>Volume</th><th width='25%' align='center'>FPC</th><th width='25%' align='center'>Reason Code</th><th width='15%' align='center'>Customer</th><th width='15%' align='center'>Date</th></tr>";
 
@@ -1269,7 +1271,7 @@ namespace Larca2.Controllers
 
             result = result + "</table>";
             result = result + "<iframe id='txtArea1' style='display:none'></iframe>";
-            result = result + "<button id='btnExport' onclick='fnExcelReport();'> EXPORT </button>";
+            result = result + "<button id=\"btnExport\" onclick=\"fnExcelReport();\"> EXPORT </button>";
             result = result + "</body></html>";
             return Json(result, JsonRequestBehavior.AllowGet);
         }
