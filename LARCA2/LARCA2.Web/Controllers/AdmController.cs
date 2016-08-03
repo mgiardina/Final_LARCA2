@@ -923,6 +923,8 @@ namespace LARCA2.Controllers
             bool localChange = false;
             foreach(LARCA20_Level4 l4 in Level4SearchForm.Level4EditedList)
             {
+                if(Level4SearchForm.Selected[count] == true)
+                {
                 if (Level4SearchForm.Level4EditedList[count].name != Level4SearchForm.Level4List[count].name)
                 {
 
@@ -943,9 +945,12 @@ namespace LARCA2.Controllers
                 }
                 if (localChange)
                 {
-                    count++;
+                   changed++;
                     localChange = false;
                 }
+                }
+                Level4SearchForm.Selected[count] = false;
+                count++;
             }
 
             if (Auxdefault != null && Auxdefault.filterlimit != null)

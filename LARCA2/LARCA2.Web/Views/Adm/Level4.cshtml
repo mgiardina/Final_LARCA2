@@ -151,6 +151,9 @@
                     <tr>
 
                         <th width="20%" align="center">
+                            <label>Select</label>
+                        </th>
+                        <th width="20%" align="center">
                             <label>BU</label>
                         </th>
                         <th width="20%" align="center">
@@ -189,7 +192,10 @@
                                 if (x < Model.filterlimit)
                                 {
                                     <tr id="tr">
+                                        <td width="20%" align="center">
 
+                                            @Html.CheckBoxFor(m=> m.Selected[j])
+                                        </td>
                                         <td width="20%" align="center">
 
                                             @if (Level4.RefIdBU != null)
@@ -208,7 +214,7 @@
                                         </td>
                                         <td width="20%" align="center">
                                             <label>
-                                                @Html.TextAreaFor(m => m.Level4EditedList[j].name, new { @class = "form-control", @cols = 150, @rows = 5, @placeholder = Model.Level4EditedList[j].name, @Styles = "font-family: Verdana" })
+                                                @Html.TextBoxFor(m => m.Level4EditedList[j].name, new { @class = "form-control", @cols = 50, @placeholder = Model.Level4EditedList[j].name, @Styles = "font-family: Verdana" })
                                             </label>
                                         </td>
                                         <td width="10%" align="center">
