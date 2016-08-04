@@ -333,7 +333,10 @@
                 <div class="content-wrapper" style="margin-bottom:20px;width:2500px;height:410px">
                     @using (Html.BeginForm("DashboardModificados", "Smo", FormMethod.Post, new { id = "SmoForm", name = "SmoForm" }))
                     {
+                        if (Model.RegistrosSMO != null && Model.RegistrosSMO.Count > 0)
+                        {
                         <input type="submit" value="Save" name="Sve" class=" btn btn-success" />
+                        }
                         <input name="HI_SmoEsp" id="HI_SmoEsp" type="hidden" value="" />
                         <input name="HI_NumEsp" id="HI_NumEsp" type="hidden" value="" />
                         <input name="HI_Counter" id="HI_Counter" type="hidden" value="" />

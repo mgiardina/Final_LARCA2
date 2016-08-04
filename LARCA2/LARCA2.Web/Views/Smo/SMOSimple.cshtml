@@ -125,8 +125,11 @@
     <div class="container-fluid" style="margin-bottom:20px;">
         <div align="left">
             <input type="submit" value="Search" name="Search" onclick="LlamarAccionBoton('filter')" class="btn btn-info" />
+@if (Model.RegistrosSMO != null && Model.RegistrosSMO.Count > 0)
+                        {
             <input type="submit" value="Save Changes" id="guardar1" onclick="LlamarAccionBoton('modif')" class=" btn btn-info" />
             <input type="submit" value="Group" id="guardar2" onclick="LlamarAccionBoton('group')" class=" btn btn-info" />
+}
         </div>
     </div>
     <div style="overflow:scroll">
