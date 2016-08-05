@@ -408,7 +408,7 @@ namespace LARCA2.Controllers
             LARCA2.Business.Services.SMOScopeBLL smoBll = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.RCClassificationBLL rcBll = new LARCA2.Business.Services.RCClassificationBLL();
             LARCA2.Data.DatabaseModels.LARCA20_SmoScope smo = smoBll.Traer(smoId);
-            List<LARCA2.Data.DatabaseModels.LARCA20_Level4> list = repoNivel.Todos();
+            List<LARCA2.Data.DatabaseModels.LARCA20_Level4> list = repoNivel.Todos().Where(X=>X.deleted == false).ToList();
             List<SelectListItem> lsli = new List<SelectListItem>();
             lsli.Add(new SelectListItem() { Text = "Other", Value = "0" });
             if (smo == null )

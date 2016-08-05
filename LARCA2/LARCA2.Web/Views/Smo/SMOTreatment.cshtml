@@ -384,11 +384,19 @@
                 <fieldset class="form-group">
                     @Html.DropDownListFor(model => model.bu, Model.BUList)
                 </fieldset>
+                @if (Model.bu != "0")
+                {
+                    Model.bu = Model.BUList.FirstOrDefault(x => x.Selected == true).Value.ToString();
+                }
             </div>
             <div class="col-sm-4">
                 <fieldset class="form-group">
                     @Html.DropDownListFor(model => model.smo, Model.SMOList)
                 </fieldset>
+                @if(Model.smo != "0")
+                {
+                    Model.smo = Model.SMOList.FirstOrDefault(x=> x.Selected == true).Value.ToString();
+                }
             </div>
             @if (Model.dropdownMeses.Count != 1)
             {
@@ -396,6 +404,10 @@
                     <fieldset class="form-group">
                         @Html.DropDownListFor(model => model.mesSeleccionado, Model.dropdownMeses)
                     </fieldset>
+                    @if (Model.mesSeleccionado != "0")
+                    {
+                        Model.mesSeleccionado = "1";
+                    }
                 </div>
             }
         </div>

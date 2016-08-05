@@ -1657,7 +1657,7 @@ namespace Larca2.Controllers
         public ActionResult SmoModificados(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
             int usersNOAD = 0;
-
+            ModelState.Clear();
             LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
             LARCA2.Business.Services.SMOScopeBLL repoGuardado = new LARCA2.Business.Services.SMOScopeBLL();
             LARCA2.Business.Services.UserOwnerBLL uoClones = new LARCA2.Business.Services.UserOwnerBLL();
@@ -1666,11 +1666,15 @@ namespace Larca2.Controllers
             LARCA2.Business.Services.RCClassificationBLL rcClones = new LARCA2.Business.Services.RCClassificationBLL();
             LARCA2.Business.Services.ResponsablesBLL respoClones = new LARCA2.Business.Services.ResponsablesBLL();
             LARCA2.Business.Services.UsuariosRolesBLL userRoles = new LARCA2.Business.Services.UsuariosRolesBLL();
-
+            LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
             //Reviso el usuario logueado, sino como prueba traigo al de ID 2
             LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
             if (user == null)
                 user = repoUsuarios.Traer(2);
+
+            viewModel.userRole = robll.Traer(userRoles.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(userRoles.Traer(user.Id).RefIdRoles).Id;
+
 
             //obtengo el string con toda la info de los clones
             string[] RegistrosRecibidos = Request.Form["HI_SmoEsp"].Split(("##").ToCharArray());
