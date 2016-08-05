@@ -1198,8 +1198,7 @@ namespace Larca2.Controllers
 
         public bool UserExistsInAD(string username)
         {
-
-        
+           
            bool finded = false;
             // Traigo el listado de Dominios 
             var lista = new List<string>();
@@ -1229,6 +1228,7 @@ namespace Larca2.Controllers
                 }
             }
             return finded;
+            
         }
 
 
@@ -1313,7 +1313,7 @@ namespace Larca2.Controllers
             //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
             //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
-            if (viewModel.idRole != 1)
+            if (viewModel.idRole != 1 && viewModel.idRole != 3)
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
@@ -1941,6 +1941,13 @@ namespace Larca2.Controllers
                                 newUser.user_name = viewModel.responsibles[countModif];
                                 newUser.deleted = false;
                                 newUser.date = DateTime.Now;
+                                newUser.name = String.Empty;
+                                newUser.last_name = String.Empty;
+                                newUser.pass = String.Empty;
+                                newUser.Email = String.Empty;
+                                newUser.telephone = String.Empty;
+                               
+
                                 repoUsuarios.Guardar(newUser);
                                 //no le creo rol porque no se definió cual poner
 
@@ -2205,7 +2212,7 @@ namespace Larca2.Controllers
             //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
             LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
 
-            if (viewModel.idRole != 1)
+            if (viewModel.idRole != 1 && viewModel.idRole != 3)
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
@@ -2295,19 +2302,95 @@ namespace Larca2.Controllers
 
         public ActionResult DashboardModificados(Larca2.Views.ViewModels.SMOScopeViewModel viewModel)
         {
+            ModelState.Clear();
             var repoUpdate = new LARCA2.Business.Services.SMOScopeBLL();
+            int j = 0;
             foreach (var smoItem in viewModel.EditablesSMO)
             {
                 var smoUpdated = repoUpdate.Traer(smoItem.SmoScopeID);
                 smoUpdated.O_C = smoItem.O_C;
                 smoUpdated.DueDate = smoItem.DueDate;
+
+                if (viewModel.responsibles[j] == "")
+                    smoUpdated.RefIdResponsable = null;
+                else
+                { //aca puede pasar que:
+                    LARCA2.Business.Services.ResponsablesBLL repoResponsables2 = new LARCA2.Business.Services.ResponsablesBLL();
+                    LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+                    if (repoUsuarios.ExisteUsuario(viewModel.responsibles[j]) == false)
+                    {
+                        //  if(false)
+                        if (UserExistsInAD(viewModel.responsibles[j]))
+                        {
+
+
+                            //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
+                            LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
+                            
+                       
+                            newUser.pass = String.Empty;
+                            newUser.user_name = viewModel.responsibles[j];
+                            newUser.deleted = false;
+                            newUser.date = DateTime.Now;
+                            newUser.name = String.Empty;
+                            newUser.last_name = String.Empty;
+                            newUser.Email = string.Empty;
+                            newUser.telephone = string.Empty;
+
+                            repoUsuarios.Guardar(newUser);
+                            //no le creo rol porque no se definió cual poner
+
+                            //poner rol reporter al user
+                            LARCA2.Business.Services.UsuariosRolesBLL urb = new UsuariosRolesBLL();
+                            LARCA20_UsersRoles rolNewUser = new LARCA20_UsersRoles();
+                            rolNewUser.deleted = false;
+                            rolNewUser.RefIdRoles = 3; //reporter
+                            rolNewUser.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                            urb.Guardar(rolNewUser);
+
+                            //crear responsable
+                            LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                            newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                            newResp.deleted = false;
+                            repoResponsables2.Guardar(newResp);
+                            smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                        }
+                        else { smoUpdated.RefIdResponsable = null; }
+
+                    }
+                    else
+                    {
+
+                        if (repoResponsables2.Todos().Where(x => x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id).Count() > 0)
+                        {
+                            //el responsable ingresado exista y sea un usuario que existe, entonces solo se asigna.
+                            smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                        }
+                        else
+                        {
+                            //el responsable ingresado no exista pero exista el usuario, hay que crear el responsable.
+                            LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                            newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                            newResp.deleted = false;
+                            repoResponsables2.Guardar(newResp);
+                            smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                        }
+                    }
+
+
+                }
+                    
+
+
+
                 repoUpdate.Guardar(smoUpdated);
+                j++;
             }
 
             ResponsablesBLL repoResponsables = new ResponsablesBLL();
             viewModel.responsibles = new List<string>();
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
-                viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+              viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
 
             ModelState.Clear();
 
