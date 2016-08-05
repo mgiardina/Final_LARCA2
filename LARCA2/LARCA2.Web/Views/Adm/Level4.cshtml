@@ -77,7 +77,9 @@
 <div class="container-fluid" align="left">
     @using (Html.BeginForm("Level4NuevoMetodo", "Adm", FormMethod.Post, new { name = "myform" }))
     {
-
+      
+                        
+        
         <div class="row">
             <div class="col-sm-13">
                 <h5 style="border-bottom:1px solid #c7d1d6;padding-left:8px;margin-left:8px;">FILTER</h5>
@@ -185,12 +187,18 @@
                                     </tr>
                                 }*@
 
+                       
                             var x = 0;
-
+                            if (Model.Selected == null || (Model.Level4List != null && Model.Selected.ToList().Count < Model.Level4List.Count))
+                            {
+                                Model.Selected = new bool[Model.Level4List.Count];
+                              
+                            }
                             foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 Level4 in Model.Level4List)
                             {
                                 if (x < Model.filterlimit)
                                 {
+                                    Model.Selected[j] = false;
                                     <tr id="tr">
                                         <td width="20%" align="center">
 
@@ -228,12 +236,12 @@
                                                 @Html.DropDownListFor(Modell => Model.Level4EditedList[j].deleted, new SelectList(stateList, "Value", "Text", Level4.deleted), new { @class = "form-control" })
                                             </label>
                                         </td>
-
+                                        
                                     </tr>
                                     @Html.HiddenFor(m => m.Level4EditedList[j].Id)
                                     @Html.HiddenFor(m => m.Level4List[j].deleted)
                                     @Html.HiddenFor(m => m.Level4List[j].name)
-                                    @Html.HiddenFor(m => m.Level4List[j].Id)
+                                    @Html.HiddenFor(m => m.Level4List[j].Id) 
                                             j++;
                                             x++;
                                 }

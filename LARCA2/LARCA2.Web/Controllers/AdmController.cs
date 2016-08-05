@@ -421,9 +421,9 @@ namespace LARCA2.Controllers
 
             if (smo.RefIdBU != null)
             {
-                 List<LARCA20_Level4> l4rc = repoNivel.Todos();
+                 List<LARCA20_Level4> l4rc = repoNivel.Todos().Where(x=> x.deleted == false).ToList();
                 MasterDataBLL mdb = new MasterDataBLL();
-                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(smo.RefIdBU.Value).DataFin);
+                List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(smo.RefIdBU.Value).DataFin).Where(x=>x.deleted == false).ToList();
                 l4rc = l4rc.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
 
 
@@ -949,7 +949,7 @@ namespace LARCA2.Controllers
                     localChange = false;
                 }
                 }
-                Level4SearchForm.Selected[count] = false;
+                
                 count++;
             }
 

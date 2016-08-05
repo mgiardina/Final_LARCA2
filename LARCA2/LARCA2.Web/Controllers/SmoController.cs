@@ -2118,7 +2118,7 @@ namespace Larca2.Controllers
             //     viewModel.RegistrosSMO = repo.Filtrar(viewModel.bu, viewModel.smo); esto filtraba desde el TODOS
             viewModel.EditablesSMO = viewModel.RegistrosSMO;
 
-
+            //todo esto es para eliminar BUs repetidos
             int bumax = viewModel.BUList.Count;
             for (int co = 0; co < bumax; co++)
             {
