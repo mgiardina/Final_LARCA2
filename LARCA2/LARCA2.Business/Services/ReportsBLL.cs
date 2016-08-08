@@ -129,8 +129,36 @@ namespace LARCA2.Business.Services
                         var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                         foreach (var subitem in item.ToList().Take(toplvl3))
                         {
+                            string SMOt = subitem.MasterSMO.DataFin;
+                            string RBUt = subitem.MasterBU.DataFin;
+                            string CUTt = subitem.MasterLvl.Description;
+                            string VOLUMEt = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString();
+                            string PROBLEMt = CheckProblem(subitem.Problem, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner);
+                            string WHY1t = subitem.Why1;
+                            string WHY2t = subitem.Why2;
+                            string WHY3t = subitem.Why3;
+                            string ACTIONPLANt = subitem.ActionPlan;
+                            string RESPONSIBLEt = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty;
+                            string LEVEL4t = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty;
+                            string GAPt = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %";
+
+                            
                             var detailRow = new ReportRow
                             {
+                                SMO = SMOt,
+                                RBU = RBUt,
+                                CUT = CUTt,
+                                VOLUME = VOLUMEt,
+                                PROBLEM = PROBLEMt,
+                                WHY1 = WHY1t,
+                                WHY2 = WHY2t,
+                                WHY3 = WHY3t,
+                                ACTIONPLAN = ACTIONPLANt,
+                                RESPONSIBLE = RESPONSIBLEt,
+                                LEVEL4 = LEVEL4t,
+                                GAP=GAPt
+
+                                /*
                                 SMO = subitem.MasterSMO.DataFin,
                                 RBU = subitem.MasterBU.DataFin,
                                 CUT = subitem.MasterLvl.Description,
@@ -143,7 +171,8 @@ namespace LARCA2.Business.Services
                                 RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
                                 LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
                                 GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
-                            };
+                        */
+                                  };
                             if (i == 1)
                             {
                                 i++;

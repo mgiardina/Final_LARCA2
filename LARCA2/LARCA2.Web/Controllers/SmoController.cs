@@ -531,6 +531,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                                 newResp.deleted = false;
+                                newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                                 repoResponsables.Guardar(newResp);
                                 actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                             }
@@ -554,6 +556,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                                 newResp.deleted = false;
+                                newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                                 repoResponsables.Guardar(newResp);
                                 actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                             }
@@ -884,6 +888,8 @@ namespace Larca2.Controllers
                             LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                             newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                             newResp.deleted = false;
+                             newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                             repoResponsables.Guardar(newResp);
                             actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                         }
@@ -901,6 +907,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                                 newResp.deleted = false;
+                                  newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                                 repoResponsables.Guardar(newResp);
                                 actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countFor]).Id;
                             }
@@ -1230,6 +1238,43 @@ namespace Larca2.Controllers
             return finded;
             
         }
+
+
+        [HttpGet]
+        public JsonResult levelAJAX(string lv)
+        {
+
+            LARCA2.Business.Services.Level4BLL dbl = new LARCA2.Business.Services.Level4BLL();
+            List<LARCA2.Data.DatabaseModels.LARCA20_Level4> lv4 = dbl.Todos();
+            string result;
+            result = "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8' /><title> SMO Scope Detail- LARCA 2</title><link href='~/favicon.ico' rel='shortcut icon' type='image/x-icon' /><meta name='viewport' content='width=device-width' /><style>html {background-color: #e2e2e2;margin: 0;padding: 0;}body {background-color: #fff;border-top: solid 10px #000;color: #333;font-size: .85em;font-family: 'Segoe UI', Verdana, Helvetica, Sans-Serif;margin: 0;padding: 0;}table {border-collapse: collapse;border-spacing: 0;margin-top: 0.75em;border: 0 none;}th {font-size: 11px;text-align: left;border: 1px solid #e2e2e2;text-transform:uppercase;background-color:#199ED8;color:#FFFFFF;padding:5px;}th a {display: block;position: relative;}td {text-align: left;border: 1px solid #e2e2e2;font-size:11px;background-color:#FFFFFF;padding:5px;}tr.pager td {padding: 0 0.25em 0 0;}</style></head><body>";
+            result = result + "<table class='table' id='tablalevel4'><tr><th width='20%' align='center'>ID</th><th width='25%' align='center'>BU</th><th width='25%' align='center'>NAME</th><th width='15%' align='center'>DELETED</th></tr>";
+
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_Level4 level in lv4)
+            {
+
+                result = result + "<tr><td>" + level.Id.ToString() + "</td>";
+                result = result + "<td>" + level.RefIdBU + "</td>"; //showed dataini, then datafin, now fpc
+                result = result + "<td>" + level.name + "</td>";
+                result = result + "<td>" + level.deleted.ToString() + "</td></tr>";
+
+                //  result = result + "<tr><td>" + det.Fecha.ToString() + "</td>";
+                // result = result + "<td>" + mbl.Traer("SMO", Int32.Parse(det.SmoID.ToString())).DataIni + "</td>";
+                // result = result + "<td>" + mbl.Traer("BU", Int32.Parse(det.BuID.ToString())).DataIni + "</td>";
+                // result = result + "<td>" + det.Volumen.ToString() + "</td>";
+                // result = result + "<td>" + mbl.Traer(det.OwnerID.Value).DataIni + "</td>";
+                // result = result + "<td>" + mbl.Traer(det.Lvl2ID.Value).DataIni + "</td>";
+                // result = result + "<td>" + mbl.Traer(det.Lvl3ID.Value).DataIni + "</td>";
+
+                // result = result + "<td>" + mbl.Traer("REASON", Int32.Parse(det.ReasonID.ToString())).DataIni + "</td></tr>";
+            }
+
+            result = result + "</table>";
+
+            result = result + "</body></html>";
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
 
 
 
@@ -1811,6 +1856,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[11]).Id;
                                 newResp.deleted = false;
+                                newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                                 repoResponsables2.Guardar(newResp);
                                 clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[11]).Id;
                             }
@@ -1831,6 +1878,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(actFilt[11]).Id;
                                 newResp.deleted = false;
+                                newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                                 repoResponsables2.Guardar(newResp);
                                 clon.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(actFilt[11]).Id;
                             }
@@ -1963,6 +2012,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
                                 newResp.deleted = false;
+                                newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                                 repoResponsables.Guardar(newResp);
                                 actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
                             }
@@ -1987,6 +2038,8 @@ namespace Larca2.Controllers
                                 LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                                 newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
                                 newResp.deleted = false;
+                                newResp.Name = string.Empty;
+                                newResp.Last_name = string.Empty;
                                 repoResponsables.Guardar(newResp);
                                 actualOriginal.RefIdResponsable = repoResponsables.TraerPorNombreDeUsuario(viewModel.responsibles[countModif]).Id;
                             }
@@ -2352,6 +2405,8 @@ namespace Larca2.Controllers
                             LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                             newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
                             newResp.deleted = false;
+                            newResp.Name = string.Empty;
+                            newResp.Last_name = string.Empty;
                             repoResponsables2.Guardar(newResp);
                             smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
                         }
@@ -2372,6 +2427,8 @@ namespace Larca2.Controllers
                             LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
                             newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
                             newResp.deleted = false;
+                            newResp.Name = string.Empty;
+                            newResp.Last_name = string.Empty;
                             repoResponsables2.Guardar(newResp);
                             smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
                         }

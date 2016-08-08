@@ -100,8 +100,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
-          <Property Name="Last_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Last_name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="50" />
           <Property Name="RefIdUser" Type="int" />
           <Property Name="deleted" Type="bit" Nullable="false" />
@@ -157,6 +157,7 @@
           <Property Name="originaldate" Type="nvarchar(max)" />
           <Property Name="FPC" Type="nvarchar(max)" />
           <Property Name="historic" Type="bit" />
+          <Property Name="grouped" Type="bit" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -747,8 +748,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="RefIdUser" Type="Int32" />
           <Property Name="deleted" Type="Boolean" Nullable="false" />
@@ -819,6 +820,7 @@
           <NavigationProperty Name="MasterLvl2Detail" Relationship="Larca2Model.MasterLvl2Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <NavigationProperty Name="MasterLvl3Detail" Relationship="Larca2Model.MasterLvl3Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <Property Name="historic" Type="Boolean" />
+          <Property Name="grouped" Type="Boolean" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -1307,6 +1309,7 @@
           <EntitySetMapping Name="LARCA20_SmoScopeDetail">
             <EntityTypeMapping TypeName="Larca2Model.LARCA20_SmoScopeDetail">
               <MappingFragment StoreEntitySet="LARCA20_SmoScopeDetail">
+                <ScalarProperty Name="grouped" ColumnName="grouped" />
                 <ScalarProperty Name="historic" ColumnName="historic" />
                 <ScalarProperty Name="FPC" ColumnName="FPC" />
                 <ScalarProperty Name="originaldate" ColumnName="originaldate" />

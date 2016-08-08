@@ -1034,7 +1034,7 @@ namespace LARCA2.Controllers
             Business.Services.ApplicationDataBLL repo_Aux = new Business.Services.ApplicationDataBLL();
 
             Data.DatabaseModels.LARCA20_AuxData Auxdefault = repo_Aux.Traer(1);
-
+            
             if (Auxdefault != null && Auxdefault.filterlimit != null)
             {
                 int Limite = (int)Auxdefault.filterlimit;
@@ -1096,11 +1096,17 @@ namespace LARCA2.Controllers
 
             }
 
+            
+
             Level4SearchForm.Level4EditedList = Level4SearchForm.Level4List;
 
             return View("Level4", Level4SearchForm);
 
         }
+
+
+
+
 
         public ActionResult Level4ModifAjax(int Valor)
         {

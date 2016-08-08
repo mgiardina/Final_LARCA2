@@ -17,10 +17,11 @@
 }
 
 
-<script>
+<script type="text/javascript">
 
 
     $(document).ready(function () {
+      
         var ListIdRenglon;
         $('#Descripcion_nivel3').click(function () {
 
@@ -56,7 +57,7 @@
         });
 
 
-
+     
 
 
         $('#Modificar').on('click', function () {
@@ -72,7 +73,10 @@
 
     });
 
+
+
 </script>
+
 
 <div class="container-fluid" align="left">
     @using (Html.BeginForm("Level4NuevoMetodo", "Adm", FormMethod.Post, new { name = "myform" }))

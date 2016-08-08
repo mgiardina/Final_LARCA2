@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a9b0f7b5cc7c4db4ad11851a1dd514af" Name="Diagram1" ZoomLevel="69">
+      <Diagram DiagramId="a9b0f7b5cc7c4db4ad11851a1dd514af" Name="Diagram1" ZoomLevel="78">
         <EntityTypeShape EntityType="Larca2Model.LARCA20_AuxData" Width="1.5" PointX="5.75" PointY="11.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_Emails" Width="1.5" PointX="8.75" PointY="2.75" />
         <EntityTypeShape EntityType="Larca2Model.LARCA20_ImputOriginal" Width="1.5" PointX="7.75" PointY="11.75" />
