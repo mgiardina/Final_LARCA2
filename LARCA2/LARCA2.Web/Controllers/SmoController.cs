@@ -67,13 +67,13 @@ namespace Larca2.Controllers
             {
                 viewModel.RegistrosSMO = ssbll.Filtrar("0", "0").ToList();
             }
-            else if (viewModel.idRole == 4) //MAL LEADER
+            else if (viewModel.idRole == 4) //BU CLUSTERING EDITOR
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
                 {
-                    smoscopeact = ssbll.Filtrar("0", actualLuo.IdSmo.ToString()).ToList();
+                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), null).ToList();
                     if (smoscopeact != null)
                     {
                         viewModel.RegistrosSMO.AddRange(smoscopeact);
@@ -91,13 +91,13 @@ namespace Larca2.Controllers
                     }
                 }*/
             }
-            else if (viewModel.idRole == 6) //DRP OPS LEADER
+            else if (viewModel.idRole == 6) //SMO CLUSTERING EDITOR
             {
                 List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
                 {
-                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), "0").ToList();
+                    smoscopeact = ssbll.Filtrar(null, actualLuo.IdSmo.ToString()).ToList();
                     if (smoscopeact != null)
                     {
                         viewModel.RegistrosSMO.AddRange(smoscopeact);

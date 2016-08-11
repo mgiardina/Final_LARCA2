@@ -8,11 +8,7 @@
         <div class="content-wrapper">
             <hgroup class="title">
                 <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
             </hgroup>
-            <p>
-                Here you can create other classification for the system.
-            </p>
         </div>
     </section>
 }
@@ -41,7 +37,7 @@
     @using (Html.BeginForm("Agregar_abm_level4", "Adm", new { }, FormMethod.Post))
     {
         <div class="row">
-            <div class="col-sm-13" style="width:500px;margin-left:10px">
+            <div class="col-sm-12">
                 <fieldset class="form-group">
                     <label for="Nombre" style="margin-left:10px">Description</label>
                     <input type="hidden" id="txtNivel" name="txtNivel" value=@ViewBag.Id />

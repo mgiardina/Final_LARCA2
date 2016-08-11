@@ -230,12 +230,12 @@ namespace LARCA2.Business.Services
             int bu = 0;
             int smo = 0;
 
-            if ((refidbu != null) || (refidbu == ""))
+            if ((refidbu != null) && (refidbu != ""))
             {
                 bu = Int32.Parse(refidbu);
             }
 
-            if ((refidsmo != null) || (refidbu == ""))
+            if ((refidsmo != null) && (refidsmo != ""))
             {
                 smo = Int32.Parse(refidsmo);
             }
