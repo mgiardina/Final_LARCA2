@@ -88,6 +88,7 @@ namespace LARCA2.Business.Core
                     }
                 }
 
+                var pp = "0.0";
                 // Recorro la lista generada
                 foreach (var item in list)
                 {
@@ -136,13 +137,14 @@ namespace LARCA2.Business.Core
                             {
                                 if ( item.ProfitCenter.Contains("HAIR"))
                                 {
-                                    var pp = 0;
+                                    pp = pp + smoDetail.Volumen;
                                 }
                             }
                             smoDetail.ReasonID = new MasterDataBLL().TraerPorDataFin("REASON CODE", item.ReasonCode.Split(Convert.ToChar(" "))[0]).id;
                             smoDetail.Customer = item.Customer;
                             smoDetail.historic = false;
                             smoDetail.deleted = false;
+                            smoDetail.grouped = false;
 
                             var detailService = new SMOScopeDetailBLL();
                             if (tipoProceso == TipoProceso.Parcial)
@@ -509,7 +511,7 @@ namespace LARCA2.Business.Core
                     var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
                     foreach (var buitem in smoitem.GroupBy(e => e.MasterBUDetail.DataFin))
                     {
-                        var tops = buitem.GroupBy(d => d.Lvl3ID).Select(d => new { Volumen = d.Sum(s => s.Volumen), Lvl = d.First().Lvl3ID, Owner = d.First().OwnerID, Detalles = d.ToList() }).OrderByDescending(v => v.Volumen).Take(toplvl3).ToList();
+                        var tops = buitem.GroupBy(d => d.Lvl3ID).Select(d => new { Volumen = d.Sum(s => s.Volumen), Lvl = d.First().Lvl3ID, Owner = d.First().OwnerID, Detalles = d.ToList() }).OrderByDescending(v => v.Volumen).ToList(); //.Take(toplvl3).ToList();
                         foreach (var subitem in tops)
                         {
                             var smoScope = new LARCA20_SmoScope();

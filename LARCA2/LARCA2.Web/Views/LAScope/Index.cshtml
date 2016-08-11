@@ -116,13 +116,15 @@
                                 </tr>
                                 foreach (var detail in (List<LARCA2.Business.Entities.ReportRow>)item.Details.ToList())
                                 {
+                                    if (detail.RBU != "")
+                                    {
                                     <tr>
-                                        <td> @detail.RBU</td>
-                                        <td> @detail.SMO</td>
-                                        <td> @detail.CUT</td>
-                                        <td> @detail.LEVEL4</td>
-                                        <td> @detail.VOLUME</td>
-                                        <td> @detail.GAP</td>
+                                        <td style="border-bottom:0;"> @detail.RBU</td>
+                                        <td style="border-bottom:0;"> @detail.SMO</td>
+                                        <td style="border-bottom:0;"> @detail.CUT</td>
+                                        <td style="border-bottom:0;"> @detail.LEVEL4</td>
+                                        <td style="border-bottom:0;"> @detail.VOLUME</td>
+                                        <td style="border-bottom:0;"> @detail.GAP</td>
                                         <td> @detail.PROBLEM</td>
                                         <td> @detail.WHY1</td>
                                         <td> @detail.WHY2</td>
@@ -131,6 +133,25 @@
                                         <td> @detail.RESPONSIBLE</td>
                                         <td> @detail.GAPANALYSIS</td>
                                     </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td style="border-top:0; border-bottom:0;"></td>
+                                            <td style="border-top:0;border-bottom:0;"> </td>
+                                            <td style="border-top:0;border-bottom:0;"></td>
+                                            <td style="border-top:0;border-bottom:0;"></td>
+                                            <td style="border-top:0;border-bottom:0;"></td>
+                                            <td style="border-top:0;border-bottom:0;"></td>
+                                            <td> @detail.PROBLEM</td>
+                                            <td> @detail.WHY1</td>
+                                            <td> @detail.WHY2</td>
+                                            <td> @detail.WHY3</td>
+                                            <td> @detail.ACTIONPLAN</td>
+                                            <td> @detail.RESPONSIBLE</td>
+                                            <td> @detail.GAPANALYSIS</td>
+                                        </tr>
+                                    }
                                 }
                             }
                         </tbody>
