@@ -479,6 +479,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SP_VOLUMEN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tipo" Type="int" Mode="In" />
+          <Parameter Name="smo" Type="bigint" Mode="In" />
+          <Parameter Name="bu" Type="bigint" Mode="In" />
+          <Parameter Name="level" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="Larca2ModelStoreContainer">
           <EntitySet Name="LARCA20_AuxData" EntityType="Self.LARCA20_AuxData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LARCA20_Emails" EntityType="Self.LARCA20_Emails" Schema="dbo" store:Type="Tables" />
@@ -692,6 +698,12 @@
             <End Role="LARCA20_SmoScopeDetail" EntitySet="LARCA20_SmoScopeDetail" />
           </AssociationSet>
           <EntitySet Name="LARCA20_SmoScopeGroupedRows" EntityType="Larca2Model.LARCA20_SmoScopeGroupedRows" />
+          <FunctionImport Name="SP_VOLUMEN" ReturnType="Collection(Decimal)">
+            <Parameter Name="tipo" Mode="In" Type="Int32" />
+            <Parameter Name="smo" Mode="In" Type="Int64" />
+            <Parameter Name="bu" Mode="In" Type="Int64" />
+            <Parameter Name="level" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="LARCA20_AuxData">
           <Key>
@@ -1468,6 +1480,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_VOLUMEN" FunctionName="Larca2Model.Store.SP_VOLUMEN" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

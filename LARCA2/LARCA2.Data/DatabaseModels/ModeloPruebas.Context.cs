@@ -12,6 +12,8 @@ namespace LARCA2.Data.DatabaseModels
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class Larca2Entities : DbContext
     {
@@ -42,5 +44,26 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_MasterData> LARCA20_MasterData { get; set; }
         public virtual DbSet<LARCA20_RcClasification> LARCA20_RcClasification { get; set; }
         public virtual DbSet<LARCA20_SmoScopeGroupedRows> LARCA20_SmoScopeGroupedRows { get; set; }
+    
+        public virtual ObjectResult<Nullable<decimal>> SP_VOLUMEN(Nullable<int> tipo, Nullable<long> smo, Nullable<long> bu, string level)
+        {
+            var tipoParameter = tipo.HasValue ?
+                new ObjectParameter("tipo", tipo) :
+                new ObjectParameter("tipo", typeof(int));
+    
+            var smoParameter = smo.HasValue ?
+                new ObjectParameter("smo", smo) :
+                new ObjectParameter("smo", typeof(long));
+    
+            var buParameter = bu.HasValue ?
+                new ObjectParameter("bu", bu) :
+                new ObjectParameter("bu", typeof(long));
+    
+            var levelParameter = level != null ?
+                new ObjectParameter("level", level) :
+                new ObjectParameter("level", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("SP_VOLUMEN", tipoParameter, smoParameter, buParameter, levelParameter);
+        }
     }
 }

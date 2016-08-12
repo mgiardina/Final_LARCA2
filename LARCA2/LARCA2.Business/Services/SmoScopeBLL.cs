@@ -247,12 +247,15 @@ namespace LARCA2.Business.Services
             DateTime siev = DateTime.Now.AddDays(-repo.Todos().First().SmoDays.Value);
 
             List<LARCA20_SmoScope> result = new List<LARCA20_SmoScope>();
+            List<LARCA20_SmoScope> result_test = new List<LARCA20_SmoScope>();
             List<LARCA20_SmoScope> result_aux_smo = new List<LARCA20_SmoScope>();
             List<LARCA20_SmoScope> result_aux_bu = new List<LARCA20_SmoScope>();
+            List<LARCA20_SmoScopeDetail> lista_tops_level2 = new List<LARCA20_SmoScopeDetail>();
             //result = result.Where(x => x.deleted == false && x.date >= siev).ToList();
             MasterDataBLL smo_list = new MasterDataBLL();
             MasterDataBLL bu_list = new MasterDataBLL();
             var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
+            var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
 
             decimal volumen;
             decimal vol;
@@ -261,7 +264,7 @@ namespace LARCA2.Business.Services
                 case "1":
                     foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
                     {
-                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList());
                     }
 
                     var result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
@@ -269,24 +272,39 @@ namespace LARCA2.Business.Services
                     foreach (var item in result_aux_s)
                     {
                         var result_aux = item.Where(i => i.RefIdSMO == item.Key).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
+
                         foreach (var subitem in result_aux)
                         {
-                            volumen = traerVolumenSMO(subitem.First().MasterSMO.DataFin, subitem.Key.ToString());
+                            volumen = traerVolumenSMO(item.First().RefIdSMO, subitem.Key.ToString());
+
+                            // falta corroborar si el volumen es uno de los tops de level 2
+                            
                             vol = 0;
                             int cant = 0;
-                            foreach (var item_list in subitem.ToList())
+                            foreach (var item_list in subitem.OrderByDescending(p => p.Volumen).ToList())
                             {
                                 cant++;
-                                vol = vol + Convert.ToDecimal(item_list.Volumen);
-                                if ((vol * 100 / volumen <= 80) || cant == 1)
+                                if (cant == 1)
                                 {
-                                    result.Add(item_list);
+                                    result_test.Add(item_list);
+                                    vol = vol + Convert.ToDecimal(item_list.Volumen);
                                 }
 
+                                else
+                                {
+                                    if ((vol * 100 / volumen <= 80) )
+                                        {
+                                            result_test.Add(item_list);
+                                            vol = vol + Convert.ToDecimal(item_list.Volumen);
+                                        }
+                                }
                             }
-
-                        }
+                            //result.AddRange(result_test.OrderByDescending(s => s.Volumen).Take(toplvl3).ToList());
+                            result.AddRange(result_test.OrderByDescending(s => s.Volumen).ToList());
+                        } 
                     }
+
+
 
 
 
@@ -296,7 +314,7 @@ namespace LARCA2.Business.Services
                     }
 
                     var result_aux_b = result_aux_bu.GroupBy(p => p.RefIdBU).ToList();
-
+/*
                     foreach (var item in result_aux_b)
                     {
                         var result_aux = item.Where(i => i.RefIdBU == item.Key).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
@@ -318,7 +336,7 @@ namespace LARCA2.Business.Services
 
                         }
                     }
-
+                    */
                     break;
                 case "2":
                     foreach (var smo_var in user.LARCA20_User_Owner.ToList())
@@ -429,18 +447,18 @@ namespace LARCA2.Business.Services
             return SMOScopesDAL.Eliminar(id);
         }
 
-        public decimal traerVolumenSMO(string smo, string level)
+        public decimal traerVolumenSMO(long? smo, string level)
         {
-            SmoDetailDAL detail = new SmoDetailDAL();
-            var volumen = detail.Todos().Where(s => s.MasterSMODetail.DataFin == smo && s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == level).Sum(s => s.Volumen);
-            return volumen;
+            SmoScopeDAL volumen = new SmoScopeDAL();
+            var test = volumen.calcular_volumenes(1, 0, smo, level);
+            return test;
         }
 
-        public decimal traerVolumenBU(string bu, string level)
+        public decimal traerVolumenBU(long? bu, string level)
         {
-            SmoDetailDAL detail = new SmoDetailDAL();
-            var volumen = detail.Todos().Where(s => s.MasterBUDetail.DataFin == bu && s.historic == false && s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[0] + "." + s.MasterLvl2Detail.Code.Split(Convert.ToChar("."))[1] == level).Sum(s => s.Volumen);
-            return volumen;
+            SmoScopeDAL volumen = new SmoScopeDAL();
+            var test = volumen.calcular_volumenes(2, bu, 0, level);
+            return test;
         }
 
     }

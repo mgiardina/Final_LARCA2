@@ -92,5 +92,13 @@ namespace LARCA2.Data.Services
                 return false;
             }
         }
+
+        public decimal calcular_volumenes(int tipo, long? bu, long? smo, string level)
+            {
+               var test = Context.SP_VOLUMEN(tipo, smo, bu, level).FirstOrDefault();
+               
+                return Convert.ToDecimal(test);
+
+            }
     }
 }
