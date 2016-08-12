@@ -91,6 +91,9 @@
     <Compile Include="DatabaseModels\LARCA20_SmoScopeGroup.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModels\LARCA20_SmoScopeGroupedRows.cs">
+      <DependentUpon>ModeloPruebas.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModels\LARCA20_Users.cs">
       <DependentUpon>ModeloPruebas.tt</DependentUpon>
     </Compile>

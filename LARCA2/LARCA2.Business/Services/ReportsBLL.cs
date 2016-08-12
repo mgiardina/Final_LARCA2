@@ -28,7 +28,7 @@ namespace LARCA2.Business.Services
             if (smoFin.Length > 0)
             {
                 
-                var items = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
+                var items = SmoScopeDAL.Todos().Where(s => s.MasterSMO.DataFin == smoFin && s.clone != true && s.historic != true).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                 int cant = 0;
                 foreach (var item in items) //.Take(toplvl2))
                 {
@@ -87,7 +87,7 @@ namespace LARCA2.Business.Services
                         if (paso)
                             {
                         // Chequeo de clones
-                        var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID);
+                        var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID && s.clone == true);
                         if (clones.Count() > 0)
                         {
                             foreach (var clon in clones)
@@ -119,7 +119,7 @@ namespace LARCA2.Business.Services
                 if (buFin.Length > 0)
                 {
                 
-                    var items = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin && s.historic == false).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
+                    var items = SmoScopeDAL.Todos().Where(s => s.MasterBU.DataFin == buFin && s.historic == false && s.clone != true).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                     int cant = 0;
                     foreach (var item in items) //.Take(toplvl2))
                     {
@@ -209,7 +209,7 @@ namespace LARCA2.Business.Services
                             if (paso)
                             {
                                 // Chequeo de clones
-                                var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID);
+                                var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID && s.clone == true);
                                 if (clones.Count() > 0)
                                 {
                                     foreach (var clon in clones)
@@ -304,7 +304,7 @@ namespace LARCA2.Business.Services
                                 if (paso)
                                 {
                                     // Chequeo de clones
-                                    var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID);
+                                    var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID && s.clone == true);
                                     if (clones.Count() > 0)
                                     {
                                         foreach (var clon in clones)
@@ -395,7 +395,7 @@ namespace LARCA2.Business.Services
                                     if (paso)
                                     {
                                         // Chequeo de clones
-                                        var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID);
+                                        var clones = new SMOScopeBLL().Todos().Where(s => s.RefIdSMO == subitem.RefIdSMO && s.RefIdBU == subitem.RefIdBU && s.RefIdOwner == subitem.RefIdOwner && s.RefIdRC == subitem.RefIdRC && s.SmoScopeID != subitem.SmoScopeID && s.clone == true);
                                         if (clones.Count() > 0)
                                         {
                                             foreach (var clon in clones)

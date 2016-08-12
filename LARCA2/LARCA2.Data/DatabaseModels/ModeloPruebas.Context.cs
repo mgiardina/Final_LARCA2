@@ -41,5 +41,6 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_Level4> LARCA20_Level4 { get; set; }
         public virtual DbSet<LARCA20_MasterData> LARCA20_MasterData { get; set; }
         public virtual DbSet<LARCA20_RcClasification> LARCA20_RcClasification { get; set; }
+        public virtual DbSet<LARCA20_SmoScopeGroupedRows> LARCA20_SmoScopeGroupedRows { get; set; }
     }
 }

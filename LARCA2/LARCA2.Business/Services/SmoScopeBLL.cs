@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using LARCA2.Data.DatabaseModels;
+using System.Web;
 
 namespace LARCA2.Business.Services
 {
@@ -225,10 +226,12 @@ namespace LARCA2.Business.Services
             return true;
         }
 
-        public List<LARCA20_SmoScope> Filtrar(string refidbu, string refidsmo)
+        public List<LARCA20_SmoScope> Filtrar(string refidbu, string refidsmo, string role)
         {
             int bu = 0;
             int smo = 0;
+
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)HttpContext.Current.Session["Usuario"];
 
             if ((refidbu != null) && (refidbu != ""))
             {
@@ -243,10 +246,62 @@ namespace LARCA2.Business.Services
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
             DateTime siev = DateTime.Now.AddDays(-repo.Todos().First().SmoDays.Value);
 
-            List<LARCA20_SmoScope> result = SMOScopesDAL.Todos();
-            result = result.Where(x => x.deleted == false && x.date >= siev).ToList();
+            List<LARCA20_SmoScope> result = new List<LARCA20_SmoScope>();
+            //result = result.Where(x => x.deleted == false && x.date >= siev).ToList();
+            MasterDataBLL smo_list = new MasterDataBLL();
+            MasterDataBLL bu_list = new MasterDataBLL();
+            var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
 
 
+            switch (role)
+            {
+                case "1":
+                   foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
+                       {
+                           result.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                       }
+
+
+                   foreach (var bu_var in smo_list.Todos().Where(x => x.Data == "BU").ToList())
+                   {
+                       result.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                   }
+
+                    break;
+                case "2":
+                     foreach (var smo_var in user.LARCA20_User_Owner.ToList())
+                       {
+                           result.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.IdSmo && x.RefIdBU == smo_var.IdBU && x.clone != true).ToList().Take(toplvl3).ToList());
+                       }
+
+                    break;
+
+                case "4":
+                    foreach (var smo_var in user.LARCA20_User_Owner.ToList())
+                    {
+                        result.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == smo_var.IdBU && x.clone != true).ToList().Take(toplvl3).ToList());
+                    }
+
+                    break;
+
+                case "6":
+                    foreach (var smo_var in user.LARCA20_User_Owner.ToList())
+                    {
+                        result.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.IdSmo && x.clone != true).ToList().Take(toplvl3).ToList());
+                    }
+
+                    break;
+
+            }
+
+            List<LARCA20_SmoScope> result2 = new List<LARCA20_SmoScope>();
+            foreach (var subitem in result)
+            {
+            // Chequeo de clones
+                result2.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == subitem.RefIdSMO && x.RefIdBU == subitem.RefIdBU && x.RefIdOwner == subitem.RefIdOwner && x.RefIdRC == subitem.RefIdRC && x.clone == true).ToList());
+            }
+
+            result.AddRange(result2);
 
 
             //  if (refidbu != null && bu != 0)

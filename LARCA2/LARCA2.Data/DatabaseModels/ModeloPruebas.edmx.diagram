@@ -43,6 +43,7 @@
         <AssociationConnector Association="Larca2Model.MasterLvl" />
         <AssociationConnector Association="Larca2Model.MasterLvl2Detail" />
         <AssociationConnector Association="Larca2Model.MasterLvl3Detail" />
+        <EntityTypeShape EntityType="Larca2Model.LARCA20_SmoScopeGroupedRows" Width="1.5" PointX="13.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

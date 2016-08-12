@@ -12,13 +12,8 @@ namespace LARCA2.Data.DatabaseModels
     using System;
     using System.Collections.Generic;
     
-    public partial class LARCA20_SmoScope
+    public partial class LARCA20_SmoScopeGroupedRows
     {
-        public LARCA20_SmoScope()
-        {
-            this.SmoScopeDetail = new HashSet<LARCA20_SmoScopeDetail>();
-        }
-    
         public long SmoScopeID { get; set; }
         public Nullable<System.DateTime> date { get; set; }
         public Nullable<long> RefIdSMO { get; set; }
@@ -36,15 +31,6 @@ namespace LARCA2.Data.DatabaseModels
         public string O_C { get; set; }
         public bool deleted { get; set; }
         public Nullable<long> Level4 { get; set; }
-        public Nullable<int> GroupId { get; set; }
-        public Nullable<bool> historic { get; set; }
-        public Nullable<bool> clone { get; set; }
-    
-        public virtual LARCA20_Responsable ResponsableSmo { get; set; }
-        public virtual ICollection<LARCA20_SmoScopeDetail> SmoScopeDetail { get; set; }
-        public virtual LARCA20_MasterData MasterBU { get; set; }
-        public virtual LARCA20_MasterData MasterOwner { get; set; }
-        public virtual LARCA20_MasterData MasterSMO { get; set; }
-        public virtual LARCA20_RcClasification MasterLvl { get; set; }
+        public long GroupSmoID { get; set; }
     }
 }

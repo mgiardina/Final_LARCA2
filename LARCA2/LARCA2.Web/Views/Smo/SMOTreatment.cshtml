@@ -7,7 +7,11 @@
         <div class="content-wrapper">
             <hgroup class="title">
                 <h1>@ViewBag.Title.</h1>
+                <h2>@ViewBag.Message</h2>
             </hgroup>
+            <p>
+                This screen allows the visualization, modification and deletion of SMOScope Registers in the database.
+            </p>
         </div>
     </section>
 }
@@ -378,7 +382,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <fieldset class="form-group">
-                    @Html.DropDownListFor(model => model.bu, Model.BUList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.bu, Model.BUList)
                 </fieldset>
                 @if (Model.bu != "0")
                 {
@@ -387,7 +391,7 @@
             </div>
             <div class="col-sm-4">
                 <fieldset class="form-group">
-                    @Html.DropDownListFor(model => model.smo, Model.SMOList, new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.smo, Model.SMOList)
                 </fieldset>
                 @if(Model.smo != "0")
                 {
@@ -398,7 +402,7 @@
             {
                 <div class="col-sm-4">
                     <fieldset class="form-group">
-                        @Html.DropDownListFor(model => model.mesSeleccionado, Model.dropdownMeses, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.mesSeleccionado, Model.dropdownMeses)
                     </fieldset>
                     @if (Model.mesSeleccionado != "0")
                     {
@@ -647,14 +651,14 @@
                                         <td width="10%" align="left" style="background-color:#c7d1d6">
                                             @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
                                             {
-                                           
-                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())), new { @class = "form-control", @style = "width:90%;float:left;" })   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
-                                                }
+                                                <label>
+                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())))   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
+                                                </label>}
                                             else
                                             {
-                                             
-                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())), new { @class = "form-control", @style = "width:90%;float:left;" })   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
-                                           
+                                                <label>
+                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())))   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
+                                                </label>
 
                                             }
                                             <input type="button" value="+" id="Clone@(j.ToString())" class="btn btn-info" hidden="" onclick="AgregaRegistroFinalESP(@(j.ToString()))" />
@@ -666,14 +670,14 @@
                                         <td width="10%" align="left" style="background-color:#808080">
                                             @if (Model.EditablesSMO[j].Level4 != null && Model.EditablesSMO[j].Level4 != 0)
                                             {
-                                     
-                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())), new { @disabled = "disabled", @class = "form-control", @style = "width:90%;float:left;" })   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
-                                               }
+                                                <label>
+                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())), new { @disabled = "disabled" })   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
+                                                </label>}
                                             else
                                             {
-                                            
-                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())), new { @disabled = "disabled", @class = "form-control", @style = "width:90%;float:left;" })   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
-                                         
+                                                <label>
+                                                    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.Level4SelectItem(Int32.Parse(Model.EditablesSMO[j].SmoScopeID.ToString())), new { @disabled = "disabled" })   @*    @Html.DropDownListFor(model => model.EditablesSMO[j].Level4, LARCA2.Controllers.AdmController.LeveSelectItem(Model.L4List, Int32.Parse(Model.EditablesSMO[j].Level4.Value.ToString())))    *@
+                                                </label>
 
                                             }
                                             <input type="button" value="+" id="Clone@(j.ToString())" class="btn btn-info" hidden="" onclick="AgregaRegistroFinalESP(@(j.ToString()))" />
@@ -809,11 +813,19 @@
 
                                             @if (Model.EditablesSMO[j].O_C != null)
                                             {
-                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C), new { @class = "form-control" })
+                                                <label>
+                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C))
+
+
+                                                </label>
                                             }
                                             else
                                             {
-                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C), new { @class = "form-control" })
+                                                <label>
+                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C))
+
+
+                                                </label>
                                             }
 
                                         </td>
@@ -824,11 +836,19 @@
 
                                             @if (Model.EditablesSMO[j].O_C != null)
                                             {
-                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C), new { @disabled = "disabled", @class = "form-control" })
+                                                <label>
+                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C), new { @disabled = "disabled" })
+
+
+                                                </label>
                                             }
                                             else
                                             {
-                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C), new { @disabled = "disabled", @class = "form-control" })
+                                                <label>
+                                                    @Html.DropDownListFor(m => m.EditablesSMO[j].O_C, LARCA2.Controllers.AdmController.OCSelectItem(Model.EditablesSMO[j].O_C), new { @disabled = "disabled" })
+
+
+                                                </label>
                                             }
 
                                         </td>
