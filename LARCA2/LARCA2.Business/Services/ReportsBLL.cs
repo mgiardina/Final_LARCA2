@@ -245,7 +245,7 @@ namespace LARCA2.Business.Services
                     if (regionId == "1")
                     {
                 
-                        var items = SmoScopeDAL.Todos().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
+                        var items = SmoScopeDAL.Todos().Where(p => p.clone != true).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                         int cant = 0;
                         foreach (var item in items) //.Take(toplvl2))
                         {
@@ -335,8 +335,8 @@ namespace LARCA2.Business.Services
                     else
                         if (regionId == "2")
                         {
-                
-                            var items = SmoScopeDAL.TodosConExclusiones().GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
+
+                            var items = SmoScopeDAL.TodosConExclusiones().Where(p => p.clone != true).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]);
                             int cant = 0;
                             foreach (var item in items) //.Take(toplvl2))
                             {
