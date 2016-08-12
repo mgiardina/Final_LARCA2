@@ -45,7 +45,7 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_RcClasification> LARCA20_RcClasification { get; set; }
         public virtual DbSet<LARCA20_SmoScopeGroupedRows> LARCA20_SmoScopeGroupedRows { get; set; }
     
-        public virtual ObjectResult<Nullable<decimal>> SP_VOLUMEN(Nullable<int> tipo, Nullable<long> smo, Nullable<long> bu, string level)
+        public virtual ObjectResult<Nullable<decimal>> SP_VOLUMEN(Nullable<int> tipo, Nullable<long> smo, string bu, string level)
         {
             var tipoParameter = tipo.HasValue ?
                 new ObjectParameter("tipo", tipo) :
@@ -55,9 +55,9 @@ namespace LARCA2.Data.DatabaseModels
                 new ObjectParameter("smo", smo) :
                 new ObjectParameter("smo", typeof(long));
     
-            var buParameter = bu.HasValue ?
+            var buParameter = bu != null ?
                 new ObjectParameter("bu", bu) :
-                new ObjectParameter("bu", typeof(long));
+                new ObjectParameter("bu", typeof(string));
     
             var levelParameter = level != null ?
                 new ObjectParameter("level", level) :

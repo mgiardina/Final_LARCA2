@@ -8,7 +8,14 @@ using LARCA2.Data.DatabaseModels;
 using System.Web;
 
 namespace LARCA2.Business.Services
-{
+{   public class temp_object
+    {
+        public string level { get; set; }
+        public decimal volumen { get; set; }
+        public long smo { get; set; }
+        public long bu { get; set; }
+    }
+
     public class SMOScopeBLL
     {
         public SmoScopeDAL SMOScopesDAL;
@@ -269,15 +276,20 @@ namespace LARCA2.Business.Services
 
                     var result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
 
+                    var tops_smo = traer_tops_level2(1);
+
                     foreach (var item in result_aux_s)
                     {
                         var result_aux = item.Where(i => i.RefIdSMO == item.Key).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
 
                         foreach (var subitem in result_aux)
                         {
-                            volumen = traerVolumenSMO(item.First().RefIdSMO, subitem.Key.ToString());
-
-                            // falta corroborar si el volumen es uno de los tops de level 2
+                            
+                            if (tops_smo.Exists(p => p.level == subitem.Key.ToString() && p.smo == item.Key))
+                            {
+                            volumen = tops_smo.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.smo == item.Key).volumen;
+                              
+                           
                             
                             vol = 0;
                             int cant = 0;
@@ -299,11 +311,11 @@ namespace LARCA2.Business.Services
                                         }
                                 }
                             }
-                            //result.AddRange(result_test.OrderByDescending(s => s.Volumen).Take(toplvl3).ToList());
-                            result.AddRange(result_test.OrderByDescending(s => s.Volumen).ToList());
+                                result.AddRange(result_test.OrderByDescending(s => s.Volumen).Take(toplvl3).ToList());
+                                result_test.Clear();                            
                         } 
                     }
-
+                    }
 
 
 
@@ -313,30 +325,51 @@ namespace LARCA2.Business.Services
                         result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
                     }
 
-                    var result_aux_b = result_aux_bu.GroupBy(p => p.RefIdBU).ToList();
-/*
-                    foreach (var item in result_aux_b)
+                    var result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
+
+                                        
+
+                    var tops_bu = traer_tops_level2(2);
+
+                    foreach (var item in result_aux_s)
                     {
-                        var result_aux = item.Where(i => i.RefIdBU == item.Key).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
+                        var result_aux = item.Where(i => i.MasterBU.DataFin == item.Key.ToString()).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
+
                         foreach (var subitem in result_aux)
                         {
-                            volumen = traerVolumenBU(subitem.First().MasterBU.DataFin, subitem.Key.ToString());
+                            
+                            if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu == item.Key))
+                            {
+                            volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key).volumen;
+                              
+                           
+                            
                             vol = 0;
                             int cant = 0;
-                            foreach (var item_list in subitem.ToList())
+                            foreach (var item_list in subitem.OrderByDescending(p => p.Volumen).ToList())
                             {
                                 cant++;
-                                vol = vol + Convert.ToDecimal(item_list.Volumen);
-                                if ((vol * 100 / volumen <= 80) || cant == 1)
+                                if (cant == 1)
                                 {
-                                    result.Add(item_list);
+                                    result_test.Add(item_list);
+                                    vol = vol + Convert.ToDecimal(item_list.Volumen);
                                 }
 
+                                else
+                                {
+                                    if ((vol * 100 / volumen <= 80) )
+                                        {
+                                            result_test.Add(item_list);
+                                            vol = vol + Convert.ToDecimal(item_list.Volumen);
+                                        }
+                                }
                             }
-
-                        }
+                                result.AddRange(result_test.OrderByDescending(s => s.Volumen).Take(toplvl3).ToList());
+                                result_test.Clear();                            
+                        } 
                     }
-                    */
+                    }
+
                     break;
                 case "2":
                     foreach (var smo_var in user.LARCA20_User_Owner.ToList())
@@ -450,16 +483,81 @@ namespace LARCA2.Business.Services
         public decimal traerVolumenSMO(long? smo, string level)
         {
             SmoScopeDAL volumen = new SmoScopeDAL();
-            var test = volumen.calcular_volumenes(1, 0, smo, level);
+            var test = volumen.calcular_volumenes(1, "", smo, level);
             return test;
         }
 
-        public decimal traerVolumenBU(long? bu, string level)
+        public decimal traerVolumenBU(string bu, string level)
         {
             SmoScopeDAL volumen = new SmoScopeDAL();
             var test = volumen.calcular_volumenes(2, bu, 0, level);
             return test;
         }
 
+        public List<temp_object> traer_tops_level2(int tipo)
+            {
+                List<temp_object> historico = new List<temp_object>();
+             
+             if (tipo == 1)
+                 {
+                  RCClassificationDAL lista_level2 = new RCClassificationDAL();
+                  var listanivel = lista_level2.TodosXLevel("2");
+
+                 MasterDataDAL lista_smo_dal = new MasterDataDAL();
+                 var listasmo = lista_smo_dal.TodosFiltro(string.Empty, string.Empty,"SMO");
+
+                  foreach (var item in listasmo)
+                  {
+                      List<temp_object> historico_aux = new List<temp_object>();
+                      foreach (var subitem in listanivel)
+                      {
+                          temp_object temp_object_aux = new temp_object();
+                          temp_object_aux.level = subitem.Code;
+
+                          temp_object_aux.volumen = traerVolumenSMO(item.id, subitem.Code);
+                          temp_object_aux.smo = item.id;
+                          historico_aux.Add(temp_object_aux);
+                      }
+                      var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                      historico.AddRange(historico_aux.OrderByDescending(p => p.volumen).Take(toplvl2).ToList());
+
+                  }
+                  //var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                  List<temp_object> result_list = historico.ToList();
+
+
+                 return result_list;
+                 }
+             else
+             {
+                 RCClassificationDAL lista_level2 = new RCClassificationDAL();
+                 var listanivel = lista_level2.TodosXLevel("2");
+
+                 MasterDataDAL lista_smo_dal = new MasterDataDAL();
+                 var listasmo = lista_smo_dal.TodosFiltro(string.Empty, string.Empty, "BU");
+
+                 foreach (var item in listanivel)
+                 {
+                     foreach (var subitem in listasmo)
+                     {
+                         temp_object temp_object_aux = new temp_object();
+                         temp_object_aux.level = item.Code;
+
+                         temp_object_aux.volumen = traerVolumenSMO(subitem.id, item.Code);
+
+                         temp_object_aux.bu = subitem.id;
+                         historico.Add(temp_object_aux);
+                     }
+                 }
+                 var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                 List<temp_object> result_list = historico.OrderByDescending(p => p.volumen).Take(toplvl2).ToList();
+
+
+                 return result_list;
+
+             }
+
+            }
+        
     }
 }

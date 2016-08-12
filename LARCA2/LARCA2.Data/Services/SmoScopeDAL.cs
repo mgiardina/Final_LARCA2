@@ -93,7 +93,7 @@ namespace LARCA2.Data.Services
             }
         }
 
-        public decimal calcular_volumenes(int tipo, long? bu, long? smo, string level)
+        public decimal calcular_volumenes(int tipo, string bu, long? smo, string level)
             {
                var test = Context.SP_VOLUMEN(tipo, smo, bu, level).FirstOrDefault();
                

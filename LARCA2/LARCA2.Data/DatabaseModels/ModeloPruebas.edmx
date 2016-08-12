@@ -482,7 +482,7 @@
         <Function Name="SP_VOLUMEN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="tipo" Type="int" Mode="In" />
           <Parameter Name="smo" Type="bigint" Mode="In" />
-          <Parameter Name="bu" Type="bigint" Mode="In" />
+          <Parameter Name="bu" Type="varchar" Mode="In" />
           <Parameter Name="level" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="Larca2ModelStoreContainer">
@@ -701,7 +701,7 @@
           <FunctionImport Name="SP_VOLUMEN" ReturnType="Collection(Decimal)">
             <Parameter Name="tipo" Mode="In" Type="Int32" />
             <Parameter Name="smo" Mode="In" Type="Int64" />
-            <Parameter Name="bu" Mode="In" Type="Int64" />
+            <Parameter Name="bu" Mode="In" Type="String" />
             <Parameter Name="level" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
