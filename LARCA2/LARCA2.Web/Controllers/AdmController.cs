@@ -231,6 +231,10 @@ namespace LARCA2.Controllers
                                 var RepUserOW = new Business.Services.UserOwnerBLL();
                                 string[] PerEsp = iUs.Split('.');
 
+                                if (iUs != "")
+                                {
+                                    
+                                
                                 if (Convert.ToInt32(PerEsp[0]) != 0 && Convert.ToInt32(PerEsp[1]) != 0 && Convert.ToInt32(PerEsp[2]) != 0)
                                 {
                                     var IdBU = Convert.ToInt32(PerEsp[0]);
@@ -241,6 +245,7 @@ namespace LARCA2.Controllers
                                         ok = false;
                                         return Content("<script language='javascript' type='text/javascript'>alert('Permissions already assigned to another user , try again.');document.location = '../Adm/UserBM';</script>");
                                     }
+                                }
                                 }
                             }
 

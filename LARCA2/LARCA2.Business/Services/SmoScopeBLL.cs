@@ -371,13 +371,14 @@ namespace LARCA2.Business.Services
 
                     break;
                 case "2":
-                    foreach (var smo_var in user.LARCA20_User_Owner.ToList())
+                    foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
                     {
-                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.IdSmo && x.RefIdBU == smo_var.IdBU && x.clone != true).ToList().Take(toplvl3).ToList());
+                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList());
                     }
 
-                   result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
-                   tops_smo = traer_tops_level2(1);
+                    result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
+
+                    tops_smo = traer_tops_level2(1);
 
                     foreach (var item in result_aux_s)
                     {
@@ -418,22 +419,27 @@ namespace LARCA2.Business.Services
                     }
                     }
 
-                    
+
+                    foreach (var bu_var in smo_list.Todos().Where(x => x.Data == "BU").ToList())
+                    {
+                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                    }
+
                     result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
-                                        
+                                                           
 
                     tops_bu = traer_tops_level2(2);
 
-                    foreach (var item in result_aux_b)
+                    foreach (var item in result_aux_s)
                     {
                         var result_aux = item.Where(i => i.MasterBU.DataFin == item.Key.ToString()).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
 
                         foreach (var subitem in result_aux)
                         {
                             
-                            if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu.ToString() == item.Key))
+                            if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu == item.Key.ToString()))
                             {
-                            volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu.ToString() == item.Key).volumen;
+                            volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
                               
                            
                             
@@ -462,6 +468,27 @@ namespace LARCA2.Business.Services
                         } 
                     }
                     }
+
+
+                    var permisos = user.LARCA20_User_Owner.ToList();
+                    var result_total = result.ToList();
+                    result.Clear();
+                    foreach (var item in result_total)
+	                {
+		              /* if (permisos.Exists(p => p.IdSmo == item.RefIdSMO && p.LARCA20_MasterData.DataFin == item.MasterBU.DataFin))       
+                           {
+                                   result.Add(item);    
+                           }*/
+
+                        foreach (var subitem in permisos)
+                        {
+                            if (item.MasterBU.DataFin == subitem.LARCA20_MasterData.DataFin && item.RefIdSMO == subitem.IdSmo)
+                            {
+                                result.Add(item);
+                            }
+                        }
+	                }
+                    
 
                     break;
 
@@ -598,13 +625,13 @@ namespace LARCA2.Business.Services
             //  }
 
 
-            if (refidbu != null && bu != 0)
-                result = result.Where(x => x.RefIdBU == bu).ToList();
+            //if (refidbu != null && bu != 0)
+             //   result = result.Where(x => x.RefIdBU == bu).ToList();
 
 
 
-            if (refidsmo != null && smo != 0)
-                result = result.Where(x => x.RefIdSMO == smo).ToList();
+            //if (refidsmo != null && smo != 0)
+            //    result = result.Where(x => x.RefIdSMO == smo).ToList();
             return result;
         }
 

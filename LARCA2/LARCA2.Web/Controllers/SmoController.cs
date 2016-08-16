@@ -1464,7 +1464,7 @@ namespace Larca2.Controllers
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
                 {
-                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString(),"1").Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString(), viewModel.idRole.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
                     if (smoscopeact != null)
                     {
                         viewModel.RegistrosSMO.AddRange(smoscopeact);
