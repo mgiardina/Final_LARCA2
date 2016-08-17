@@ -1966,6 +1966,8 @@ namespace Larca2.Controllers
                         actualOriginal.Problem = scope.Problem;
                     if (scope.DueDate != actualOriginal.DueDate)
                         actualOriginal.DueDate = scope.DueDate;
+                    if (scope.Level4 != actualOriginal.Level4)
+                        actualOriginal.Level4 = scope.Level4;
 
                     /*   if (scope.RefIdResponsable == 0)
                            actualOriginal.RefIdResponsable = null;
@@ -2085,8 +2087,8 @@ namespace Larca2.Controllers
                             { flagChange = true; current.RefIdResponsable = actualOriginal.RefIdResponsable; }
                             if (actualOriginal.historic != scopeCopia.historic)
                             { flagChange = true; current.historic = actualOriginal.historic; }
-                            //   if (actualOriginal.Level4 != scopeCopia.Level4)
-                            //    { flagChange = true; current.Level4 = actualOriginal.Level4; }
+                               if (actualOriginal.Level4 != scopeCopia.Level4 )
+                                { flagChange = true; current.Level4 = actualOriginal.Level4; }
 
                             repo.Guardar(current);
                             if (flagChange == true)

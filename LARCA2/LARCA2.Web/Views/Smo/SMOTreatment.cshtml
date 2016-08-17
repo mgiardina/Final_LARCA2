@@ -6,7 +6,7 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
         </div>
     </section>
@@ -378,7 +378,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <fieldset class="form-group">
-                    @Html.DropDownListFor(model => model.bu, Model.BUList)
+                    @Html.DropDownListFor(model => model.bu, Model.BUList, new { @class = "form-control" })
                 </fieldset>
                 @if (Model.bu != "0")
                 {
@@ -387,7 +387,7 @@
             </div>
             <div class="col-sm-4">
                 <fieldset class="form-group">
-                    @Html.DropDownListFor(model => model.smo, Model.SMOList)
+                    @Html.DropDownListFor(model => model.smo, Model.SMOList, new { @class = "form-control" })
                 </fieldset>
                 @if(Model.smo != "0")
                 {

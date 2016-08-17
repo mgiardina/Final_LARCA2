@@ -6,7 +6,7 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
+                <h1>@ViewBag.Title</h1>
             </hgroup>
         </div>
     </section>
@@ -100,7 +100,7 @@
             {
                 <div class="col-sm-4">
                     <fieldset class="form-group">
-                        @Html.DropDownListFor(model => model.bu, Model.BUList, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.bu, Model.BUList, new { @class = "form-control" }) 
                     </fieldset>
                 </div>
             }
