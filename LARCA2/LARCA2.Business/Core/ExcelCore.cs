@@ -84,7 +84,6 @@ namespace LARCA2.Business.Core
                         newSmo.Level4 = smo.Level4;
                         newSmo.historic = true;
                         new SMOScopeBLL().PasarHistorico(newSmo);
-
                     }
                 }
 
