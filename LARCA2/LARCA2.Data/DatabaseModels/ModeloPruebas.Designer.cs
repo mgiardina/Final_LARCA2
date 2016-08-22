@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Administrador\Desktop\Git\Final_Version\Final_LARCA2\LARCA2\LARCA2.Data\DatabaseModels\ModeloPruebas.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Santiago\Desktop\Final_LARCA2\Final_LARCA2\Final_LARCA2\LARCA2\LARCA2.Data\DatabaseModels\ModeloPruebas.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

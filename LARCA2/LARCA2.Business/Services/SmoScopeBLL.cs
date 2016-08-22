@@ -107,6 +107,15 @@ namespace LARCA2.Business.Services
             return SMOScopesDAL.Todos().Where(r => r.deleted == false && r.date >= siev).ToList();
         }
 
+        public List<LARCA20_SmoScope> HistoricosSemana()
+        {
+            Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();
+            DateTime siev = DateTime.Now.AddDays(-8); //los de la ultima semana.
+            List<LARCA20_SmoScope> result = SMOScopesDAL.BruteTodos();
+            result = result.Where(r => r.deleted == false && r.historic == true && r.date >= siev).ToList();
+            return result; 
+        }
+
         public List<LARCA20_SmoScope> TraerGrupo(int groupId)
         {
             Business.Services.ApplicationDataBLL repo = new Business.Services.ApplicationDataBLL();

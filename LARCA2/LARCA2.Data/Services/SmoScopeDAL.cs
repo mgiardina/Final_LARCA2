@@ -31,6 +31,13 @@ namespace LARCA2.Data.Services
             }
         }
 
+        public  List<LARCA20_SmoScope> BruteTodos()
+        {
+
+            // DateTime siev = DateTime.Now.AddDays(-7);
+            return Context.LARCA20_SmoScope.ToList();
+        }
+
         public override List<LARCA20_SmoScope> Todos()
         {
             

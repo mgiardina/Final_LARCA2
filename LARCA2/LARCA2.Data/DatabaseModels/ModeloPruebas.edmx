@@ -158,7 +158,7 @@
           <Property Name="originaldate" Type="nvarchar(max)" />
           <Property Name="FPC" Type="nvarchar(max)" />
           <Property Name="historic" Type="bit" />
-          <Property Name="grouped" Type="bit" />
+          <Property Name="grouped" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
@@ -308,18 +308,6 @@
             </Principal>
             <Dependent Role="LARCA20_User_Owner">
               <PropertyRef Name="IdSmo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LARCA20_User_Owner_LARCA20_Usuarios">
-          <End Role="LARCA20_Users" Type="Self.LARCA20_Users" Multiplicity="0..1" />
-          <End Role="LARCA20_User_Owner" Type="Self.LARCA20_User_Owner" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LARCA20_Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="LARCA20_User_Owner">
-              <PropertyRef Name="IdUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -529,10 +517,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_User_SMO" Association="Self.FK_LARCA20_User_Owner_LARCA20_User_SMO">
             <End Role="LARCA20_MasterData" EntitySet="LARCA20_MasterData" />
-            <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LARCA20_User_Owner_LARCA20_Usuarios" Association="Self.FK_LARCA20_User_Owner_LARCA20_Usuarios">
-            <End Role="LARCA20_Users" EntitySet="LARCA20_Users" />
             <End Role="LARCA20_User_Owner" EntitySet="LARCA20_User_Owner" />
           </AssociationSet>
           <AssociationSet Name="FK_LARCA20_UsuariosRoles_LARCA20_Roles" Association="Self.FK_LARCA20_UsuariosRoles_LARCA20_Roles">
@@ -843,7 +827,7 @@
           <NavigationProperty Name="MasterLvl2Detail" Relationship="Larca2Model.MasterLvl2Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <NavigationProperty Name="MasterLvl3Detail" Relationship="Larca2Model.MasterLvl3Detail" FromRole="LARCA20_SmoScopeDetail" ToRole="LARCA20_RcClasification" />
           <Property Name="historic" Type="Boolean" />
-          <Property Name="grouped" Type="Boolean" />
+          <Property Name="grouped" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="LARCA20_SmoScopeGroup">
           <Key>
