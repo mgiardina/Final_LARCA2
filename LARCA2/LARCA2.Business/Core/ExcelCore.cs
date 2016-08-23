@@ -83,6 +83,7 @@ namespace LARCA2.Business.Core
                         newSmo.deleted = smo.deleted;
                         newSmo.Level4 = smo.Level4;
                         newSmo.historic = true;
+                        newSmo.clone = smo.clone;
                         new SMOScopeBLL().PasarHistorico(newSmo);
                     }
                 }
@@ -541,8 +542,11 @@ namespace LARCA2.Business.Core
                                 smoScope.Level4 = itemSemAnterior.Level4;
 
                                 //ahora veo si tiene clones y los copio 
-
-                                if(new SMOScopeBLL().HistoricosSemana().Where(x=> (x.clone != null && x.clone == true) && x.RefIdBU == smoScope.RefIdBU && x.RefIdSMO == smoScope.RefIdSMO  && x.RefIdRC == smoScope.RefIdRC && x.RefIdOwner == smoScope.RefIdOwner ).Count() > 0)
+                                List<LARCA20_SmoScope> chequeo = new SMOScopeBLL().HistoricosSemana();
+                                 chequeo = chequeo.Where(x=> x.clone != null && x.clone == true).ToList();
+                                chequeo = chequeo.Where(x=> x.RefIdRC == smoScope.RefIdRC && x.RefIdOwner == smoScope.RefIdOwner ).ToList();
+                                chequeo = chequeo.Where(x => x.RefIdBU == smoScope.RefIdBU && x.RefIdSMO == smoScope.RefIdSMO).ToList();
+                                if(chequeo.Count() > 0)
                                 {
                                     List<LARCA20_SmoScope> clonesActuales = new SMOScopeBLL().HistoricosSemana().Where(x => (x.clone != null && x.clone == true) && x.RefIdBU == smoScope.RefIdBU && x.RefIdSMO == smoScope.RefIdSMO && x.RefIdRC == smoScope.RefIdRC && x.RefIdOwner == smoScope.RefIdOwner).ToList();
                                     foreach (LARCA20_SmoScope clonViejo in clonesActuales)
@@ -609,8 +613,8 @@ namespace LARCA2.Business.Core
                             }
                         }
                     }
-
-                    List<LARCA20_SmoScope> thisWeekRegs = new SMOScopeBLL().Todos().Where(x => x.date >= (DateTime.Today.AddDays(-1))).ToList();
+                    SMOScopeBLL groupBLL = new SMOScopeBLL();
+                    List<LARCA20_SmoScope> thisWeekRegs = groupBLL.Todos().Where(x => x.date >= (DateTime.Today.AddDays(-1))).ToList();
                    foreach(string groupFound in groupsFound)
                    {
                        bool estantodos = true;
@@ -628,8 +632,11 @@ namespace LARCA2.Business.Core
                            foreach (LARCA20_SmoScope gss in lastWeekRegs.Where(x => x.GroupId == Int32.Parse(groupFound)))
                            {
                                LARCA20_SmoScope cambiar = thisWeekRegs.First(x => x.RefIdBU == gss.RefIdBU && x.RefIdSMO == gss.RefIdSMO && x.RefIdRC == gss.RefIdRC && x.RefIdOwner == gss.RefIdOwner && x.historic == false);
+                               
                                cambiar.GroupId = gss.GroupId;
-                               var smoGroupChange = new SMOScopeBLL().Guardar(cambiar);
+                             
+                               groupBLL.Guardar(cambiar);
+//                               var smoGroupChange = new SMOScopeBLL().Guardar(cambiar);
                            }
                        }
 
