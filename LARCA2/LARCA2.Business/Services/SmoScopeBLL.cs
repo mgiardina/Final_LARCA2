@@ -55,6 +55,7 @@ namespace LARCA2.Business.Services
                     var newItem = new LARCA20_SmoScopeDetail();
                     newItem.DetailID = item.DetailID;
                     newItem.date = item.date;
+                    newItem.grouped = item.grouped;
                     newItem.OwnerID = item.OwnerID;
                     newItem.Volumen = item.Volumen;
                     newItem.Lvl2ID = item.Lvl2ID;
@@ -280,7 +281,7 @@ namespace LARCA2.Business.Services
                 case "1":
                     foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
                     {
-                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList());
+                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true && x.historic != true).ToList());
                     }
 
                     var result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
@@ -331,15 +332,15 @@ namespace LARCA2.Business.Services
 
                     foreach (var bu_var in smo_list.Todos().Where(x => x.Data == "BU").ToList())
                     {
-                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true && x.historic != true).ToList().ToList());
                     }
 
-                    var result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
+                   var result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
                                                            
 
-                    var tops_bu = traer_tops_level2(2);
+                  var  tops_bu = traer_tops_level2(2);
 
-                    foreach (var item in result_aux_s)
+                    foreach (var item in result_aux_b)
                     {
                         var result_aux = item.Where(i => i.MasterBU.DataFin == item.Key.ToString()).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
 
@@ -348,7 +349,8 @@ namespace LARCA2.Business.Services
                             
                             if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu == item.Key.ToString()))
                             {
-                            volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                            //volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                                volumen = tops_bu.FirstOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
                               
                            
                             
@@ -378,11 +380,12 @@ namespace LARCA2.Business.Services
                     }
                     }
 
+
                     break;
                 case "2":
                     foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
                     {
-                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList());
+                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true && x.historic != true).ToList());
                     }
 
                     result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
@@ -431,7 +434,7 @@ namespace LARCA2.Business.Services
 
                     foreach (var bu_var in smo_list.Todos().Where(x => x.Data == "BU").ToList())
                     {
-                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true && x.historic != true).ToList().ToList());
                     }
 
                     result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
@@ -439,7 +442,7 @@ namespace LARCA2.Business.Services
 
                     tops_bu = traer_tops_level2(2);
 
-                    foreach (var item in result_aux_s)
+                    foreach (var item in result_aux_b)
                     {
                         var result_aux = item.Where(i => i.MasterBU.DataFin == item.Key.ToString()).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
 
@@ -448,7 +451,8 @@ namespace LARCA2.Business.Services
                             
                             if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu == item.Key.ToString()))
                             {
-                            volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                            //volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                                volumen = tops_bu.FirstOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
                               
                            
                             
@@ -477,6 +481,7 @@ namespace LARCA2.Business.Services
                         } 
                     }
                     }
+
 
 
                     var permisos = user.LARCA20_User_Owner.ToList();
@@ -504,7 +509,7 @@ namespace LARCA2.Business.Services
                 case "6":
                     foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
                     {
-                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList());
+                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true && x.historic != true).ToList());
                     }
 
                     result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
@@ -553,7 +558,7 @@ namespace LARCA2.Business.Services
 
                     foreach (var bu_var in smo_list.Todos().Where(x => x.Data == "BU").ToList())
                     {
-                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true && x.historic != true).ToList().ToList());
                     }
 
                     result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
@@ -561,7 +566,7 @@ namespace LARCA2.Business.Services
 
                     tops_bu = traer_tops_level2(2);
 
-                    foreach (var item in result_aux_s)
+                    foreach (var item in result_aux_b)
                     {
                         var result_aux = item.Where(i => i.MasterBU.DataFin == item.Key.ToString()).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
 
@@ -570,7 +575,8 @@ namespace LARCA2.Business.Services
                             
                             if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu == item.Key.ToString()))
                             {
-                            volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                            //volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                                volumen = tops_bu.FirstOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
                               
                            
                             
@@ -627,7 +633,7 @@ namespace LARCA2.Business.Services
 
                     foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
                     {
-                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true).ToList());
+                        result_aux_smo.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == smo_var.id && x.clone != true && x.historic != true).ToList());
                     }
 
                     result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
@@ -676,7 +682,7 @@ namespace LARCA2.Business.Services
 
                     foreach (var bu_var in smo_list.Todos().Where(x => x.Data == "BU").ToList())
                     {
-                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true).ToList().Take(toplvl3).ToList());
+                        result_aux_bu.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdBU == bu_var.id && x.clone != true && x.historic != true).ToList().ToList());
                     }
 
                     result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
@@ -684,7 +690,7 @@ namespace LARCA2.Business.Services
 
                     tops_bu = traer_tops_level2(2);
 
-                    foreach (var item in result_aux_s)
+                    foreach (var item in result_aux_b)
                     {
                         var result_aux = item.Where(i => i.MasterBU.DataFin == item.Key.ToString()).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
 
@@ -693,7 +699,8 @@ namespace LARCA2.Business.Services
                             
                             if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu == item.Key.ToString()))
                             {
-                            volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                            //volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                                volumen = tops_bu.FirstOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
                               
                            
                             
@@ -754,27 +761,11 @@ namespace LARCA2.Business.Services
             foreach (var subitem in result)
             {
                 // Chequeo de clones
-                result2.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == subitem.RefIdSMO && x.RefIdBU == subitem.RefIdBU && x.RefIdOwner == subitem.RefIdOwner && x.RefIdRC == subitem.RefIdRC && x.clone == true).ToList());
+                result2.AddRange(SMOScopesDAL.Todos().Where(x => x.deleted == false && x.date >= siev && x.RefIdSMO == subitem.RefIdSMO && x.RefIdBU == subitem.RefIdBU && x.RefIdOwner == subitem.RefIdOwner && x.RefIdRC == subitem.RefIdRC && x.clone == true && x.historic != true).ToList());
             }
 
             result.AddRange(result2);
 
-
-            //  if (refidbu != null && bu != 0)
-            //  {
-            //      Business.Services.MasterDataBLL mdb = new MasterDataBLL();
-            //       List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
-            //      result = result.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
-            //  }
-
-
-            //if (refidbu != null && bu != 0)
-             //   result = result.Where(x => x.RefIdBU == bu).ToList();
-
-
-
-            //if (refidsmo != null && smo != 0)
-            //    result = result.Where(x => x.RefIdSMO == smo).ToList();
             return result;
         }
 
@@ -887,7 +878,7 @@ namespace LARCA2.Business.Services
                  MasterDataDAL lista_smo_dal = new MasterDataDAL();
                  var listasmo = lista_smo_dal.TodosFiltro(string.Empty, string.Empty, "BU");
 
-                 foreach (var item in listanivel)
+                 /*foreach (var item in listanivel)
                  {
                      List<temp_object> historico_aux = new List<temp_object>();
                      foreach (var subitem in listasmo)
@@ -903,6 +894,30 @@ namespace LARCA2.Business.Services
                              {
                          historico_aux.Add(temp_object_aux);
                              }
+                     }
+
+                     var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                     historico.AddRange(historico_aux.OrderByDescending(p => p.volumen).Take(toplvl2).ToList());
+                 }*/
+
+                 //foreach (var item in listanivel)
+                 foreach (var subitem in listasmo)
+                 {
+                     List<temp_object> historico_aux = new List<temp_object>();
+                     //foreach (var subitem in listasmo)
+                     foreach (var item in listanivel)
+                     {
+                         temp_object temp_object_aux = new temp_object();
+                         temp_object_aux.level = item.Code;
+
+                         temp_object_aux.volumen = traerVolumenBU(subitem.DataFin.ToString(), item.Code);
+
+                         temp_object_aux.bu = subitem.DataFin;
+
+                         //if (historico_aux.Exists(p => p.bu == temp_object_aux.bu ) != true)
+                         //{
+                             historico_aux.Add(temp_object_aux);
+                         //}
                      }
 
                      var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();

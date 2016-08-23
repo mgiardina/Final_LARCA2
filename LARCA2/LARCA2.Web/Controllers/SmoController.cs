@@ -1619,11 +1619,11 @@ namespace Larca2.Controllers
             {
                 MasterDataBLL mdb = new MasterDataBLL();
                 List<LARCA20_MasterData> todosConSuDATAFIN = mdb.TraerVariosPorDataFin(mdb.Traer(bu).DataFin);
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU)).ToList();
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => todosConSuDATAFIN.Exists(a => a.id == x.RefIdBU) && x.historic == false).ToList();
 
             }
             if (viewModel.smo != null && smo != 0)
-                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo).ToList();
+                viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.RefIdSMO == smo && x.historic == false).ToList();
 
             if (viewModel.mesSeleccionado == "0")
             {
