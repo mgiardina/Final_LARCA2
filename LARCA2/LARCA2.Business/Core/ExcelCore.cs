@@ -84,6 +84,7 @@ namespace LARCA2.Business.Core
                         newSmo.Level4 = smo.Level4;
                         newSmo.historic = true;
                         newSmo.clone = smo.clone;
+                        newSmo.GroupId = smo.GroupId;
                         new SMOScopeBLL().PasarHistorico(newSmo);
                     }
                 }
@@ -167,28 +168,58 @@ namespace LARCA2.Business.Core
                 }
 
                 //aca se asigna a los details creados el nuevo smo. si existia un smo igual antes, se lo hace historic.
-                if (RealizarCalculos(new SMOScopeDetailBLL().Todos()))
-                {
-                    try
-                    {
-                        new MailingCore().EnviarAlertaAnalysisDisponible_Admin();
-                    }
-                    catch
-                    {
 
+                if (tipoProceso == TipoProceso.Total)
+                {
+                    if (RealizarCalculosTotal(new SMOScopeDetailBLL().Todos()))
+                    {
+                        try
+                        {
+                            new MailingCore().EnviarAlertaAnalysisDisponible_Admin();
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            new MailingCore().EnviarAlertaErrorEnCarga();
+                        }
+                        catch
+                        {
+
+                        }
                     }
                 }
                 else
                 {
-                    try
+                    if (RealizarCalculosParcial(new SMOScopeDetailBLL().Todos()))
                     {
-                        new MailingCore().EnviarAlertaErrorEnCarga();
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            new MailingCore().EnviarAlertaAnalysisDisponible_Admin();
+                        }
+                        catch
+                        {
 
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            new MailingCore().EnviarAlertaErrorEnCarga();
+                        }
+                        catch
+                        {
+
+                        }
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -503,7 +534,7 @@ namespace LARCA2.Business.Core
         /// Calculo de TOP N por SMO y BU
         /// </summary>
         /// <param name="details"></param>
-        private bool RealizarCalculos(List<LARCA20_SmoScopeDetail> details)
+        private bool RealizarCalculosTotal(List<LARCA20_SmoScopeDetail> details)
         {
             try
             {
@@ -646,6 +677,53 @@ namespace LARCA2.Business.Core
 
                 }
 
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+
+
+
+        /// <summary>
+        /// Calculo de TOP N por SMO y BU
+        /// </summary>
+        /// <param name="details"></param>
+        private bool RealizarCalculosParcial(List<LARCA20_SmoScopeDetail> details)
+        {
+            try
+            {
+                foreach (var smoitem in details.GroupBy(t => t.MasterSMODetail.DataFin))
+                {
+                    var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
+                    foreach (var buitem in smoitem.GroupBy(e => e.MasterBUDetail.DataFin))
+                    {
+                        var tops = buitem.GroupBy(d => d.Lvl3ID).Select(d => new { Volumen = d.Sum(s => s.Volumen), Lvl = d.First().Lvl3ID, Owner = d.First().OwnerID, Detalles = d.ToList() }).OrderByDescending(v => v.Volumen).ToList(); //.Take(toplvl3).ToList();
+                        foreach (var subitem in tops)
+                        {
+                            var smoScope = new LARCA20_SmoScope();
+                            smoScope.date = DateTime.Now;
+                            smoScope.Volumen = subitem.Volumen;
+                            smoScope.RefIdSMO = smoitem.First().SmoID;
+                            smoScope.RefIdOwner = subitem.Owner;
+                            smoScope.RefIdRC = subitem.Lvl;
+                            smoScope.RefIdBU = buitem.First().BuID;
+                            smoScope.Problem = string.Empty;
+                            smoScope.Why1 = string.Empty;
+                            smoScope.Why2 = string.Empty;
+                            smoScope.Why3 = string.Empty;
+                            smoScope.ActionPlan = string.Empty;
+                            smoScope.O_C = "O";
+                            smoScope.deleted = false;
+                            smoScope.historic = false;
+                            var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
+                        }
+                    }
+                }
                 return true;
             }
             catch
