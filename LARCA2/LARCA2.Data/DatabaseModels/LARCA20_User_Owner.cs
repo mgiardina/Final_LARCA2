@@ -26,7 +26,7 @@ namespace LARCA2.Data.DatabaseModels
         public virtual LARCA20_User_Owner LARCA20_User_Owner11 { get; set; }
         public virtual LARCA20_User_Owner LARCA20_User_Owner3 { get; set; }
         public virtual LARCA20_Users LARCA20_Users { get; set; }
-        public virtual LARCA20_MasterData LARCA20_MasterData { get; set; }
+        public virtual LARCA20_MasterData FK_LARCA20_User_Owner_LARCA20_MasterData_BU { get; set; }
         public virtual LARCA20_MasterData LARCA20_MasterData1 { get; set; }
         public virtual LARCA20_MasterData LARCA20_MasterData2 { get; set; }
     }

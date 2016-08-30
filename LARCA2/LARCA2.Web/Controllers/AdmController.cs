@@ -252,8 +252,24 @@ namespace LARCA2.Controllers
                             if (ok)
                             {
                                 user.Id = model.Usuario.Id;
-                                user.name = model.Usuario.name;
-                                user.last_name = model.Usuario.last_name;
+                                if (model.Usuario.name != null)
+                                {
+                                    user.name = model.Usuario.name;    
+                                }
+                                else
+                                {
+                                    user.name = "";
+                                }
+
+                                if (model.Usuario.last_name != null)
+                                {
+                                    user.last_name = model.Usuario.last_name;    
+                                }
+                                else
+                                {
+                                    user.last_name = "";
+                                }
+
                                 user.deleted = model.Usuario.deleted;
                                 //user.Clave = Larca2.Utilities.Crypto.Encrypt(model.Usuario.Clave);
                                 user.date = DateTime.Now;

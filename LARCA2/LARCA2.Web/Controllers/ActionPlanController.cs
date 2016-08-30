@@ -20,7 +20,7 @@ namespace Larca2.Controllers
             var model = new Larca2.Views.ViewModels.SMOScopeViewModel();
             try
             {
-                ViewData["MasterRows"] = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem == string.Empty || smo.Problem == null)).ToList();
+                ViewData["MasterRows"] = new SMOScopeBLL().Todos_completos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem == string.Empty || smo.Problem == null)).ToList();
             }
             catch
             {

@@ -209,7 +209,7 @@ namespace LARCA2.Business.Core
             var sr = new StreamReader(fs);
             string subject = "LARCA - NOTIFICATION";
             // var to = "solano.a.1@pg.com";
-            var to = "PSC-LARCA-" + (string.IsNullOrEmpty(dataFin) ? "" : dataFin) + "@pg.com";
+            var to = "CNF-LARCA-" + (string.IsNullOrEmpty(dataFin) ? "" : dataFin) + "@pg.com";
             var body = sr.ReadToEnd();
             sr.Close();
             fs.Close();

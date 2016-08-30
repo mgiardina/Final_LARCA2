@@ -18,6 +18,7 @@ namespace LARCA2.Data.DatabaseModels
         {
             this.LARCA20_User_Owner = new HashSet<LARCA20_User_Owner>();
             this.LARCA20_UsersRoles = new HashSet<LARCA20_UsersRoles>();
+            this.LARCA20_Responsable = new HashSet<LARCA20_Responsable>();
         }
     
         public int Id { get; set; }
@@ -32,5 +33,6 @@ namespace LARCA2.Data.DatabaseModels
     
         public virtual ICollection<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }
         public virtual ICollection<LARCA20_UsersRoles> LARCA20_UsersRoles { get; set; }
+        public virtual ICollection<LARCA20_Responsable> LARCA20_Responsable { get; set; }
     }
 }

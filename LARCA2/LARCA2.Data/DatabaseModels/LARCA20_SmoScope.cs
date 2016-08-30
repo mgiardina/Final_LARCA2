@@ -36,15 +36,17 @@ namespace LARCA2.Data.DatabaseModels
         public string O_C { get; set; }
         public bool deleted { get; set; }
         public Nullable<long> Level4 { get; set; }
-        public Nullable<int> GroupId { get; set; }
         public Nullable<bool> historic { get; set; }
+        public Nullable<int> GroupId { get; set; }
         public Nullable<bool> clone { get; set; }
+        public Nullable<bool> partial { get; set; }
+        public Nullable<bool> top_news { get; set; }
     
-        public virtual LARCA20_Responsable ResponsableSmo { get; set; }
-        public virtual ICollection<LARCA20_SmoScopeDetail> SmoScopeDetail { get; set; }
         public virtual LARCA20_MasterData MasterBU { get; set; }
         public virtual LARCA20_MasterData MasterOwner { get; set; }
         public virtual LARCA20_MasterData MasterSMO { get; set; }
         public virtual LARCA20_RcClasification MasterLvl { get; set; }
+        public virtual ICollection<LARCA20_SmoScopeDetail> SmoScopeDetail { get; set; }
+        public virtual LARCA20_Responsable ResponsableSmo { get; set; }
     }
 }

@@ -32,9 +32,7 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_ImputOriginal> LARCA20_ImputOriginal { get; set; }
         public virtual DbSet<LARCA20_Mailing> LARCA20_Mailing { get; set; }
         public virtual DbSet<LARCA20_MasterDataSMOLess> LARCA20_MasterDataSMOLess { get; set; }
-        public virtual DbSet<LARCA20_Responsable> LARCA20_Responsable { get; set; }
         public virtual DbSet<LARCA20_Roles> LARCA20_Roles { get; set; }
-        public virtual DbSet<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
         public virtual DbSet<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail { get; set; }
         public virtual DbSet<LARCA20_SmoScopeGroup> LARCA20_SmoScopeGroup { get; set; }
         public virtual DbSet<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }
@@ -44,6 +42,8 @@ namespace LARCA2.Data.DatabaseModels
         public virtual DbSet<LARCA20_MasterData> LARCA20_MasterData { get; set; }
         public virtual DbSet<LARCA20_RcClasification> LARCA20_RcClasification { get; set; }
         public virtual DbSet<LARCA20_SmoScopeGroupedRows> LARCA20_SmoScopeGroupedRows { get; set; }
+        public virtual DbSet<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
+        public virtual DbSet<LARCA20_Responsable> LARCA20_Responsable { get; set; }
     
         public virtual ObjectResult<Nullable<decimal>> SP_VOLUMEN(Nullable<int> tipo, Nullable<long> smo, string bu, string level)
         {

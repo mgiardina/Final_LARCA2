@@ -57,10 +57,12 @@ namespace LARCA2.Business.Core
                 }
                 excelReader.Close();
 
+                // JOVI - Agrego la limpieza de los historicos siempre.
+                new SMOScopeBLL().PasarDetallesHistoricos();
                 // Limpiamos los historicos en caso de Proceso Total
-                if (tipoProceso == TipoProceso.Total)
-                {
-                    new SMOScopeBLL().PasarDetallesHistoricos();
+                /*if (tipoProceso == TipoProceso.Total)
+                {*/
+                    //new SMOScopeBLL().PasarDetallesHistoricos();
                     var lista = new SMOScopeBLL().Todos();
                     foreach (var smo in lista)
                     {
@@ -85,9 +87,10 @@ namespace LARCA2.Business.Core
                         newSmo.historic = true;
                         newSmo.clone = smo.clone;
                         newSmo.GroupId = smo.GroupId;
+                        newSmo.top_news = smo.top_news;
                         new SMOScopeBLL().PasarHistorico(newSmo);
                     }
-                }
+                /*}*/
 
                 var pp = "0.0";
                 // Recorro la lista generada
@@ -148,7 +151,7 @@ namespace LARCA2.Business.Core
                             smoDetail.grouped = false;
 
                             var detailService = new SMOScopeDetailBLL();
-                            if (tipoProceso == TipoProceso.Parcial)
+                            /*if (tipoProceso == TipoProceso.Parcial)
                             {
                                 var dias = -new ApplicationDataBLL().TraerDias();
                                 var dateDesde = DateTime.Now.AddDays(-7);
@@ -158,7 +161,9 @@ namespace LARCA2.Business.Core
                             else
                             {
                                 detailService.Guardar(smoDetail);
-                            }
+                            }*/
+
+                            detailService.Guardar(smoDetail);
                         }
                         catch (Exception ex)
                         {
@@ -171,7 +176,7 @@ namespace LARCA2.Business.Core
 
                 if (tipoProceso == TipoProceso.Total)
                 {
-                    if (RealizarCalculosTotal(new SMOScopeDetailBLL().Todos()))
+                    if (RealizarCalculosTotal(new SMOScopeDetailBLL().Todos(),tipoProceso))
                     {
                         try
                         {
@@ -196,11 +201,12 @@ namespace LARCA2.Business.Core
                 }
                 else
                 {
-                    if (RealizarCalculosParcial(new SMOScopeDetailBLL().Todos()))
+                    //if (RealizarCalculosParcial(new SMOScopeDetailBLL().Todos()))
+                    if (RealizarCalculosTotal(new SMOScopeDetailBLL().Todos(),tipoProceso))
                     {
                         try
                         {
-                            new MailingCore().EnviarAlertaAnalysisDisponible_Admin();
+                            //new MailingCore().EnviarAlertaAnalysisDisponible_Admin();
                         }
                         catch
                         {
@@ -226,6 +232,161 @@ namespace LARCA2.Business.Core
                 // Loggear Error
                 new MailingCore().EnviarAlertaErrorEnCarga();
             }
+
+
+            /* INIT JOVI - MARCAR TOPS*/
+            if (tipoProceso == TipoProceso.Total)
+                {
+            List<LARCA20_SmoScope> result = new List<LARCA20_SmoScope>();
+            List<LARCA20_SmoScope> result_test = new List<LARCA20_SmoScope>();
+            List<LARCA20_SmoScope> result_aux_smo = new List<LARCA20_SmoScope>();
+            List<LARCA20_SmoScope> result_aux_bu = new List<LARCA20_SmoScope>();
+            List<LARCA20_SmoScopeDetail> lista_tops_level2 = new List<LARCA20_SmoScopeDetail>();
+            //result = result.Where(x => x.deleted == false && x.date >= siev).ToList();
+            MasterDataBLL smo_list = new MasterDataBLL();
+            MasterDataBLL bu_list = new MasterDataBLL();
+            var toplvl3 = new ApplicationDataBLL().TraerTopLvl3();
+            var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+
+            decimal volumen;
+            decimal vol;
+
+
+
+            foreach (var smo_var in smo_list.Todos().Where(x => x.Data == "SMO").ToList())
+            {
+                result_aux_smo.AddRange(new SMOScopeBLL().Todos().Where(x => x.deleted == false && x.RefIdSMO == smo_var.id && x.clone != true && x.historic != true).ToList());
+            }
+
+            var result_aux_s = result_aux_smo.GroupBy(p => p.RefIdSMO).ToList();
+
+            var tops_smo = traer_tops_level2(1);
+
+            foreach (var item in result_aux_s)
+            {
+                var result_aux = item.Where(i => i.RefIdSMO == item.Key).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
+
+                foreach (var subitem in result_aux)
+                {
+
+                    if (tops_smo.Exists(p => p.level == subitem.Key.ToString() && p.smo == item.Key))
+                    {
+                        volumen = tops_smo.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.smo == item.Key).volumen;
+
+
+
+                        vol = 0;
+                        int cant = 0;
+                        foreach (var item_list in subitem.OrderByDescending(p => p.Volumen).ToList())
+                        {
+                            cant++;
+                            if (cant == 1)
+                            {
+                                result_test.Add(item_list);
+                                vol = vol + Convert.ToDecimal(item_list.Volumen);
+                            }
+
+                            else
+                            {
+                                if ((vol * 100 / volumen <= 80))
+                                {
+                                    result_test.Add(item_list);
+                                    vol = vol + Convert.ToDecimal(item_list.Volumen);
+                                }
+                            }
+                        }
+                        result.AddRange(result_test.OrderByDescending(s => s.Volumen).Take(toplvl3).ToList());
+                        result_test.Clear();
+                    }
+                }
+            }
+
+
+
+
+            foreach (var bu_var in smo_list.Todos().Where(x => x.Data == "BU").ToList())
+            {
+                result_aux_bu.AddRange(new SMOScopeBLL().Todos().Where(x => x.deleted == false && x.RefIdBU == bu_var.id && x.clone != true && x.historic != true).ToList().ToList());
+            }
+
+            var result_aux_b = result_aux_bu.GroupBy(p => p.MasterBU.DataFin).ToList();
+
+
+            var tops_bu = traer_tops_level2(2);
+
+            foreach (var item in result_aux_b)
+            {
+                var result_aux = item.Where(i => i.MasterBU.DataFin == item.Key.ToString()).GroupBy(p => p.MasterLvl.Code.Split(Convert.ToChar("."))[0] + "." + p.MasterLvl.Code.Split(Convert.ToChar("."))[1]).ToList();
+
+                foreach (var subitem in result_aux)
+                {
+
+                    if (tops_bu.Exists(p => p.level == subitem.Key.ToString() && p.bu == item.Key.ToString()))
+                    {
+                        //volumen = tops_bu.SingleOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+                        volumen = tops_bu.FirstOrDefault(t => t.level == subitem.Key.ToString() && t.bu == item.Key.ToString()).volumen;
+
+
+
+                        vol = 0;
+                        int cant = 0;
+                        foreach (var item_list in subitem.OrderByDescending(p => p.Volumen).ToList())
+                        {
+                            cant++;
+                            if (cant == 1)
+                            {
+                                result_test.Add(item_list);
+                                vol = vol + Convert.ToDecimal(item_list.Volumen);
+                            }
+
+                            else
+                            {
+                                if ((vol * 100 / volumen <= 80))
+                                {
+                                    result_test.Add(item_list);
+                                    vol = vol + Convert.ToDecimal(item_list.Volumen);
+                                }
+                            }
+                        }
+                        result.AddRange(result_test.OrderByDescending(s => s.Volumen).Take(toplvl3).ToList());
+                        result_test.Clear();
+                    }
+                }
+            }
+
+
+            foreach (var smo in result)
+            {           
+                        var newSmo = new LARCA20_SmoScope();
+                        newSmo.SmoScopeID = smo.SmoScopeID;
+                        newSmo.date = smo.date;
+                        newSmo.RefIdSMO = smo.RefIdSMO;
+                        newSmo.RefIdOwner = smo.RefIdOwner;
+                        newSmo.RefIdBU = smo.RefIdBU;
+                        newSmo.RefIdRC = smo.RefIdRC;
+                        newSmo.Volumen = smo.Volumen;
+                        newSmo.Problem = smo.Problem;
+                        newSmo.Why1 = smo.Why1;
+                        newSmo.Why2 = smo.Why2;
+                        newSmo.Why3 = smo.Why3;
+                        newSmo.ActionPlan = smo.ActionPlan;
+                        newSmo.RefIdResponsable = smo.RefIdResponsable;
+                        newSmo.DueDate = smo.DueDate;
+                        newSmo.O_C = smo.O_C;
+                        newSmo.deleted = smo.deleted;
+                        newSmo.Level4 = smo.Level4;
+                        newSmo.historic = smo.historic;
+                        newSmo.clone = smo.clone;
+                        newSmo.GroupId = smo.GroupId;
+                        newSmo.top_news = true;
+                        new SMOScopeBLL().PasarHistorico(newSmo);
+
+                
+            }
+                }
+            
+            /* FIN JOVI - MARCAR TOPS*/
+            
             return list;
         }
 
@@ -534,7 +695,7 @@ namespace LARCA2.Business.Core
         /// Calculo de TOP N por SMO y BU
         /// </summary>
         /// <param name="details"></param>
-        private bool RealizarCalculosTotal(List<LARCA20_SmoScopeDetail> details)
+        private bool RealizarCalculosTotal(List<LARCA20_SmoScopeDetail> details, TipoProceso tipoProceso)
         {
             try
             {
@@ -560,7 +721,7 @@ namespace LARCA2.Business.Core
                             {
                                 lastWeekFlag = true;
 
-                                LARCA20_SmoScope itemSemAnterior = new SMOScopeBLL().HistoricosSemana().First(x => (x.clone == null || x.clone != true) && x.RefIdBU == smoScope.RefIdBU && x.RefIdSMO == smoScope.RefIdSMO && x.RefIdRC == smoScope.RefIdRC && x.RefIdOwner == smoScope.RefIdOwner);
+                                LARCA20_SmoScope itemSemAnterior = new SMOScopeBLL().HistoricosSemana().Last(x => (x.clone == null || x.clone != true) && x.RefIdBU == smoScope.RefIdBU && x.RefIdSMO == smoScope.RefIdSMO && x.RefIdRC == smoScope.RefIdRC && x.RefIdOwner == smoScope.RefIdOwner);
                                 smoScope.Problem = itemSemAnterior.Problem;
                                 smoScope.Why1 = itemSemAnterior.Why1;
                                 smoScope.Why2 = itemSemAnterior.Why2;
@@ -571,6 +732,8 @@ namespace LARCA2.Business.Core
                                 smoScope.RefIdResponsable = itemSemAnterior.RefIdResponsable;
                                 smoScope.historic = false;
                                 smoScope.Level4 = itemSemAnterior.Level4;
+                                smoScope.partial = false;
+                                smoScope.top_news = itemSemAnterior.top_news;
 
                                 //ahora veo si tiene clones y los copio 
                                 List<LARCA20_SmoScope> chequeo = new SMOScopeBLL().HistoricosSemana();
@@ -616,6 +779,15 @@ namespace LARCA2.Business.Core
                             smoScope.O_C = "O";
                             smoScope.deleted = false;
                             smoScope.historic = false;
+
+                            if (tipoProceso == TipoProceso.Total)
+                            {
+                                smoScope.partial = false;
+                            }
+                            else
+                            {
+                                smoScope.partial = true;
+                            }
                             }
                             
                             var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
@@ -624,8 +796,8 @@ namespace LARCA2.Business.Core
                 }
 
                 if (lastWeekFlag == true) //si hubo registros de la semana pasada tengo que corroborar si se copiaron todos los smo de los grupos que habian.
-                {
-                    List<LARCA20_SmoScope> lastWeekRegs = new SMOScopeBLL().HistoricosSemana().Where(x => x.date <= (DateTime.Today.AddDays(-1))).ToList();
+                {  //.AddDays(-1)
+                    List<LARCA20_SmoScope> lastWeekRegs = new SMOScopeBLL().HistoricosSemana().Where(x => x.date <= (DateTime.Today.AddDays(1))).ToList();
                     List<string> groupsFound = new List<string>();
                     List<int> groupAmounts = new List<int>();
                     foreach(LARCA20_SmoScope reg in lastWeekRegs)
@@ -720,6 +892,8 @@ namespace LARCA2.Business.Core
                             smoScope.O_C = "O";
                             smoScope.deleted = false;
                             smoScope.historic = false;
+                            smoScope.partial = true;
+
                             var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
                         }
                     }
@@ -779,6 +953,117 @@ namespace LARCA2.Business.Core
                     var smoService = new SMOScopeBLL().Guardar(smoScope, subitem.Detalles);
                 }
             }
+        }
+
+        public decimal traerVolumenSMO(long? smo, string level)
+        {
+
+            SMOScopeBLL volumen = new SMOScopeBLL();
+            
+            var test = volumen.SMOScopesDAL.calcular_volumenes(1, "", smo, level);
+            return test;
+        }
+
+        public decimal traerVolumenBU(string bu, string level)
+        {
+            SMOScopeBLL volumen = new SMOScopeBLL();
+            var test = volumen.SMOScopesDAL.calcular_volumenes(2, bu, 0, level);
+            return test;
+        }
+
+        public List<temp_object> traer_tops_level2(int tipo)
+        {
+            List<temp_object> historico = new List<temp_object>();
+
+            if (tipo == 1)
+            {
+                RCClassificationBLL lista_level2 = new RCClassificationBLL();
+                var listanivel = lista_level2.TodosXLevel("2");
+
+                MasterDataBLL lista_smo_dal = new MasterDataBLL();
+                var listasmo = lista_smo_dal.TodosFiltro(string.Empty, string.Empty, "SMO");
+
+                foreach (var item in listasmo)
+                {
+                    List<temp_object> historico_aux = new List<temp_object>();
+                    foreach (var subitem in listanivel)
+                    {
+                        temp_object temp_object_aux = new temp_object();
+                        temp_object_aux.level = subitem.Code;
+
+                        temp_object_aux.volumen = traerVolumenSMO(item.id, subitem.Code);
+                        temp_object_aux.smo = item.id;
+                        historico_aux.Add(temp_object_aux);
+                    }
+                    var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                    historico.AddRange(historico_aux.OrderByDescending(p => p.volumen).Take(toplvl2).ToList());
+
+                }
+                //var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                List<temp_object> result_list = historico.ToList();
+
+
+                return result_list;
+            }
+            else
+            {
+                RCClassificationBLL lista_level2 = new RCClassificationBLL();
+                var listanivel = lista_level2.TodosXLevel("2");
+
+                MasterDataBLL lista_smo_dal = new MasterDataBLL();
+                var listasmo = lista_smo_dal.TodosFiltro(string.Empty, string.Empty, "BU");
+
+                /*foreach (var item in listanivel)
+                {
+                    List<temp_object> historico_aux = new List<temp_object>();
+                    foreach (var subitem in listasmo)
+                    {
+                        temp_object temp_object_aux = new temp_object();
+                        temp_object_aux.level = item.Code;
+
+                        temp_object_aux.volumen = traerVolumenBU(subitem.DataFin.ToString(), item.Code);
+
+                        temp_object_aux.bu = subitem.DataFin;
+
+                        if (historico_aux.Exists(p => p.bu == temp_object_aux.bu) != true)
+                            {
+                        historico_aux.Add(temp_object_aux);
+                            }
+                    }
+
+                    var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                    historico.AddRange(historico_aux.OrderByDescending(p => p.volumen).Take(toplvl2).ToList());
+                }*/
+
+                //foreach (var item in listanivel)
+                foreach (var subitem in listasmo)
+                {
+                    List<temp_object> historico_aux = new List<temp_object>();
+                    //foreach (var subitem in listasmo)
+                    foreach (var item in listanivel)
+                    {
+                        temp_object temp_object_aux = new temp_object();
+                        temp_object_aux.level = item.Code;
+
+                        temp_object_aux.volumen = traerVolumenBU(subitem.DataFin.ToString(), item.Code);
+
+                        temp_object_aux.bu = subitem.DataFin;
+
+                        //if (historico_aux.Exists(p => p.bu == temp_object_aux.bu ) != true)
+                        //{
+                        historico_aux.Add(temp_object_aux);
+                        //}
+                    }
+
+                    var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+                    historico.AddRange(historico_aux.OrderByDescending(p => p.volumen).Take(toplvl2).ToList());
+                }
+
+                List<temp_object> result_list = historico.ToList();
+                return result_list;
+
+            }
+
         }
 
     }

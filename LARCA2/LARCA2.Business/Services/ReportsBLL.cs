@@ -23,8 +23,13 @@ namespace LARCA2.Business.Services
 
         public List<ReportRow> LARCANews(string smoFin, string buFin, string regionId)
         {
+            var permisos = new List<LARCA20_UsersRoles>();
             var lista = new List<ReportRow>();
             var toplvl2 = new ApplicationDataBLL().TraerTopLvl2();
+
+            var lista22 = new LARCA2.Data.Services.UserOwnerDAL();
+            var permisostodos = lista22.Todos();
+
             if (smoFin.Length > 0)
             {
                 
@@ -55,13 +60,13 @@ namespace LARCA2.Business.Services
                             RBU = subitem.MasterBU.DataFin,
                             CUT = subitem.MasterLvl.Description,
                             VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
-                            PROBLEM = CheckProblem(subitem.Problem, subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner),
+                            PROBLEM = CheckProblem(subitem.Problem, subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner, subitem.partial,subitem.top_news),
                             WHY1 = subitem.Why1,
                             WHY2 = subitem.Why2,
                             WHY3 = subitem.Why3,
                             ACTIONPLAN = subitem.ActionPlan,
-                            RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
                             LEVEL4 = "",
+                            RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Responsable_user.user_name : string.Empty,
                             GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
                         };
 
@@ -74,7 +79,27 @@ namespace LARCA2.Business.Services
                             detailRow.LEVEL4 = "";
                             
                         }
+
+                        try
+                        {
+
                         
+                        if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin))
+                        {
+                            var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin).ToList().First();
+                            detailRow.GAPANALYSIS = usuario.LARCA20_Users.user_name;                            
+                        }
+                        else
+                        {
+                            detailRow.GAPANALYSIS = "";
+                        }
+
+                        }
+                        catch (Exception)
+                        {
+
+                            detailRow.GAPANALYSIS = "";
+                        }
 
                         //////
                         Boolean paso = false;
@@ -115,7 +140,7 @@ namespace LARCA2.Business.Services
                                     WHY2 = clon.Why2,
                                     WHY3 = clon.Why3,
                                     ACTIONPLAN = clon.ActionPlan,
-                                    RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Name.ToString() : string.Empty,
+                                    RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Responsable_user.user_name : string.Empty,
                                     //LEVEL4 = clon.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(clon.Level4)).name : string.Empty,
                                     LEVEL4 = "",
                                     GAP = string.Empty
@@ -130,6 +155,29 @@ namespace LARCA2.Business.Services
                             detail.LEVEL4 = "";
                             
                         }
+
+
+                                                    try
+                                                    {
+
+
+                                                        if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == clon.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == clon.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == clon.MasterOwner.DataFin))
+                                                        {
+                                                            var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin).ToList().First();
+                                                            detail.GAPANALYSIS = usuario.LARCA20_Users.user_name;
+                                                        }
+                                                        else
+                                                        {
+                                                            detail.GAPANALYSIS = "";
+                                                        }
+
+                                                    }
+                                                    catch (Exception)
+                                                    {
+
+                                                        detail.GAPANALYSIS = "";
+                                                    }
+
                                 row.Details.Add(detail);
                             }
                         }
@@ -169,13 +217,14 @@ namespace LARCA2.Business.Services
                             string RBUt = subitem.MasterBU.DataFin;
                             string CUTt = subitem.MasterLvl.Description;
                             string VOLUMEt = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString();
-                            string PROBLEMt = CheckProblem(subitem.Problem, subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner);
+                            string PROBLEMt = CheckProblem(subitem.Problem, subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner, subitem.partial, subitem.top_news);
                             string WHY1t = subitem.Why1;
                             string WHY2t = subitem.Why2;
                             string WHY3t = subitem.Why3;
                             string ACTIONPLANt = subitem.ActionPlan;
-                            string RESPONSIBLEt = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty;
+                            string RESPONSIBLEt = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Responsable_user.user_name : string.Empty;
                             string LEVEL4t = "";
+                            string GAPANALYSIS;
                             try
                             {
                                  LEVEL4t = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty;
@@ -184,6 +233,27 @@ namespace LARCA2.Business.Services
                             {
 
                                 LEVEL4t = "";
+                            }
+
+                            try
+                            {
+
+
+                                if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin))
+                                {
+                                    var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin).ToList().First();
+                                    GAPANALYSIS = usuario.LARCA20_Users.user_name;
+                                }
+                                else
+                                {
+                                    GAPANALYSIS = "";
+                                }
+
+                            }
+                            catch (Exception)
+                            {
+
+                                GAPANALYSIS = "";
                             }
                             
                             string GAPt = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %";
@@ -202,7 +272,8 @@ namespace LARCA2.Business.Services
                                 ACTIONPLAN = ACTIONPLANt,
                                 RESPONSIBLE = RESPONSIBLEt,
                                 LEVEL4 = LEVEL4t,
-                                GAP=GAPt
+                                GAP=GAPt,
+                                GAPANALYSIS = GAPANALYSIS
 
                                 /*
                                 SMO = subitem.MasterSMO.DataFin,
@@ -258,7 +329,7 @@ namespace LARCA2.Business.Services
                                             WHY2 = clon.Why2,
                                             WHY3 = clon.Why3,
                                             ACTIONPLAN = clon.ActionPlan,
-                                            RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Name.ToString() : string.Empty,
+                                            RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Responsable_user.user_name : string.Empty,
                                             //LEVEL4 = clon.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(clon.Level4)).name : string.Empty,
                                             LEVEL4 = "",
                                             GAP = string.Empty
@@ -273,6 +344,28 @@ namespace LARCA2.Business.Services
                                             detail.LEVEL4 = "";
 
                                         }
+
+                                        try
+                                        {
+
+
+                                        if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == clon.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == clon.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == clon.MasterOwner.DataFin))
+                                            {
+                                                var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == clon.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == clon.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == clon.MasterOwner.DataFin).ToList().First();
+                                                detail.GAPANALYSIS = usuario.LARCA20_Users.user_name;
+                                            }
+                                            else
+                                            {
+                                                detail.GAPANALYSIS = "";
+                                            }
+
+                                        }
+                                        catch (Exception)
+                                        {
+
+                                            detail.GAPANALYSIS = "";
+                                        }
+
                                         row.Details.Add(detail);
                                     }
                                 }
@@ -316,12 +409,12 @@ namespace LARCA2.Business.Services
                                     RBU = subitem.MasterBU.DataFin,
                                     CUT = subitem.MasterLvl.Description,
                                     VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
-                                    PROBLEM = CheckProblem(subitem.Problem,subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner),
+                                    PROBLEM = CheckProblem(subitem.Problem,subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner, subitem.partial, subitem.top_news),
                                     WHY1 = subitem.Why1,
                                     WHY2 = subitem.Why2,
                                     WHY3 = subitem.Why3,
                                     ACTIONPLAN = subitem.ActionPlan,
-                                    RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                    RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Responsable_user.user_name : string.Empty,
                                     //LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
                                     LEVEL4 = "",
                                     GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
@@ -335,6 +428,27 @@ namespace LARCA2.Business.Services
                                 {
                                     detailRow.LEVEL4 = "";
 
+                                }
+
+                                try
+                                {
+
+
+                                    if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin))
+                                    {
+                                        var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin).ToList().First();
+                                        detailRow.GAPANALYSIS = usuario.LARCA20_Users.user_name;
+                                    }
+                                    else
+                                    {
+                                        detailRow.GAPANALYSIS = "";
+                                    }
+
+                                }
+                                catch (Exception)
+                                {
+
+                                    detailRow.GAPANALYSIS = "";
                                 }
 
                                 Boolean paso = false;
@@ -376,7 +490,7 @@ namespace LARCA2.Business.Services
                                                 WHY2 = clon.Why2,
                                                 WHY3 = clon.Why3,
                                                 ACTIONPLAN = clon.ActionPlan,
-                                                RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Name.ToString() : string.Empty,
+                                                RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Responsable_user.user_name : string.Empty,
                                                 //LEVEL4 = clon.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(clon.Level4)).name : string.Empty,
                                                 LEVEL4 = "",
                                                 GAP = string.Empty
@@ -390,6 +504,28 @@ namespace LARCA2.Business.Services
                                                 detail.LEVEL4 = "";
 
                                             }
+
+                                            try
+                                            {
+
+
+                                                if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == clon.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == clon.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == clon.MasterOwner.DataFin))
+                                                {
+                                                    var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == clon.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == clon.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == clon.MasterOwner.DataFin).ToList().First();
+                                                    detailRow.GAPANALYSIS = usuario.LARCA20_Users.user_name;
+                                                }
+                                                else
+                                                {
+                                                    detailRow.GAPANALYSIS = "";
+                                                }
+
+                                            }
+                                            catch (Exception)
+                                            {
+
+                                                detailRow.GAPANALYSIS = "";
+                                            }
+                                            
                                             row.Details.Add(detail);
                                         }
                                     }
@@ -429,12 +565,12 @@ namespace LARCA2.Business.Services
                                         RBU = subitem.MasterBU.DataFin,
                                         CUT = subitem.MasterLvl.Description,
                                         VOLUME = (Math.Round(decimal.Parse(subitem.Volumen.ToString()), 2)).ToString(),
-                                        PROBLEM = CheckProblem(subitem.Problem, subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner),
+                                        PROBLEM = CheckProblem(subitem.Problem, subitem.ActionPlan, subitem.RefIdBU, subitem.RefIdSMO, subitem.RefIdOwner, subitem.partial, subitem.top_news),
                                         WHY1 = subitem.Why1,
                                         WHY2 = subitem.Why2,
                                         WHY3 = subitem.Why3,
                                         ACTIONPLAN = subitem.ActionPlan,
-                                        RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Name.ToString() : string.Empty,
+                                        RESPONSIBLE = subitem.ResponsableSmo != null ? subitem.ResponsableSmo.Responsable_user.user_name : string.Empty,
                                         //LEVEL4 = subitem.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(subitem.Level4)).name : string.Empty,
                                         LEVEL4 = "",
                                         GAP = Math.Round(Convert.ToDecimal(subitem.Volumen) * 100 / volumen, 2).ToString() + " %"
@@ -450,6 +586,27 @@ namespace LARCA2.Business.Services
 
                                     }
 
+                                    try
+                                    {
+
+
+                                        if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin))
+                                        {
+                                            var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == subitem.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == subitem.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == subitem.MasterOwner.DataFin).ToList().First();
+                                            detailRow.GAPANALYSIS = usuario.LARCA20_Users.user_name;
+                                        }
+                                        else
+                                        {
+                                            detailRow.GAPANALYSIS = "";
+                                        }
+
+                                    }
+                                    catch (Exception)
+                                    {
+
+                                        detailRow.GAPANALYSIS = "";
+                                    }
+                                    
                                     Boolean paso = false;
                                     if (i == 1)
                                     {
@@ -489,7 +646,7 @@ namespace LARCA2.Business.Services
                                                     WHY2 = clon.Why2,
                                                     WHY3 = clon.Why3,
                                                     ACTIONPLAN = clon.ActionPlan,
-                                                    RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Name.ToString() : string.Empty,
+                                                    RESPONSIBLE = clon.ResponsableSmo != null ? clon.ResponsableSmo.Responsable_user.user_name : string.Empty,
                                                     //LEVEL4 = clon.Level4 != null ? new Level4BLL().Traer(Convert.ToInt64(clon.Level4)).name : string.Empty,
                                                     LEVEL4 = "",
                                                     GAP = string.Empty
@@ -503,6 +660,28 @@ namespace LARCA2.Business.Services
                                                     detail.LEVEL4 = "";
 
                                                 }
+
+                                                try
+                                                {
+
+
+                                                    if (permisostodos.Exists(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == clon.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == clon.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == clon.MasterOwner.DataFin))
+                                                    {
+                                                        var usuario = permisostodos.Where(t => t.FK_LARCA20_User_Owner_LARCA20_MasterData_BU.DataFin == clon.MasterBU.DataFin && t.LARCA20_MasterData2.DataFin == clon.MasterSMO.DataFin && t.LARCA20_MasterData1.DataFin == clon.MasterOwner.DataFin).ToList().First();
+                                                        detailRow.GAPANALYSIS = usuario.LARCA20_Users.user_name;
+                                                    }
+                                                    else
+                                                    {
+                                                        detailRow.GAPANALYSIS = "";
+                                                    }
+
+                                                }
+                                                catch (Exception)
+                                                {
+
+                                                    detailRow.GAPANALYSIS = "";
+                                                }                                                
+                                                
                                                 row.Details.Add(detail);
                                             }
                                         }
@@ -515,14 +694,28 @@ namespace LARCA2.Business.Services
             return lista.OrderByDescending(i => Convert.ToDecimal(i.VOLUME)).Take(toplvl2).ToList();
         }
 
-        private string CheckProblem(string problem, string action_plan, long? bu, long? smo, long? owner)
+        private string CheckProblem(string problem, string action_plan, long? bu, long? smo, long? owner, bool? partial, bool? top)
         {
+
+            /*
             if (problem != null && action_plan != null && action_plan != "" && problem != "")
             {
                 return problem;
             }
             else
+            {   
+
+
+                 if (partial == true)
             {
+                return "Cut under analysis due to its appearance outside of scope (between Monday and Tuesday), analysis due next week";
+            }
+
+            else
+	        {
+
+	
+               if  (top == true){
                 var user = new UserOwnerBLL().UserPermisoCheck(bu, smo, owner);
                 if (user.Id > 0)
                 {
@@ -532,7 +725,61 @@ namespace LARCA2.Business.Services
                 {
                     return "Analysis pending by user";
                 }
+               }
+               else
+               {
+                   return "Cut under analysis due to its appearance outside of scope (between Monday and Tuesday), analysis due next week";
+               }
             }
+            }
+           
+            */
+
+            if (problem != null && action_plan != null && action_plan != "" && problem != "")
+            {
+                return problem;
+            }
+
+            if (partial == true)
+            {
+                return "Cut under analysis due to its appearance outside of scope (between Monday and Tuesday), analysis due next week";
+            }
+
+           if  (top == true){
+                var user = new UserOwnerBLL().UserPermisoCheck(bu, smo, owner);
+                if (user.Id > 0)
+                {
+                    return "Analysis pending by " + user.user_name;
+                }
+                else
+                {
+                    return "Analysis pending by user";
+                }
+
+                
+           }
+           else
+           {
+               /*   if (partial == true)
+                      {
+                          return "Cut under analysis due to its appearance outside of scope (between Monday and Tuesday), analysis due next week";
+                      }
+               
+                  var user = new UserOwnerBLL().UserPermisoCheck(bu, smo, owner);
+                  if (user.Id > 0)
+                  {
+                      return "Analysis pending by " + user.user_name;
+                  }
+                  else
+                  {
+                      return "Analysis pending by user";
+                  }
+                */
+               return "Cut under analysis due to its appearance outside of scope (between Monday and Tuesday), analysis due next week";
+           }
+
+           
+
         }
 
         public List<ReportRow> LARCANews(string regionId, List<LARCA20_User_Owner> permisos)

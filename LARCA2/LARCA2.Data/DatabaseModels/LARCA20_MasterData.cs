@@ -20,13 +20,13 @@ namespace LARCA2.Data.DatabaseModels
             this.LARCA20_User_Owner = new HashSet<LARCA20_User_Owner>();
             this.LARCA20_User_Owner1 = new HashSet<LARCA20_User_Owner>();
             this.LARCA20_User_Owner2 = new HashSet<LARCA20_User_Owner>();
-            this.LARCA20_SmoScope = new HashSet<LARCA20_SmoScope>();
             this.LARCA20_SmoScopeDetail = new HashSet<LARCA20_SmoScopeDetail>();
-            this.LARCA20_SmoScope1 = new HashSet<LARCA20_SmoScope>();
             this.LARCA20_SmoScopeDetail1 = new HashSet<LARCA20_SmoScopeDetail>();
             this.LARCA20_SmoScopeDetail2 = new HashSet<LARCA20_SmoScopeDetail>();
-            this.LARCA20_SmoScope2 = new HashSet<LARCA20_SmoScope>();
             this.LARCA20_SmoScopeDetail3 = new HashSet<LARCA20_SmoScopeDetail>();
+            this.LARCA20_SmoScope = new HashSet<LARCA20_SmoScope>();
+            this.LARCA20_SmoScope1 = new HashSet<LARCA20_SmoScope>();
+            this.LARCA20_SmoScope2 = new HashSet<LARCA20_SmoScope>();
         }
     
         public long id { get; set; }
@@ -41,12 +41,12 @@ namespace LARCA2.Data.DatabaseModels
         public virtual ICollection<LARCA20_User_Owner> LARCA20_User_Owner { get; set; }
         public virtual ICollection<LARCA20_User_Owner> LARCA20_User_Owner1 { get; set; }
         public virtual ICollection<LARCA20_User_Owner> LARCA20_User_Owner2 { get; set; }
-        public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
         public virtual ICollection<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail { get; set; }
-        public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope1 { get; set; }
         public virtual ICollection<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail1 { get; set; }
         public virtual ICollection<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail2 { get; set; }
-        public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope2 { get; set; }
         public virtual ICollection<LARCA20_SmoScopeDetail> LARCA20_SmoScopeDetail3 { get; set; }
+        public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope { get; set; }
+        public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope1 { get; set; }
+        public virtual ICollection<LARCA20_SmoScope> LARCA20_SmoScope2 { get; set; }
     }
 }

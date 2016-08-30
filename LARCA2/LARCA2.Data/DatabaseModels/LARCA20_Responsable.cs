@@ -26,6 +26,7 @@ namespace LARCA2.Data.DatabaseModels
         public Nullable<int> RefIdUser { get; set; }
         public bool deleted { get; set; }
     
+        public virtual LARCA20_Users Responsable_user { get; set; }
         public virtual ICollection<LARCA20_SmoScope> ResponsableSmo { get; set; }
     }
 }
