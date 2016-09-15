@@ -29,20 +29,20 @@ namespace Larca2.Views.ViewModels
             BUList.Add(new SelectListItem { Text = "Select RBU", Value = "0", Selected = true });
             SMOList.Add(new SelectListItem { Text = "Select SMO", Value = "0", Selected = true });
 
-            foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MasterDataBLL.Todos().Where(x => x.Data == "BU").ToList())
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MasterDataBLL.Todos().Where(x => x.Data == "BU" && x.deleted != true).ToList())
             {
                 if (md.DataFin.Length > 0)
                     if (!BUList.Exists(m => m.Text == md.DataFin.ToString()))
                         BUList.Add(new SelectListItem { Text = md.DataFin, Value = md.DataFin });
             }
 
-            foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MasterDataBLL.Todos().Where(x => x.Data == "SMO").ToList())
+            foreach (LARCA2.Data.DatabaseModels.LARCA20_MasterData md in MasterDataBLL.Todos().Where(x => x.Data == "SMO" && x.deleted != true).ToList())
             {
-                if (!SMOList.Exists(m => m.Text == md.DataFin.ToString()))
+                if (!SMOList.Exists(m => m.Text == md.DataFin.ToString()) && md.DataFin != "VENEZUELA")
                     SMOList.Add(new SelectListItem { Text = md.DataFin, Value = md.DataFin });
             }
             SMOList.Add(new SelectListItem { Text = "LA", Value = "1" });
-            SMOList.Add(new SelectListItem { Text = "LA WITH EXCEPTIONS", Value = "2" });
+
             var user = (LARCA20_Users)HttpContext.Current.Session["Usuario"];
             if (user == null)
                 user = new UsuariosBLL().Traer(2);

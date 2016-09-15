@@ -157,10 +157,19 @@
                                     <td width="20%" align="center">
                                         <label>
                                             @{
+                                            LARCA2.Data.DatabaseModels.LARCA20_MasterData aux = new LARCA2.Data.DatabaseModels.LARCA20_MasterData();
+                                            LARCA2.Business.Services.MasterDataBLL aux2 = new LARCA2.Business.Services.MasterDataBLL();
+                                            var lista = aux2.Todos().Where(x => x.deleted != true && x.Data == "OWNER");
                                             List<SelectListItem> roleList = new List<SelectListItem>();
                                             roleList.Add(new SelectListItem() { Value = "0", Text = "Choose Role", Selected = true });
-                                            roleList.Add(new SelectListItem() { Value = "DRP", Text = "DRP", Selected = false });
-                                            roleList.Add(new SelectListItem() { Value = "MAL", Text = "MAL", Selected = false });
+                                            foreach (var item in lista)
+                                            {
+                                                roleList.Add(new SelectListItem() { Value = item.DataFin, Text = item.DataFin, Selected = false });    
+                                            }
+                                            
+                                            //roleList.Add(new SelectListItem() { Value = "0", Text = "Choose Role", Selected = true });
+                                            //roleList.Add(new SelectListItem() { Value = "DRP", Text = "DRP", Selected = false });
+                                            //roleList.Add(new SelectListItem() { Value = "MAL", Text = "MAL", Selected = false });
                                             }
                                             @Html.DropDownListFor(Modell => Modell.RcClasificationList[j].Ownership, new SelectList(roleList, "Value", "Text", RcClasification.Ownership), new { @class = "form-control" })
                                         </label>

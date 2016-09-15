@@ -89,6 +89,8 @@ namespace LARCA2.Controllers
                             user.date = DateTime.Now;
                             user.Email = model.Usuario.user_name + "@pg.com";
                             // user.Telefono = model.Usuario.Telefono;
+                            user.telephone = string.Empty;
+                            user.pass = string.Empty;
                             user.user_name = model.Usuario.user_name;
 
                             repo.Guardar(user);
@@ -291,8 +293,15 @@ namespace LARCA2.Controllers
                                 {
                                     repUserOW.Eliminar(fila.Id);
                                 }
+                              
+                                if (user.deleted == false)
+                                {
                                 foreach (string iUs in LosPermisos)
                                 {
+                                    if (iUs != "" && iUs != null)
+                                    {
+                                        
+                                    
                                     Data.DatabaseModels.LARCA20_User_Owner userOW = new Data.DatabaseModels.LARCA20_User_Owner();
                                     string[] PerEsp = iUs.Split('.');
 
@@ -339,8 +348,9 @@ namespace LARCA2.Controllers
                                         userOW.deleted = false;
                                         repUserOW.Guardar(userOW);
                                     }
+                                    }
 
-
+                                }
                                 }
                                 return Content("<script language='javascript' type='text/javascript'>alert('Changes Saved!');document.location = '../Adm/UserBM';</script>");
                             }

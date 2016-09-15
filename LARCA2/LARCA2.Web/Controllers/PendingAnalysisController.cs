@@ -64,7 +64,7 @@ namespace Larca2.Controllers
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
                 {
-                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString(), viewModel.idRole.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                    smoscopeact = ssbll.FiltrarPending(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString(), viewModel.idRole.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();                    
                     if (smoscopeact != null)
                     {
                         viewModel.RegistrosSMO.AddRange(smoscopeact);
@@ -73,8 +73,10 @@ namespace Larca2.Controllers
             }
             else
             {
-                viewModel.RegistrosSMO = ssbll.Filtrar("0", "0", viewModel.idRole.ToString()).ToList();
+                viewModel.RegistrosSMO = ssbll.FiltrarPending("0", "0", viewModel.idRole.ToString()).ToList();
             }
+
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             /*
 
@@ -125,7 +127,68 @@ namespace Larca2.Controllers
 
         public ActionResult Export()
         {
-            var masterData = new SMOScopeBLL().Todos().ToList();
+            var model = new Larca2.Views.ViewModels.SMOScopeViewModel();
+            /*try
+            {
+                ViewData["MasterRows"] = new SMOScopeBLL().Todos().ToList();
+            }
+            catch
+            {
+                ViewData["MasterRows"] = new List<LARCA20_SmoScope>();
+            }*/
+
+            //Declaro BLLs e inicializo viewModel
+            Larca2.Views.ViewModels.SMOScopeViewModel viewModel = new Larca2.Views.ViewModels.SMOScopeViewModel();
+            LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+            LARCA2.Business.Services.UserOwnerBLL uobll = new LARCA2.Business.Services.UserOwnerBLL();
+            LARCA2.Business.Services.SMOScopeBLL ssbll = new LARCA2.Business.Services.SMOScopeBLL();
+
+
+            //Reviso el usuario logueado, sino como prueba traigo al de ID 2
+            LARCA2.Data.DatabaseModels.LARCA20_Users user = (LARCA2.Data.DatabaseModels.LARCA20_Users)Session["Usuario"];
+            if (user == null)
+                user = repoUsuarios.Traer(2);
+
+
+
+            //determino el rol del usuario para entender qué filtros y funcionalidades disponer
+            LARCA2.Business.Services.RolesBLL robll = new LARCA2.Business.Services.RolesBLL();
+            LARCA2.Business.Services.UsuariosRolesBLL urbll = new LARCA2.Business.Services.UsuariosRolesBLL();
+            viewModel.userRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Description;
+            viewModel.idRole = robll.Traer(urbll.Traer(user.Id).RefIdRoles).Id;
+            //Obtengo los registros de User Owner con IdUser igual al del usuario logueado
+            List<LARCA2.Data.DatabaseModels.LARCA20_User_Owner> luo = uobll.TraerPorIdUsuario(user.Id);
+
+
+            // Quito de la lista de SMO y BU de los filtros aquellos no contemplados por un registro existente de UserOwner para el usuario logueado
+            //    viewModel.SMOList = viewModel.SMOList.Where(x => luo.Exists(y => y.IdSmo.ToString() == x.Value) || x.Value == "0").ToList();
+            //    viewModel.BUList = viewModel.BUList.Where(x => luo.Exists(y => y.IdBU.ToString() == x.Value) || x.Value == "0").ToList();
+
+            //Filtro los registros de la tabla SmoScope en función del rol y los permisos para cada uno
+            //Aquellos cuyos RefIdSMO, RefIdBU, y RefIdOwner coinciden con los de un registro de la tabla UserOwner para el usuario logueado, permanecen
+            //Con que algunos de los campos en cuestion difiera, el registro de SmoScope ya no será mostrado.
+            if (viewModel.idRole != 1 && viewModel.idRole != 3)
+            {
+                List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope> smoscopeact;
+                viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
+                foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
+                {
+                    smoscopeact = ssbll.Filtrar(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString(), viewModel.idRole.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                    if (smoscopeact != null)
+                    {
+                        viewModel.RegistrosSMO.AddRange(smoscopeact);
+                    }
+                }
+            }
+            else
+            {
+                viewModel.RegistrosSMO = ssbll.Filtrar("0", "0", viewModel.idRole.ToString()).ToList();
+            }
+
+            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
+
+            var masterData = viewModel.RegistrosSMO.ToList();
+            //var masterData = new SMOScopeBLL().Todos().ToList();
             var file = new ExcelCore().GenerarExcelPendingAnalysis("LARCA Pending Analysis", masterData);
             DownloadFile(file);
             return Content("<script language='javascript' type='text/javascript'>alert('Exported!');document.location = 'Index';</script>");

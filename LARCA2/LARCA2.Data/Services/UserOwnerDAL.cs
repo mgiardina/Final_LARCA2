@@ -69,7 +69,25 @@ namespace LARCA2.Data.Services
         {
             try
             {
-                return Context.LARCA20_User_Owner.SingleOrDefault(u => u.IdBU == bu && u.IdSmo == smo && u.IdOwner == owner && u.deleted == false).LARCA20_Users;
+                var bu_aux = Context.LARCA20_MasterData.SingleOrDefault(u => u.id == bu);
+                var smo_aux = Context.LARCA20_MasterData.SingleOrDefault(u => u.id == smo);
+                
+                var list_bu = Context.LARCA20_MasterData.Where(u => u.DataFin == bu_aux.DataFin);
+                var list_smo = Context.LARCA20_MasterData.Where(u => u.DataFin == smo_aux.DataFin);
+
+                foreach (var item in list_bu)
+                {
+                    foreach (var subitem in list_smo)
+                    {   
+                        var aux = Context.LARCA20_User_Owner.SingleOrDefault(u => u.IdBU == item.id && u.IdSmo == subitem.id && u.IdOwner == owner && u.deleted == false).LARCA20_Users;
+                        if (aux != null)
+                        {
+                            return aux;
+                        }
+                    }
+                }
+
+                return new LARCA20_Users();
             }
             catch
             {

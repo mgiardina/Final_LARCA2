@@ -512,7 +512,7 @@ namespace Larca2.Controllers
                                 newUser.name = String.Empty;
                                 newUser.last_name = String.Empty;
                                 newUser.pass = String.Empty;
-                                newUser.Email = String.Empty;
+                                newUser.Email = newUser.user_name + "@pg.com";
                                 newUser.telephone = String.Empty;
                                 newUser.date = DateTime.Now;
                                 repoUsuarios.Guardar(newUser);
@@ -1364,7 +1364,8 @@ namespace Larca2.Controllers
                 viewModel.RegistrosSMO = new List<LARCA2.Data.DatabaseModels.LARCA20_SmoScope>();
                 foreach (LARCA2.Data.DatabaseModels.LARCA20_User_Owner actualLuo in luo)
                 {
-                    smoscopeact = ssbll.Filtrar_Dashboard(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString(), viewModel.idRole.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                    //smoscopeact = ssbll.Filtrar_Dashboard(actualLuo.IdBU.ToString(), actualLuo.IdSmo.ToString(), viewModel.idRole.ToString()).Where(x => x.RefIdOwner == actualLuo.IdOwner).ToList();
+                    smoscopeact = ssbll.Todos_completos().Where(x => x.RefIdOwner == actualLuo.IdOwner && x.O_C.ToUpper() == "O" && x.ActionPlan != "" && x.ActionPlan != null).ToList();
                     if (smoscopeact != null)
                     {
                         viewModel.RegistrosSMO.AddRange(smoscopeact);
@@ -1373,7 +1374,8 @@ namespace Larca2.Controllers
             }
             else
             {
-                viewModel.RegistrosSMO = ssbll.Filtrar_Dashboard("0", "0", viewModel.idRole.ToString()).ToList();
+                viewModel.RegistrosSMO = ssbll.Todos_completos().Where(c => c.O_C.ToUpper() == "O" && c.ActionPlan != "" && c.ActionPlan != null).ToList();
+                //viewModel.RegistrosSMO = ssbll.Todos_completos().Where(x => x.RefIdOwner == actualLuo.IdOwner && x.O_C.ToUpper() == "O").ToList(); ssbll.Filtrar_Dashboard("0", "0", viewModel.idRole.ToString()).ToList();
             }
 
 
@@ -1388,12 +1390,12 @@ namespace Larca2.Controllers
             //viewModel.SMOList = viewModel.SMOList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdSMO.ToString() == x.Value) || x.Value == "0").ToList();
             //viewModel.BUList = viewModel.BUList.Where(x => viewModel.RegistrosSMO.Exists(y => y.RefIdBU.ToString() == x.Value) || x.Value == "0").ToList();
 
-            if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
-                viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
+            //if (viewModel.RegistrosSMO.Where(x => x.date.Value.Month == (DateTime.Now.Month - 1)).Count() > 0)
+            //    viewModel.dropdownMeses.Add(new SelectListItem { Text = "Previous Month", Value = "1", Selected = false });
 
-            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
+            //viewModel.RegistrosSMO = viewModel.RegistrosSMO.Where(x => x.date.Value.Month == DateTime.Now.Month).ToList();
 
-            viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
+            //viewModel.RegistrosSMO = viewModel.RegistrosSMO.Distinct().ToList();
 
             //traigo aquellos de los cuales el user es el responsable
             ResponsablesBLL respBLL = new ResponsablesBLL();
@@ -1413,10 +1415,24 @@ namespace Larca2.Controllers
 
             ResponsablesBLL repoResponsables = new ResponsablesBLL();
             viewModel.responsibles = new List<string>();
+
+            var lista_final_aux = viewModel.EditablesSMO.OrderByDescending(z => z.SmoScopeID).ToList();
+            var lista_final = lista_final_aux.ToList();
+            lista_final.Clear();
+
+            foreach (var item in lista_final_aux)
+            {
+                if (!lista_final.Exists(x => x.RefIdRC == item.RefIdRC && x.RefIdSMO == item.RefIdSMO && x.RefIdBU == item.RefIdBU && x.RefIdOwner == item.RefIdOwner && x.ActionPlan == item.ActionPlan))
+                {
+                    lista_final.Add(item);
+                }
+            }
+
+            viewModel.EditablesSMO = lista_final;
             foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope itemstr in viewModel.EditablesSMO)
-
-
                 viewModel.responsibles.Add((itemstr.RefIdResponsable == null ? "" : repoResponsables.TraerSuNombreDeUsuario(itemstr.RefIdResponsable.Value)));
+
+            viewModel.RegistrosSMO = viewModel.EditablesSMO;
 
             return View("Dashboard", viewModel);
 
@@ -1842,6 +1858,7 @@ namespace Larca2.Controllers
                                 newUser.date = DateTime.Now;
                                 newUser.name = String.Empty;
                                 newUser.last_name = String.Empty;
+                                newUser.Email = newUser.user_name + "@pg.com";
                                 repoUsuarios.Guardar(newUser);
                                 //no le creo rol porque no se definió cual poner
                                 
@@ -1925,14 +1942,15 @@ namespace Larca2.Controllers
             }
 
 
-
+            
             int test = 0; //para corroborar cantidad de modificados al finalizar la actualizacion de valores
             //    foreach (LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope in viewModel.EditablesSMO)
+            
             for (int countModif = 0; countModif < viewModel.EditablesSMO.Count; countModif++)
             {
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope scope = viewModel.EditablesSMO[countModif];
                 LARCA2.Data.DatabaseModels.LARCA20_SmoScope actualOriginal = repo.Traer(scope.SmoScopeID);
-
+                var enviar_correo = true;
 
                 groupFlag = false;
                 if (actualOriginal.GroupId == null || ((actualOriginal.GroupId != null) && (listaGrupos[actualOriginal.GroupId.Value] == false)))
@@ -1960,8 +1978,12 @@ namespace Larca2.Controllers
                         actualOriginal.Why2 = scope.Why2;
                     if (scope.Why3 != actualOriginal.Why3)
                         actualOriginal.Why3 = scope.Why3;
-                    if (scope.ActionPlan != actualOriginal.ActionPlan)
+                    if (scope.ActionPlan != actualOriginal.ActionPlan) { 
                         actualOriginal.ActionPlan = scope.ActionPlan;
+                        enviar_correo = true;
+
+                        
+                     }
                     if (scope.Problem != actualOriginal.Problem)
                         actualOriginal.Problem = scope.Problem;
                     if (scope.DueDate != actualOriginal.DueDate)
@@ -1996,7 +2018,7 @@ namespace Larca2.Controllers
                                 newUser.name = String.Empty;
                                 newUser.last_name = String.Empty;
                                 newUser.pass = String.Empty;
-                                newUser.Email = String.Empty;
+                                newUser.Email = newUser.user_name + "@pg.com";
                                 newUser.telephone = String.Empty;
                                
 
@@ -2058,8 +2080,25 @@ namespace Larca2.Controllers
                         actualOriginal.Level4 = scope.Level4;
                     repo.Guardar(actualOriginal);
                     test++;
-                
-                
+
+                    if (enviar_correo == true) 
+                    {
+                         LARCA2.Business.Core.MailingCore mails = new LARCA2.Business.Core.MailingCore();
+                        LARCA2.Business.Services.UsuariosBLL user_aux = new LARCA2.Business.Services.UsuariosBLL();
+                        var duedate = actualOriginal.DueDate.ToString().Split(' ');
+                        LARCA2.Business.Services.UserOwnerBLL user_owner = new LARCA2.Business.Services.UserOwnerBLL();
+                        var owners = user_owner.UserPermisoCheck(actualOriginal.RefIdBU, actualOriginal.RefIdSMO, actualOriginal.RefIdOwner);
+                        string drpmal = "";
+                        if (owners.user_name != "" && owners.user_name != null)
+                        {
+                            drpmal = owners.user_name;
+                        }
+                        else
+                        {
+                            drpmal = "user unknown";    
+                        }
+                        mails.EnviarAsignacion_action_plan(actualOriginal.MasterOwner.DataFin, duedate[0], actualOriginal.ActionPlan, actualOriginal.ResponsableSmo.Responsable_user.user_name, drpmal);
+                    }
 
                      if (actualOriginal.GroupId != null)
                     {
@@ -2390,7 +2429,7 @@ namespace Larca2.Controllers
                             newUser.date = DateTime.Now;
                             newUser.name = String.Empty;
                             newUser.last_name = String.Empty;
-                            newUser.Email = string.Empty;
+                            newUser.Email = newUser.user_name + "@pg.com";
                             newUser.telephone = string.Empty;
 
                             repoUsuarios.Guardar(newUser);
@@ -2442,9 +2481,98 @@ namespace Larca2.Controllers
                     
 
 
-
+                
                 repoUpdate.Guardar(smoUpdated);
                 j++;
+
+                //traigo todos los iguales para modificarlos tambien
+                var todos_coinciden = repoUpdate.Todos_completos().Where(x => x.RefIdRC == smoUpdated.RefIdRC && x.RefIdSMO == smoUpdated.RefIdSMO && x.RefIdBU == smoUpdated.RefIdBU && x.RefIdOwner == smoUpdated.RefIdOwner && x.ActionPlan == smoUpdated.ActionPlan && x.RefIdResponsable == smoUpdated.RefIdResponsable).ToList();
+
+                foreach (var item in todos_coinciden)
+                {
+                   var smoUpdated2 = repoUpdate.Traer(item.SmoScopeID);
+                smoUpdated2.O_C = smoItem.O_C;
+                smoUpdated2.DueDate = smoItem.DueDate;
+                smoUpdated2.RefIdResponsable = smoUpdated.RefIdResponsable;
+
+                /*if (viewModel.responsibles[j] == "")
+                    smoUpdated.RefIdResponsable = null;
+                else
+                { //aca puede pasar que:
+                    LARCA2.Business.Services.ResponsablesBLL repoResponsables2 = new LARCA2.Business.Services.ResponsablesBLL();
+                    LARCA2.Business.Services.UsuariosBLL repoUsuarios = new LARCA2.Business.Services.UsuariosBLL();
+                    if (repoUsuarios.ExisteUsuario(viewModel.responsibles[j]) == false)
+                    {
+                        //  if(false)
+                        if (UserExistsInAD(viewModel.responsibles[j]))
+                        {
+
+
+                            //el responsable ingresado no existe de ninguna manera, asi que hay que crear usuario y responsable.
+                            LARCA2.Data.DatabaseModels.LARCA20_Users newUser = new LARCA2.Data.DatabaseModels.LARCA20_Users();
+                            
+                       
+                            newUser.pass = String.Empty;
+                            newUser.user_name = viewModel.responsibles[j];
+                            newUser.deleted = false;
+                            newUser.date = DateTime.Now;
+                            newUser.name = String.Empty;
+                            newUser.last_name = String.Empty;
+                            newUser.Email = newUser.user_name + "@pg.com";
+                            newUser.telephone = string.Empty;
+
+                            repoUsuarios.Guardar(newUser);
+                            //no le creo rol porque no se definió cual poner
+
+                            //poner rol reporter al user
+                            LARCA2.Business.Services.UsuariosRolesBLL urb = new UsuariosRolesBLL();
+                            LARCA20_UsersRoles rolNewUser = new LARCA20_UsersRoles();
+                            rolNewUser.deleted = false;
+                            rolNewUser.RefIdRoles = 3; //reporter
+                            rolNewUser.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                            urb.Guardar(rolNewUser);
+
+                            //crear responsable
+                            LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                            newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                            newResp.deleted = false;
+                            newResp.Name = string.Empty;
+                            newResp.Last_name = string.Empty;
+                            repoResponsables2.Guardar(newResp);
+                            smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                        }
+                        else { smoUpdated.RefIdResponsable = null; }
+
+                    }
+                    else
+                    {
+
+                        if (repoResponsables2.Todos().Where(x => x.RefIdUser == repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id).Count() > 0)
+                        {
+                            //el responsable ingresado exista y sea un usuario que existe, entonces solo se asigna.
+                            smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                        }
+                        else
+                        {
+                            //el responsable ingresado no exista pero exista el usuario, hay que crear el responsable.
+                            LARCA2.Data.DatabaseModels.LARCA20_Responsable newResp = new LARCA2.Data.DatabaseModels.LARCA20_Responsable();
+                            newResp.RefIdUser = repoUsuarios.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                            newResp.deleted = false;
+                            newResp.Name = string.Empty;
+                            newResp.Last_name = string.Empty;
+                            repoResponsables2.Guardar(newResp);
+                            smoUpdated.RefIdResponsable = repoResponsables2.TraerPorNombreDeUsuario(viewModel.responsibles[j]).Id;
+                        }
+                    }
+
+
+                }
+                    
+                   */
+
+                
+                repoUpdate.Guardar(smoUpdated2);
+                }
             }
 
             ResponsablesBLL repoResponsables = new ResponsablesBLL();

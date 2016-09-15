@@ -31,8 +31,40 @@ namespace LARCA2.Controllers
                 return RedirectToAction("InvalidUser", "Home");
             }
 
+
+           /* var lista = new List<string>();
+            string manager = "";
+            string username = user.Identity.Name.Split(Convert.ToChar("\\"))[1];
+            using (var forest = Forest.GetCurrentForest())
+            {
+                foreach (Domain domain in forest.Domains)
+                {
+                    var userdomain = domain.Name.Split(Convert.ToChar("."))[0].ToUpper();
+
+                    List<string> gruposEncontrados = new List<string>();
+                    // Creamos un objeto DirectoryEntry para conectarnos al directorio activo
+                    DirectoryEntry adsRoot = new DirectoryEntry("LDAP://" + userdomain);
+                    // Creamos un objeto DirectorySearcher para hacer una búsqueda en el directorio activo
+                    DirectorySearcher adsSearch = new DirectorySearcher(adsRoot);
+                    adsSearch.PropertiesToLoad.Add("manager");
+
+                    // Ponemos como filtro que busque el usuario actual
+                    adsSearch.Filter = "samAccountName=" + username;
+
+                    SearchResult oResult;
+                    // Extraemos la primera coincidencia
+                    oResult = adsSearch.FindOne();
+                    manager = oResult.Properties["manager"][0].ToString();
+                    if (oResult != null)
+                    {
+                        break;
+                    }
+                }
+            }*/
+
             Session["Usuario"] = usuario;
             ViewData["Modal"] = "<script language='javascript' type='text/javascript'>$('#modalTest').modal('show')</script>";
+            //ViewData["Modal"] = "<script language='javascript' type='text/javascript'>alert('" + manager + "');</script>";
             ViewBag.Message = "QA Version.";
             return View();
         }

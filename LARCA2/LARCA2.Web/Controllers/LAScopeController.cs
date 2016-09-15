@@ -71,24 +71,28 @@ namespace Larca2.Controllers
             {
                 if (command.Equals("Send Email"))
                 {
+                    string datafin = "";
                     if (rbu != "0")
                     {
                         masterRows = new ReportsBLL().LARCANews(string.Empty, rbu, string.Empty);
+                        datafin = rbu;
                     }
                     else
                     {
                         if (smo != "1" && smo != "2")
                         {
                             masterRows = new ReportsBLL().LARCANews(smo, string.Empty, string.Empty);
+                            datafin = smo;
                         }
                         else
                         {
                             masterRows = new ReportsBLL().LARCANews(string.Empty, string.Empty, smo);
+                            datafin = smo;
                         }
                     }
 
                     var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
-                    new MailingCore().EnviarReporte(file);
+                    new MailingCore().EnviarReporte(file, datafin);
                     ViewBag.Result = "File Exported and sent!.";
                 }
                 else
@@ -97,9 +101,20 @@ namespace Larca2.Controllers
                     {
                         foreach(var item in model.SMOList)
                         {
-                            masterRows = new ReportsBLL().LARCANews(item.Value, string.Empty, string.Empty);
-                            var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
-                            new MailingCore().EnviarReporte(file, item.Text );
+                            if (item.Text == "LA")
+	                        {
+                                item.Value = "1";
+                                masterRows = new ReportsBLL().LARCANews(string.Empty, string.Empty, item.Value);
+                                var file = new ExcelCore().GenerarExcel("LARCA News", masterRows);
+                                new MailingCore().EnviarReporte(file, item.Text);
+	                        }
+                            else
+                            {
+                                masterRows = new ReportsBLL().LARCANews(item.Value, string.Empty, string.Empty);
+                                var file2 = new ExcelCore().GenerarExcel("LARCA News", masterRows);
+                                new MailingCore().EnviarReporte(file2, item.Text);
+                            }    
+
                         }
 
                         foreach (var item in model.BUList)

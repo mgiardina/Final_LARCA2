@@ -20,7 +20,7 @@ namespace Larca2.Controllers
             var model = new Larca2.Views.ViewModels.SMOScopeViewModel();
             try
             {
-                ViewData["MasterRows"] = new SMOScopeBLL().Todos_completos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem == string.Empty || smo.Problem == null)).ToList();
+                ViewData["MasterRows"] = new SMOScopeBLL().Todos_completos_action_plan().Where(smo => smo.O_C.ToUpper() == "O" && (smo.ActionPlan != string.Empty && smo.ActionPlan != null)).ToList();
             }
             catch
             {
@@ -32,7 +32,7 @@ namespace Larca2.Controllers
 
         public ActionResult Export()
         {
-            var masterData = new SMOScopeBLL().Todos().Where(smo => smo.O_C.ToUpper() == "O" && (smo.Problem == string.Empty || smo.Problem == null)).ToList();
+            var masterData = new SMOScopeBLL().Todos_completos_action_plan().Where(smo => smo.O_C.ToUpper() == "O" && (smo.ActionPlan != string.Empty && smo.ActionPlan != null)).ToList();
             var file = new ExcelCore().GenerarActionReport("LARCA Action Plan Report", masterData);
             DownloadFile(file);
             return Content("<script language='javascript' type='text/javascript'>alert('Exported!');document.location = 'Index';</script>");

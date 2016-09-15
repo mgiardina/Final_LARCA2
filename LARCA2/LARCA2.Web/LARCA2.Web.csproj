@@ -189,6 +189,10 @@
       <DependentUpon>LARCAJobs.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="WebService\LARCA_Mails.asmx.cs">
+      <DependentUpon>LARCA_Mails.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="AlertTemplates\ActionPlansSecondReminders.htm" />
@@ -260,6 +264,7 @@
     <Content Include="Images\LARCA.jpg" />
     <Content Include="Images\LARCA_GRANDE.jpg" />
     <Content Include="WebService\LARCAJobs.asmx" />
+    <Content Include="WebService\LARCA_Mails.asmx" />
     <None Include="Properties\PublishProfiles\LARCA2.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
